@@ -29,7 +29,6 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version-file: '.python-version'
-      # Consider using pre-commit.ci for open source project
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
 
@@ -54,15 +53,14 @@ jobs:
           set: |
             django.cache-from=type=gha,scope=django-cached-tests
             django.cache-to=type=gha,scope=django-cached-tests,mode=max
-            postgres.cache-from=type=gha,scope=postgres-cached-tests
-            postgres.cache-to=type=gha,scope=postgres-cached-tests,mode=max
 
       # TODO: Re-instate this when we have a DB..
       #- name: Check DB Migrations
       #  run: docker compose -f docker-compose.local.yml run --rm django python manage.py makemigrations --check
 
-      - name: Run DB Migrations
-        run: docker compose -f docker-compose.local.yml run --rm django python manage.py migrate
+      # TODO: Re-instate this when we have a DB..
+      #- name: Run DB Migrations
+      #  run: docker compose -f docker-compose.local.yml run --rm django python manage.py migrate
 
       - name: Run Django Tests
         run: docker compose -f docker-compose.local.yml run django pytest

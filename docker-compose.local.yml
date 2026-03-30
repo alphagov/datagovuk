@@ -1,8 +1,3 @@
-volumes:
-  datagovuk_local_postgres_data: {}
-  datagovuk_local_postgres_data_backups: {}
-
-
 services:
   django:
     build:
@@ -10,28 +5,12 @@ services:
       dockerfile: ./compose/local/django/Dockerfile
     image: datagovuk_local_django
     container_name: datagovuk_local_django
-    #depends_on:
-    #  - postgres
     volumes:
       - /app/.venv
       - .:/app:z
     env_file:
       - path: ./.envs/.local/.django
         required: false
-      - path: ./.envs/.local/.postgres
-        required: false
     ports:
       - '8000:8000'
     command: /start
-
-  #postgres:
-  #  build:
-  #    context: .
-  #    dockerfile: ./compose/production/postgres/Dockerfile
-  #  image: datagovuk_production_postgres
-  #  container_name: datagovuk_local_postgres
-  #  volumes:
-  #    - datagovuk_local_postgres_data:/var/lib/postgresql/18/docker
-  #    - datagovuk_local_postgres_data_backups:/backups
-  #  env_file:
-  #    - ./.envs/.local/.postgres
