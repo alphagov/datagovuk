@@ -40,8 +40,6 @@ updates:
     # Look for a `Dockerfile` in the listed directories
     directories:
       - 'compose/local/node/'
-      - 'compose/production/aws/'
-      - 'compose/production/postgres/'
       - 'compose/production/traefik/'
     # Every weekday
     schedule:
