@@ -148,7 +148,7 @@ ini_options.python_files = [
 [tool.coverage]
 # ==== Coverage ====
 run.include = [ "datagovuk/**" ]
-run.omit = [ "*/migrations/*", "*/tests/*" ]
+run.omit = [ "*/conftest.py", "*/migrations/*", "*/tests/*" ]
 run.plugins = [ "django_coverage_plugin" ]
 
 # ==== djLint ====
