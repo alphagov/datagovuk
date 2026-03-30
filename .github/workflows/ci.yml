@@ -65,6 +65,17 @@ jobs:
       - name: Run Django Tests with coverage
         run: |
           docker compose -f docker-compose.local.yml run django coverage run -m pytest
+          docker compose -f docker-compose.local.yml run django coverage html
+
+      - name: Upload artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-artifacts
+          path: htmlcov
+
+      - name: Fail under 100% coverage
+        run: |
           docker compose -f docker-compose.local.yml run django coverage report --fail-under=100
 
       - name: Tear down the Stack
