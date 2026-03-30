@@ -11,23 +11,45 @@ License: MIT
 
 Moved to [settings](https://cookiecutter-django.readthedocs.io/en/latest/1-getting-started/settings.html).
 
+## Running locally
+
+The following steps will explain how to run the application locally and get in to a state where pull requests can be opened to modify the project on github.
+They assume a user using Mac OSX.
+
+### Install uv
+
+https://docs.astral.sh/uv/getting-started/installation/
+
+```
+brew install uv
+```
+
+### Install pre-commit
+```
+uv tool install pre-commit --with pre-commit-uv
+```
+Ensure that `which pre-commit` resolves to point to the installed pre-commit executable - you may need to set your `$PATH` variable on the profile of your shell of choice.
+```
+pre-commit install
+```
+
+### Install docker desktop
+https://docs.docker.com/desktop/setup/install/mac-install/
+
+### Install justfile
+`just` is a simple way to save/run project-specific commands.  It's an alternative to `make` and the devs go in to the differences on the project homepage; https://github.com/casey/just
+
+```
+brew install just
+```
+
+### Bring up the project under docker
+
+`just up`
+
+The project should now be running and accessible at `http://localhost:8000/`
+
 ## Basic Commands
-
-### Setting Up Your Users
-
-- To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
-
-- To create a **superuser account**, use this command:
-
-      uv run python manage.py createsuperuser
-
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
-
-### Type checks
-
-Running type checks with mypy:
-
-    uv run mypy datagovuk
 
 ### Test coverage
 
@@ -40,10 +62,6 @@ To run the tests, check your test coverage, and generate an HTML coverage report
 #### Running tests with pytest
 
     uv run pytest
-
-### Live reloading and Sass CSS compilation
-
-Moved to [Live reloading and SASS compilation](https://cookiecutter-django.readthedocs.io/en/latest/2-local-development/developing-locally.html#using-webpack-or-gulp).
 
 ### Sentry
 
