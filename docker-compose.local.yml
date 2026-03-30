@@ -16,8 +16,10 @@ services:
       - /app/.venv
       - .:/app:z
     env_file:
-      - ./.envs/.local/.django
-      - ./.envs/.local/.postgres
+      - path: ./.envs/.local/.django
+        required: false
+      - path: ./.envs/.local/.postgres
+        required: false
     ports:
       - '8000:8000'
     command: /start
