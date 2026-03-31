@@ -68,7 +68,9 @@ DJANGO_APPS = [
     "django.forms",
 ]
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "compressor",
+]
 
 LOCAL_APPS = []
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -124,7 +126,18 @@ STATICFILES_DIRS = [str(APPS_DIR / "static")]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 ]
+COMPRESS_PRECOMPILERS = [
+    ("text/x-scss", "django_libsass.SassCompiler"),
+]
+
+
+def COMPRESS_JINJA2_GET_ENVIRONMENT():  # noqa: N802
+    from django.template import engines  # noqa: PLC0415
+
+    return engines.all()[0].env
+
 
 # MEDIA
 # ------------------------------------------------------------------------------
@@ -151,6 +164,9 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
+            ],
+            "extensions": [
+                "compressor.contrib.jinja2ext.CompressorExtension",
             ],
         },
     },

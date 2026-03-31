@@ -22,7 +22,11 @@
 <!-- This file stores project-specific CSS -->
 
 
-  <link href="{{ static('css/project.css') }}" rel="stylesheet" />
+
+  {% compress css %}
+    <link type="text/x-scss" href="{{ static('stylesheets/project.scss') }}" rel="stylesheet" />
+  {% endcompress %}
+
 
 
 {% endblock css %}
@@ -44,7 +48,9 @@
 <!-- place project specific Javascript in this file -->
 
 
-  <script defer src="{{ static('js/project.js') }}"></script>
+  {% compress js %}
+    <script defer src="{{ static('js/project.js') }}"></script>
+  {% endcompress %}
 
 
 {% endblock javascript %}
