@@ -51,8 +51,9 @@ jobs:
           files: docker-compose.local.yml
           targets: django
           set: |
-            django.cache-from=type=gha,scope=django-cached-tests
-            django.cache-to=type=gha,scope=django-cached-tests,mode=max
+            django.cache-from=type=gha,scope=django-${{ github.ref_name }}
+            django.cache-from=type=gha,scope=django-main
+            django.cache-to=type=gha,scope=django-${{ github.ref_name }},mode=max
 
       # TODO: Re-instate this when we have a DB..
       #- name: Check DB Migrations
