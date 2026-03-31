@@ -43,6 +43,11 @@ https://docs.docker.com/desktop/setup/install/mac-install/
 brew install just
 ```
 
+### Create a .env file for the django container
+```
+cp .envs/.local/.django.example .envs/.local/.django
+```
+
 ### Bring up the project under docker
 
 `just up`
@@ -51,17 +56,21 @@ The project should now be running and accessible at `http://localhost:8000/`
 
 ## Basic Commands
 
-### Test coverage
-
-To run the tests, check your test coverage, and generate an HTML coverage report:
-
-    uv run coverage run -m pytest
-    uv run coverage html
-    uv run open htmlcov/index.html
-
 #### Running tests with pytest
 
-    uv run pytest
+`just test` - runs the tests under docker
+
+#### View docker stack logs
+
+`just logs`
+
+#### Rebuild the docker stack
+
+`just build`
+
+#### Other common commands
+
+`just` should list out other common commands in the project
 
 ### Sentry
 

@@ -275,6 +275,9 @@ datagovuk/media/
 .ipython/
 .env
 .envs/*
+!.envs/.local/
+.envs/.local/*
+!.envs/.local/.django.example
 
 # Vim
 *.swp
