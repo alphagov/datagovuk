@@ -33,6 +33,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock:rw \
     uv sync
 
+RUN uv run playwright install --with-deps chromium
+
 # devcontainer dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
   sudo git bash-completion nano ssh
