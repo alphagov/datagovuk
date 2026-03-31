@@ -52,11 +52,14 @@ install-playwright:
 e2e-codegen +args:
     uv run playwright codegen --target python-pytest -o tests/e2e/{{args}} 127.0.0.1:8000
 
+# lint: Run pre-commit checks without the commit
 lint:
     pre-commit run
 
+# compress: Compress CSS/JS files referenced in templates with compress tags.  See https://github.com/django-compressor/django-compressor
 compress:
     @docker compose run --rm django python ./manage.py compress --force --engine jinja2 --extension .jinja
 
+# collectstatic: Collect static assets in to a single location for serving in non-local environments
 collectstatic:
     @docker compose run --rm django python ./manage.py collectstatic
