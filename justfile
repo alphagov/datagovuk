@@ -37,8 +37,8 @@ bash:
     @docker compose run --rm django bash
 
 # test: Run pytest
-test:
-    @docker compose run --rm django pytest
+test *args:
+    @docker compose run --rm django pytest {{args}}
 
 # show-trace: show a playwright trace
 show-trace +args:
