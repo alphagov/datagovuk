@@ -15,9 +15,9 @@ build *args:
     @docker compose build {{args}}
 
 # up: Start up containers.
-up:
+up *args:
     @echo "Starting up containers..."
-    @docker compose up -d --remove-orphans
+    @docker compose up -d --remove-orphans {{args}}
 
 # down: Stop containers.
 down:
@@ -37,6 +37,9 @@ logs *args:
 manage +args:
     @docker compose run --rm django python ./manage.py {{args}}
 
+bash:
+    @docker compose run --rm django bash
+
 # test: Run pytest
 test:
     @docker compose run --rm django pytest
@@ -52,3 +55,12 @@ install-playwright:
 # e2e-codegen: Generate a new end to end test with playwright recorder
 e2e-codegen +args:
     uv run playwright codegen --target python-pytest -o tests/e2e/{{args}} 127.0.0.1:8000
+
+lint:
+    pre-commit run
+
+compress:
+    @docker compose run --rm django python ./manage.py compress --force --engine jinja2 --extension .jinja
+
+collectstatic:
+    @docker compose run --rm django python ./manage.py collectstatic
