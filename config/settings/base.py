@@ -4,6 +4,7 @@
 from pathlib import Path
 
 import environ
+from django.utils.csp import CSP
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # datagovuk/
@@ -112,7 +113,22 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.csp.ContentSecurityPolicyMiddleware",
 ]
+
+
+SECURE_CSP = {
+    "preserve-schemes": True,
+    "default-src": [CSP.SELF],
+    "connect-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com", "*.analytics.google.com"],
+    "font-src": [CSP.SELF],
+    "img-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com"],
+    "manifest-src": [CSP.SELF],
+    "media-src": [CSP.SELF],
+    "object-src": [CSP.SELF],
+    "script-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com", "cdnjs.cloudflare.com"],
+    "style-src": [CSP.SELF, "cdnjs.cloudflare.com"],
+}
 
 # STATIC
 # ------------------------------------------------------------------------------
