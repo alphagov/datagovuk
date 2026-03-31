@@ -36,3 +36,19 @@ logs *args:
 # manage: Executes `manage.py` command.
 manage +args:
     @docker compose run --rm django python ./manage.py {{args}}
+
+# test: Run pytest
+test:
+    @docker compose run --rm django pytest
+
+# show-trace: show a playwright trace
+show-trace +args:
+    uv run playwright show-trace {{args}}
+
+# install-playwright: Install playwright locally
+install-playwright:
+    uv run playwright install --with-deps
+
+# e2e-codegen: Generate a new end to end test with playwright recorder
+e2e-codegen +args:
+    uv run playwright codegen --target python-pytest -o tests/e2e/{{args}} 127.0.0.1:8000
