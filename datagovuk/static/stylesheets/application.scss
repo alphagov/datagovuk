@@ -8,10 +8,11 @@ $datagovuk-max-width: 1100px;
   --datagovuk-desktop-header-breakpoint: #{$desktop-breakpoint};
 }
 
+// TODO: this depends on govuk publishing components which we don't have in the django stack
 // Components from govuk_publishing_components gem
-@import 'govuk_publishing_components/govuk_frontend_support';
-@import 'govuk_publishing_components/component_support';
-@import 'govuk_publishing_components/components/_cookie-banner';
+//@import 'govuk_publishing_components/govuk_frontend_support';
+//@import 'govuk_publishing_components/component_support';
+//@import 'govuk_publishing_components/components/_cookie-banner';
 
 @import "colours";
 @import "typography";

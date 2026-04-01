@@ -23,6 +23,7 @@
 }
 
 .govuk-radios__label {
-  @extend .govuk-body;
+  // TODO: this depends on govuk publishing components which we don't have in the django stack
+  //@extend .govuk-body;
   @extend .datagovuk-body;
 }
