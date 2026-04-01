@@ -1,19 +1,10 @@
 from django.conf import settings
-from django.conf.urls.static import static
 from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
-from django.views.generic import TemplateView
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/home.jinja"), name="home"),
-    path(
-        "about/",
-        TemplateView.as_view(template_name="pages/about.jinja"),
-        name="about",
-    ),
-    # Media files
-    *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
+    path("", include("datagovuk.pages.urls", namespace="pages")),
 ]
 
 
