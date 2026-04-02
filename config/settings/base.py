@@ -118,7 +118,6 @@ MIDDLEWARE = [
 
 
 SECURE_CSP = {
-    "preserve-schemes": True,
     "default-src": [CSP.SELF],
     "connect-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com", "*.analytics.google.com"],
     "font-src": [CSP.SELF],
@@ -126,7 +125,7 @@ SECURE_CSP = {
     "manifest-src": [CSP.SELF],
     "media-src": [CSP.SELF],
     "object-src": [CSP.SELF],
-    "script-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com", "cdnjs.cloudflare.com"],
+    "script-src": [CSP.SELF, CSP.NONCE, "*.google-analytics.com", "*.googletagmanager.com", "cdnjs.cloudflare.com"],
     "style-src": [CSP.SELF, "cdnjs.cloudflare.com"],
 }
 
@@ -135,7 +134,7 @@ SECURE_CSP = {
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-root
 STATIC_ROOT = str(BASE_DIR / "staticfiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = "/static/"
+STATIC_URL = "/assets/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [str(APPS_DIR / "static")]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
@@ -170,7 +169,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "DIRS": [str(APPS_DIR / "templates")],
         "OPTIONS": {
-            "environment": "datagovuk.jinja2.environment",
+            "environment": "datagovuk.core.jinja2.environment",
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -180,6 +179,8 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.csp",
+                "datagovuk.core.context_processors.collections",
             ],
             "extensions": [
                 "compressor.contrib.jinja2ext.CompressorExtension",
