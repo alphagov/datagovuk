@@ -73,7 +73,11 @@ THIRD_PARTY_APPS = [
     "compressor",
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    "datagovuk.core",
+    "datagovuk.pages",
+]
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -181,6 +185,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.csp",
                 "datagovuk.core.context_processors.collections",
+                "datagovuk.core.context_processors.data_manual",
+                "datagovuk.core.context_processors.data_manual_menu_items",
             ],
             "extensions": [
                 "compressor.contrib.jinja2ext.CompressorExtension",
