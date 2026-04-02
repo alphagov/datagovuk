@@ -94,9 +94,7 @@
 
     <a href="#main" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
-    {# TODO: Bring header over from .erb format
-    <%= render partial: "v2/header", locals: {collections: @collections, data_manual_pages: @data_manual_pages} %>
-    #}
+    {% include "includes/header.jinja" %}
 
     <main id="main" class="datagovuk-main">
       {% block main %}
@@ -105,12 +103,12 @@
 
     {% include "includes/footer.jinja" %}
 
+    <script type="module" src="{{ static("javascripts/govuk-frontend-6.0.0.min.js") }}"></script>
     {% compress js %}
-      <script defer src="{{ static('javascripts/application.js') }}"></script>
+      <script src="{{ static('javascripts/header.js') }}"></script>
     {% endcompress %}
-    <script type="module" src="{{static("javascripts/govuk-frontend-6.0.0.min.js")}}"></script>
-    <script type="module" nonce="{{csp_nonce}}">
-      import { initAll } from "{{static("javascripts/govuk-frontend-6.0.0.min.js")}}"
+    <script type="module" nonce="{{ csp_nonce }}">
+      import { initAll } from "{{ static("javascripts/govuk-frontend-6.0.0.min.js") }}"
       initAll()
     </script>
   </body>
