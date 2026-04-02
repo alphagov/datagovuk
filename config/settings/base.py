@@ -169,7 +169,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "DIRS": [str(APPS_DIR / "templates")],
         "OPTIONS": {
-            "environment": "datagovuk.jinja2.environment",
+            "environment": "datagovuk.core.jinja2.environment",
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -180,6 +180,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.csp",
+                "datagovuk.core.context_processors.collections",
             ],
             "extensions": [
                 "compressor.contrib.jinja2ext.CompressorExtension",
