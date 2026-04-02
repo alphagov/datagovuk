@@ -79,9 +79,7 @@
 
     <a href="#main" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
-    {# TODO: Bring header over from .erb format
-    <%= render partial: "v2/header", locals: {collections: @collections, data_manual_pages: @data_manual_pages} %>
-    #}
+    {% include "includes/header.jinja" %}
 
     <main id="main" class="datagovuk-main">
       {% block main %}{% endblock %}
