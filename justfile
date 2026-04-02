@@ -40,6 +40,10 @@ bash:
 test *args:
     @docker compose run --rm django pytest {{args}}
 
+# e2e-debug: Run e2e test in debug mode
+e2e-debug *args:
+    PWDEBUG=1 uv run pytest {{args}}
+
 # show-trace: show a playwright trace
 show-trace +args:
     uv run playwright show-trace {{args}}
