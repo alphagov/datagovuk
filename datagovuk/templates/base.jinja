@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" class="govuk-template datagovuk-template">
  <head>
-    <meta charset="utf-8">
-    <title>{% block page_title_full %}{% block page_title %}{% endblock %} - data.gov.uk{% endblock %}</title>
+    <meta charset="utf-8" />
+    <title>{% block page_title_full %}{% block page_title %}{% endblock page_title %} - data.gov.uk{% endblock page_title_full %}</title>
 
     {% if page_description %}
-      <meta name="description" content="{{page_description}}">
+      <meta name="description" content="{{ page_description }}" />
     {% endif %}
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#FFFFFF">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#FFFFFF" />
 
     {% compress css %}
       <link href="{{ static('stylesheets/govuk-frontend-6.0.0.min.css') }}" rel="stylesheet" />
@@ -52,6 +52,7 @@
               <div class="govuk-cookie-banner__content">
                 <p class="govuk-body datagovuk-body">
                   We use some essential cookies to make this website work. We’d like to set additional cookies to understand how you use data.gov.uk and improve the service.
+                </p>
               </div>
 
               <div class="govuk-button-group">
@@ -84,7 +85,7 @@
     #}
 
     <main id="main" class="datagovuk-main">
-      {% block main %}{% endblock %}
+      {% block main %}{% endblock main %}
     </main>
 
     {% include "includes/footer.jinja" %}

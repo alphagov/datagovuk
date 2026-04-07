@@ -1,14 +1,14 @@
 {% extends "base.jinja" %}
 
-{% block page_title %}Components{% endblock %}
+{% block page_title %}Components{% endblock page_title %}
 
 {% block main %}
 <div class="govuk-width-container datagovuk-width-container">
   <h1 class="govuk-heading-xl datagovuk-heading-xl">Test heading-xl</h1>
 
-  <h2 class="govuk-heading-l datagovuk-heading-l">Test heading-l</h1>
+  <h2 class="govuk-heading-l datagovuk-heading-l">Test heading-l</h2>
 
-  <h2 class="govuk-heading-m datagovuk-heading-m">Test heading-m</h1>
+  <h2 class="govuk-heading-m datagovuk-heading-m">Test heading-m</h2>
 
   <p class="govuk-body datagovuk-body">Test govuk-body <a href="#" class="govuk-link datagovuk-link">test link</a></p>
   <div class="govuk-!-margin-top-5">
@@ -21,4 +21,4 @@
   {% include "includes/feedback.jinja" %}
 
 </div>
-{% endblock %}
+{% endblock page_title %}
