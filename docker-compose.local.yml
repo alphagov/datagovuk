@@ -6,10 +6,8 @@ services:
     image: datagovuk_local_django
     container_name: datagovuk_local_django
     volumes:
-      - ./datagovuk:/app/datagovuk
-      - ./config:/app/config
-      - ./tests:/app/tests
-      - ./e2e-failure-traces:/app/e2e-failure-traces
+      - .:/app:z
+      - /app/.venv
     env_file:
       - path: ./.envs/.local/.django
         required: false

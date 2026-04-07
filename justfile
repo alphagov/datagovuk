@@ -16,9 +16,9 @@ up *args:
     @docker compose up -d --remove-orphans {{args}}
 
 # down: Stop containers.
-down:
+down  *args:
     @echo "Stopping containers..."
-    @docker compose down
+    @docker compose down {{args}}
 
 # prune: Remove containers and their volumes.
 prune *args:
@@ -38,7 +38,7 @@ bash:
 
 # test: Run pytest
 test *args:
-    @docker compose run --rm django pytest {{args}}
+    @docker compose run django pytest {{args}}
 
 # e2e-debug: Run e2e test in debug mode
 e2e-debug *args:
