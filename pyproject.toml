@@ -158,10 +158,10 @@ close_void_tags = true
 format_css = true
 format_js = true
 # TODO: remove T002 when fixed https://github.com/djlint/djLint/issues/687
-ignore = "H006,H030,H031,T002"
+# TODO: Remove J004, J018 when links fully moved over to this repo
+ignore = "H006,H030,H031,T002,J004,J018"
 include = "H017,H035"
 indent = 2
-max_line_length = 119
 profile = "jinja"
 css.indent_size = 2
 js.indent_size = 2

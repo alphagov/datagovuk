@@ -57,8 +57,8 @@ e2e-codegen +args:
     uv run playwright codegen --target python-pytest -o tests/e2e/{{args}} 127.0.0.1:8000
 
 # lint: Run pre-commit checks without the commit
-lint:
-    pre-commit run
+lint *args:
+    pre-commit run {{args}}
 
 # compress: Compress CSS/JS files referenced in templates with compress tags.  See https://github.com/django-compressor/django-compressor
 compress:
