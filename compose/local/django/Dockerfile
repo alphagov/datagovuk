@@ -23,6 +23,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 COPY pyproject.toml ${APP_HOME}
 COPY uv.lock ${APP_HOME}
 
+ENV VIRTUAL_ENV=/opt/venv
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
+RUN uv venv $VIRTUAL_ENV
+
 # Requirements are installed here to ensure they will be cached.
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
@@ -51,8 +55,8 @@ RUN groupadd --gid 1000 dev-user \
 
 COPY . ${APP_HOME}
 
-ENV PATH="/${APP_HOME}/.venv/bin:$PATH"
-ENV PYTHONPATH="${APP_HOME}/.venv/lib/python3.14/site-packages"
+ENV PATH="/${VIRTUAL_ENV}/bin:$PATH"
+ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.14/site-packages"
 
 COPY ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
