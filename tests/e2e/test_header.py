@@ -37,3 +37,19 @@ class TestHeader:
         expect(page.get_by_role("link", name="General guidance")).to_be_visible()
         expect(page.get_by_role("link", name="Tell us what you think")).to_be_visible()
         expect(page.get_by_role("link", name="Join a data community")).to_be_visible()
+
+    def test_header_mobile(self, mobile_page, live_server_url) -> None:
+        mobile_page.goto(live_server_url)
+        expect(mobile_page.get_by_role("link", name="Home")).to_be_visible()
+        expect(mobile_page.get_by_role("button", name="Menu")).to_be_visible()
+        # Expect link to only be visible after clicking Menu
+        expect(
+            mobile_page.locator("#datagovuk-menu-collections").get_by_role("link", name="Business and economy"),
+        ).not_to_be_visible()
+        expect(mobile_page.get_by_role("link", name="Who this manual is for")).not_to_be_visible()
+        mobile_page.get_by_role("button", name="Menu").click()
+        expect(
+            mobile_page.locator("#datagovuk-menu-collections").get_by_role("link", name="Business and economy"),
+        ).to_be_visible()
+        expect(mobile_page.get_by_role("link", name="Who this manual is for")).to_be_visible()
+        expect(mobile_page.get_by_role("banner").get_by_role("link", name="Directory")).to_be_visible()

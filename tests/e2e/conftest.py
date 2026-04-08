@@ -25,6 +25,12 @@ def page(browser, request):
     context.close()
 
 
+@pytest.fixture
+def mobile_page(page):
+    page.set_viewport_size({"width": 390, "height": 844})
+    return page
+
+
 @pytest.fixture(scope="session")
 def browser():
     with sync_playwright() as p:
