@@ -29,3 +29,34 @@ class TestHomePage:
         page.goto(live_server_url)
         expect(page.get_by_role("link", name="Data manual")).to_be_visible()
         expect(page.get_by_role("link", name="Directory")).to_be_visible()
+
+    def test_footer_links_have_correct_hrefs(self, page, live_server_url):
+        page.goto(live_server_url)
+        expect(page.get_by_role("link", name="Roadmap")).to_have_attribute(
+            "href",
+            "/roadmap",
+        )
+        expect(page.get_by_role("link", name="About", exact=True)).to_have_attribute(
+            "href",
+            "/about",
+        )
+        expect(page.get_by_role("link", name="Support", exact=True)).to_have_attribute(
+            "href",
+            "/support",
+        )
+        expect(page.get_by_role("link", name="Accessibility")).to_have_attribute(
+            "href",
+            "/accessibility",
+        )
+        expect(page.get_by_role("link", name="Cookies")).to_have_attribute(
+            "href",
+            "/cookies",
+        )
+        expect(page.get_by_role("link", name="Privacy and terms")).to_have_attribute(
+            "href",
+            "/privacy-and-terms",
+        )
+        expect(page.get_by_role("link", name="data.gov.uk team", exact=True)).to_have_attribute(
+            "href",
+            "/team",
+        )
