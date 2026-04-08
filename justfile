@@ -15,8 +15,11 @@ init:
     pre-commit install
     @echo "Copying envfile if target does not exist..."
     @test -f .envs/.local/.django || cp .envs/.local/.django.example .envs/.local/.django
+    @echo "Initialising submodules..."
+    git submodule init
+    git submodule update --remote
     @echo ""
-    @echo "datagovuk install is initialised for local development. Bring up the containers with `just up`"
+    @echo "datagovuk install is initialised for local development. Bring up the containers with '$ just up'"
 
 # build: Build python image.
 build *args:
