@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" class="govuk-template datagovuk-template">
- <head>
+  <head>
     <meta charset="utf-8" />
-    <title>{% block page_title_full %}{% block page_title %}{% endblock page_title %} - data.gov.uk{% endblock page_title_full %}</title>
+    <title>
+      {% block page_title_full %}
+        {% block page_title %}
+        {% endblock page_title %}
+        - data.gov.uk
+      {% endblock page_title_full %}
+    </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description }}" />
-    {% endif %}
+    {% if page_description %}<meta name="description" content="{{ page_description }}" />{% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#FFFFFF" />
 
@@ -50,9 +54,7 @@
             <div class="govuk-grid-column-three-quarters">
               <h2 class="govuk-cookie-banner__heading govuk-heading-m datagovuk-heading-m">Cookies on data.gov.uk</h2>
               <div class="govuk-cookie-banner__content">
-                <p class="govuk-body datagovuk-body">
-                  We use some essential cookies to make this website work. We’d like to set additional cookies to understand how you use data.gov.uk and improve the service.
-                </p>
+                <p class="govuk-body datagovuk-body">We use some essential cookies to make this website work. We’d like to set additional cookies to understand how you use data.gov.uk and improve the service.</p>
               </div>
 
               <div class="govuk-button-group">
@@ -73,7 +75,9 @@
           You can <a class="govuk-link datagovuk-link" data-track-category="cookieBanner" data-track-action="Cookie banner settings clicked from confirmation" href="/cookies">change your cookie settings</a> at any time.
         </p>
         <div class="govuk-button-group">
-          <button class="govuk-button datagovuk-button" data-hide-cookie-banner="true" data-module="gem-track-click" data-track-category="cookieBanner" data-track-action="Hide cookie banner">Hide this message</button>
+          <button class="govuk-button datagovuk-button" data-hide-cookie-banner="true" data-module="gem-track-click" data-track-category="cookieBanner" data-track-action="Hide cookie banner">
+            Hide this message
+          </button>
         </div>
       </div>
     </div>
@@ -85,7 +89,8 @@
     #}
 
     <main id="main" class="datagovuk-main">
-      {% block main %}{% endblock main %}
+      {% block main %}
+      {% endblock main %}
     </main>
 
     {% include "includes/footer.jinja" %}
@@ -98,5 +103,5 @@
       import { initAll } from "{{static("javascripts/govuk-frontend-6.0.0.min.js")}}"
       initAll()
     </script>
-</body>
+  </body>
 </html>

@@ -155,8 +155,9 @@ run.plugins = [ "django_coverage_plugin" ]
 [tool.djlint]
 blank_line_after_tag = "load,extends"
 close_void_tags = true
-format_css = true
-format_js = true
+format_css = false
+format_js = false
+preserve_blank_lines = true
 # TODO: remove T002 when fixed https://github.com/djlint/djLint/issues/687
 # TODO: Remove J004, J018 when links fully moved over to this repo
 ignore = "H006,H030,H031,T002,J004,J018"
@@ -165,3 +166,5 @@ indent = 2
 profile = "jinja"
 css.indent_size = 2
 js.indent_size = 2
+max_line_length = 200
+max_attribute_length = 200
