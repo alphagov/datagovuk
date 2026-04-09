@@ -166,5 +166,5 @@ indent = 2
 profile = "jinja"
 css.indent_size = 2
 js.indent_size = 2
-max_line_length = 200
-max_attribute_length = 200
+max_line_length = 120
+max_attribute_length = 120

@@ -1,8 +1,6 @@
 {% extends "base.jinja" %}
 
-{% block page_title %}
-  Components
-{% endblock page_title %}
+{% set page_title = "Components" %}
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
@@ -25,4 +23,4 @@
     {% include "includes/feedback.jinja" %}
 
   </div>
-{% endblock page_title %}
+{% endblock main %}

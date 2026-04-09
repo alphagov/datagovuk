@@ -1,8 +1,8 @@
 {% extends "base.jinja" %}
 
-{% block page_title_full %}
+{% block page_title %}
   data.gov.uk - The home of UK public data
-{% endblock page_title_full %}
+{% endblock page_title %}
 
 {% block page_description %}
   The home of UK public data to inform decisions and build services
@@ -11,7 +11,9 @@
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
     <div class="datagovuk-home-hero">
-      <h1 class="govuk-heading-xl datagovuk-heading-xl datagovuk-home-hero__heading">The home of UK public data to inform decisions and build services</h1>
+      <h1 class="govuk-heading-xl datagovuk-heading-xl datagovuk-home-hero__heading">
+        The home of UK public data to inform decisions and build services
+      </h1>
       <p class="govuk-body datagovuk-body">
         <a href="/roadmap" class="govuk-link datagovuk-link datagovuk-home-hero__link">Find out more about the new data.gov.uk</a>
       </p>
@@ -20,12 +22,18 @@
     <div class="datagovuk-home-collections datagovuk-home-section">
       <h2 class="govuk-heading-l datagovuk-heading-l datagovuk-home-collections__heading">Collections</h2>
 
-      <p class="govuk-body datagovuk-body datagovuk-home-collections__description">Curated collections of high-quality, accessible data</p>
+      <p class="govuk-body datagovuk-body datagovuk-home-collections__description">
+        Curated collections of high-quality, accessible data
+      </p>
 
       <div class="datagovuk-home-collections__items">
         {% for collection in collections %}
           <div class="datagovuk-home-collections__item">
-            <img src="{{ static('images/collections/badge-' + collection['slug'] + '.png') }}" width="108" height="108" alt="" class="datagovuk-home-collections__item-image" />
+            <img src="{{ static('images/collections/badge-' + collection['slug'] + '.png') }}"
+                 width="108"
+                 height="108"
+                 alt=""
+                 class="datagovuk-home-collections__item-image" />
             <div class="datagovuk-home-collections__item-content">
               <h3 class="govuk-body datagovuk-body datagovuk-home-collections__item-heading">
                 <a href="/collections/{{ collection["slug"] }}" class="govuk-link datagovuk-link">{{ collection["title"] }}</a>
@@ -43,7 +51,9 @@
 
         <h2 class="govuk-heading-m datagovuk-heading-m datagovuk-home-card__heading">Data manual</h2>
 
-        <p class="govuk-body datagovuk-body datagovuk-home-card__description">A guide to working with data in government and the public sector</p>
+        <p class="govuk-body datagovuk-body datagovuk-home-card__description">
+          A guide to working with data in government and the public sector
+        </p>
 
         <a href="/data-manual" class="datagovuk-home-card__link govuk-button datagovuk-button">
           <span class="datagovuk-home-card__link-inner">
@@ -58,7 +68,9 @@
 
         <h2 class="govuk-heading-m datagovuk-heading-m datagovuk-home-card__heading">Directory</h2>
 
-        <p class="govuk-body datagovuk-body datagovuk-home-card__description">You can still search the original open data directory, which we're working&nbsp;on</p>
+        <p class="govuk-body datagovuk-body datagovuk-home-card__description">
+          You can still search the original open data directory, which we're working&nbsp;on
+        </p>
 
         <a href="/search" class="datagovuk-home-card__link govuk-button datagovuk-button">
           <span class="datagovuk-home-card__link-inner">
@@ -76,21 +88,18 @@
 
       <div class="datagovuk-home-publications__items">
         <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
-          <a href="https://dataingovernment.blog.gov.uk/2026/03/25/whats-changing-on-data-gov-uk-and-why/" class="govuk-link datagovuk-link datagovuk-home-publications__link">
-            What’s changing on data.gov.uk and why
-          </a>
+          <a href="https://dataingovernment.blog.gov.uk/2026/03/25/whats-changing-on-data-gov-uk-and-why/"
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">What’s changing on data.gov.uk and why</a>
           <p class="govuk-body datagovuk-body datagovuk-home-publications__date">25 March 2026</p>
         </div>
         <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
-          <a href="https://dataingovernment.blog.gov.uk/2026/03/16/using-data-standards-to-support-people-at-risk/" class="govuk-link datagovuk-link datagovuk-home-publications__link">
-            Using data standards to support people at risk
-          </a>
+          <a href="https://dataingovernment.blog.gov.uk/2026/03/16/using-data-standards-to-support-people-at-risk/"
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">Using data standards to support people at risk</a>
           <p class="govuk-body datagovuk-body datagovuk-home-publications__date">16 March 2026</p>
         </div>
         <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
-          <a href="https://dataingovernment.blog.gov.uk/2026/02/27/securing-personal-data-across-government/" class="govuk-link datagovuk-link datagovuk-home-publications__link">
-            Securing personal data across government
-          </a>
+          <a href="https://dataingovernment.blog.gov.uk/2026/02/27/securing-personal-data-across-government/"
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">Securing personal data across government</a>
           <p class="govuk-body datagovuk-body datagovuk-home-publications__date">27 February 2026</p>
         </div>
         <p class="govuk-body datagovuk-body">
