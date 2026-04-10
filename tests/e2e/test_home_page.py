@@ -25,10 +25,10 @@ class TestHomePage:
             link = collection_items.get_by_role("link", name=name, exact=True)
             expect(link).to_have_attribute("href", href)
 
-    def test_homepage_footer_links(self, page, live_server_url):
+    def test_homepage_card_links(self, page, live_server_url):
         page.goto(live_server_url)
-        expect(page.get_by_role("link", name="Data manual")).to_be_visible()
-        expect(page.get_by_role("link", name="Directory")).to_be_visible()
+        expect(page.locator("#main").get_by_role("link", name="Data manual")).to_be_visible()
+        expect(page.locator("#main").get_by_role("link", name="Directory")).to_be_visible()
 
     def test_footer_links_have_correct_hrefs(self, page, live_server_url):
         page.goto(live_server_url)
