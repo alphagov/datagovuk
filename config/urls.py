@@ -5,8 +5,8 @@ from django.views import defaults as default_views
 
 urlpatterns = [
     path("", include("datagovuk.pages.urls", namespace="pages")),
+    path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
 ]
-
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

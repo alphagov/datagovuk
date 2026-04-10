@@ -26,48 +26,48 @@
 }
 
 .datagovuk-gridlist__item--icon-user::before {
-  -webkit-mask: image-url('v2/icons/user') no-repeat center;
-  mask: image-url('v2/icons/user') no-repeat center;
+  -webkit-mask: url('/assets/images/icons/user.svg') no-repeat center;
+  mask: url('/assets/images/icons/user.svg') no-repeat center;
 }
 
 .datagovuk-gridlist__item--icon-database::before {
-  -webkit-mask: image-url('v2/icons/database') no-repeat center;
-  mask: image-url('v2/icons/database') no-repeat center;
+  -webkit-mask: url('/assets/images/icons/database.svg') no-repeat center;
+  mask: url('/assets/images/icons/database.svg') no-repeat center;
 }
 
 .datagovuk-gridlist__item--icon-document::before {
-  -webkit-mask: image-url('v2/icons/document') no-repeat center;
-  mask: image-url('v2/icons/document') no-repeat center;
+  -webkit-mask: url('/assets/images/icons/document.svg') no-repeat center;
+  mask: url('/assets/images/icons/document.svg') no-repeat center;
 }
 
 .datagovuk-gridlist__item--icon-padlock::before {
-  -webkit-mask: image-url('v2/icons/padlock') no-repeat center;
-  mask: image-url('v2/icons/padlock') no-repeat center;
+  -webkit-mask: url('/assets/images/icons/padlock.svg') no-repeat center;
+  mask: url('/assets/images/icons/padlock.svg') no-repeat center;
 }
 
 .datagovuk-gridlist__item--icon-shield::before {
-  -webkit-mask: image-url('v2/icons/shield') no-repeat center;
-  mask: image-url('v2/icons/shield') no-repeat center;
+  -webkit-mask: url('/assets/images/icons/shield.svg') no-repeat center;
+  mask: url('/assets/images/icons/shield.svg') no-repeat center;
 }
 
 .datagovuk-gridlist__item--icon-sharing::before {
-  -webkit-mask: image-url('v2/icons/sharing') no-repeat center;
-  mask: image-url('v2/icons/sharing') no-repeat center;
+  -webkit-mask: url('/assets/images/icons/sharing.svg') no-repeat center;
+  mask: url('/assets/images/icons/sharing.svg') no-repeat center;
 }
 
 .datagovuk-gridlist__item--icon-stars::before {
-  -webkit-mask: image-url('v2/icons/stars') no-repeat center;
-  mask: image-url('v2/icons/stars') no-repeat center;
+  -webkit-mask: url('/assets/images/icons/stars.svg') no-repeat center;
+  mask: url('/assets/images/icons/stars.svg') no-repeat center;
 }
 
 .datagovuk-gridlist__item--icon-open-book::before {
-  -webkit-mask: image-url('v2/icons/open_book') no-repeat center;
-  mask: image-url('v2/icons/open_book') no-repeat center;
+  -webkit-mask: url('/assets/images/icons/open_book.svg') no-repeat center;
+  mask: url('/assets/images/icons/open_book.svg') no-repeat center;
 }
 
 .datagovuk-gridlist__item--icon-api::before {
-  -webkit-mask: image-url('v2/icons/api') no-repeat center;
-  mask: image-url('v2/icons/api') no-repeat center;
+  -webkit-mask: url('/assets/images/icons/api.svg') no-repeat center;
+  mask: url('/assets/images/icons/api.svg') no-repeat center;
 }
 
 /* Desktop styling overrides */

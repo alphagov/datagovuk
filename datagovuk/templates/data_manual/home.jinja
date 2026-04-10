@@ -1,0 +1,67 @@
+
+{% extends "data_manual/base.jinja" %}
+
+{% block page_title %}Data manual{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container datagovuk-width-container">
+  <section class="govuk-!-margin-bottom-6">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <ul class="datagovuk-gridlist">
+          {% for item in items %}
+            <li class="datagovuk-gridlist__item">
+              <h2 class="govuk-body datagovuk-body datagovuk-gridlist__item--icon datagovuk-gridlist__item--icon-{{ item.icon }}">
+                <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="{{ item.url }}">
+                  {{ item.title }}
+                </a>
+              </h2>
+              <p class="govuk-body datagovuk-body">
+                {{ item.description }}
+              </p>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="govuk-!-margin-bottom-9">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        {% include "includes/feedback.jinja" %}
+      </div>
+    </div>
+  </section>
+
+  <section class="govuk-!-margin-bottom-9">
+    <div class="govuk-grid-row">
+
+      <div class="govuk-grid-column-one-half">
+        <div class="datagovuk-data-manual-card">
+          <img src="{{ static('images/icons/form.svg') }}" class="datagovuk-data-manual-card__icon" alt="">
+          <h2 class="govuk-body datagovuk-body">
+            <a href="https://forms.office.com/e/9V26PNFQaR" class="govuk-link datagovuk-link datagovuk-!-colour-dark-green">Tell us what you think</a>
+          </h2>
+          <p class="govuk-body datagovuk-body govuk-!-margin-bottom-0 datagovuk-!-colour-dark-green">
+            We’d love your feedback. Is this manual useful? Can we improve it?
+          </p>
+        </div>
+      </div>
+
+      <div class="govuk-grid-column-one-half">
+        <div class="datagovuk-data-manual-card datagovuk-data-manual-card--secondary">
+          <img src="{{ static('images/icons/community.svg') }}" class="datagovuk-data-manual-card__icon" alt="">
+          <h2 class="govuk-body datagovuk-body">
+            <a href="/data-manual/join-a-data-community" class="govuk-link datagovuk-link datagovuk-!-colour-dark-pink">Join a data community</a>
+          </h2>
+          <p class="govuk-body datagovuk-body govuk-!-margin-bottom-0 datagovuk-!-colour-dark-pink">
+            Find Slack channels, events and other ways to connect with data practitioners.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+{% endblock %}
