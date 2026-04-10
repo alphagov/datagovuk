@@ -8,21 +8,22 @@ class TestHeader:
         expect(page.get_by_role("button", name="Collections")).to_be_visible()
         expect(page.get_by_role("button", name="Data manual")).to_be_visible()
         expect(page.get_by_role("banner").get_by_role("link", name="Directory")).to_be_visible()
+        header_collections_locator = page.locator("#datagovuk-menu-collections")
         # Expect collection link to only be visible after clicking Collections sub-menu
         expect(
-            page.locator("#datagovuk-menu-collections").get_by_role("link", name="Business and economy"),
+            header_collections_locator.get_by_role("link", name="Business and economy"),
         ).not_to_be_visible()
         page.get_by_role("button", name="Collections").click()
         expect(
-            page.locator("#datagovuk-menu-collections").get_by_role("link", name="Business and economy"),
+            header_collections_locator.get_by_role("link", name="Business and economy"),
         ).to_be_visible()
-        expect(page.locator("#datagovuk-menu-collections").get_by_role("link", name="Environment")).to_be_visible()
-        expect(page.locator("#datagovuk-menu-collections").get_by_role("link", name="Government")).to_be_visible()
+        expect(header_collections_locator.get_by_role("link", name="Environment")).to_be_visible()
+        expect(header_collections_locator.get_by_role("link", name="Government")).to_be_visible()
         expect(
-            page.locator("#datagovuk-menu-collections").get_by_role("link", name="Land and property"),
+            header_collections_locator.get_by_role("link", name="Land and property"),
         ).to_be_visible()
-        expect(page.locator("#datagovuk-menu-collections").get_by_role("link", name="People")).to_be_visible()
-        expect(page.locator("#datagovuk-menu-collections").get_by_role("link", name="Transport")).to_be_visible()
+        expect(header_collections_locator.get_by_role("link", name="People")).to_be_visible()
+        expect(header_collections_locator.get_by_role("link", name="Transport")).to_be_visible()
         # Expect data manual link to only be visible after clicking Data Manual sub-menu
         expect(page.get_by_role("link", name="Who this manual is for")).not_to_be_visible()
         page.get_by_role("button", name="Data manual").click()
