@@ -11,4 +11,9 @@ urlpatterns = [
         views.CollectionPage.as_view(),
         name="page",
     ),
+    path(
+        "<slug:collection_name>",
+        views.Collection.as_view(),
+        name="collection",
+    ),
 ]
