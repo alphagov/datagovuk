@@ -1,6 +1,6 @@
 {% macro cta_button(url, link_text) -%}
   <a role="button" class="govuk-button datagovuk-button" rel="nofollow" href="{{ url }}">{{ link_text }} <span class="datagovuk-right-arrow">→</span></a>
-{%- endmacro %}
+{% endmacro %}
 
 {% macro link_list(links) -%}
   <ul class="govuk-list datagovuk-list datagovuk-collection-get-data__list">
@@ -12,4 +12,35 @@
       {% endif %}
     {% endfor %}
   </ul>
-{%- endmacro %}
+{% endmacro %}
+
+{% macro section_navigation_item(item) %}
+  <li class="datagovuk-section-navigation__item {{ 'datagovuk-section-navigation__item--selected' if item.selected else '' }}">
+    <a class="govuk-link datagovuk-link datagovuk-section-navigation__link" href="{{ item.url }}">{{ item.title }}</a>
+  </li>
+{% endmacro %}
+
+{% macro section_navigation(items, extra_section_nav="") %}
+  <nav id="datagovuk-section-navigation" class="datagovuk-section-navigation govuk-!-margin-bottom-8">
+    <button type="button"
+            class="govuk-button datagovuk-button datagovuk-section-navigation__button"
+            id="datagovuk-section-navigation-button-all"
+            aria-controls="datagovuk-section-navigation">Pages</button>
+
+    {# Mobile #}
+    <div class="datagovuk-section-navigation__items-mobile">
+      <ul class="govuk-list">
+        {% for item in items %}{{ section_navigation_item(item) }}{% endfor %}
+      </ul>
+      {{ extra_section_nav | safe }}
+    </div>
+
+    {# Desktop #}
+    <div class="datagovuk-section-navigation__items-desktop">
+      <ul class="govuk-list">
+        {% for item in items %}{{ section_navigation_item(item) }}{% endfor %}
+      </ul>
+      {{ extra_section_nav | safe }}
+    </div>
+  </nav>
+{% endmacro %}
