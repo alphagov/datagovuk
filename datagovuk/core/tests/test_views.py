@@ -44,6 +44,10 @@ class TestRenderedMarkdownView:
             ),
             "page_last_updated": "2026-03-24",
             "title": "Some title",
+            "nested_items": [
+                {"name": "wow", "index": 1},
+                {"name": "oof", "index": 2},
+            ],
         }
 
     def test_view_markdown_missing(self, rf):

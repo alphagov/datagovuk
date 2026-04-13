@@ -1,5 +1,6 @@
 import inspect
 
+from datagovuk.core.markdown import get_template_context_from_markdown
 from datagovuk.core.markdown import render_markdown
 
 
@@ -110,3 +111,25 @@ class TestMarkdownToHTMLRenderer:
             '<hr class="datagovuk-collection-header__underline">\n'
             '<p class="govuk-body-m datagovuk-body">My second item</p>\n'
         )
+
+
+def test_get_template_context_from_markdown():
+    context = get_template_context_from_markdown("datagovuk/core/tests/sample_markdown/sample.md")
+    assert context == {
+        "content": (
+            '<h1 class="govuk-heading-xl datagovuk-heading-xl">Some great content</h1>\n'
+            '<p class="govuk-body-m datagovuk-body">Wow!</p>\n'
+            '<ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body">'
+            "<li>A</li>\n"
+            "<li>List</li>\n"
+            "<li>Of</li>\n"
+            "<li>Things</li>\n"
+            "</ul>\n"
+        ),
+        "page_last_updated": "2026-03-24",
+        "title": "Some title",
+        "nested_items": [
+            {"name": "wow", "index": 1},
+            {"name": "oof", "index": 2},
+        ],
+    }
