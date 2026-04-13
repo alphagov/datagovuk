@@ -133,3 +133,19 @@ def test_get_template_context_from_markdown():
             {"name": "oof", "index": 2},
         ],
     }
+
+
+def test_get_template_context_from_markdown_no_frontmatter():
+    context = get_template_context_from_markdown("datagovuk/core/tests/sample_markdown/sample-no-frontmatter.md")
+    assert context == {
+        "content": (
+            '<h1 class="govuk-heading-xl datagovuk-heading-xl">Some great content</h1>\n'
+            '<p class="govuk-body-m datagovuk-body">Wow!</p>\n'
+            '<ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body">'
+            "<li>A</li>\n"
+            "<li>List</li>\n"
+            "<li>Of</li>\n"
+            "<li>Things</li>\n"
+            "</ul>\n"
+        ),
+    }
