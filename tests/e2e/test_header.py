@@ -10,20 +10,25 @@ class TestHeader:
         expect(page.get_by_role("banner").get_by_role("link", name="Directory")).to_be_visible()
         header_collections_locator = page.locator("#datagovuk-menu-collections")
         # Expect collection link to only be visible after clicking Collections sub-menu
+        collection_labels = [
+            "Business and economy",
+            "Environment",
+            "Government",
+            "Land and property",
+            "People",
+            "Transport",
+        ]
         expect(
-            header_collections_locator.get_by_role("link", name="Business and economy"),
+            header_collections_locator.get_by_role("link", name=collection_labels[0]),
         ).not_to_be_visible()
-        page.get_by_role("button", name="Collections").click()
-        expect(
-            header_collections_locator.get_by_role("link", name="Business and economy"),
-        ).to_be_visible()
-        expect(header_collections_locator.get_by_role("link", name="Environment")).to_be_visible()
-        expect(header_collections_locator.get_by_role("link", name="Government")).to_be_visible()
-        expect(
-            header_collections_locator.get_by_role("link", name="Land and property"),
-        ).to_be_visible()
-        expect(header_collections_locator.get_by_role("link", name="People")).to_be_visible()
-        expect(header_collections_locator.get_by_role("link", name="Transport")).to_be_visible()
+        for collection_label in collection_labels:
+            page.get_by_role("button", name="Collections").click()
+            expect(
+                header_collections_locator.get_by_role("link", name=collection_label),
+            ).to_be_visible()
+            page.locator("#datagovuk-menu-collections").get_by_role("link", name=collection_label).click()
+            expect(page.get_by_role("heading", name=collection_label)).to_be_visible()
+            page.goto(live_server_url)
         # Expect data manual link to only be visible after clicking Data Manual sub-menu
         expect(page.get_by_role("link", name="Who this manual is for")).not_to_be_visible()
         page.get_by_role("button", name="Data manual").click()
