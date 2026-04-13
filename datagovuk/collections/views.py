@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.http import Http404
 from django.urls import reverse
 from django.views.generic.base import RedirectView
 
@@ -53,9 +54,13 @@ class CollectionView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         collection_name = self.kwargs["collection_name"]
-        collection_page_name = COLLECTIONS[collection_name][0]["slug"]
+        try:
+            collection_page_name = COLLECTIONS[collection_name][0]["slug"]
+        except KeyError as error:
+            message = f"Collection {collection_name} not found"
+            raise Http404(message) from error
         return reverse(
-            "collections:page",
+            "collections:collection_page",
             kwargs={
                 "collection_name": self.kwargs["collection_name"],
                 "collection_page_name": collection_page_name,

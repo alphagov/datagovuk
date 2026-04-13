@@ -8,7 +8,7 @@ from django.urls import reverse
 class TestCollectionPageView:
     def test_view_first_collection_item_success(self, client):
         url = reverse(
-            "collections:page",
+            "collections:collection_page",
             kwargs={
                 "collection_name": "land-and-property",
                 "collection_page_name": "uk-house-prices",
@@ -53,7 +53,7 @@ class TestCollectionPageView:
 
     def test_view_second_collection_item_success(self, client):
         url = reverse(
-            "collections:page",
+            "collections:collection_page",
             kwargs={
                 "collection_name": "land-and-property",
                 "collection_page_name": "property-price-paid",
@@ -78,7 +78,7 @@ class TestCollectionPageView:
 
     def test_view_last_collection_item_success(self, client):
         url = reverse(
-            "collections:page",
+            "collections:collection_page",
             kwargs={
                 "collection_name": "land-and-property",
                 "collection_page_name": "fire-statistics",
@@ -105,10 +105,55 @@ class TestCollectionPageView:
     )
     def test_view_missing_markdown_file_not_found(self, client, collection_name, collection_page_name):
         url = reverse(
-            "collections:page",
+            "collections:collection_page",
             kwargs={
                 "collection_name": collection_name,
                 "collection_page_name": collection_page_name,
+            },
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.NOT_FOUND
+
+
+class TestCollectionView:
+    @pytest.mark.parametrize(
+        ("collection_name", "expected_collection_page_name"),
+        [
+            ("business-and-economy", "uk-trade"),
+            ("environment", "weather"),
+            ("government", "election-results"),
+            ("land-and-property", "uk-house-prices"),
+            ("people", "births"),
+            ("transport", "road-traffic"),
+        ],
+    )
+    def test_view_success(self, client, collection_name, expected_collection_page_name):
+
+        url = reverse(
+            "collections:collection",
+            kwargs={
+                "collection_name": collection_name,
+            },
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.FOUND
+        expected_redirect_url = reverse(
+            "collections:collection_page",
+            kwargs={
+                "collection_name": collection_name,
+                "collection_page_name": expected_collection_page_name,
+            },
+        )
+        assert response.url == expected_redirect_url
+
+    def test_view_missing_collection_not_found(self, client):
+
+        url = reverse(
+            "collections:collection",
+            kwargs={
+                "collection_name": "some-missing-collection",
             },
         )
         response = client.get(url)
