@@ -1,0 +1,15 @@
+{% macro cta_button(url, link_text) -%}
+  <a role="button" class="govuk-button datagovuk-button" rel="nofollow" href="{{ url }}">{{ link_text }} <span class="datagovuk-right-arrow">→</span></a>
+{%- endmacro %}
+
+{% macro link_list(links) -%}
+  <ul class="govuk-list datagovuk-list datagovuk-collection-get-data__list">
+    {% for site in links %}
+      {% if site %}
+        <li>
+          <a class="govuk-link datagovuk-link" href="{{ site.url }}">{{ site.link_text }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{%- endmacro %}
