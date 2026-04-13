@@ -2,17 +2,17 @@
 
 {% from "macros/common.jinja" import cta_button, link_list %}
 
-{% set page_title = collection.collection ~ " - Collection" %}
+{% set page_title = collection ~ " - Collection" %}
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container datagovuk-collection-header">
-    <img src="{{ static('images/collections/badge-' ~ collection.collection_slug ~ '.png') }}"
+    <img src="{{ static('images/collections/badge-' ~ collection_slug ~ '.png') }}"
          class="datagovuk-collection-header__image"
          alt="" />
 
     <p class="govuk-body datagovuk-body datagovuk-body-uppercase">Collection</p>
 
-    <h2 class="datagovuk-collection-name govuk-heading-xl datagovuk-heading-xl">{{ collection.collection }}</h2>
+    <h2 class="datagovuk-collection-name govuk-heading-xl datagovuk-heading-xl">{{ collection }}</h2>
     <div class="datagovuk-collection-header__underline"></div>
   </div>
 
@@ -29,10 +29,10 @@
 
       <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-l datagovuk-heading-l">{{ collection.title }}</h1>
+        <h1 class="govuk-heading-l datagovuk-heading-l">{{ title }}</h1>
 
         <section class="govuk-section datagovuk-section">
-          {{ collection.body|safe }}
+          {{ content|safe }}
         </section>
 
         <section class="datagovuk-headline govuk-section datagovuk-section govuk-!-margin-top-8">
@@ -46,21 +46,21 @@
         <section class="datagovuk-link datagovuk-section" aria-label="Get the data links">
           <section class="datagovuk-section">
             <h3 class="govuk-heading-m datagovuk-heading-m">Get the data</h3>
-            {% if collection.websites|length == 1 %}
-              {{ cta_button(collection.websites[0].url, collection.websites[0].link_text) }}
-            {% elif collection.websites|length > 1 %}
-              {{ link_list(collection.websites) }}
+            {% if websites|length == 1 %}
+              {{ cta_button(websites[0].url, websites[0].link_text) }}
+            {% elif websites|length > 1 %}
+              {{ link_list(websites) }}
             {% endif %}
 
-            {% if collection.api and not collection.websites and not collection.dataset %}
-              {{ cta_button(collection.api.url, collection.api.link_text) }}
-            {% elif collection.api or collection.dataset %}
-              {{ link_list([collection.api, collection.dataset]) }}
+            {% if api and not websites and not dataset %}
+              {{ cta_button(api.url, api.link_text) }}
+            {% elif api or dataset %}
+              {{ link_list([api, dataset]) }}
             {% endif %}
           </section>
           <section class="datagovuk-section">
             <p class="govuk-body datagovuk-body datagovuk-!-colour-grey">
-              The page was last updated {{ collection.page_last_updated|date("j/n/Y") }}
+              The page was last updated {{ page_last_updated|date("j/n/Y") }}
             </p>
           </section>
         </section>
