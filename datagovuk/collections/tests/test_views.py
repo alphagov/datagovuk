@@ -5,7 +5,7 @@ import pytest
 from django.urls import reverse
 
 
-class TestCollectionPage:
+class TestCollectionPageView:
     def test_view_first_collection_item_success(self, client):
         url = reverse(
             "collections:page",

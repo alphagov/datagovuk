@@ -8,7 +8,7 @@ from datagovuk.core.views import RenderedMarkdownView
 from .constants import COLLECTIONS
 
 
-class CollectionPage(RenderedMarkdownView):
+class CollectionPageView(RenderedMarkdownView):
     template_name = "collections/collection_page.jinja"
 
     def get_markdown_file_path(self):
@@ -48,7 +48,7 @@ class CollectionPage(RenderedMarkdownView):
         return context
 
 
-class Collection(RedirectView):
+class CollectionView(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
