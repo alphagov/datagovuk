@@ -9,7 +9,7 @@ urlpatterns = [
     path(
         "<slug:collection_name>/<slug:collection_page_name>",
         views.CollectionPageView.as_view(),
-        name="page",
+        name="collection_page",
     ),
     path(
         "<slug:collection_name>",
