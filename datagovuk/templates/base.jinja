@@ -106,6 +106,7 @@
     <script type="module" src="{{ static("javascripts/govuk-frontend-6.0.0.min.js") }}"></script>
     {% compress js %}
       <script src="{{ static('javascripts/header.js') }}"></script>
+      <script src="{{ static('javascripts/section-navigation.js') }}"></script>
     {% endcompress %}
     <script type="module" nonce="{{ csp_nonce }}">
       import { initAll } from "{{ static("javascripts/govuk-frontend-6.0.0.min.js") }}"

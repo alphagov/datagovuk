@@ -1,6 +1,6 @@
 {% extends "base.jinja" %}
 
-{% from "macros/common.jinja" import cta_button, link_list %}
+{% from "macros/common.jinja" import cta_button, link_list, section_navigation %}
 
 {% set page_title = collection ~ " - Collection" %}
 
@@ -18,14 +18,7 @@
 
   <div class="govuk-width-container datagovuk-width-container">
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-one-third">
-        {# TODO: add section navigation
-            {% with items = collection_pages %}
-                {% include "v2/components/_section_navigation.html" %}
-            {% endwith %}
-            #}
-        Coming soon..
-      </div>
+      <div class="govuk-grid-column-one-third">{{ section_navigation(collection_pages) }}</div>
 
       <div class="govuk-grid-column-two-thirds">
 
