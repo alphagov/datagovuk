@@ -1,5 +1,8 @@
 from datetime import date
 
+from django.urls import reverse
+from django.views.generic.base import RedirectView
+
 from datagovuk.core.views import RenderedMarkdownView
 
 from .constants import COLLECTIONS
@@ -32,3 +35,18 @@ class CollectionPage(RenderedMarkdownView):
         context["page_last_updated"] = date.strptime(context["page_last_updated"], "%Y-%m-%d")
         context["collection_pages"] = self.collection_pages
         return context
+
+
+class Collection(RedirectView):
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        collection_name = self.kwargs["collection_name"]
+        collection_page_name = COLLECTIONS[collection_name][0]["slug"]
+        return reverse(
+            "collections:page",
+            kwargs={
+                "collection_name": self.kwargs["collection_name"],
+                "collection_page_name": collection_page_name,
+            },
+        )
