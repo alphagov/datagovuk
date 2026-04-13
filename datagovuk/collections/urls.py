@@ -8,12 +8,12 @@ app_name = "collections"
 urlpatterns = [
     path(
         "<slug:collection_name>/<slug:collection_page_name>",
-        views.CollectionPage.as_view(),
+        views.CollectionPageView.as_view(),
         name="page",
     ),
     path(
         "<slug:collection_name>",
-        views.Collection.as_view(),
+        views.CollectionView.as_view(),
         name="collection",
     ),
 ]
