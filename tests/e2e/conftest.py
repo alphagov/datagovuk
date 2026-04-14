@@ -31,6 +31,14 @@ def mobile_page(page):
     return page
 
 
+@pytest.fixture
+def get_cookie():
+    def _get_cookie(cookie_name, page):
+        return next((c for c in page.context.cookies() if c["name"] == cookie_name), None)
+
+    return _get_cookie
+
+
 @pytest.fixture(scope="session")
 def browser():
     with sync_playwright() as p:
