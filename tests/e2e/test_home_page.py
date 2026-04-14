@@ -50,7 +50,7 @@ def test_footer_links_have_correct_hrefs(page, live_server_url):
         "href",
         "/accessibility",
     )
-    expect(page.get_by_role("link", name="Cookies")).to_have_attribute(
+    expect(page.get_by_role("link", name="Cookies", exact=True)).to_have_attribute(
         "href",
         "/cookies",
     )
