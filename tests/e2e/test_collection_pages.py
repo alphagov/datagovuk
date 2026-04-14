@@ -21,3 +21,6 @@ def test_collection_pages(page, live_server_url):
             expect(main_content.get_by_role("heading", level=1)).to_have_text(
                 collection_page["title"],
             )
+            expect(main_content.locator(".datagovuk-section-navigation__item--selected:visible")).to_have_text(
+                collection_page["title"],
+            )
