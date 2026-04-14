@@ -42,8 +42,12 @@ render_markdown = mistune.create_markdown(renderer=MarkdownToHTMLRenderer())
 
 
 def _transform_context(value):
+    """
+    Recursively transform keys frontmatter kebab-case to pythonic underscores, e.g.
+    my-key becomes my_key
+    """
     if isinstance(value, dict):
-        return {key.replace("-", "_"): _transform_context(value) for key, value in value.items()}
+        return {key.lower().replace("-", "_"): _transform_context(value) for key, value in value.items()}
     if isinstance(value, list):
         return [_transform_context(item) for item in value]
     return value
