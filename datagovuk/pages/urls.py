@@ -19,6 +19,13 @@ urlpatterns = [
         name="about",
     ),
     path(
+        "cookies/",
+        TemplateView.as_view(
+            template_name="pages/cookies.jinja",
+        ),
+        name="cookies",
+    ),
+    path(
         "components/",
         TemplateView.as_view(
             template_name="pages/components.jinja",
