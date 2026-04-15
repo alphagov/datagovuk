@@ -1,4 +1,4 @@
-// used by the cookie banner component
+// Common functions to set/unset consent cookie
 
 (function (root) {
   'use strict'
@@ -229,6 +229,9 @@
 window.GOVUK = window.GOVUK || {}
 window.GOVUK.Modules = window.GOVUK.Modules || {};
 
+
+// Governing cookie banner
+
 (function (Modules) {
   function CookieBanner ($module) {
     this.$module = $module
@@ -346,22 +349,21 @@ window.GOVUK.Modules = window.GOVUK.Modules || {};
   Modules.CookieBanner = CookieBanner
 })(window.GOVUK.Modules)
 
-window.GOVUK = window.GOVUK || {}
-window.GOVUK.Modules = window.GOVUK.Modules || {};
+new GOVUK.Modules.CookieBanner(document.querySelector("div#global-cookie-message")).init();
 
-new GOVUK.Modules.CookieBanner(document.querySelector("div#global-cookie-message")).init()
+// Governing cookie form
 
-
-(function (Modules) {
-  function CookieSettings () {}
-
-  CookieSettings.prototype.start = function ($module) {
-    this.$module = $module[0]
+(function (Module) {
+  function CookieSettings ($module) {
+    this.$module = $module
 
     this.$module.submitSettingsForm = this.submitSettingsForm.bind(this)
 
     document.querySelector('form[data-module=cookie-settings]')
       .addEventListener('submit', this.$module.submitSettingsForm)
+  }
+
+  CookieSettings.prototype.init = function () {
 
     this.setInitialFormValues()
   }
@@ -439,5 +441,10 @@ new GOVUK.Modules.CookieBanner(document.querySelector("div#global-cookie-message
     return document.referrer ? new URL(document.referrer).pathname : false
   }
 
-  Modules.CookieSettings = CookieSettings
+  Module.CookieSettings = CookieSettings
 })(window.GOVUK.Modules)
+
+var form = document.querySelector("form[data-module='cookie-settings']");
+if (form) {
+  new GOVUK.Modules.CookieSettings(form).init();
+}

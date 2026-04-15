@@ -7,8 +7,15 @@ from playwright.sync_api import sync_playwright
 def live_server_url(request):
     server = StaticLiveServerTestCase
     server.setUpClass()
-    # yield so teardown can happen
     return server.live_server_url
+
+
+@pytest.fixture(scope="session")
+def browser():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        yield browser
+        browser.close()
 
 
 @pytest.fixture
@@ -37,11 +44,3 @@ def get_cookie():
         return next((c for c in page.context.cookies() if c["name"] == cookie_name), None)
 
     return _get_cookie
-
-
-@pytest.fixture(scope="session")
-def browser():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        yield browser
-        browser.close()
