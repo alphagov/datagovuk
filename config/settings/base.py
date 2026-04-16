@@ -72,6 +72,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "compressor",
     "health_check",
+    "chartkick.django",
 ]
 
 LOCAL_APPS = [
@@ -132,8 +133,14 @@ SECURE_CSP = {
     "manifest-src": [CSP.SELF],
     "media-src": [CSP.SELF],
     "object-src": [CSP.SELF],
-    "script-src": [CSP.SELF, CSP.NONCE, "*.google-analytics.com", "*.googletagmanager.com", "cdnjs.cloudflare.com"],
-    "style-src": [CSP.SELF, "cdnjs.cloudflare.com"],
+    "script-src": [
+        CSP.SELF,
+        CSP.UNSAFE_INLINE,
+        "*.google-analytics.com",
+        "*.googletagmanager.com",
+        "cdnjs.cloudflare.com",
+    ],
+    "style-src": [CSP.SELF, CSP.UNSAFE_INLINE, "cdnjs.cloudflare.com"],
 }
 
 # STATIC

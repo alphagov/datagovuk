@@ -5,6 +5,10 @@
 {% set page_title = collection ~ " - Collection" %}
 
 {% block main %}
+  {# TODO: Move these scripts somewhere more sensible #}
+  <script src="{{ static('chartkick/Chart.bundle.js') }}"></script>
+  <script src="{{ static('chartkick/chartkick.js') }}"></script>
+
   <div class="govuk-width-container datagovuk-width-container datagovuk-collection-header">
     <img src="{{ static('images/collections/badge-' ~ collection_slug ~ '.png') }}"
          class="datagovuk-collection-header__image"
@@ -28,9 +32,13 @@
           {{ content|safe }}
         </section>
 
-        <section class="datagovuk-headline govuk-section datagovuk-section govuk-!-margin-top-8">
-          {# TODO: charts here #}
-        </section>
+        {% if chart %}
+          <section class="datagovuk-headline govuk-section datagovuk-section govuk-!-margin-top-8">
+            <h2 class="govuk-heading-m datagovuk-heading-m">{{ chart_title }}</h2>
+
+            <div class="govuk-grid-row line-chart">{{ chart|safe }}</div>
+          </section>
+        {% endif %}
 
         {% with dataset=true %}
           {% include "includes/feedback.jinja" %}
