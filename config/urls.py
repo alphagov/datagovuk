@@ -2,11 +2,20 @@ from django.conf import settings
 from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
+from health_check.views import HealthCheckView
 
 urlpatterns = [
     path("", include("datagovuk.pages.urls", namespace="pages")),
     path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
     path("collections/", include("datagovuk.collections.urls", namespace="collections")),
+    path(
+        "health/",
+        HealthCheckView.as_view(
+            checks=[
+                "health_check.Cache",
+            ],
+        ),
+    ),
 ]
 
 if settings.DEBUG:
