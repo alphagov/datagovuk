@@ -66,5 +66,5 @@ def test_roadmap(client):
     response = client.get(reverse("pages:roadmap"))
 
     assert response.status_code == HTTPStatus.OK
-    assert "Roadmap - data.gov.uk" in response.content.decode()
+    assert "Our plan for data.gov.uk - data.gov.uk" in response.content.decode()
     assert "data.gov.uk roadmap" in response.content.decode()

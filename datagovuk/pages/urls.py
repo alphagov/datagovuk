@@ -42,6 +42,12 @@ urlpatterns = [
         kwargs={"slug": "privacy-and-terms", "title": "Privacy and terms"},
     ),
     path(
+        "roadmap/",
+        views.PagesView.as_view(template_name="pages/roadmap.jinja"),
+        name="roadmap",
+        kwargs={"slug": "roadmap", "title": "Our plan for data.gov.uk"},
+    ),
+    path(
         "cookies/",
         TemplateView.as_view(template_name="pages/cookies.jinja"),
         name="cookies",
@@ -50,11 +56,5 @@ urlpatterns = [
         "components/",
         TemplateView.as_view(template_name="pages/components.jinja"),
         name="components",
-    ),
-    path(
-        "roadmap/",
-        views.PagesView.as_view(template_name="pages/roadmap.jinja"),
-        name="roadmap",
-        kwargs={"slug": "roadmap", "title": "Roadmap"},
     ),
 ]
