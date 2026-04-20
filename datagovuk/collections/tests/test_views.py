@@ -2,6 +2,7 @@ from datetime import date
 from http import HTTPStatus
 
 import pytest
+from chartkick.django import LineChart
 from django.urls import reverse
 
 
@@ -34,6 +35,8 @@ class TestCollectionPageView:
         assert response.context_data["contact"] is None
         assert response.context_data["status"] == "for-publication"
         assert "the UK house price index" in response.context_data["content"]
+        assert isinstance(response.context_data["chart"], LineChart)
+        assert response.context_data["chart_title"] == "Average house price"
         assert response.context_data["slug"] == "uk-house-prices"
         assert response.context_data["collection"] == "Land and property"
         assert response.context_data["collection_slug"] == "land-and-property"
@@ -95,6 +98,16 @@ class TestCollectionPageView:
             "title": "Energy performance of buildings",
             "url": "/collections/land-and-property/energy-performance-of-buildings",
         }
+
+    def test_view_no_chart_when_no_visualisation_data(self, client):
+        url = reverse(
+            "collections:collection_page",
+            kwargs={"collection_name": "land-and-property", "collection_page_name": "fire-statistics"},
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert "chart" not in response.context_data
 
     @pytest.mark.parametrize(
         ("collection_name", "collection_page_name"),
