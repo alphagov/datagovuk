@@ -60,3 +60,11 @@ def test_privacy_and_terms(client):
     assert response.status_code == HTTPStatus.OK
     assert "Privacy and terms - data.gov.uk" in response.content.decode()
     assert "Terms of use" in response.content.decode()
+
+
+def test_roadmap(client):
+    response = client.get(reverse("pages:roadmap"))
+
+    assert response.status_code == HTTPStatus.OK
+    assert "Roadmap - data.gov.uk" in response.content.decode()
+    assert "data.gov.uk roadmap" in response.content.decode()

@@ -51,4 +51,10 @@ urlpatterns = [
         TemplateView.as_view(template_name="pages/components.jinja"),
         name="components",
     ),
+    path(
+        "roadmap/",
+        views.PagesView.as_view(template_name="pages/roadmap.jinja"),
+        name="roadmap",
+        kwargs={"slug": "roadmap", "title": "Roadmap"},
+    ),
 ]
