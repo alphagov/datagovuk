@@ -1,6 +1,8 @@
 {% extends "base.jinja" %}
 
-{% set page_title = title %}
+{% block page_title %}
+  {{ title }} - data.gov.uk
+{% endblock page_title %}
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container govuk-!-margin-top-9">
