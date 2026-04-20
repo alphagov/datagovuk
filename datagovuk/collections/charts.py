@@ -111,4 +111,4 @@ def get_chart(data_path):
     chart_title = chart_spec["title"]
     if chart_spec["visualisation_type"] == "line":
         return _get_line_chart(chart_spec), chart_title
-    return None
+    return None, None
