@@ -11,8 +11,6 @@ def _get_line_chart(chart_spec):
         point_shapes = ["circle", "triangle", "rect", "rectRot"]
         for series in chart_spec["series"]:
             data_size = len(series["data"])
-            if data_size == 0:
-                continue
 
             series["dataset"] = {
                 "pointRadius": [0] * (data_size - 1) + [4],
