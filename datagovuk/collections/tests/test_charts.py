@@ -3,30 +3,33 @@ from chartkick.django import LineChart
 from datagovuk.collections.charts import get_visualisation
 
 
-def test_get_visualisation_single_series():
-    chart, title = get_visualisation("air-quality/air-quality.json")
+def test_get_visualisation_line_chart_single_series():
+    visualisation = get_visualisation("air-quality/air-quality.json")
 
-    assert isinstance(chart, LineChart)
+    assert isinstance(visualisation["visualisation"], LineChart)
+    assert visualisation["type"] == "line"
     assert (
-        title == "Mean number of days per urban site when air pollution was \u2018Moderate\u2019 or higher in the UK, "
-        "2010 to 2024"
+        visualisation["title"] == "Mean number of days per urban site when air pollution was "
+        "\u2018Moderate\u2019 or higher in the UK, 2010 to 2024"
     )
 
 
-def test_get_visualisation_multi_series():
-    chart, title = get_visualisation("uk-house-prices/average-house-prices.json")
+def test_get_visualisation_line_chart_multi_series():
+    visualisation = get_visualisation("uk-house-prices/average-house-prices.json")
 
-    assert isinstance(chart, LineChart)
-    assert title == "Average house price"
+    assert isinstance(visualisation["visualisation"], LineChart)
+    assert visualisation["type"] == "line"
+    assert visualisation["title"] == "Average house price"
 
 
-def test_get_visualisation_non_line_type_returns_none(monkeypatch):
+def test_get_visualisation_headline_type_returns_none(monkeypatch):
     monkeypatch.setattr(
         "datagovuk.collections.charts.json.load",
-        lambda _: {"title": "Test", "visualisation_type": "bar", "series": []},
+        lambda _: {"title": "Test", "visualisation_type": "headline", "series": []},
     )
 
-    chart, title = get_visualisation("air-quality/air-quality.json")
+    visualisation = get_visualisation("air-quality/air-quality.json")
 
-    assert chart is None
-    assert title is None
+    assert visualisation["visualisation"] is None
+    assert visualisation["title"] == "Test"
+    assert visualisation["type"] == "headline"
