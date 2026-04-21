@@ -9,6 +9,10 @@
   <script src="{{ static('chartkick/Chart.bundle.js') }}"></script>
   <script src="{{ static('chartkick/chartkick.js') }}"></script>
 
+  {# TODO: Add this script to static files #}
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+  <script>Chart.register(ChartDataLabels);</script>
+
   <div class="govuk-width-container datagovuk-width-container datagovuk-collection-header">
     <img src="{{ static('images/collections/badge-' ~ collection_slug ~ '.png') }}"
          class="datagovuk-collection-header__image"
@@ -32,11 +36,16 @@
           {{ content|safe }}
         </section>
 
-        {% if chart %}
+        {% if visualisation %}
+          {% if visualisation.type == "bar" %}
+            {% set vis_class = "bar-chart" %}
+          {% elif visualisation.type == "line" %}
+            {% set vis_class = "line-chart" %}
+          {% endif %}
           <section class="datagovuk-headline govuk-section datagovuk-section govuk-!-margin-top-8">
-            <h2 class="govuk-heading-m datagovuk-heading-m">{{ chart_title }}</h2>
+            <h2 class="govuk-heading-m datagovuk-heading-m">{{ visualisation.title }}</h2>
 
-            <div class="govuk-grid-row line-chart">{{ chart|safe }}</div>
+            <div class="govuk-grid-row {{ vis_class }}">{{ visualisation.visualisation|safe }}</div>
           </section>
         {% endif %}
 
