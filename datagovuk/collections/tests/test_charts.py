@@ -1,3 +1,4 @@
+from chartkick.django import BarChart
 from chartkick.django import LineChart
 
 from datagovuk.collections.charts import get_visualisation
@@ -20,6 +21,14 @@ def test_get_visualisation_line_chart_multi_series():
     assert isinstance(visualisation["visualisation"], LineChart)
     assert visualisation["type"] == "line"
     assert visualisation["title"] == "Average house price"
+
+
+def test_get_visualisation_bar_chart():
+    visualisation = get_visualisation("election-results/vote-share.json")
+
+    assert isinstance(visualisation["visualisation"], BarChart)
+    assert visualisation["type"] == "bar"
+    assert visualisation["title"] == "2024 Vote share by party (%)"
 
 
 def test_get_visualisation_headline_type_returns_none(monkeypatch):
