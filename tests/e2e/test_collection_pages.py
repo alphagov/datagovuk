@@ -35,7 +35,7 @@ def test_collection_pages(page, live_server_url):
         lf("mobile_page"),
     ],
 )
-def test_collection_page_chart_is_visible(lazy_page, live_server_url):
+def test_collection_page_line_chart_is_visible(lazy_page, live_server_url):
     url = reverse(
         "collections:collection_page",
         kwargs={"collection_name": "land-and-property", "collection_page_name": "uk-house-prices"},
@@ -45,6 +45,25 @@ def test_collection_page_chart_is_visible(lazy_page, live_server_url):
     expect(lazy_page.locator(".line-chart")).to_be_visible()
     expect(lazy_page.locator(".line-chart canvas")).to_be_visible()
     expect(lazy_page.get_by_role("heading", level=2, name="Average house price")).to_be_visible()
+
+
+@pytest.mark.parametrize(
+    "lazy_page",
+    [
+        lf("page"),
+        lf("mobile_page"),
+    ],
+)
+def test_collection_page_bar_chart_is_visible(lazy_page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "government", "collection_page_name": "election-results"},
+    )
+    lazy_page.goto(live_server_url + url)
+
+    expect(lazy_page.locator(".bar-chart")).to_be_visible()
+    expect(lazy_page.locator(".bar-chart canvas")).to_be_visible()
+    expect(lazy_page.get_by_role("heading", level=2, name="2024 Vote share by party (%)")).to_be_visible()
 
 
 @pytest.mark.parametrize(
