@@ -6,7 +6,7 @@ from django.views.generic.base import RedirectView
 
 from datagovuk.core.views import RenderedMarkdownView
 
-from .charts import get_chart
+from .charts import get_visualisation
 from .constants import COLLECTIONS
 
 
@@ -48,7 +48,7 @@ class CollectionPageView(RenderedMarkdownView):
             context["next_page"] = collection_pages[selected_index + 1]
         context["collection_pages"] = collection_pages
         if context["visualisation_data"]:
-            context["chart"], context["chart_title"] = get_chart(context["visualisation_data"])
+            context["visualisation"] = get_visualisation(context["visualisation_data"])
         return context
 
 

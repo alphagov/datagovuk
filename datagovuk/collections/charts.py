@@ -2,7 +2,86 @@ import json
 import math
 from pathlib import Path
 
+from chartkick.django import BarChart
 from chartkick.django import LineChart
+
+
+def _get_bar_chart(chart_spec):
+    size = 15
+    data_to_2_decimal_places = {label: f"{value:.2f}" for label, value in chart_spec["data"].items()}
+    return BarChart(
+        data_to_2_decimal_places,
+        round=2,
+        colors=["#C27A9A"],
+        height="600px",
+        aspectRatio=2,
+        library={
+            "plugins": {
+                "datalabels": {
+                    "display": True,
+                    "anchor": "end",
+                    "align": "right",
+                    "offset": 3,
+                    "clip": False,
+                    "color": "#5D5D5D",
+                    "font": {
+                        "family": "Inter, sans-serif",
+                        "size": size,
+                        "weight": "bold",
+                    },
+                },
+                "legend": {
+                    "display": False,
+                },
+                "tooltip": {
+                    "bodyFont": {"size": 20, "family": "Inter, sans-serif", "weight": "bold"},
+                    "titleFont": {"size": 20, "family": "Inter, sans-serif", "weight": "bold"},
+                },
+            },
+            "indexAxis": "y",
+            "responsive": True,
+            "maintainAspectRatio": False,
+            "layout": {
+                "padding": {
+                    "left": 20,
+                    "right": 20,
+                    "top": 20,
+                    "bottom": 20,
+                },
+            },
+            "scales": {
+                "x": {
+                    "grid": {
+                        "display": True,
+                        "drawTicks": False,
+                    },
+                    "border": {
+                        "width": 1,
+                        "color": "#5D5D5D",
+                        "dash": [5, 5],
+                    },
+                    "ticks": {
+                        "display": False,
+                    },
+                },
+                "y": {
+                    "border": {
+                        "width": 1,
+                        "color": "#5D5D5D",
+                    },
+                    "ticks": {
+                        "font": {"size": size, "family": "Inter, sans-serif"},
+                    },
+                },
+            },
+        },
+        dataset={
+            "hoverBackgroundColor": "#C27A9A",
+            "backgroundColor": "#C27A9A",
+            "hoverBorderColor": "#C27A9A",
+            "borderWidth": 0,
+        },
+    )
 
 
 def _get_line_chart(chart_spec):
@@ -103,10 +182,26 @@ def _get_line_chart(chart_spec):
     )
 
 
-def get_chart(data_path):
+VISUALISATION_BUILDERS = {
+    "line": _get_line_chart,
+    "bar": _get_bar_chart,
+    "headline": lambda visualisation_spec: None,
+}
+
+
+def get_visualisation(data_path):
     with Path.open(f"datagovuk/content/data/{data_path}") as data_file:
-        chart_spec = json.load(data_file)
-    chart_title = chart_spec["title"]
-    if chart_spec["visualisation_type"] == "line":
-        return _get_line_chart(chart_spec), chart_title
-    return None, None
+        visualisation_spec = json.load(data_file)
+    visualisation_title = visualisation_spec["title"]
+    visualisation_type = visualisation_spec["visualisation_type"]
+    try:
+        visualisation_builder = VISUALISATION_BUILDERS[visualisation_type]
+    except KeyError as e:
+        error_message = f"Visualisation builder for type {visualisation_type} is not implemented"
+        raise NotImplementedError(error_message) from e
+    visualisation = visualisation_builder(visualisation_spec)
+    return {
+        "visualisation": visualisation,
+        "type": visualisation_type,
+        "title": visualisation_title,
+    }

@@ -1,10 +1,10 @@
 from chartkick.django import LineChart
 
-from datagovuk.collections.charts import get_chart
+from datagovuk.collections.charts import get_visualisation
 
 
-def test_get_chart_single_series():
-    chart, title = get_chart("air-quality/air-quality.json")
+def test_get_visualisation_single_series():
+    chart, title = get_visualisation("air-quality/air-quality.json")
 
     assert isinstance(chart, LineChart)
     assert (
@@ -13,20 +13,20 @@ def test_get_chart_single_series():
     )
 
 
-def test_get_chart_multi_series():
-    chart, title = get_chart("uk-house-prices/average-house-prices.json")
+def test_get_visualisation_multi_series():
+    chart, title = get_visualisation("uk-house-prices/average-house-prices.json")
 
     assert isinstance(chart, LineChart)
     assert title == "Average house price"
 
 
-def test_get_chart_non_line_type_returns_none(monkeypatch):
+def test_get_visualisation_non_line_type_returns_none(monkeypatch):
     monkeypatch.setattr(
         "datagovuk.collections.charts.json.load",
         lambda _: {"title": "Test", "visualisation_type": "bar", "series": []},
     )
 
-    chart, title = get_chart("air-quality/air-quality.json")
+    chart, title = get_visualisation("air-quality/air-quality.json")
 
     assert chart is None
     assert title is None
