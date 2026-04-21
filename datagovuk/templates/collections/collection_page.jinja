@@ -5,13 +5,14 @@
 {% set page_title = collection ~ " - Collection" %}
 
 {% block main %}
-  {# TODO: Move these scripts somewhere more sensible #}
-  <script src="{{ static('chartkick/Chart.bundle.js') }}"></script>
-  <script src="{{ static('chartkick/chartkick.js') }}"></script>
+  {% if visualisation %}
+    {# TODO: Ideally we would add this to the extra_js block, but there is a bug in chartkick's JS preventing that #}
+    <script src="{{ static('chartkick/Chart.bundle.js') }}"></script>
+    <script src="{{ static('chartkick/chartkick.js') }}"></script>
 
-  {# TODO: Add this script to static files #}
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
-  <script>Chart.register(ChartDataLabels);</script>
+    <script src="{{ static('javascripts/chartjs-plugin-datalabels.js') }}"></script>
+    <script>Chart.register(ChartDataLabels);</script>
+  {% endif %}
 
   <div class="govuk-width-container datagovuk-width-container datagovuk-collection-header">
     <img src="{{ static('images/collections/badge-' ~ collection_slug ~ '.png') }}"
