@@ -35,8 +35,10 @@ class TestCollectionPageView:
         assert response.context_data["contact"] is None
         assert response.context_data["status"] == "for-publication"
         assert "the UK house price index" in response.context_data["content"]
-        assert isinstance(response.context_data["chart"], LineChart)
-        assert response.context_data["chart_title"] == "Average house price"
+        visualisation = response.context_data["visualisation"]
+        assert isinstance(visualisation["visualisation"], LineChart)
+        assert visualisation["title"] == "Average house price"
+        assert visualisation["type"] == "line"
         assert response.context_data["slug"] == "uk-house-prices"
         assert response.context_data["collection"] == "Land and property"
         assert response.context_data["collection_slug"] == "land-and-property"
