@@ -1,7 +1,22 @@
+import pytest
 from chartkick.django import BarChart
 from chartkick.django import LineChart
 
 from datagovuk.collections.charts import get_visualisation
+
+
+def test_get_visualisation_missing_file():
+    visualisation = get_visualisation("missing-file.json")
+    assert visualisation is None
+
+
+def test_get_visualisation_bad_type(monkeypatch):
+    monkeypatch.setattr(
+        "datagovuk.collections.charts.json.load",
+        lambda _: {"title": "Test", "visualisation_type": "bad-type", "series": []},
+    )
+    with pytest.raises(NotImplementedError):
+        get_visualisation("air-quality/air-quality.json")
 
 
 def test_get_visualisation_line_chart_single_series():
