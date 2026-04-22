@@ -73,6 +73,26 @@ def test_collection_page_bar_chart_is_visible(lazy_page, live_server_url):
         lf("mobile_page"),
     ],
 )
+def test_collection_page_headline_is_visible(lazy_page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "transport", "collection_page_name": "road-traffic"},
+    )
+    lazy_page.goto(live_server_url + url)
+
+    expect(lazy_page.get_by_role("heading", name="Cars and taxis")).to_be_visible()
+    expect(lazy_page.get_by_role("heading", name="Buses and coaches")).to_be_visible()
+    expect(lazy_page.get_by_text("Increase of 1.9% from 2023 to")).to_be_visible()
+    expect(lazy_page.get_by_text("Increase of 1.7% from 2023 to")).to_be_visible()
+
+
+@pytest.mark.parametrize(
+    "lazy_page",
+    [
+        lf("page"),
+        lf("mobile_page"),
+    ],
+)
 def test_collection_page_without_chart_has_no_chart(lazy_page, live_server_url):
     url = reverse(
         "collections:collection_page",
