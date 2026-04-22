@@ -36,29 +36,29 @@ def test_footer_links_have_correct_hrefs(page, live_server_url):
     page.goto(live_server_url)
     expect(page.get_by_role("link", name="Roadmap")).to_have_attribute(
         "href",
-        "/roadmap",
+        "/roadmap/",
     )
     expect(page.get_by_role("link", name="About", exact=True)).to_have_attribute(
         "href",
-        "/about",
+        "/about/",
     )
     expect(page.get_by_role("link", name="Support", exact=True)).to_have_attribute(
         "href",
-        "/support",
+        "/support/",
     )
     expect(page.get_by_role("link", name="Accessibility")).to_have_attribute(
         "href",
-        "/accessibility",
+        "/accessibility/",
     )
     expect(page.get_by_role("link", name="Cookies", exact=True)).to_have_attribute(
         "href",
-        "/cookies",
+        "/cookies/",
     )
     expect(page.get_by_role("link", name="Privacy and terms")).to_have_attribute(
         "href",
-        "/privacy-and-terms",
+        "/privacy-and-terms/",
     )
     expect(page.get_by_role("link", name="data.gov.uk team", exact=True)).to_have_attribute(
         "href",
-        "/team",
+        "/team/",
     )
