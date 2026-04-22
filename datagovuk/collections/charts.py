@@ -5,6 +5,8 @@ from pathlib import Path
 from chartkick.django import BarChart
 from chartkick.django import LineChart
 
+from datagovuk.core.utils import capture_exception
+
 
 def _get_bar_chart(chart_spec):
     size = 15
@@ -190,8 +192,12 @@ VISUALISATION_BUILDERS = {
 
 
 def get_visualisation(data_path):
-    with Path.open(f"datagovuk/content/data/{data_path}") as data_file:
-        visualisation_spec = json.load(data_file)
+    try:
+        with Path.open(f"datagovuk/content/data/{data_path}") as data_file:
+            visualisation_spec = json.load(data_file)
+    except FileNotFoundError as e:
+        capture_exception(e)
+        return None
     visualisation_title = visualisation_spec["title"]
     visualisation_type = visualisation_spec["visualisation_type"]
     try:
