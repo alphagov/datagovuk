@@ -2,6 +2,7 @@ import pytest
 from chartkick.django import BarChart
 from chartkick.django import LineChart
 
+from datagovuk.collections.charts import Headline
 from datagovuk.collections.charts import get_visualisation
 
 
@@ -46,14 +47,9 @@ def test_get_visualisation_bar_chart():
     assert visualisation["title"] == "2024 Vote share by party (%)"
 
 
-def test_get_visualisation_headline_type_returns_none(monkeypatch):
-    monkeypatch.setattr(
-        "datagovuk.collections.charts.json.load",
-        lambda _: {"title": "Test", "visualisation_type": "headline", "series": []},
-    )
+def test_get_visualisation_headline():
+    visualisation = get_visualisation("road-traffic/road-traffic-headline.json")
 
-    visualisation = get_visualisation("air-quality/air-quality.json")
-
-    assert visualisation["visualisation"] is None
-    assert visualisation["title"] == "Test"
+    assert isinstance(visualisation["visualisation"], Headline)
     assert visualisation["type"] == "headline"
+    assert visualisation["title"] == "Road traffic levels by vehicle type"
