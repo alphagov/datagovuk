@@ -71,6 +71,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "compressor",
+    "health_check",
 ]
 
 LOCAL_APPS = [
