@@ -38,15 +38,16 @@
         </section>
 
         {% if visualisation %}
-          {% if visualisation.type == "bar" %}
-            {% set vis_class = "bar-chart" %}
-          {% elif visualisation.type == "line" %}
-            {% set vis_class = "line-chart" %}
-          {% endif %}
           <section class="datagovuk-headline govuk-section datagovuk-section govuk-!-margin-top-8">
             <h2 class="govuk-heading-m datagovuk-heading-m">{{ visualisation.title }}</h2>
 
-            <div class="govuk-grid-row {{ vis_class }}">{{ visualisation.visualisation|safe }}</div>
+            {% if visualisation.type == "bar" %}
+              <div class="govuk-grid-row bar-chart">{{ visualisation.visualisation|safe }}</div>
+            {% elif visualisation.type == "line" %}
+              <div class="govuk-grid-row line-chart">{{ visualisation.visualisation|safe }}</div>
+            {% elif visualisation.type == "headline" %}
+              <div class="datagovuk-headline__columns">{{ visualisation.visualisation|safe }}</div>
+            {% endif %}
           </section>
         {% endif %}
 
