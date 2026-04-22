@@ -138,10 +138,8 @@ SECURE_CSP = {
         CSP.UNSAFE_INLINE,
         "*.google-analytics.com",
         "*.googletagmanager.com",
-        "cdnjs.cloudflare.com",
-        "cdn.jsdelivr.net",
     ],
-    "style-src": [CSP.SELF, CSP.UNSAFE_INLINE, "cdnjs.cloudflare.com"],
+    "style-src": [CSP.SELF, CSP.UNSAFE_INLINE],
 }
 
 # STATIC
