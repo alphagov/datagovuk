@@ -1,3 +1,4 @@
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.template import defaultfilters
 from django.templatetags.static import static
 from django.urls import reverse
@@ -11,6 +12,7 @@ def environment(**options):
     django_filters = {
         "slugify": defaultfilters.slugify,
         "date": defaultfilters.date,
+        "intcomma": intcomma,
     }
     env.filters.update(django_filters)
     env.globals.update(

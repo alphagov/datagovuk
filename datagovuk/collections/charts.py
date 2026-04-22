@@ -4,6 +4,7 @@ from pathlib import Path
 
 from chartkick.django import BarChart
 from chartkick.django import LineChart
+from django.template.loader import render_to_string
 
 from datagovuk.core.utils import capture_exception
 
@@ -183,10 +184,27 @@ def _get_line_chart(chart_spec):
     )
 
 
+class Headline:
+    def __init__(self, data_items):
+        self.data_items = data_items
+
+    def __str__(self):
+        return render_to_string(
+            "collections/visualisations/headline.jinja",
+            context={
+                "items": self.data_items,
+            },
+        )
+
+
+def _get_headline(visualisation_spec):
+    return Headline(visualisation_spec["items"])
+
+
 VISUALISATION_BUILDERS = {
     "line": _get_line_chart,
     "bar": _get_bar_chart,
-    "headline": lambda visualisation_spec: None,
+    "headline": _get_headline,
 }
 
 

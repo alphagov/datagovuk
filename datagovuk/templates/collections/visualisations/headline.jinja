@@ -1,0 +1,36 @@
+{% for item in items %}
+  {% set is_trending_up = (item.trend == "up") %}
+
+  <div class="datagovuk-headline__column">
+    <div>
+      <h3 class="govuk-heading-m datagovuk-heading-m">{{ item.subtitle }}</h3>
+      <p class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ item.description }}</p>
+    </div>
+    <div class="datagovuk-headline__number">{{ item.value | intcomma }}</div>
+
+    <div class="datagovuk-headline__change {{ 'datagovuk-headline__trendup' if is_trending_up else 'datagovuk-headline__trenddown' }}">
+      <span class="datagovuk-headline__arrow">
+        {% if item.is_trending_up %}
+          <img src="{{ static('images/up_arrow.svg') }}" alt="Trending up" />
+        {% else %}
+          <img src="{{ static('images/down_arrow.svg') }}" alt="Trending down" />
+        {% endif %}
+      </span>
+      {% if item.value_change %}
+        <span class="datagovuk-headline__change-value govuk-body datagovuk-body">
+          {{ "+" if is_trending_up else "-" }}{{ item.value_change | intcomma }}
+        </span>
+      {% endif %}
+      <span class="datagovuk-headline__change-value-percent govuk-body datagovuk-body">
+        {% if item.value_change %}
+          ({{ item.percent_change }}%)
+        {% else %}
+          {{ "+" if is_trending_up else "-" }}{{ item.percent_change }}%
+        {% endif %}
+      </span>
+    </div>
+
+    <p class="govuk-body datagovuk-body">{{ item.analysis }}</p>
+
+  </div>
+{% endfor %}
