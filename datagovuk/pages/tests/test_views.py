@@ -8,6 +8,7 @@ def test_components(client):
     response = client.get(url)
 
     assert response.status_code == HTTPStatus.OK
+    assert response.headers["Cache-Control"] == "max-age=1800, public"
     assert "Components - data.gov.uk" in response.content.decode()
 
 
@@ -16,6 +17,7 @@ def test_home(client):
     response = client.get(url)
 
     assert response.status_code == HTTPStatus.OK
+    assert response.headers["Cache-Control"] == "max-age=1800, public"
     assert "data.gov.uk - The home of UK public data" in response.content.decode()
 
 
@@ -27,6 +29,16 @@ def test_about(client):
     assert response.status_code == HTTPStatus.OK
     assert "About - data.gov.uk" in response_content
     assert "About data.gov.uk" in response_content
+
+
+def test_cookies(client):
+    url = reverse("pages:cookies")
+    response = client.get(url)
+    response_content = response.content.decode()
+
+    assert response.status_code == HTTPStatus.OK
+    assert "Cookies on data.gov.uk - data.gov.uk" in response_content
+    assert "Cookies on data.gov.uk" in response_content
 
 
 def test_accessibility(client):

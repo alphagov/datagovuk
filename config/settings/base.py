@@ -114,6 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "datagovuk.core.middleware.CacheControlMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -123,6 +124,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.csp.ContentSecurityPolicyMiddleware",
 ]
+
+CACHE_CONTROL_DEFAULT = "max-age=1800, public"
 
 
 SECURE_CSP = {
