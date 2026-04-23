@@ -4,8 +4,4 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-
-python /app/manage.py collectstatic --noinput
-python /app/manage.py compress --engine jinja2 --extension=jinja
-
 exec gunicorn config.wsgi --bind 0.0.0.0:5000 --chdir=/app --workers 4 --threads 4
