@@ -174,3 +174,43 @@ class TestCollectionView:
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.NOT_FOUND
+
+
+class TestCollectionDownloadView:
+    def test_download_success(self, client):
+        url = reverse(
+            "collections:collection_download",
+            kwargs={"collection_name": "land-and-property", "collection_page_name": "uk-house-prices"},
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response["Content-Type"] == "text/csv"
+        assert response["Content-Disposition"] == 'attachment; filename="average-house-prices.csv"'
+
+    def test_download_missing_markdown_not_found(self, client):
+        url = reverse(
+            "collections:collection_download",
+            kwargs={"collection_name": "land-and-property", "collection_page_name": "some-missing-page"},
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.NOT_FOUND
+
+    def test_download_no_visualisation_data_not_found(self, client):
+        url = reverse(
+            "collections:collection_download",
+            kwargs={"collection_name": "land-and-property", "collection_page_name": "fire-statistics"},
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.NOT_FOUND
+
+    def test_download_no_download_field_not_found(self, client):
+        url = reverse(
+            "collections:collection_download",
+            kwargs={"collection_name": "transport", "collection_page_name": "road-traffic"},
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.NOT_FOUND

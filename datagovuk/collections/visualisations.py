@@ -208,12 +208,21 @@ VISUALISATION_BUILDERS = {
 }
 
 
-def get_visualisation(data_path):
+def get_visualisation_spec(data_path):
+    full_data_path = Path(f"datagovuk/content/data/{data_path}")
     try:
-        with Path.open(f"datagovuk/content/data/{data_path}") as data_file:
+        with Path.open(full_data_path) as data_file:
             visualisation_spec = json.load(data_file)
+            visualisation_spec["data_path"] = full_data_path
+            return visualisation_spec
     except FileNotFoundError as e:
         capture_exception(e)
+        return None
+
+
+def get_visualisation(data_path):
+    visualisation_spec = get_visualisation_spec(data_path)
+    if not visualisation_spec:
         return None
     visualisation_title = visualisation_spec["title"]
     visualisation_type = visualisation_spec["visualisation_type"]

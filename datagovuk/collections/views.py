@@ -1,13 +1,18 @@
 from datetime import date
+from pathlib import Path
 
+from django.http import FileResponse
 from django.http import Http404
 from django.urls import reverse
 from django.views.generic.base import RedirectView
+from django.views.generic.base import View
 
+from datagovuk.core.markdown import get_template_context_from_markdown
 from datagovuk.core.views import RenderedMarkdownView
 
-from .charts import get_visualisation
 from .constants import COLLECTIONS
+from .visualisations import get_visualisation
+from .visualisations import get_visualisation_spec
 
 
 class CollectionPageView(RenderedMarkdownView):
@@ -50,6 +55,36 @@ class CollectionPageView(RenderedMarkdownView):
         if context["visualisation_data"]:
             context["visualisation"] = get_visualisation(context["visualisation_data"])
         return context
+
+
+class CollectionDownloadView(View):
+    def get(self, request, collection_name, collection_page_name):
+        markdown_file_path = Path(
+            f"datagovuk/content/collections/{collection_name}/{collection_page_name}.md",
+        )
+        if not markdown_file_path.exists():
+            error_message = "Content not found"
+            raise Http404(error_message)
+
+        context = get_template_context_from_markdown(markdown_file_path)
+        visualisation_data_path = context.get("visualisation_data")
+        visualisation_spec = get_visualisation_spec(visualisation_data_path)
+        if not visualisation_spec:
+            error_message = "No visualisation available"
+            raise Http404(error_message)
+
+        download_filename = visualisation_spec.get("download", "missing")
+        csv_path = visualisation_spec["data_path"].parent / download_filename
+        if not csv_path.exists():
+            error_message = "No download available"
+            raise Http404(error_message)
+
+        return FileResponse(
+            csv_path.open("rb"),
+            as_attachment=True,
+            filename=download_filename,
+            content_type="text/csv",
+        )
 
 
 class CollectionView(RedirectView):

@@ -2,8 +2,8 @@ import pytest
 from chartkick.django import BarChart
 from chartkick.django import LineChart
 
-from datagovuk.collections.charts import Headline
-from datagovuk.collections.charts import get_visualisation
+from datagovuk.collections.visualisations import Headline
+from datagovuk.collections.visualisations import get_visualisation
 
 
 def test_get_visualisation_missing_file():
@@ -13,7 +13,7 @@ def test_get_visualisation_missing_file():
 
 def test_get_visualisation_bad_type(monkeypatch):
     monkeypatch.setattr(
-        "datagovuk.collections.charts.json.load",
+        "datagovuk.collections.visualisations.json.load",
         lambda _: {"title": "Test", "visualisation_type": "bad-type", "series": []},
     )
     with pytest.raises(NotImplementedError):
