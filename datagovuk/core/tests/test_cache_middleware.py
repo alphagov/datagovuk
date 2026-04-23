@@ -27,3 +27,17 @@ def test_existing_cache_control_is_not_overridden(rf):
     cached_response = cache_middleware(request)
 
     assert cached_response.headers["Cache-Control"] == "no-store"
+
+
+def test_cache_control_uses_setting(rf, settings):
+    settings.CACHE_CONTROL_MAX_AGE = "max-age=3600, public"
+
+    def response(_request):
+        return HttpResponse("ok")
+
+    request = rf.get("/")
+
+    cache_middleware = CacheControlMiddleware(response)
+    cached_response = cache_middleware(request)
+
+    assert cached_response.headers["Cache-Control"] == "max-age=3600, public"
