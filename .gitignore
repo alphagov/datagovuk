@@ -278,6 +278,8 @@ datagovuk/media/
 !.envs/.local/
 .envs/.local/*
 !.envs/.local/.django.example
+.envs/.production/*
+!.envs/.production/.django.example
 
 # Vim
 *.swp
