@@ -176,6 +176,7 @@ MEDIA_ROOT = str(APPS_DIR / "media")
 MEDIA_URL = "/media/"
 
 # CACHE
+# TODO: Use a more advanced cache backend in production like Redis or Memcached
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
