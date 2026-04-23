@@ -10,7 +10,7 @@
 
     <div class="datagovuk-headline__change {{ 'datagovuk-headline__trendup' if is_trending_up else 'datagovuk-headline__trenddown' }}">
       <span class="datagovuk-headline__arrow">
-        {% if item.is_trending_up %}
+        {% if is_trending_up %}
           <img src="{{ static('images/up_arrow.svg') }}" alt="Trending up" />
         {% else %}
           <img src="{{ static('images/down_arrow.svg') }}" alt="Trending down" />
