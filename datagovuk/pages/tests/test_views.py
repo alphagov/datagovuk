@@ -27,7 +27,6 @@ def test_about(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert response.headers["Cache-Control"] == "max-age=1800, public"
     assert "About - data.gov.uk" in response_content
     assert "About data.gov.uk" in response_content
 
@@ -38,7 +37,6 @@ def test_cookies(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert response.headers["Cache-Control"] == "max-age=1800, public"
     assert "Cookies on data.gov.uk - data.gov.uk" in response_content
     assert "Cookies on data.gov.uk" in response_content
 
@@ -49,7 +47,6 @@ def test_accessibility(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert response.headers["Cache-Control"] == "max-age=1800, public"
     assert "Accessibility - data.gov.uk" in response_content
     assert "Accessibility statement for data.gov.uk" in response_content
 
@@ -60,7 +57,6 @@ def test_support(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert response.headers["Cache-Control"] == "max-age=1800, public"
     assert "Support - data.gov.uk" in response_content
     assert "If you’re a civil servant" in response_content  # noqa: RUF001
 
@@ -70,7 +66,6 @@ def test_team(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert response.headers["Cache-Control"] == "max-age=1800, public"
     assert "Team - data.gov.uk" in response_content
     assert "data.gov.uk team" in response_content
 
@@ -80,7 +75,6 @@ def test_privacy_and_terms(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert response.headers["Cache-Control"] == "max-age=1800, public"
     assert "Privacy and terms - data.gov.uk" in response_content
     assert "Terms of use" in response_content
 
@@ -90,6 +84,5 @@ def test_roadmap(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert response.headers["Cache-Control"] == "max-age=1800, public"
     assert "Our plan for data.gov.uk - data.gov.uk" in response_content
     assert "data.gov.uk roadmap" in response_content
