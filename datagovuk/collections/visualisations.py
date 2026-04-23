@@ -236,4 +236,5 @@ def get_visualisation(data_path):
         "visualisation": visualisation,
         "type": visualisation_type,
         "title": visualisation_title,
+        "download_exists": bool(visualisation_spec.get("download")),
     }
