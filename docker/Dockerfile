@@ -46,6 +46,12 @@ RUN chown django:django ${APP_HOME}
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
+ENV DJANGO_SECRET_KEY=fake
+ENV SENTRY_DSN=https://public@sentry.example.com/1
+RUN python /app/manage.py collectstatic --noinput
+RUN python /app/manage.py compress --engine jinja2 --extension=jinja
+
+# TODO: Fix this..
 #USER django
 
 ENTRYPOINT ["/start"]
