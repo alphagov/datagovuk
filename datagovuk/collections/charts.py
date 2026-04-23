@@ -88,15 +88,14 @@ def _get_bar_chart(chart_spec):
 
 def _get_line_chart(chart_spec):
     is_multiple_series = len(chart_spec["series"]) > 1
-    if is_multiple_series:
-        point_shapes = ["circle", "triangle", "rect", "rectRot"]
-        for series in chart_spec["series"]:
-            data_size = len(series["data"])
+    point_shapes = ["circle", "triangle", "rect", "rectRot"]
+    for series in chart_spec["series"]:
+        data_size = len(series["data"])
 
-            series["dataset"] = {
-                "pointRadius": [0] * (data_size - 1) + [4],
-                "pointStyle": [point_shapes.pop() if point_shapes else "circle"] * data_size,
-            }
+        series["dataset"] = {
+            "pointRadius": [0] * (data_size - 1) + [4],
+            "pointStyle": [point_shapes.pop() if point_shapes else "circle"] * data_size,
+        }
     return LineChart(
         chart_spec["series"],
         suffix=chart_spec.get("visualisation_suffix", ""),
