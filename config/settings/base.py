@@ -125,7 +125,7 @@ MIDDLEWARE = [
     "django.middleware.csp.ContentSecurityPolicyMiddleware",
 ]
 
-CACHE_CONTROL_MAX_AGE = "max-age=1800, public"
+CACHE_CONTROL_DEFAULT = "max-age=1800, public"
 
 
 SECURE_CSP = {
