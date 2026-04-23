@@ -1,18 +1,15 @@
 from datetime import date
 from pathlib import Path
 
-from django.http import FileResponse
-from django.http import Http404
+from django.http import FileResponse, Http404
 from django.urls import reverse
-from django.views.generic.base import RedirectView
-from django.views.generic.base import View
+from django.views.generic.base import RedirectView, View
 
 from datagovuk.core.markdown import get_template_context_from_markdown
 from datagovuk.core.views import RenderedMarkdownView
 
 from .constants import COLLECTIONS
-from .visualisations import get_visualisation
-from .visualisations import get_visualisation_spec
+from .visualisations import get_visualisation, get_visualisation_spec
 
 
 class CollectionPageView(RenderedMarkdownView):

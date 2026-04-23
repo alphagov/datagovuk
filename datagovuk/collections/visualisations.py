@@ -2,8 +2,7 @@ import json
 import math
 from pathlib import Path
 
-from chartkick.django import BarChart
-from chartkick.django import LineChart
+from chartkick.django import BarChart, LineChart
 from django.template.loader import render_to_string
 
 from datagovuk.core.utils import capture_exception

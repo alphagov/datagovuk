@@ -120,7 +120,8 @@ lint.ignore = [
   # Deactivated because it can make the code slow:
   # https://github.com/astral-sh/ruff/issues/7871
 ]
-lint.isort.force-single-line = true
+lint.isort.combine-as-imports = true
+lint.isort.force-single-line = false
 
 [tool.pyproject-fmt]
 keep_full_version = true
