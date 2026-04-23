@@ -1,17 +1,14 @@
 from django.urls import path
-from django.views.decorators.cache import cache_control
 from django.views.generic import TemplateView
 
 from datagovuk.pages import views
 
 app_name = "pages"
 
-public_cache = cache_control(max_age=1800, public=True)
-
 urlpatterns = [
     path(
         "",
-        public_cache(TemplateView.as_view(template_name="pages/home.jinja")),
+        TemplateView.as_view(template_name="pages/home.jinja"),
         name="home",
     ),
     path(
@@ -52,12 +49,12 @@ urlpatterns = [
     ),
     path(
         "cookies/",
-        public_cache(TemplateView.as_view(template_name="pages/cookies.jinja")),
+        TemplateView.as_view(template_name="pages/cookies.jinja"),
         name="cookies",
     ),
     path(
         "components/",
-        public_cache(TemplateView.as_view(template_name="pages/components.jinja")),
+        TemplateView.as_view(template_name="pages/components.jinja"),
         name="components",
     ),
 ]

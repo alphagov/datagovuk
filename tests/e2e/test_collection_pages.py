@@ -28,6 +28,16 @@ def test_collection_pages(page, live_server_url):
             )
 
 
+def test_collection_page_has_cache_control_header_set(page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "land-and-property", "collection_page_name": "uk-house-prices"},
+    )
+    response = page.goto(live_server_url + url)
+    cache_control = response.headers.get("cache-control")
+    assert cache_control == "max-age=1800, public"
+
+
 @pytest.mark.parametrize(
     "lazy_page",
     [

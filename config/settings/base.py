@@ -114,6 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "datagovuk.core.middleware.CacheControlMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -174,15 +175,6 @@ def COMPRESS_JINJA2_GET_ENVIRONMENT():  # noqa: N802
 MEDIA_ROOT = str(APPS_DIR / "media")
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
-
-# CACHE
-# TODO: Use a more advanced cache backend in production like Redis or Memcached
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "datagovuk-cache",
-    },
-}
 
 # TEMPLATES
 # ------------------------------------------------------------------------------

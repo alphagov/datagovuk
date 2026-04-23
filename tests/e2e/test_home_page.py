@@ -18,6 +18,12 @@ def test_homepage_heading(page, live_server_url):
     )
 
 
+def test_homepage_has_cache_control_header_set(page, live_server_url):
+    response = page.goto(live_server_url)
+    cache_control = response.headers.get("cache-control")
+    assert cache_control == "max-age=1800, public"
+
+
 def test_homepage_collections_links(page, live_server_url):
     page.goto(live_server_url)
     collection_items = page.locator(".datagovuk-home-collections__items")
