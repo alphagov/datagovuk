@@ -2,7 +2,7 @@
 
 {% from "macros/common.jinja" import cta_button, link_list, section_navigation %}
 
-{% set page_title = collection ~ " - Collection" %}
+{% set page_title = title ~ " - Collection" %}
 
 {% block main %}
   {% if visualisation %}
@@ -47,6 +47,13 @@
               <div class="govuk-grid-row line-chart">{{ visualisation.visualisation|safe }}</div>
             {% elif visualisation.type == "headline" %}
               <div class="datagovuk-headline__columns">{{ visualisation.visualisation|safe }}</div>
+            {% endif %}
+
+            {% if visualisation.download_exists %}
+              <p class="govuk-body datagovuk-body govuk-!-margin-top-4">
+                <a href="{{ url('collections:collection_download', kwargs={'collection_name': collection_slug, 'collection_page_name': slug}) }}"
+                   class="govuk-link datagovuk-link">Download the chart data</a>
+              </p>
             {% endif %}
           </section>
         {% endif %}
