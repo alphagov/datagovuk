@@ -2,8 +2,7 @@ from copy import deepcopy
 
 from datagovuk.core.views import RenderedMarkdownView
 
-from .constants import DATA_MANUAL_PAGES
-from .constants import DATA_MANUAL_PAGES_BY_SLUG
+from .constants import DATA_MANUAL_PAGES, DATA_MANUAL_PAGES_BY_SLUG
 
 
 class DataManualView(RenderedMarkdownView):

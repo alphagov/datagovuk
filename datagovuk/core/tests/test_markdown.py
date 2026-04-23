@@ -1,7 +1,6 @@
 import inspect
 
-from datagovuk.core.markdown import get_template_context_from_markdown
-from datagovuk.core.markdown import render_markdown
+from datagovuk.core.markdown import get_template_context_from_markdown, render_markdown
 
 
 class TestMarkdownToHTMLRenderer:

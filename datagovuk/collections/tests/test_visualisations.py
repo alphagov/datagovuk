@@ -1,9 +1,7 @@
 import pytest
-from chartkick.django import BarChart
-from chartkick.django import LineChart
+from chartkick.django import BarChart, LineChart
 
-from datagovuk.collections.visualisations import Headline
-from datagovuk.collections.visualisations import get_visualisation
+from datagovuk.collections.visualisations import Headline, get_visualisation
 
 
 def test_get_visualisation_missing_file():
