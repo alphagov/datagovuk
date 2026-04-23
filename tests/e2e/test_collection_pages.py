@@ -111,3 +111,22 @@ def test_collection_page_without_chart_has_no_chart(lazy_page, live_server_url):
     lazy_page.goto(live_server_url + url)
 
     expect(lazy_page.locator(".line-chart")).to_have_count(0)
+
+
+@pytest.mark.parametrize(
+    "lazy_page",
+    [
+        lf("page"),
+        lf("mobile_page"),
+    ],
+)
+def test_collection_page_download(lazy_page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "business-and-economy", "collection_page_name": "uk-trade"},
+    )
+    lazy_page.goto(live_server_url + url)
+    with lazy_page.expect_download() as download_info:
+        lazy_page.get_by_role("link", name="Download the chart data").click()
+    download = download_info.value
+    assert download.suggested_filename == "total-uk-imports-exports.csv"
