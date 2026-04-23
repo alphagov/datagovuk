@@ -64,7 +64,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: docker/setup-docker-action@e43656e248c0bd0647d3f5c195d116aacf6fcaf4 # v4.7.0
+      - uses: docker/setup-docker-action@5fc00c3ecf2ef3efae431528032c7b9711e245d3 # v5.0.0
         with:
           version: "version=28.5.2"
 
