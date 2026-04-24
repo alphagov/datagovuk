@@ -1,0 +1,6 @@
+# Example production docker .env file - adjust values as it makes sense in prod
+USE_DOCKER=True
+DJANGO_SECRET_KEY=<generate with uuid7>
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,data.gov.uk
+SENTRY_DSN=https://public@sentry.example.com/1
+DJANGO_SECURE_SSL_REDIRECT=False
