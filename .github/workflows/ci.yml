@@ -72,6 +72,13 @@ jobs:
           docker compose -f docker-compose.local.yml run django coverage run -m pytest
           docker compose -f docker-compose.local.yml run django coverage html
 
+      - name: Upload E2E failure traces
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-failure-traces
+          path: e2e-failure-traces
+
       - name: Upload artifacts
         if: success()
         uses: actions/upload-artifact@v7
