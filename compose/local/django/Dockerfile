@@ -58,14 +58,8 @@ COPY . ${APP_HOME}
 ENV PATH="/${VIRTUAL_ENV}/bin:$PATH"
 ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.14/site-packages"
 
-COPY ./compose/production/django/entrypoint /entrypoint
-RUN sed -i 's/\r$//g' /entrypoint
-RUN chmod +x /entrypoint
-
 COPY ./compose/local/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
-
-
-ENTRYPOINT ["/entrypoint"]
+ENTRYPOINT ["/start"]
