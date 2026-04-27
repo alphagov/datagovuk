@@ -127,6 +127,10 @@ MIDDLEWARE = [
 
 CACHE_CONTROL_DEFAULT = "max-age=1800, public"
 
+# PROMETHEUS
+# ------------------------------------------------------------------------------
+PROMETHEUS_METRICS_PORT = env.int("PROMETHEUS_METRICS_PORT", default=9090)
+
 
 SECURE_CSP = {
     "default-src": [CSP.SELF],
