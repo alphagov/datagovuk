@@ -56,6 +56,14 @@ The project should now be running and accessible at `http://localhost:8000/`
 
 `just` should list out other common commands in the project
 
+## Prometheus metrics
+
+Prometheus metrics are scraped from the `/metrics` endpoint and some of those metrics are:
+- HTTP
+- Views
+- Database
+- Caches
+
 ## Sentry
 
 Sentry is an error logging aggregator service. You can sign up for a free account at <https://sentry.io/signup/?code=cookiecutter> or download and host it yourself.
