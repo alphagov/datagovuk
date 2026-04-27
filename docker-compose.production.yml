@@ -1,0 +1,13 @@
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    image: datagovuk_production_django
+    container_name: datagovuk_production_django
+    env_file:
+      - path: ./.envs/.production/.django
+        required: true
+    ports:
+      - '8001:5000'
+    command: /start
