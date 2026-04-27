@@ -1,15 +1,22 @@
 {% extends "base.jinja" %}
 
-{% block title %}
-  Forbidden (403)
-{% endblock title %}
-{% block content %}
-  <h1>Forbidden (403)</h1>
-  <p>
-    {% if exception %}
-      {{ exception }}
-    {% else %}
-      You're not allowed to access this page.
-    {% endif %}
-  </p>
-{% endblock content %}
+{% set page_title = "Forbidden" %}
+
+{% block main %}
+  <div class="govuk-width-container datagovuk-width-container">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l datagovuk-heading-l">Forbidden</h1>
+          <p class="govuk-body datagovuk-body">
+            If you typed the web address, check it is correct.
+          </p>
+          <p class="govuk-body datagovuk-body">
+            If you pasted the web address, check you copied the entire address.
+          </p>
+          <p class="govuk-body datagovuk-body">
+            If the web address is correct or you selected a link or button, <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="{{url("pages:support")}}">contact the data.gov.uk team</a>.
+          </p>
+        </div>
+    <div>
+  </div>
+{% endblock main %}
