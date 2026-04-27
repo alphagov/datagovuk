@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 import pytest
 from django.http import Http404
+from django.urls import reverse
 
 from datagovuk.core.views import RenderedMarkdownView
 
@@ -59,3 +60,28 @@ class TestRenderedMarkdownView:
         request = rf.get("/some-url")
         with pytest.raises(NotImplementedError):
             BadSubclassMarkdownView.as_view()(request)
+
+
+class TestTestError400View:
+    def test_view_synthetic_400(self, client):
+        url = reverse("core:test_error_400")
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.BAD_REQUEST
+        assert "Bad request - data.gov.uk" in response.content.decode()
+
+
+class TestTestError403View:
+    def test_view_synthetic_403(self, client):
+        url = reverse("core:test_error_403")
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.FORBIDDEN
+        assert "Forbidden - data.gov.uk" in response.content.decode()
+
+
+class TestTestError500View:
+    def test_view_synthetic_500(self, client):
+        url = reverse("core:test_error_500")
+        with pytest.raises(KeyError):
+            client.get(url)
