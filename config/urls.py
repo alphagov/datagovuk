@@ -5,6 +5,7 @@ from health_check.views import HealthCheckView
 
 urlpatterns = [
     path("", include("datagovuk.pages.urls", namespace="pages")),
+    path("", include("datagovuk.core.urls", namespace="core")),
     path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
     path("collections/", include("datagovuk.collections.urls", namespace="collections")),
     path(
@@ -16,6 +17,8 @@ urlpatterns = [
         ),
     ),
 ]
+
+handler500 = "datagovuk.core.views.server_error"
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
