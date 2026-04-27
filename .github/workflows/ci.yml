@@ -47,6 +47,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 
+      - name: Copy env file
+        run: cp .envs/.local/.django.example .envs/.local/.django
+
       - name: Build and cache local backend
         uses: docker/bake-action@v7
         with:
