@@ -1,3 +1,5 @@
+# This file is for testing the production dockerfile using docker-compose -
+# we will not use docker-compose in production
 services:
   django:
     build:
