@@ -16,6 +16,7 @@ urlpatterns = [
             ],
         ),
     ),
+    path("prometheus/", include("django_prometheus.urls")),
 ]
 
 handler500 = "datagovuk.core.views.server_error"
