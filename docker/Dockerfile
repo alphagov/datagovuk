@@ -24,6 +24,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 FROM python:3.14-slim-bookworm AS python-run-stage
 
 ARG APP_HOME=/app
+ARG GUNICORN_WORKERS=4
+ARG GUNICORN_THREADS=4
 
 WORKDIR ${APP_HOME}
 
@@ -51,7 +53,10 @@ ENV SENTRY_DSN=https://public@sentry.example.com/1
 RUN python /app/manage.py collectstatic --noinput
 RUN python /app/manage.py compress --engine jinja2 --extension=jinja
 
-# TODO: Fix this..
-#USER django
+USER django
+RUN mkdir ${APP_HOME}/tmp/
+ENV GUNICORN_WORKERS=${GUNICORN_WORKERS}
+ENV GUNICORN_THREADS=${GUNICORN_THREADS}
+ENV APP_HOME=${APP_HOME}
 
 ENTRYPOINT ["/start"]
