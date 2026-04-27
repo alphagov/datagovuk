@@ -12,6 +12,8 @@ services:
     image: datagovuk_production_django
     env_file:
       - ./.envs/.production/.django
+    ports:
+      - '9090:9090'
     command: /start
 
   traefik:

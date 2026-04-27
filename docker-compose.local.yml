@@ -13,4 +13,5 @@ services:
         required: false
     ports:
       - '8000:8000'
+      - '9090:9090'
     command: /start
