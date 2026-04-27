@@ -57,4 +57,19 @@ urlpatterns = [
         TemplateView.as_view(template_name="pages/components.jinja"),
         name="components",
     ),
+    path(
+        "400-test/",
+        views.Error400View.as_view(),
+        name="error_400_test",
+    ),
+    path(
+        "403-test/",
+        views.Error403View.as_view(),
+        name="error_403_test",
+    ),
+    path(
+        "500-test/",
+        views.Error500View.as_view(),
+        name="error_500_test",
+    ),
 ]

@@ -25,18 +25,25 @@ if settings.DEBUG:
             "400/",
             default_views.bad_request,
             kwargs={"exception": Exception("Bad Request!")},
+            name="error_bad_request",
         ),
         path(
             "403/",
             default_views.permission_denied,
             kwargs={"exception": Exception("Permission Denied")},
+            name="error_forbidden",
         ),
         path(
             "404/",
             default_views.page_not_found,
             kwargs={"exception": Exception("Page not Found")},
+            name="error_not_found",
         ),
-        path("500/", default_views.server_error),
+        path(
+            "500/",
+            default_views.server_error,
+            name="error_server_error",
+        ),
     ]
     if "debug_toolbar" in settings.INSTALLED_APPS:
         import debug_toolbar
