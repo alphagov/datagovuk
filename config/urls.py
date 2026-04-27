@@ -4,6 +4,7 @@ from django.views import defaults as default_views
 from health_check.views import HealthCheckView
 
 urlpatterns = [
+    path("", include("django_prometheus.urls")),
     path("", include("datagovuk.pages.urls", namespace="pages")),
     path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
     path("collections/", include("datagovuk.collections.urls", namespace="collections")),
