@@ -2,6 +2,7 @@ from django.conf import settings
 from django.urls import include, path
 from django.views import defaults as default_views
 from health_check.views import HealthCheckView
+from prometheus_client.django import PrometheusDjangoView
 
 urlpatterns = [
     path("", include("datagovuk.pages.urls", namespace="pages")),
@@ -15,6 +16,7 @@ urlpatterns = [
             ],
         ),
     ),
+    path("metrics/", PrometheusDjangoView.as_view(), name="prometheus-metrics"),
 ]
 
 if settings.DEBUG:
