@@ -56,6 +56,22 @@ The project should now be running and accessible at `http://localhost:8000/`
 
 `just` should list out other common commands in the project
 
+### Metrics (Prometheus)
+
+A separate HTTP server is exposed on port `9090`, isolated from the main Django application on port `8000`. It is started automatically as a background process when the Docker containers come up.
+
+When running locally with `just up`, metrics are available at:
+
+```
+http://localhost:9090/metrics
+```
+
+The server is started by the `start_metrics_server` management command, which reads the port from the `PROMETHEUS_METRICS_PORT` environment variable (default: `9090`). You can also run it manually:
+
+```bash
+just manage start_metrics_server
+```
+
 ## Sentry
 
 Sentry is an error logging aggregator service. You can sign up for a free account at <https://sentry.io/signup/?code=cookiecutter> or download and host it yourself.
