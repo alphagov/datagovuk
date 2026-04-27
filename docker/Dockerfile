@@ -1,5 +1,3 @@
-
-# define an alias for the specific python version used in this file.
 FROM ghcr.io/astral-sh/uv:python3.14-bookworm-slim AS python-build-stage
 
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
@@ -8,15 +6,9 @@ ARG APP_HOME=/app
 
 WORKDIR ${APP_HOME}
 
-# Install apt packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  # dependencies for building Python packages
-  build-essential \
-  # psycopg dependencies
-  libpq-dev
+  build-essential
 
-
-# Requirements are installed here to ensure they will be cached.
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
@@ -28,36 +20,22 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-dev
 
-# Python 'run' stage
+
 FROM python:3.14-slim-bookworm AS python-run-stage
 
 ARG APP_HOME=/app
+ARG GUNICORN_WORKERS=4
+ARG GUNICORN_THREADS=4
 
 WORKDIR ${APP_HOME}
 
 RUN addgroup --system django \
   && adduser --system --ingroup django django
 
-
-# Install required system dependencies
-RUN apt-get update && apt-get install --no-install-recommends -y \
-  # psycopg dependencies
-  libpq-dev \
-  # Translations dependencies
-  gettext \
-  # entrypoint
-  wait-for-it \
-  # cleaning up unused files
-  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
 
-
-COPY --chown=django:django ./compose/production/django/entrypoint /entrypoint
-RUN sed -i 's/\r$//g' /entrypoint
-RUN chmod +x /entrypoint
-
-
-COPY --chown=django:django ./compose/production/django/start /start
+COPY --chown=django:django ./docker/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
@@ -70,10 +48,15 @@ RUN chown django:django ${APP_HOME}
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
+ENV DJANGO_SECRET_KEY=fake
+ENV SENTRY_DSN=https://public@sentry.example.com/1
+RUN python /app/manage.py collectstatic --noinput
+RUN python /app/manage.py compress --engine jinja2 --extension=jinja
+
 USER django
+RUN mkdir ${APP_HOME}/tmp/
+ENV GUNICORN_WORKERS=${GUNICORN_WORKERS}
+ENV GUNICORN_THREADS=${GUNICORN_THREADS}
+ENV APP_HOME=${APP_HOME}
 
-RUN DATABASE_URL="" \
-  DJANGO_SETTINGS_MODULE="config.settings.test" \
-  python manage.py compilemessages
-
-ENTRYPOINT ["/entrypoint"]
+ENTRYPOINT ["/start"]

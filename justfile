@@ -84,3 +84,18 @@ compress:
 # collectstatic: Collect static assets in to a single location for serving in non-local environments
 collectstatic:
     @docker compose run --rm django python ./manage.py collectstatic
+
+# Build production docker image
+prod-build *args:
+    @echo "Building production python image..."
+    docker compose -f docker-compose.production.yml build {{args}}
+
+# Bring up production docker container
+prod-up *args:
+    @echo "Starting up production containers..."
+    docker compose -f docker-compose.production.yml up -d --remove-orphans {{args}}
+
+# Bring down production docker container
+prod-down *args:
+    @echo "Stopping production containers..."
+    docker compose -f docker-compose.production.yml down {{args}}

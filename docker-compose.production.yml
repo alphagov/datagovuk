@@ -1,28 +1,15 @@
-volumes:
-  production_traefik: {}
-
-
-
+# This file is for testing the production dockerfile using docker-compose -
+# we will not use docker-compose in production
 services:
   django:
     build:
       context: .
-      dockerfile: ./compose/production/django/Dockerfile
-
+      dockerfile: ./docker/Dockerfile
     image: datagovuk_production_django
+    container_name: datagovuk_production_django
     env_file:
-      - ./.envs/.production/.django
-    command: /start
-
-  traefik:
-    build:
-      context: .
-      dockerfile: ./compose/production/traefik/Dockerfile
-    image: datagovuk_production_traefik
-    depends_on:
-      - django
-    volumes:
-      - production_traefik:/etc/traefik/acme
+      - path: ./.envs/.production/.django
+        required: true
     ports:
-      - '0.0.0.0:80:80'
-      - '0.0.0.0:443:443'
+      - '8001:5000'
+    command: /start
