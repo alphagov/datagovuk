@@ -11,5 +11,5 @@ services:
       - path: ./.envs/.production/.django
         required: true
     ports:
-      - '8001:5000'
+      - '8001:8000'
     command: /start
