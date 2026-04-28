@@ -48,6 +48,7 @@ RUN chown django:django ${APP_HOME}
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
 
+# Fake env vars necessary for collectstatic and compress to run
 ENV DJANGO_SECRET_KEY=fake
 ENV SENTRY_DSN=https://public@sentry.example.com/1
 RUN python /app/manage.py collectstatic --noinput
