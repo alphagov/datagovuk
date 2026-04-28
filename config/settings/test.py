@@ -31,3 +31,6 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 MEDIA_URL = "http://media.testserver/"
 # Your stuff...
 # ------------------------------------------------------------------------------
+GOOGLE_TAG_MANAGER_ID = env("GOOGLE_TAG_MANAGER_ID", default="UA-XXXXX-Y")
+GOOGLE_TAG_MANAGER_AUTH = env("GOOGLE_TAG_MANAGER_AUTH", default="fake-auth-token")
+GOOGLE_TAG_MANAGER_PREVIEW = env("GOOGLE_TAG_MANAGER_PREVIEW", default="fake-preview-token")
