@@ -4,4 +4,4 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-exec gunicorn --control-socket $APP_HOME/tmp/gunicorn.ctl config.wsgi --bind 0.0.0.0:5000 --chdir=/app --workers $GUNICORN_WORKERS --threads $GUNICORN_THREADS
+exec gunicorn --control-socket $APP_HOME/tmp/gunicorn.ctl config.wsgi --bind 0.0.0.0:8000 --chdir=/app --workers $GUNICORN_WORKERS --threads $GUNICORN_THREADS
