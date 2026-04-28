@@ -127,7 +127,7 @@ jobs:
         id: build-app-image
         uses: docker/build-push-action@v7
         with:
-          file: compose/local/django/Dockerfile
+          file: docker/Dockerfile
           context: .
           platforms: "linux/${{ matrix.runs_on.arch }}"
           load: true
