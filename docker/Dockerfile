@@ -61,11 +61,9 @@ FROM python-build-stage AS python-run-dev
 
 # we need to move the virtualenv outside of the $APP_HOME directory because it will be overriden by the docker compose mount
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
-
-RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    --mount=type=bind,source=uv.lock,target=uv.lock:rw \
-    uv run playwright install --with-deps chromium
+ENV VIRTUAL_ENV=/opt/venv
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
+RUN uv venv $VIRTUAL_ENV
 
 # devcontainer dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -77,6 +75,7 @@ RUN groupadd --gid 1000 dev-user \
   && echo dev-user ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/dev-user \
   && chmod 0440 /etc/sudoers.d/dev-user
 
+COPY --from=python-build-stage ${APP_HOME}/.venv ${VIRTUAL_ENV}
 # Requirements are installed here to ensure they will be cached.
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
@@ -88,6 +87,12 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock:rw \
     uv sync
 
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    --mount=type=bind,source=uv.lock,target=uv.lock:rw \
+    uv run playwright install --with-deps chromium
+
+ENV PATH="/${VIRTUAL_ENV}/bin:$PATH"
 ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.14/site-packages"
 
 COPY ./docker/entrypoint /entrypoint
@@ -98,5 +103,4 @@ COPY ./docker/start-dev /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
-USER django
 ENTRYPOINT ["/entrypoint"]
