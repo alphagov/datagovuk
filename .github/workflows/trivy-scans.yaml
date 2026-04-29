@@ -25,7 +25,7 @@ jobs:
           scan-ref: '.'
           format: 'sarif'
           output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
           ignore-unfixed: true
 
       - name: Upload scan results to GitHub PR UI
