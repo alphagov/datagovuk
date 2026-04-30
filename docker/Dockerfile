@@ -9,15 +9,14 @@ WORKDIR ${APP_HOME}
 RUN apt-get update && apt-get install --no-install-recommends -y \
   build-essential
 
+COPY pyproject.toml ${APP_HOME}
+COPY uv.lock ${APP_HOME}
+
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-install-project --no-dev
 COPY . ${APP_HOME}
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-dev
 
 RUN addgroup --system django \
@@ -78,18 +77,12 @@ RUN groupadd --gid 1000 dev-user \
 COPY --from=python-build-stage ${APP_HOME}/.venv ${VIRTUAL_ENV}
 # Requirements are installed here to ensure they will be cached.
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    --mount=type=bind,source=uv.lock,target=uv.lock:rw \
     uv sync --no-install-project
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    --mount=type=bind,source=uv.lock,target=uv.lock:rw \
     uv sync
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    --mount=type=bind,source=uv.lock,target=uv.lock:rw \
     uv run playwright install --with-deps chromium
 
 ENV PATH="/${VIRTUAL_ENV}/bin:$PATH"
