@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from datagovuk.data_manual.constants import DATA_MANUAL_PAGES
 
 
@@ -61,4 +63,12 @@ def data_manual_menu_items(request):
                 ),
             },
         ],
+    }
+
+
+def google_tag_manager(request):
+    return {
+        "GOOGLE_TAG_MANAGER_ID": settings.GOOGLE_TAG_MANAGER_ID,
+        "GOOGLE_TAG_MANAGER_AUTH": settings.GOOGLE_TAG_MANAGER_AUTH,
+        "GOOGLE_TAG_MANAGER_PREVIEW": settings.GOOGLE_TAG_MANAGER_PREVIEW,
     }

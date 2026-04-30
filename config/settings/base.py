@@ -199,6 +199,7 @@ TEMPLATES = [
                 "datagovuk.core.context_processors.collections",
                 "datagovuk.core.context_processors.data_manual",
                 "datagovuk.core.context_processors.data_manual_menu_items",
+                "datagovuk.core.context_processors.google_tag_manager",
             ],
             "extensions": [
                 "compressor.contrib.jinja2ext.CompressorExtension",
@@ -248,6 +249,12 @@ ADMIN_URL = "admin/"
 ADMINS = ['"Brendan Smith" <brendan.smith@cabinet-office.digital.gov.uk>']
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
+
+# GOOGLE TAG MANAGER
+# ------------------------------------------------------------------------------
+GOOGLE_TAG_MANAGER_ID = env("GOOGLE_TAG_MANAGER_ID", default=None)
+GOOGLE_TAG_MANAGER_AUTH = env("GOOGLE_TAG_MANAGER_AUTH", default=None)
+GOOGLE_TAG_MANAGER_PREVIEW = env("GOOGLE_TAG_MANAGER_PREVIEW", default=None)
 
 # LOGGING
 # ------------------------------------------------------------------------------
