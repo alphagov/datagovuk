@@ -165,6 +165,7 @@ STATICFILES_FINDERS = [
 COMPRESS_PRECOMPILERS = [
     ("text/x-scss", "django_libsass.SassCompiler"),
 ]
+COMPRESS_CSS_HASHING_METHOD = "content"
 
 
 def COMPRESS_JINJA2_GET_ENVIRONMENT():  # noqa: N802
