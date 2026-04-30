@@ -1,14 +1,10 @@
-import os
-from pathlib import Path
-
-from django.conf import settings
 from django.core.exceptions import PermissionDenied, SuspiciousOperation
-from django.http import Http404, HttpResponseServerError
+from django.http import HttpResponseServerError
 from django.template import loader
 from django.views.decorators.csrf import requires_csrf_token
 from django.views.generic import TemplateView
 
-from datagovuk.core.markdown import get_template_context_from_markdown
+from datagovuk.core.markdown import get_safe_markdown_path, get_template_context_from_markdown
 
 
 class RenderedMarkdownView(TemplateView):
@@ -18,14 +14,7 @@ class RenderedMarkdownView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        markdown_file_path = Path(self.get_markdown_file_path())
-        markdown_file_path = os.path.normpath(markdown_file_path)
-        not_found_message = "Content not found"
-        # Double check that the fully normalised path is below our content directory
-        if not markdown_file_path.startswith(settings.DATAGOVUK_CONTENT_ROOT):
-            raise Http404(not_found_message)
-        if not markdown_file_path.exists():
-            raise Http404(not_found_message)
+        markdown_file_path = get_safe_markdown_path(self.get_markdown_file_path())
         context.update(
             get_template_context_from_markdown(markdown_file_path),
         )

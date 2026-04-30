@@ -1,7 +1,10 @@
+import os
 from pathlib import Path
 
 import frontmatter
 import mistune
+from django.conf import settings
+from django.http import Http404
 
 
 class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
@@ -59,3 +62,15 @@ def get_template_context_from_markdown(markdown_file_path):
         frontmatter_context = dict(parsed_frontmatter)
         frontmatter_context["content"] = render_markdown(parsed_frontmatter.content)
         return _transform_context(frontmatter_context)
+
+
+def get_safe_markdown_path(path):
+    markdown_file_path = os.path.normpath(path)
+    not_found_message = "Content not found"
+    # Double check that the fully normalised path is below our content directory
+    if not markdown_file_path.startswith(settings.DATAGOVUK_CONTENT_ROOT):
+        raise Http404(not_found_message)
+    markdown_file_path = Path(markdown_file_path)
+    if not markdown_file_path.exists():
+        raise Http404(not_found_message)
+    return markdown_file_path
