@@ -3,6 +3,7 @@ import math
 from pathlib import Path
 
 from chartkick.django import BarChart, LineChart
+from django.conf import settings
 from django.template.loader import render_to_string
 
 from datagovuk.core.utils import capture_exception
@@ -208,7 +209,7 @@ VISUALISATION_BUILDERS = {
 
 
 def get_visualisation_spec(data_path):
-    full_data_path = Path(f"datagovuk/content/data/{data_path}")
+    full_data_path = Path(f"{settings.DATAGOVUK_CONTENT_DATA_ROOT}{data_path}")
     try:
         with Path.open(full_data_path) as data_file:
             visualisation_spec = json.load(data_file)

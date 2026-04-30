@@ -1,6 +1,7 @@
 from datetime import date
 from pathlib import Path
 
+from django.conf import settings
 from django.http import FileResponse, Http404
 from django.urls import reverse
 from django.views.generic.base import RedirectView, View
@@ -16,9 +17,8 @@ class CollectionPageView(RenderedMarkdownView):
     template_name = "collections/collection_page.jinja"
 
     def get_markdown_file_path(self):
-        return (
-            f"datagovuk/content/collections/{self.kwargs['collection_name']}/{self.kwargs['collection_page_name']}.md"
-        )
+        root_dir = settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT
+        return f"{root_dir}{self.kwargs['collection_name']}/{self.kwargs['collection_page_name']}.md"
 
     @property
     def collection_pages(self):
@@ -57,7 +57,7 @@ class CollectionPageView(RenderedMarkdownView):
 class CollectionDownloadView(View):
     def get(self, request, collection_name, collection_page_name):
         markdown_file_path = Path(
-            f"datagovuk/content/collections/{collection_name}/{collection_page_name}.md",
+            f"{settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT}{collection_name}/{collection_page_name}.md",
         )
         if not markdown_file_path.exists():
             error_message = "Content not found"
