@@ -21,8 +21,20 @@ class MissingMarkdownView(RenderedMarkdownView):
         return "datagovuk/core/tests/sample_markdown/missing.md"
 
 
+class BadPathMarkdownView(RenderedMarkdownView):
+    template_name = "collections/collection_page.jinja"
+
+    def get_markdown_file_path(self):
+        return "datagovuk/core/tests/../../../sample_markdown/missing.md"
+
+
 class BadSubclassMarkdownView(RenderedMarkdownView):
     template_name = "collections/collection_page.jinja"
+
+
+@pytest.fixture(autouse=True)
+def content_root(settings):
+    settings.DATAGOVUK_CONTENT_ROOT = "datagovuk/core/tests/"
 
 
 class TestRenderedMarkdownView:
@@ -60,6 +72,11 @@ class TestRenderedMarkdownView:
         request = rf.get("/some-url")
         with pytest.raises(NotImplementedError):
             BadSubclassMarkdownView.as_view()(request)
+
+    def test_view_bad_markdown_path(self, rf):
+        request = rf.get("/some-url")
+        with pytest.raises(Http404):
+            BadPathMarkdownView.as_view()(request)
 
 
 class TestTestError400View:

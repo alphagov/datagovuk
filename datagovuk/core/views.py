@@ -1,5 +1,7 @@
+import os
 from pathlib import Path
 
+from django.conf import settings
 from django.core.exceptions import PermissionDenied, SuspiciousOperation
 from django.http import Http404, HttpResponseServerError
 from django.template import loader
@@ -17,8 +19,12 @@ class RenderedMarkdownView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         markdown_file_path = Path(self.get_markdown_file_path())
+        markdown_file_path = os.path.normpath(markdown_file_path)
+        not_found_message = "Content not found"
+        # Double check that the fully normalised path is below our content directory
+        if not markdown_file_path.startswith(settings.DATAGOVUK_CONTENT_ROOT):
+            raise Http404(not_found_message)
         if not markdown_file_path.exists():
-            not_found_message = "Content not found"
             raise Http404(not_found_message)
         context.update(
             get_template_context_from_markdown(markdown_file_path),
