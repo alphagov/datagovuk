@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.urls import include, path
 from django.views import defaults as default_views
+from django.views.decorators.cache import never_cache
+from django_prometheus import exports as prometheus_views
 from health_check.views import HealthCheckView
 
 urlpatterns = [
@@ -16,7 +18,11 @@ urlpatterns = [
             ],
         ),
     ),
-    path("prometheus/", include("django_prometheus.urls")),
+    path(
+        "prometheus/metrics",
+        never_cache(prometheus_views.ExportToDjangoView),
+        name="prometheus-django-metrics",
+    ),
 ]
 
 handler500 = "datagovuk.core.views.server_error"
