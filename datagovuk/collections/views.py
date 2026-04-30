@@ -1,12 +1,11 @@
 from datetime import date
-from pathlib import Path
 
 from django.conf import settings
 from django.http import FileResponse, Http404
 from django.urls import reverse
 from django.views.generic.base import RedirectView, View
 
-from datagovuk.core.markdown import get_template_context_from_markdown
+from datagovuk.core.markdown import get_safe_markdown_path, get_template_context_from_markdown
 from datagovuk.core.views import RenderedMarkdownView
 
 from .constants import COLLECTIONS
@@ -56,12 +55,9 @@ class CollectionPageView(RenderedMarkdownView):
 
 class CollectionDownloadView(View):
     def get(self, request, collection_name, collection_page_name):
-        markdown_file_path = Path(
+        markdown_file_path = get_safe_markdown_path(
             f"{settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT}{collection_name}/{collection_page_name}.md",
         )
-        if not markdown_file_path.exists():
-            error_message = "Content not found"
-            raise Http404(error_message)
 
         context = get_template_context_from_markdown(markdown_file_path)
         visualisation_data_path = context.get("visualisation_data")
