@@ -1,5 +1,7 @@
 from copy import deepcopy
 
+from django.conf import settings
+
 from datagovuk.core.views import RenderedMarkdownView
 
 from .constants import DATA_MANUAL_PAGES, DATA_MANUAL_PAGES_BY_SLUG
@@ -9,7 +11,7 @@ class DataManualView(RenderedMarkdownView):
     template_name = "data_manual/content.jinja"
 
     def get_markdown_file_path(self):
-        return f"datagovuk/content/data-manual/{self.kwargs['data_manual_name']}.md"
+        return f"{settings.DATAGOVUK_CONTENT_DATA_MANUAL_ROOT}{self.kwargs['data_manual_name']}.md"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
