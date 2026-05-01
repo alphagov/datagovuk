@@ -82,9 +82,6 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv run playwright install --with-deps chromium
-
 ENV PATH="/${VIRTUAL_ENV}/bin:$PATH"
 ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.14/site-packages"
 
