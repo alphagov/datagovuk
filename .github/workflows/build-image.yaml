@@ -80,6 +80,7 @@ jobs:
         with:
           ref: ${{ inputs.gitRef || github.ref }}
           show-progress: false
+          submodules: 'true'
 
       - name: Setup Docker BuildX
         uses: docker/setup-buildx-action@v4
@@ -129,6 +130,7 @@ jobs:
         with:
           file: docker/Dockerfile
           context: .
+          target: python-run-production
           platforms: "linux/${{ matrix.runs_on.arch }}"
           load: true
           provenance: false

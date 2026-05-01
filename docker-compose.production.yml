@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
+      target: python-run-production
     image: datagovuk_production_django
     container_name: datagovuk_production_django
     env_file:
