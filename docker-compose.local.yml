@@ -15,3 +15,12 @@ services:
     ports:
       - '8000:8000'
     command: /start
+
+  playwright:
+    build:
+      context: ./docker/playwright
+      dockerfile: ./Dockerfile
+    image: datagovuk_local_playwright
+    container_name: datagovuk_local_playwright
+    ports:
+      - '3000:3000'
