@@ -1,21 +1,43 @@
+import os
+
 import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import sync_playwright
 
+PLAYWRIGHT_HOST = os.getenv("PLAYWRIGHT_HOST", "127.0.0.1")
+DOCKER_HOSTNAME = "django"
 
-@pytest.fixture(scope="class")
-def live_server_url(request):
+
+@pytest.fixture
+def live_server_url(request, settings):
     server = StaticLiveServerTestCase
+    if PLAYWRIGHT_HOST == "127.0.0.1":
+        server.setUpClass()
+        return server.live_server_url
+    settings.ALLOWED_HOSTS = [DOCKER_HOSTNAME]
+    # Can ignore ruff complaints here as we are running tests
+    server.host = "0.0.0.0"  # noqa: S104
     server.setUpClass()
-    return server.live_server_url
+    return server.live_server_url.replace("0.0.0.0", DOCKER_HOSTNAME)  # noqa: S104
 
 
 @pytest.fixture(scope="session")
 def browser():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        yield browser
-        browser.close()
+    playwright = sync_playwright().start()
+
+    # If PLAYWRIGHT_HOST is set to something other than 127.0.0.1,
+    # connect to a remote Playwright browser server (e.g. Docker container).
+    # Otherwise use a local browser.
+    if PLAYWRIGHT_HOST != "127.0.0.1":
+        browser = playwright.chromium.connect(
+            f"ws://{PLAYWRIGHT_HOST}:3000",
+        )
+    else:
+        browser = playwright.chromium.launch(headless=True)
+
+    yield browser
+    browser.close()
+    playwright.stop()
 
 
 @pytest.fixture

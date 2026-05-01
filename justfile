@@ -54,7 +54,7 @@ bash:
 
 # test: Run pytest
 test *args:
-    @docker compose run django pytest {{args}}
+    @docker compose exec django pytest {{args}}
 
 # e2e-install-playwright: Install playwright locally
 e2e-install-playwright:
@@ -65,7 +65,8 @@ e2e-install-playwright:
 e2e-codegen +args:
     uv run playwright codegen --target python-pytest -o tests/e2e/{{args}} 127.0.0.1:8000
 
-# e2e-debug: Run e2e test in debug mode
+# e2e-debug: Run e2e test in debug mode (local/host, no Docker)
+# Requires: just e2e-install-playwright (one-time setup)
 e2e-debug *args:
     PWDEBUG=1 uv run pytest {{args}}
 
