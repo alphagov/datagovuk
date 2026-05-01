@@ -71,6 +71,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "compressor",
+    "django_prometheus",
     "health_check",
     "chartkick.django",
 ]
@@ -113,6 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "datagovuk.core.middleware.CacheControlMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -123,6 +125,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.csp.ContentSecurityPolicyMiddleware",
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
 CACHE_CONTROL_DEFAULT = "max-age=1800, public"
