@@ -3,21 +3,31 @@ FROM ghcr.io/astral-sh/uv:python3.14-bookworm-slim AS python-build-stage
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
 
 ARG APP_HOME=/app
+ARG INSTALL_DEV_DEPS
 
 WORKDIR ${APP_HOME}
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
   build-essential
 
+RUN --mount=type=cache,target=/root/.cache/uv \
+    if [ -n "$INSTALL_DEV_DEPS" ]; then \
+        uv add playwright && uv run playwright install --with-deps chromium; \
+    fi
+
 COPY pyproject.toml ${APP_HOME}
 COPY uv.lock ${APP_HOME}
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project --no-dev
-COPY . ${APP_HOME}
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    if [ -n "$INSTALL_DEV_DEPS" ]; then \
+        uv sync; \
+    fi
 
 RUN addgroup --system django \
   && adduser --system --ingroup django django
@@ -30,6 +40,8 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 
 FROM python-build-stage AS python-run-production
+
+COPY . ${APP_HOME}
 
 ARG GUNICORN_WORKERS=4
 ARG GUNICORN_THREADS=4
@@ -66,7 +78,7 @@ RUN uv venv $VIRTUAL_ENV
 
 # devcontainer dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
-  sudo git bash-completion nano ssh
+  sudo git bash-completion nano vim ssh
 
 # Create devcontainer user and add it to sudoers
 RUN groupadd --gid 1000 dev-user \
@@ -75,15 +87,8 @@ RUN groupadd --gid 1000 dev-user \
   && chmod 0440 /etc/sudoers.d/dev-user
 
 COPY --from=python-build-stage ${APP_HOME}/.venv ${VIRTUAL_ENV}
-# Requirements are installed here to ensure they will be cached.
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --no-install-project
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync
-
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv run playwright install --with-deps chromium
+COPY . ${APP_HOME}
 
 ENV PATH="/${VIRTUAL_ENV}/bin:$PATH"
 ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.14/site-packages"

@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile
       target: python-run-dev
+      args:
+        INSTALL_DEV_DEPS: True
     image: datagovuk_local_django
     container_name: datagovuk_local_django
     volumes:
