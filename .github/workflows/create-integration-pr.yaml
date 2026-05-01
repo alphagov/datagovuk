@@ -1,4 +1,4 @@
-name: Create charts PR
+name: Create integration charts PR
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   create_pr:
-    name: Create charts PR
+    name: Create integration charts PR
     runs-on: ubuntu-latest
     steps:
       - name: Checkout datagovuk repository
