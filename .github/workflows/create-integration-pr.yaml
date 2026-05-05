@@ -7,7 +7,7 @@ on:
     types:
       - completed
     branches:
-      - main
+      - DGUK-506-automate-integration-deployment
 
 jobs:
   create_pr:
