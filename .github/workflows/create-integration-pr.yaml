@@ -1,0 +1,31 @@
+name: Create integration charts PR
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [ "Build and push multi-arch images" ]
+    types:
+      - completed
+    branches:
+      - DGUK-506-automate-integration-deployment
+  push:
+    branches:
+      - DGUK-506-automate-integration-deployment
+
+jobs:
+  create_pr:
+    name: Create integration charts PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout datagovuk repository
+        uses: actions/checkout@v4
+        with:
+          repository: alphagov/datagovuk
+      - name: Update integration SHA
+        run: bash ./docker/create-pr.sh
+        env:
+          GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
+          GH_REF: ${{ github.ref_name }}
+          IS_TAG: "false"
+          ENVS: "integration"
+          DIRECT_PUSH: "true"
