@@ -80,7 +80,7 @@ jobs:
         with:
           ref: ${{ inputs.gitRef || github.ref }}
           show-progress: false
-          submodules: true
+          submodules: recursive
 
       - name: Setup Docker BuildX
         uses: docker/setup-buildx-action@v4
