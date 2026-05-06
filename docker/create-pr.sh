@@ -14,10 +14,8 @@ git config --global user.email "govuk-ci@users.noreply.github.com"
 git config --global user.name "govuk-ci"
 
 git clone https://${GH_TOKEN}@github.com/alphagov/govuk-dgu-charts.git charts
-cd charts
-git fetch origin DGUK-506-automatically-merge-datagovuk-integration:DGUK-506-automatically-merge-datagovuk-integration
-git checkout DGUK-506-automatically-merge-datagovuk-integration
-cd charts/datagovuk/images
+
+cd charts/charts/datagovuk/images
 
 for ENV in $(echo $ENVS | tr "," " "); do
   (
@@ -33,7 +31,7 @@ for ENV in $(echo $ENVS | tr "," " "); do
       git checkout -b ${BRANCH}
       git commit -m "Update datagovuk image tags for ${ENV} to ${IMAGE_TAG}"
       git push --set-upstream origin "${BRANCH}"
-      PR_URL=$(gh pr create --title "Update datagovuk image tags for ${ENV} (${IMAGE_TAG})" --base DGUK-506-automatically-merge-datagovuk-integration --head "${BRANCH}" --fill --repo alphagov/govuk-dgu-charts)
+      PR_URL=$(gh pr create --title "Update datagovuk image tags for ${ENV} (${IMAGE_TAG})" --base main --head "${BRANCH}" --fill --repo alphagov/govuk-dgu-charts)
       gh pr merge "${PR_URL}" --auto --merge --delete-branch
     else
       BRANCH="ci/${IMAGE_TAG}-${ENV}"
@@ -44,7 +42,7 @@ for ENV in $(echo $ENVS | tr "," " "); do
         git checkout -b ${BRANCH}
         git commit -m "Update datagovuk image tags for ${ENV} to ${IMAGE_TAG}"
         git push --set-upstream origin "${BRANCH}"
-        gh pr create --title "Update datagovuk image tags for ${ENV} (${IMAGE_TAG})" --base DGUK-506-automatically-merge-datagovuk-integration --head "${BRANCH}" --fill
+        gh pr create --title "Update datagovuk image tags for ${ENV} (${IMAGE_TAG})" --base main --head "${BRANCH}" --fill
       fi
     fi
   )
