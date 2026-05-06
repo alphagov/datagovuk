@@ -15,6 +15,8 @@ git config --global user.name "govuk-ci"
 
 git clone https://${GH_TOKEN}@github.com/alphagov/govuk-dgu-charts.git charts
 
+git checkout DGUK-506-automatically-merge-datagovuk-integration
+
 cd charts/charts/datagovuk/images
 
 for ENV in $(echo $ENVS | tr "," " "); do
@@ -42,7 +44,7 @@ for ENV in $(echo $ENVS | tr "," " "); do
         git checkout -b ${BRANCH}
         git commit -m "Update datagovuk image tags for ${ENV} to ${IMAGE_TAG}"
         git push --set-upstream origin "${BRANCH}"
-        gh pr create --title "Update datagovuk image tags for ${ENV} (${IMAGE_TAG})" --base main --head "${BRANCH}" --fill
+        gh pr create --title "Update datagovuk image tags for ${ENV} (${IMAGE_TAG})" --base main --head "${BRANCH}" --fill --base DGUK-506-automatically-merge-datagovuk-integration
       fi
     fi
   )
