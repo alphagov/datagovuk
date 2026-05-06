@@ -56,6 +56,10 @@ bash:
 test *args:
     @docker compose exec django pytest {{args}}
 
+coverage:
+    @docker compose exec django coverage run -m pytest datagovuk/
+    @docker compose exec django coverage html
+
 # e2e-install-playwright: Install playwright locally
 e2e-install-playwright:
     uv sync
