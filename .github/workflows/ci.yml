@@ -78,8 +78,9 @@ jobs:
 
       - name: Run Django Tests with coverage
         run: |
-          docker compose -f docker-compose.local.yml run django coverage run -m pytest
-          docker compose -f docker-compose.local.yml run django coverage html
+          docker compose -f docker-compose.local.yml up -d
+          docker compose -f docker-compose.local.yml exec django coverage run -m pytest
+          docker compose -f docker-compose.local.yml exec django coverage html
 
       - name: Upload E2E failure traces
         if: failure()
