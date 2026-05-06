@@ -13,6 +13,8 @@ jobs:
   create_pr:
     name: Create integration charts PR
     runs-on: ubuntu-latest
+    # Only run when the build workflow succeeded, not on failures
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout datagovuk repository
         uses: actions/checkout@v6
@@ -22,7 +24,10 @@ jobs:
         run: bash ./docker/create-pr.sh
         env:
           GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
-          GH_REF: ${{ github.ref_name }}
+          # workflow_run context exposes the triggering branch via
+          # github.event.workflow_run.head_branch; fall back to
+          # github.ref_name for workflow_dispatch
+          GH_REF: ${{ github.event.workflow_run.head_branch || github.ref_name }}
           IS_TAG: "false"
           ENVS: "integration"
           DIRECT_PUSH: "true"
