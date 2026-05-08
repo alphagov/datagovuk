@@ -17,36 +17,11 @@ updates:
         patterns:
           - '*'
 
-  # Enable version updates for Docker
-  - package-ecosystem: 'docker'
-    # Look for a `Dockerfile` in the `compose/local/django` directory
-    directories:
-      - 'compose/local/django/'
-      - 'compose/local/docs/'
-      - 'compose/production/django/'
-    # Every weekday
-    schedule:
-      interval: 'daily'
-    # Ensure proposed updates are 2 weeks old to stay behind the absolute bleeding edge
-    cooldown:
-      default-days: 14
-    # Ignore minor version updates (3.10 -> 3.11) but update patch versions
-    ignore:
-      - dependency-name: '*'
-        update-types:
-          - 'version-update:semver-major'
-          - 'version-update:semver-minor'
-    groups:
-      docker-python:
-        patterns:
-          - '*'
-
-
   - package-ecosystem: 'docker'
     # Look for a `Dockerfile` in the listed directories
     directories:
-      - 'compose/local/node/'
-      - 'compose/production/traefik/'
+      - 'docker/'
+      - 'docker/playwright/'
     # Every weekday
     schedule:
       interval: 'daily'
