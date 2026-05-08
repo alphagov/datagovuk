@@ -19,7 +19,7 @@ urlpatterns = [
         ),
     ),
     path(
-        "prometheus/metrics",
+        "metrics/",
         never_cache(prometheus_views.ExportToDjangoView),
         name="prometheus-django-metrics",
     ),
