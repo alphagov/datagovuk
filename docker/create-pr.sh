@@ -13,8 +13,6 @@ fi
 git config --global user.email "govuk-ci@users.noreply.github.com"
 git config --global user.name "govuk-ci"
 
-# Use gh as a credential helper so the token is not embedded in the clone URL
-# (avoids leaking GH_TOKEN in the Actions log via set -eux)
 gh auth setup-git
 git clone https://github.com/alphagov/govuk-dgu-charts.git charts
 
@@ -27,7 +25,7 @@ for ENV in $(echo $ENVS | tr "," " "); do
     yq -i '.branch = env(SOURCE_BRANCH)' "datagovuk.yaml"
     git add "datagovuk.yaml"
 
-    if [[ $(git status | grep "nothing to commit") ]]; then
+    if git diff --cached --quiet -- "datagovuk.yaml"; then
       echo "Nothing to commit"
     else
       BRANCH="ci/${IMAGE_TAG}-${ENV}"
