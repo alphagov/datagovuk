@@ -76,11 +76,15 @@ jobs:
       #- name: Run DB Migrations
       #  run: docker compose -f docker-compose.local.yml run --rm django python manage.py migrate
 
-      - name: Run Django Tests with coverage
+      - name: Run Unit Tests with coverage
         run: |
           docker compose -f docker-compose.local.yml up -d
-          docker compose -f docker-compose.local.yml exec django coverage run -m pytest
+          docker compose -f docker-compose.local.yml exec django coverage run -m pytest datagovuk/
           docker compose -f docker-compose.local.yml exec django coverage html
+
+      - name: Run E2E Tests
+        run: |
+          docker compose -f docker-compose.local.yml exec django pytest tests/e2e/
 
       - name: Upload E2E failure traces
         if: failure()
