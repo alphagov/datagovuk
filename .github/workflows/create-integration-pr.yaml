@@ -30,4 +30,3 @@ jobs:
           GH_REF: ${{ github.event.workflow_run.head_branch || github.ref_name }}
           IS_TAG: "false"
           ENVS: "integration"
-          DIRECT_PUSH: "true"

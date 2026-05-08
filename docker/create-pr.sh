@@ -29,23 +29,11 @@ for ENV in $(echo $ENVS | tr "," " "); do
 
     if [[ $(git status | grep "nothing to commit") ]]; then
       echo "Nothing to commit"
-    elif [[ "${DIRECT_PUSH:-false}" == "true" ]]; then
-      BRANCH="ci/${IMAGE_TAG}-${ENV}"
-      # Check remote (not local) to guard against concurrent workflow runs
-      if git ls-remote --exit-code --heads origin "${BRANCH}" >/dev/null 2>&1; then
-        echo "Branch ${BRANCH} already exists on govuk-dgu-charts — skipping"
-      else
-        git checkout -b ${BRANCH}
-        git commit -m "Update datagovuk image tags for ${ENV} to ${IMAGE_TAG}"
-        git push --set-upstream origin "${BRANCH}"
-        PR_URL=$(gh pr create --title "Update datagovuk image tags for ${ENV} (${IMAGE_TAG})" --base main --head "${BRANCH}" --fill --repo alphagov/govuk-dgu-charts)
-        gh pr merge "${PR_URL}" --auto --merge --delete-branch
-      fi
     else
       BRANCH="ci/${IMAGE_TAG}-${ENV}"
       # Check remote (not local) — git show-ref only sees local refs in a fresh clone
       if git ls-remote --exit-code --heads origin "${BRANCH}" >/dev/null 2>&1; then
-        echo "Branch ${BRANCH} already exists on govuk-dgu-charts"
+        echo "Branch ${BRANCH} already exists on govuk-dgu-charts — skipping"
       else
         git checkout -b ${BRANCH}
         git commit -m "Update datagovuk image tags for ${ENV} to ${IMAGE_TAG}"
