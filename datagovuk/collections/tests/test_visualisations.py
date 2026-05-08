@@ -51,3 +51,4 @@ def test_get_visualisation_headline():
     assert isinstance(visualisation["visualisation"], Headline)
     assert visualisation["type"] == "headline"
     assert visualisation["title"] == "Road traffic levels by vehicle type"
+    assert "Billion vehicle miles" in str(visualisation["visualisation"])
