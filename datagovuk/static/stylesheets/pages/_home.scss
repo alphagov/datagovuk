@@ -70,6 +70,12 @@
     margin-bottom: 20px;
 }
 
+.datagovuk-home-card__link {
+    &:focus img {
+        filter: invert(1);
+    }
+}
+
 .datagovuk-home-card__link-inner {
     display: flex;
     align-items: center;
