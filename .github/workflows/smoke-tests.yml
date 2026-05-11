@@ -16,6 +16,7 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
+  BASE_URL: ${{ github.event.inputs.base_url || 'https://datagovuk.eks.integration.govuk.digital' }}
 
 jobs:
   smoke-tests:
@@ -51,8 +52,8 @@ jobs:
           # --override-ini suppresses --ds=config.settings.test and --reuse-db from the default
           # addopts in pyproject.toml; no local Django instance is needed when BASE_URL is set.
           docker compose -f docker-compose.local.yml exec \
-            -e BASE_URL=${{ inputs.base_url }} \
-            django pytest tests/e2e/ --override-ini="addopts=--import-mode=importlib"
+            -e BASE_URL=${{ env.BASE_URL }} \
+            django pytest -m smoke tests/e2e/ --override-ini="addopts=--import-mode=importlib"
 
       - name: Upload E2E failure traces
         if: failure()
