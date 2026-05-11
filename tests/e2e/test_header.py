@@ -1,6 +1,8 @@
+import pytest
 from playwright.sync_api import expect
 
 
+@pytest.mark.smoke
 def test_header(page, live_server_url) -> None:
     page.goto(live_server_url)
     expect(page.get_by_role("link", name="Home")).to_be_visible()
@@ -44,6 +46,7 @@ def test_header(page, live_server_url) -> None:
     expect(page.get_by_role("link", name="Join a data community")).to_be_visible()
 
 
+@pytest.mark.smoke
 def test_header_mobile(mobile_page, live_server_url) -> None:
     mobile_page.goto(live_server_url)
     expect(mobile_page.get_by_role("link", name="Home")).to_be_visible()
