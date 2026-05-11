@@ -1,8 +1,9 @@
+from django.conf import settings
 from django.core.exceptions import PermissionDenied, SuspiciousOperation
-from django.http import HttpResponseServerError
+from django.http import HttpResponse, HttpResponseServerError
 from django.template import loader
 from django.views.decorators.csrf import requires_csrf_token
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 
 from datagovuk.core.markdown import get_safe_markdown_path, get_template_context_from_markdown
 
@@ -54,3 +55,8 @@ class TestError500View(TemplateView):
     def get_context_data(self, *args, **kwargs):
         error_message = "Some exception"
         raise KeyError(error_message)
+
+
+class VersionView(View):
+    def get(self, *args, **kwargs):
+        return HttpResponse(settings.DATAGOVUK_GIT_SHA)
