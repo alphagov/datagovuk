@@ -12,20 +12,43 @@ on:
         description: 'Root URL of the running instance to test (e.g. https://staging.data.gov.uk)'
         required: true
         type: string
+      expected_sha:
+        description: 'Expected sha on running instance to test'
+        required: false
+        type: string
 
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
+  REF: ${{ github.event.inputs.ref || 'main' }}
   BASE_URL: ${{ github.event.inputs.base_url || 'https://datagovuk.eks.integration.govuk.digital' }}
+  EXPECTED_SHA: ${{ github.event.inputs.expected_sha || '' }}
 
 jobs:
   smoke-tests:
     runs-on: ubuntu-latest
     steps:
+      - name: Wait for datagovuk deployment SHA
+        if: env.EXPECTED_SHA != ''
+        run: |
+          NEXT_WAIT_TIME=0
+          UNTIL_MAX=20 # Maximum number of attempts
+          SLEEP_TIME=10 # Seconds between polls
+
+          until [ $NEXT_WAIT_TIME -eq $UNTIL_MAX ] || [ "$(curl -s ${{ env.BASE_URL }}/status)" == "${{ env.EXPECTED_SHA }}" ]; do
+            echo "Waiting for datagovuk deployment to be ready..."
+            sleep $SLEEP_TIME
+            NEXT_WAIT_TIME=$((NEXT_WAIT_TIME+1))
+          done
+
+          if [ $NEXT_WAIT_TIME -eq $UNTIL_MAX ]; then
+            echo "Timeout reached waiting for datagovuk deployment!"
+            exit 1
+          fi
       - name: Checkout Code Repository
         uses: actions/checkout@v6
         with:
-          ref: ${{ inputs.ref }}
+          ref: ${{ env.REF }}
           submodules: recursive
 
       - name: Set up Docker Buildx
@@ -42,9 +65,9 @@ jobs:
           files: docker-compose.local.yml
           targets: django
           set: |
-            django.cache-from=type=gha,scope=django-${{ inputs.ref }}
+            django.cache-from=type=gha,scope=django-${{ env.REF }}
             django.cache-from=type=gha,scope=django-main
-            django.cache-to=type=gha,scope=django-${{ inputs.ref }},mode=max
+            django.cache-to=type=gha,scope=django-${{ env.REF }},mode=max
 
       - name: Run E2E smoke tests
         run: |
