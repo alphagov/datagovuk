@@ -78,7 +78,7 @@ jobs:
 
       - name: Run Unit Tests with coverage
         run: |
-          GIT_SHA=$(git rev-parse HEAD) docker compose -f docker-compose.local.yml up -d
+          docker compose -f docker-compose.local.yml up -d
           docker compose -f docker-compose.local.yml exec django coverage run -m pytest datagovuk/
           docker compose -f docker-compose.local.yml exec django coverage html
 
