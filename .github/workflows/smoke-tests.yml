@@ -35,7 +35,7 @@ jobs:
           UNTIL_MAX=20 # Maximum number of attempts
           SLEEP_TIME=10 # Seconds between polls
 
-          until [ $NEXT_WAIT_TIME -eq $UNTIL_MAX ] || [ "$(curl -s ${{ env.BASE_URL }}/status)" == "${{ env.EXPECTED_SHA }}" ]; do
+          until [ $NEXT_WAIT_TIME -eq $UNTIL_MAX ] || [ "$(curl -s ${{ env.BASE_URL }}/version/)" == "${{ env.EXPECTED_SHA }}" ]; do
             echo "Waiting for datagovuk deployment to be ready - expecting sha '${{ env.EXPECTED_SHA }}'..."
             sleep $SLEEP_TIME
             NEXT_WAIT_TIME=$((NEXT_WAIT_TIME+1))
