@@ -6,10 +6,13 @@ from playwright.sync_api import sync_playwright
 
 PLAYWRIGHT_HOST = os.getenv("PLAYWRIGHT_HOST", "127.0.0.1")
 DOCKER_HOSTNAME = "django"
+BASE_URL = os.getenv("BASE_URL")
 
 
 @pytest.fixture
 def live_server_url(request, settings):
+    if BASE_URL:
+        return BASE_URL.rstrip("/")
     server = StaticLiveServerTestCase
     if PLAYWRIGHT_HOST == "127.0.0.1":
         server.setUpClass()
