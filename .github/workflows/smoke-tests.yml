@@ -86,6 +86,14 @@ jobs:
           name: e2e-failure-traces
           path: e2e-failure-traces
 
+      - name: Verify datagovuk deployment SHA unchanged
+        if: env.EXPECTED_SHA != ''
+        run: |
+          if [ "$(curl -s ${{ env.BASE_URL }}/version/)" != "${{ env.EXPECTED_SHA }}" ]; then
+            echo "Deployment sha for datagovuk changed during smoke test run!"
+            exit 1
+          fi
+
       - name: Tear down the Stack
         if: always()
         run: docker compose -f docker-compose.local.yml down
