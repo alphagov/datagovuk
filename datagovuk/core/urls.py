@@ -20,4 +20,9 @@ urlpatterns = [
         views.TestError500View.as_view(),
         name="test_error_500",
     ),
+    path(
+        "version/",
+        views.VersionView.as_view(),
+        name="version",
+    ),
 ]
