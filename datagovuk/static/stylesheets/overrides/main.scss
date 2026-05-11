@@ -103,12 +103,22 @@
   font-size: 20px;
   color: #fff;
   box-shadow: none;
+
+  &:focus:not(:active):not(:hover) {
+    box-shadow: none;
+    outline: 2px solid $datagovuk-dark-green;
+  }
+
+  .datagovuk-button__arrow--focus {
+    display: none;
+  }
+
+  &:focus {
+    .datagovuk-button__arrow { display: none; }
+    .datagovuk-button__arrow--focus { display: inline-block; }
+  }
 }
 
-.datagovuk-button:focus:not(:active):not(:hover) {
-  box-shadow: none;
-  outline: 2px solid $datagovuk-dark-green;
-}
 
 .datagovuk-list {
   font-size: 20px;
