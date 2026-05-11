@@ -28,23 +28,6 @@ jobs:
   smoke-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Wait for datagovuk deployment SHA
-        if: env.EXPECTED_SHA != ''
-        run: |
-          NEXT_WAIT_TIME=0
-          UNTIL_MAX=20 # Maximum number of attempts
-          SLEEP_TIME=10 # Seconds between polls
-
-          until [ $NEXT_WAIT_TIME -eq $UNTIL_MAX ] || [ "$(curl -s ${{ env.BASE_URL }}/version/)" == "${{ env.EXPECTED_SHA }}" ]; do
-            echo "Waiting for datagovuk deployment to be ready - expecting sha '${{ env.EXPECTED_SHA }}'..."
-            sleep $SLEEP_TIME
-            NEXT_WAIT_TIME=$((NEXT_WAIT_TIME+1))
-          done
-
-          if [ $NEXT_WAIT_TIME -eq $UNTIL_MAX ]; then
-            echo "Timeout reached waiting for datagovuk deployment!"
-            exit 1
-          fi
       - name: Checkout Code Repository
         uses: actions/checkout@v6
         with:
@@ -68,6 +51,24 @@ jobs:
             django.cache-from=type=gha,scope=django-${{ env.REF }}
             django.cache-from=type=gha,scope=django-main
             django.cache-to=type=gha,scope=django-${{ env.REF }},mode=max
+
+      - name: Wait for datagovuk deployment SHA
+        if: env.EXPECTED_SHA != ''
+        run: |
+          NEXT_WAIT_TIME=0
+          UNTIL_MAX=20 # Maximum number of attempts
+          SLEEP_TIME=10 # Seconds between polls
+
+          until [ $NEXT_WAIT_TIME -eq $UNTIL_MAX ] || [ "$(curl -s ${{ env.BASE_URL }}/version/)" == "${{ env.EXPECTED_SHA }}" ]; do
+            echo "Waiting for datagovuk deployment to be ready - expecting sha '${{ env.EXPECTED_SHA }}'..."
+            sleep $SLEEP_TIME
+            NEXT_WAIT_TIME=$((NEXT_WAIT_TIME+1))
+          done
+
+          if [ $NEXT_WAIT_TIME -eq $UNTIL_MAX ]; then
+            echo "Timeout reached waiting for datagovuk deployment!"
+            exit 1
+          fi
 
       - name: Run E2E smoke tests
         run: |
