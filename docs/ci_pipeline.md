@@ -15,7 +15,7 @@ It runs these jobs:
 
 - Linting
 - CodeQL (SAST)
-- Django tests (unit, view, and end-to-end)
+- Django tests (unit, view and end-to-end)
 
 ### Trivy vulnerability scans
 
@@ -37,4 +37,4 @@ This `Build and push multi-arch images` github action workflow builds and pushes
 #### Create Integration PR
 
 The `create-integration-pr.yaml` workflow runs after `build-image.yaml` completes on `main`. It then automatically opens a
-pull request in in [govuk-dgu-charts](https://github.com/alphagov/govuk-dgu-charts).
+pull request in [govuk-dgu-charts](https://github.com/alphagov/govuk-dgu-charts).
