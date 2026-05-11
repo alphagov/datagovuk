@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.cache import never_cache
 
 from datagovuk.core import views
 
@@ -22,7 +23,7 @@ urlpatterns = [
     ),
     path(
         "version/",
-        views.VersionView.as_view(),
+        never_cache(views.VersionView.as_view()),
         name="version",
     ),
 ]
