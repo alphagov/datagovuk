@@ -24,6 +24,7 @@ DATA_MANUAL_PAGES = {**DATA_MANUAL_CONTENT_PAGES, **DATA_MANUAL_OTHER_PAGES}
 
 
 class TestDataManualHome:
+    @pytest.mark.smoke
     @pytest.mark.parametrize(
         "lazy_page",
         [
@@ -124,6 +125,7 @@ class TestDataManualPage:
         selected = mobile_page.locator(".datagovuk-section-navigation__item--selected")
         expect(selected.get_by_role("link", name="Data standards", exact=True)).to_be_visible()
 
+    @pytest.mark.smoke
     def test_markdown_content(self, page, live_server_url):
         page.goto(
             live_server_url + reverse("data_manual:data_manual_page", kwargs={"data_manual_name": "data-standards"}),
@@ -152,6 +154,7 @@ class TestDataManualPage:
             "https://www.gov.uk/government/publications/data-sharing-governance-framework/data-sharing-governance-framework",
         )
 
+    @pytest.mark.smoke
     def test_markdown_content_on_mobile(self, mobile_page, live_server_url):
         mobile_page.goto(
             live_server_url + reverse("data_manual:data_manual_page", kwargs={"data_manual_name": "data-standards"}),

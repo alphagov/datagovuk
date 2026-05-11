@@ -1,3 +1,4 @@
+import pytest
 from playwright.sync_api import expect
 
 COLLECTIONS = {
@@ -10,6 +11,7 @@ COLLECTIONS = {
 }
 
 
+@pytest.mark.smoke
 def test_homepage_heading(page, live_server_url):
     page.goto(live_server_url)
     main_content = page.locator(".datagovuk-main")
@@ -18,6 +20,7 @@ def test_homepage_heading(page, live_server_url):
     )
 
 
+@pytest.mark.smoke
 def test_homepage_has_cache_control_header_set(page, live_server_url):
     response = page.goto(live_server_url)
     cache_control = response.headers.get("cache-control")

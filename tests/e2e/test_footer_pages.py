@@ -1,6 +1,8 @@
+import pytest
 from playwright.sync_api import expect
 
 
+@pytest.mark.smoke
 def test_footer_pages(page, live_server_url):
     footer_links = {
         "Roadmap": "/roadmap/",
@@ -20,6 +22,7 @@ def test_footer_pages(page, live_server_url):
         expect(page).to_have_url(live_server_url + href)
 
 
+@pytest.mark.smoke
 def test_about_page_content(page, live_server_url):
     page.goto(live_server_url + "/about/")
 
@@ -36,6 +39,7 @@ def test_about_page_content(page, live_server_url):
     expect(page).to_have_url(live_server_url + "/")
 
 
+@pytest.mark.smoke
 def test_accessibility_page_content(page, live_server_url):
     page.goto(live_server_url + "/accessibility/")
     expect(page.get_by_role("heading", level=1)).to_have_text("Accessibility statement for data.gov.uk")
@@ -48,6 +52,7 @@ def test_accessibility_page_content(page, live_server_url):
     )
 
 
+@pytest.mark.smoke
 def test_support_page_content(page, live_server_url):
     page.goto(live_server_url + "/support/")
     expect(page.get_by_role("heading", level=1)).to_have_text("Support")
@@ -69,6 +74,7 @@ def test_team_page_content(page, live_server_url):
     expect(page.get_by_role("heading", level=2, name="Team members")).to_be_visible()
 
 
+@pytest.mark.smoke
 def test_privacy_and_terms_page_content(page, live_server_url):
     page.goto(live_server_url + "/privacy-and-terms/")
     expect(page.get_by_role("heading", level=1)).to_have_text("Privacy and terms")
@@ -81,6 +87,7 @@ def test_privacy_and_terms_page_content(page, live_server_url):
     )
 
 
+@pytest.mark.smoke
 def test_roadmap_page_content(page, live_server_url):
     page.goto(live_server_url + "/roadmap/")
     expect(page.get_by_role("heading", level=1)).to_have_text("Our plan for data.gov.uk")

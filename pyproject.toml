@@ -154,6 +154,7 @@ ini_options.python_files = [
   "tests.py",
   "test_*.py",
 ]
+ini_options.markers = [ "smoke" ]
 
 [tool.coverage]
 # ==== Coverage ====

@@ -6,6 +6,7 @@ from pytest_lazy_fixtures import lf
 from datagovuk.collections.constants import COLLECTIONS
 
 
+@pytest.mark.smoke
 def test_collection_pages(page, live_server_url):
     for collection_slug, collection_pages in COLLECTIONS.items():
         for collection_page in collection_pages:

@@ -3,6 +3,7 @@ from playwright.sync_api import expect
 from pytest_lazy_fixtures import lf
 
 
+@pytest.mark.smoke
 @pytest.mark.parametrize(
     "lazy_page",
     [
@@ -36,6 +37,7 @@ def test_cookie_page_accept(lazy_page, get_cookie, live_server_url) -> None:
     assert get_cookie("cookies_preferences_set", lazy_page)["value"] == "true"
 
 
+@pytest.mark.smoke
 @pytest.mark.parametrize(
     "lazy_page",
     [
@@ -69,6 +71,7 @@ def test_cookie_page_refuse(lazy_page, get_cookie, live_server_url) -> None:
     assert get_cookie("cookies_preferences_set", lazy_page)["value"] == "true"
 
 
+@pytest.mark.smoke
 @pytest.mark.parametrize(
     "lazy_page",
     [
