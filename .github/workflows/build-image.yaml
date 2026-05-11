@@ -131,6 +131,7 @@ jobs:
           file: docker/Dockerfile
           context: .
           target: python-run-production
+          build-args: GIT_SHA=${{ github.sha }}
           platforms: "linux/${{ matrix.runs_on.arch }}"
           load: true
           provenance: false

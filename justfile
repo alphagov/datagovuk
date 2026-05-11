@@ -24,12 +24,12 @@ init:
 # build: Build python image.
 build *args:
     @echo "Building python image..."
-    @docker compose build {{args}}
+    GIT_SHA=$(git rev-parse HEAD) docker compose -f docker-compose.local.yml build {{args}}
 
 # up: Start up containers.
 up *args:
     @echo "Starting up containers..."
-    @docker compose up -d --remove-orphans {{args}}
+    GIT_SHA=$(git rev-parse HEAD) docker compose -f docker-compose.local.yml up -d --remove-orphans {{args}}
 
 # down: Stop containers.
 down  *args:
@@ -97,7 +97,7 @@ collectstatic:
 # Build production docker image
 prod-build *args:
     @echo "Building production python image..."
-    docker compose -f docker-compose.production.yml build {{args}}
+    docker compose -f docker-compose.production.yml build --build-arg GIT_SHA=$(git rev-parse HEAD) {{args}}
 
 # Bring up production docker container
 prod-up *args:
