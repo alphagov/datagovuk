@@ -31,6 +31,7 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 FROM python-build-stage AS python-run-production
 
+ARG GIT_SHA
 ARG GUNICORN_WORKERS=4
 ARG GUNICORN_THREADS=4
 
@@ -44,6 +45,7 @@ RUN chmod +x /start
 # Fake env vars necessary for collectstatic and compress to run
 ENV DJANGO_SECRET_KEY=fake
 ENV SENTRY_DSN=https://public@sentry.example.com/1
+ENV GIT_SHA=$GIT_SHA
 RUN python /app/manage.py collectstatic --noinput
 RUN python /app/manage.py compress --engine jinja2 --extension=jinja
 
@@ -58,11 +60,13 @@ ENTRYPOINT ["/start"]
 
 FROM python-build-stage AS python-run-dev
 
+ARG GIT_SHA
 # we need to move the virtualenv outside of the $APP_HOME directory because it will be overriden by the docker compose mount
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
 ENV VIRTUAL_ENV=/opt/venv
 ENV UV_PROJECT_ENVIRONMENT=/opt/venv
 RUN uv venv $VIRTUAL_ENV
+ENV GIT_SHA=$GIT_SHA
 
 # devcontainer dependencies and utils
 RUN apt-get update && apt-get install --no-install-recommends -y \
