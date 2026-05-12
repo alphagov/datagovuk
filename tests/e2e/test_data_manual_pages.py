@@ -4,20 +4,20 @@ from playwright.sync_api import expect
 from pytest_lazy_fixtures import lf
 
 DATA_MANUAL_CONTENT_PAGES = {
-    "Who this manual is for": "/data-manual/who-this-manual-is-for",
-    "Data management": "/data-manual/data-management",
-    "Data standards": "/data-manual/data-standards",
-    "Security": "/data-manual/security",
-    "Data protection and privacy": "/data-manual/data-protection-and-privacy",
-    "Data sharing": "/data-manual/data-sharing",
-    "AI and data-driven technologies": "/data-manual/ai-and-data-driven-technologies",
-    "APIs and technical guidance": "/data-manual/apis-and-technical-guidance",
-    "General guidance": "/data-manual/general-guidance",
+    "Who this manual is for": "/data-manual/who-this-manual-is-for/",
+    "Data management": "/data-manual/data-management/",
+    "Data standards": "/data-manual/data-standards/",
+    "Security": "/data-manual/security/",
+    "Data protection and privacy": "/data-manual/data-protection-and-privacy/",
+    "Data sharing": "/data-manual/data-sharing/",
+    "AI and data-driven technologies": "/data-manual/ai-and-data-driven-technologies/",
+    "APIs and technical guidance": "/data-manual/apis-and-technical-guidance/",
+    "General guidance": "/data-manual/general-guidance/",
 }
 
 DATA_MANUAL_OTHER_PAGES = {
     "Tell us what you think": "https://forms.office.com/e/9V26PNFQaR",
-    "Join a data community": "/data-manual/join-a-data-community",
+    "Join a data community": "/data-manual/join-a-data-community/",
 }
 
 DATA_MANUAL_PAGES = {**DATA_MANUAL_CONTENT_PAGES, **DATA_MANUAL_OTHER_PAGES}
@@ -76,7 +76,7 @@ class TestDataManualPage:
             + reverse("data_manual:data_manual_page", kwargs={"data_manual_name": "who-this-manual-is-for"}),
         )
         link = page.get_by_role("link", name="Join a data community")
-        expect(link).to_have_attribute("href", "/data-manual/join-a-data-community")
+        expect(link).to_have_attribute("href", "/data-manual/join-a-data-community/")
         expect(link).not_to_have_class("datagovuk-section-navigation__item--selected")
 
     def test_tell_us_what_you_think_link_not_selected(self, page, live_server_url):
