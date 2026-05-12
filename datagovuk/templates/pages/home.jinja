@@ -17,7 +17,7 @@
         The home of UK public data to inform decisions and build services
       </h1>
       <p class="govuk-body datagovuk-body">
-        <a href="/roadmap" class="govuk-link datagovuk-link datagovuk-home-hero__link">Find out more about the new data.gov.uk</a>
+        <a href="{{ url('pages:roadmap') }}" class="govuk-link datagovuk-link datagovuk-home-hero__link">Find out more about the new data.gov.uk</a>
       </p>
     </div>
 
@@ -57,7 +57,8 @@
           A guide to working with data in government and the public sector
         </p>
 
-        {{ cta_button('/data-manual', 'Data manual', 'link') }}
+        {{ cta_button(url('data_manual:home'), 'Data manual', 'link') }}
+
       </div>
 
       <div class="datagovuk-home-card datagovuk-home-card--data-manual">

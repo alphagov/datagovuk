@@ -17,9 +17,8 @@
       <h2 class="datagovuk-menu__heading">Collections</h2>
       <div class="datagovuk-menu__items">
         {% for collection in collections %}
-          <a href="/collections/{{ collection["slug"] }}" class="govuk-link datagovuk-link datagovuk-menu__item-link">
-            {{ collection["title"] }}
-          </a>
+          <a href="{{ url('collections:collection', kwargs={'collection_name': collection['slug']}) }}"
+             class="govuk-link datagovuk-link datagovuk-menu__item-link">{{ collection["title"] }}</a>
         {% endfor %}
       </div>
     </div>
