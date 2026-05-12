@@ -1,5 +1,15 @@
-{% macro cta_button(url, link_text) -%}
-  <a role="button" class="govuk-button datagovuk-button" rel="nofollow" href="{{ url }}">{{ link_text }} <span class="datagovuk-right-arrow">→</span></a>
+{% macro cta_button(url, link_text, role) -%}
+  <a role={{ role or 'button' }} class="govuk-button datagovuk-button" rel="nofollow" href="{{ url }}">
+    {{ link_text }}
+    <span class="datagovuk-right-arrow">
+      <img class="datagovuk-button__arrow" src="{{ static('images/icons/arrow-white-right.svg') }}" width="20" height="20" alt="" />
+      <img class="datagovuk-button__arrow--focus"
+           src="{{ static('images/icons/arrow-black-right.svg') }}"
+           width="20"
+           height="20"
+           alt="" />
+    </span>
+  </a>
 {% endmacro %}
 
 {% macro link_list(links) -%}
