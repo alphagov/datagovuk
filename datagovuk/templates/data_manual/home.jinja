@@ -47,7 +47,8 @@
           <div class="datagovuk-data-manual-card datagovuk-data-manual-card--secondary">
             <img src="{{ static('images/icons/community.svg') }}" class="datagovuk-data-manual-card__icon" alt="" />
             <h2 class="govuk-body datagovuk-body">
-              <a href="/data-manual/join-a-data-community" class="govuk-link datagovuk-link datagovuk-!-colour-dark-pink">Join a data community</a>
+              <a href="{{ url('data_manual:data_manual_page', kwargs={'data_manual_name': 'join-a-data-community'}) }}"
+                 class="govuk-link datagovuk-link datagovuk-!-colour-dark-pink">Join a data community</a>
             </h2>
             <p class="govuk-body datagovuk-body govuk-!-margin-bottom-0 datagovuk-!-colour-dark-pink">
               Find Slack channels, events and other ways to connect with data practitioners.

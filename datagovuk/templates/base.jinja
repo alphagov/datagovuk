@@ -69,7 +69,7 @@
                         data-reject-cookies="true"
                         data-track-category="cookieBanner"
                         data-track-action="Cookie banner rejected">Reject additional cookies</button>
-                <a class="govuk-body datagovuk-body govuk-link datagovuk-link" href="/cookies">View cookies</a>
+                <a class="govuk-body datagovuk-body govuk-link datagovuk-link" href="{{ url('pages:cookies') }}">View cookies</a>
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@
           You can <a class="govuk-link datagovuk-link"
     data-track-category="cookieBanner"
     data-track-action="Cookie banner settings clicked from confirmation"
-    href="/cookies">change your cookie settings</a> at any time.
+    href="{{ url('pages:cookies') }}">change your cookie settings</a> at any time.
         </p>
         <div class="govuk-button-group">
           <button class="govuk-button datagovuk-button"

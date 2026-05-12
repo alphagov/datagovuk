@@ -12,9 +12,10 @@
       <div class="govuk-grid-column-two-thirds">
         <p class="govuk-body datagovuk-body">
           We’re updating data.gov.uk with new,
-          <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="/collections/business-and-economy">curated collections</a>
+          <a class="govuk-link datagovuk-link datagovuk-link--secondary"
+             href="{{ url('collections:collection', kwargs={'collection_name': 'business-and-economy'}) }}">curated collections</a>
           of data, and a
-          <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="/data-manual">data manual</a>
+          <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="{{ url('data_manual:home') }}">data manual</a>
           to support the data community.
         </p>
         <p class="govuk-body datagovuk-body">
