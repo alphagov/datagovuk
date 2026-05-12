@@ -40,7 +40,7 @@ jobs:
     permissions:
       security-events: write
 
-  # With no caching at all the entire ci process takes 3m to complete!
+  # With no caching at all, the entire ci process takes 3m to complete!
   pytest:
     runs-on: ubuntu-latest
 
