@@ -221,7 +221,7 @@ jobs:
           labels: |
             org.opencontainers.image.title=${{ fromJson(needs.configure_builds.outputs.app_metadata).name }}
             org.opencontainers.image.authors="GOV.UK Platform Engineering"
-            org.opencontainers.image.description="Datagovuk image for data.gov.uk"
+            org.opencontainers.image.description="datagovuk image for data.gov.uk"
             org.opencontainers.image.source="https://github.com/alphagov/datagovuk"
             org.opencontainers.image.version=${{ fromJson(needs.configure_builds.outputs.app_metadata).version }}
             org.opencontainers.image.created=${{ steps.calculate-image-tags.outputs.createdDate }}

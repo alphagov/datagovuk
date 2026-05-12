@@ -4,6 +4,8 @@
 2. ci.yaml
 3. create-integration-pr.yaml
 4. trivy-scans.yaml
+5. create-pr-on-tags.yaml
+6. build-image-tags.yaml
 
 ## On Pull request
 
@@ -38,3 +40,7 @@ This `Build and push multi-arch images` github action workflow builds and pushes
 
 The `create-integration-pr.yaml` workflow runs after `build-image.yaml` completes on `main`. It then automatically opens a
 pull request in [govuk-dgu-charts](https://github.com/alphagov/govuk-dgu-charts).
+
+## On tag creation (release to stating & production)
+
+
