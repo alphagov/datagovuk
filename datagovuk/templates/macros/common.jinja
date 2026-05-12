@@ -26,11 +26,15 @@
 
 {% macro section_navigation_item(item) %}
   <li class="datagovuk-section-navigation__item {{ 'datagovuk-section-navigation__item--selected' if item.selected else '' }}">
-    <a class="govuk-link datagovuk-link datagovuk-section-navigation__link" href="{{ item.url }}">{{ item.title }}</a>
+    <a class="govuk-link datagovuk-link datagovuk-section-navigation__link"
+       href="{{ item.url }}"
+       {{ 'aria-current=page' if item.selected else '' }}>
+      {{ item.title }}
+    </a>
   </li>
 {% endmacro %}
 
-{% macro section_navigation(items, extra_section_nav="") %}
+{% macro section_navigation(items, extra_section_nav = "") %}
   <nav id="datagovuk-section-navigation" class="datagovuk-section-navigation govuk-!-margin-bottom-8">
     <button type="button"
             class="govuk-button datagovuk-button datagovuk-section-navigation__button"
