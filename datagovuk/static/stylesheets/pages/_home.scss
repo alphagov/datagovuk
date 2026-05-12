@@ -70,11 +70,36 @@
     margin-bottom: 20px;
 }
 
+.datagovuk-home-card__arrow {
+   right: 15px;
+
+   &--hover {
+        opacity: 0;
+        position: absolute;
+        right: 0;
+   }
+}
+
+.datagovuk-home-card__link {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+
+    &:focus .datagovuk-home-card__arrow {
+        opacity: 0;
+    }
+
+    &:focus .datagovuk-home-card__arrow--hover {
+        opacity: 1;
+    }
+}
+
 .datagovuk-home-card__link-inner {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    position: relative;
 }
 
 .datagovuk-home-publications__heading {

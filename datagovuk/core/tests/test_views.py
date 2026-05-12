@@ -102,3 +102,21 @@ class TestTestError500View:
         url = reverse("core:test_error_500")
         with pytest.raises(KeyError):
             client.get(url)
+
+
+class TestVersionView:
+    def test_view_responds_correct_version(self, client, settings):
+        settings.DATAGOVUK_GIT_SHA = "my-sha"
+        url = reverse("core:version")
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.content.decode() == settings.DATAGOVUK_GIT_SHA
+
+    def test_view_no_setting_responds_none(self, client, settings):
+        settings.DATAGOVUK_GIT_SHA = None
+        url = reverse("core:version")
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.content.decode() == "None"
