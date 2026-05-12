@@ -28,6 +28,7 @@ on:
   push:
     branches:
       - main
+      - test-github-actions
 
 env:
   BUILD_TYPE : ${{ inputs.buildType || 'build_push' }}
