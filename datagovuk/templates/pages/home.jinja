@@ -1,5 +1,7 @@
 {% extends "base.jinja" %}
 
+{% from "macros/common.jinja" import cta_button %}
+
 {% block page_title %}
   data.gov.uk - The home of UK public data
 {% endblock page_title %}
@@ -55,13 +57,7 @@
           A guide to working with data in government and the public sector
         </p>
 
-        <a href="/data-manual" class="datagovuk-home-card__link govuk-button datagovuk-button">
-          <span class="datagovuk-home-card__link-inner">
-            Data manual
-            <img src="{{ static('images/icons/arrow-white-right.svg') }}" width="20" height="20" alt="" />
-          </span>
-        </a>
-
+        {{ cta_button('/data-manual', 'Data manual') }}
       </div>
 
       <div class="datagovuk-home-card datagovuk-home-card--data-manual">
@@ -72,13 +68,7 @@
           You can still search the original open data directory, which we're working&nbsp;on
         </p>
 
-        <a href="/search" class="datagovuk-home-card__link govuk-button datagovuk-button">
-          <span class="datagovuk-home-card__link-inner">
-            Directory
-            <img src="{{ static('images/icons/arrow-white-right.svg') }}" width="20" height="20" alt="" />
-          </span>
-        </a>
-
+        {{ cta_button('/search', 'Directory') }}
       </div>
     </div>
 
