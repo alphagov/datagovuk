@@ -287,7 +287,7 @@ LOGGING = {
 
 # BASIC AUTH
 # ------------------------------------------------------------------------------
-BASIC_AUTH_EXEMPT = ["/health/"]
+BASIC_AUTH_EXEMPT = ["/health/", STATIC_URL]
 BASIC_AUTH_USERNAME = env("BASIC_AUTH_USERNAME", default=None)
 BASIC_AUTH_PASSWORD = env("BASIC_AUTH_PASSWORD", default=None)
 BASIC_AUTH_BYPASS = env("BASIC_AUTH_BYPASS", default=None)

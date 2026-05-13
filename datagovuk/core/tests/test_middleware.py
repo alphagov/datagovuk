@@ -173,6 +173,17 @@ class TestBasicAuthMiddleware:
 
         assert response.status_code == HTTPStatus.UNAUTHORIZED
 
+    def test_exempt_path_prefix_match(self, rf, settings):
+        settings.BASIC_AUTH_USERNAME = "user"
+        settings.BASIC_AUTH_PASSWORD = "pass"  # noqa: S105
+        settings.BASIC_AUTH_EXEMPT = ["/health/"]
+
+        request = rf.get("/health/foobar")
+        middleware = BasicAuthMiddleware(_get_response)
+        response = middleware(request)
+
+        assert response.status_code == HTTPStatus.OK
+
     def test_bypass_header_allows_request(self, rf, settings):
         settings.BASIC_AUTH_USERNAME = "user"
         settings.BASIC_AUTH_PASSWORD = "pass"  # noqa: S105
