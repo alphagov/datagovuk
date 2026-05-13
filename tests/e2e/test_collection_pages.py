@@ -132,17 +132,26 @@ def test_collection_page_download(lazy_page, live_server_url):
     assert download.suggested_filename == "total-uk-imports-exports.csv"
 
 
-@pytest.mark.parametrize(
-    "lazy_page",
-    [
-        lf("page"),
-        lf("mobile_page"),
-    ],
-)
-def test_collection_page_with_aria_current_page(lazy_page, live_server_url):
+def test_collection_page_with_aria_current_page(page, live_server_url):
     url = reverse(
         "collections:collection_page",
         kwargs={"collection_name": "land-and-property", "collection_page_name": "uk-house-prices"},
     )
-    lazy_page.goto(live_server_url + url)
-    expect(lazy_page.get_by_role("link", name="UK house prices", exact=True)).to_have_attribute("aria-current", "page")
+    page.goto(live_server_url + url)
+    expect(page.get_by_role("link", name="UK house prices", exact=True)).to_have_attribute(
+        "aria-current",
+        "page",
+    )
+
+
+def test_collection_page_with_aria_current_mobile(mobile_page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "land-and-property", "collection_page_name": "uk-house-prices"},
+    )
+    mobile_page.goto(live_server_url + url)
+    mobile_page.get_by_role("button", name="Pages").click()
+    expect(mobile_page.get_by_role("link", name="UK house prices", exact=True)).to_have_attribute(
+        "aria-current",
+        "page",
+    )
