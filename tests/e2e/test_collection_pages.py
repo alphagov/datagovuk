@@ -131,3 +131,28 @@ def test_collection_page_download(lazy_page, live_server_url):
         lazy_page.get_by_role("link", name="Download the chart data").click()
     download = download_info.value
     assert download.suggested_filename == "total-uk-imports-exports.csv"
+
+
+def test_collection_page_with_aria_current_page(page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "land-and-property", "collection_page_name": "uk-house-prices"},
+    )
+    page.goto(live_server_url + url)
+    expect(page.get_by_role("link", name="UK house prices", exact=True)).to_have_attribute(
+        "aria-current",
+        "page",
+    )
+
+
+def test_collection_page_with_aria_current_mobile(mobile_page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "land-and-property", "collection_page_name": "uk-house-prices"},
+    )
+    mobile_page.goto(live_server_url + url)
+    mobile_page.get_by_role("button", name="Pages").click()
+    expect(mobile_page.get_by_role("link", name="UK house prices", exact=True)).to_have_attribute(
+        "aria-current",
+        "page",
+    )
