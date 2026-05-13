@@ -18,8 +18,6 @@ on:
         type: string
 
 env:
-  DOCKER_BUILDKIT: 1
-  COMPOSE_DOCKER_CLI_BUILD: 1
   REF: ${{ github.event.inputs.ref || 'main' }}
   BASE_URL: ${{ github.event.inputs.base_url || 'https://datagovuk.eks.integration.govuk.digital' }}
   EXPECTED_SHA: ${{ github.event.inputs.expected_sha || '' }}
