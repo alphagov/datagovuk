@@ -1,4 +1,5 @@
 import base64
+from binascii import Error as BinasciiError
 from http import HTTPStatus
 
 from django.conf import settings
@@ -22,13 +23,14 @@ class BasicAuthMiddleware:
         self.exempt_paths = settings.BASIC_AUTH_EXEMPT
         self.bypass_header = settings.BASIC_AUTH_BYPASS
 
-    def __call__(self, request):
+    def __call__(self, request):  # noqa: PLR0911
         if not self.username or not self.password:
             return self.get_response(request)
 
         # Allow exempt paths through
-        if request.path in self.exempt_paths:
-            return self.get_response(request)
+        for exempt_path in self.exempt_paths:
+            if request.path.startswith(exempt_path):
+                return self.get_response(request)
 
         # Allow bypass header through
         if self.bypass_header:
@@ -43,9 +45,12 @@ class BasicAuthMiddleware:
         if not auth_header or not auth_header.startswith("Basic "):
             return self._unauthorized()
 
-        encoded_credentials = auth_header[6:].encode()
-        decoded_credentials = base64.b64decode(encoded_credentials).decode()
-        username, password = decoded_credentials.split(":", 1)
+        try:
+            encoded_credentials = auth_header[6:].encode()
+            decoded_credentials = base64.b64decode(encoded_credentials).decode()
+            username, password = decoded_credentials.split(":", 1)
+        except BinasciiError, ValueError:
+            return self._unauthorized()
 
         if constant_time_compare(username, self.username) and constant_time_compare(
             password,
