@@ -116,6 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "datagovuk.core.middleware.BasicAuthMiddleware",
     "datagovuk.core.middleware.CacheControlMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -129,7 +130,6 @@ MIDDLEWARE = [
 ]
 
 CACHE_CONTROL_DEFAULT = "max-age=1800, public"
-
 
 SECURE_CSP = {
     "default-src": [CSP.SELF],
@@ -283,6 +283,14 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["console"]},
 }
 
+# Datagovuk specific...
+
+# BASIC AUTH
+# ------------------------------------------------------------------------------
+BASIC_AUTH_EXEMPT = ["/health/"]
+BASIC_AUTH_USERNAME = env("BASIC_AUTH_USERNAME", default=None)
+BASIC_AUTH_PASSWORD = env("BASIC_AUTH_PASSWORD", default=None)
+BASIC_AUTH_BYPASS = env("BASIC_AUTH_BYPASS", default=None)
 
 DATAGOVUK_CONTENT_ROOT = "datagovuk/content/"
 DATAGOVUK_CONTENT_DATA_ROOT = f"{DATAGOVUK_CONTENT_ROOT}data/"
