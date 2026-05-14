@@ -12,7 +12,7 @@ jobs:
     name: Create charts PR on tags creation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set GH_REF
         run: |
           git fetch -t -q
