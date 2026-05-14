@@ -7,6 +7,8 @@ from playwright.sync_api import sync_playwright
 PLAYWRIGHT_HOST = os.getenv("PLAYWRIGHT_HOST", "127.0.0.1")
 DOCKER_HOSTNAME = "django"
 BASE_URL = os.getenv("BASE_URL")
+E2E_BASIC_AUTH_USERNAME = os.getenv("E2E_BASIC_AUTH_USERNAME")
+E2E_BASIC_AUTH_PASSWORD = os.getenv("E2E_BASIC_AUTH_PASSWORD")
 
 
 @pytest.fixture
@@ -45,7 +47,13 @@ def browser():
 
 @pytest.fixture
 def page(browser, request):
-    context = browser.new_context()
+    context_kwargs = {}
+    if E2E_BASIC_AUTH_USERNAME and E2E_BASIC_AUTH_PASSWORD:
+        context_kwargs["http_credentials"] = {
+            "username": E2E_BASIC_AUTH_USERNAME,
+            "password": E2E_BASIC_AUTH_PASSWORD,
+        }
+    context = browser.new_context(**context_kwargs)
     context.tracing.start(screenshots=True, snapshots=True)
     page = context.new_page()
     yield page
