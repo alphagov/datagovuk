@@ -6,6 +6,7 @@
 4. trivy-scans.yaml
 5. create-pr-on-tags.yaml
 6. build-image-on-tags.yaml
+7. smoke-tests.yaml
 
 ## On Pull request
 
@@ -55,3 +56,11 @@ This `build-image-on-tags.yaml` workflow calls `build-image.yaml` and provides t
 ### Create pull requests on tags
 
 This `create-pr-on-tags.yaml` workflow is triggered when `build-image-on-tags.yaml` is complete. It automatically opens two PRs in [govuk-dgu-charts](https://github.com/alphagov/govuk-dgu-charts) for staging and production.
+
+## On manual trigger
+
+Uses workflow_dispatch github action to manually trigger the below workflows.
+
+### Smoke tests
+
+The `smoke-tests.yml` workflow runs sanity checks on integration (default) or a provided environment. This is for post live verification testing.
