@@ -63,4 +63,4 @@ Uses workflow_dispatch github action to manually trigger the below workflows.
 
 ### Smoke tests
 
-The `smoke-tests.yml` workflow runs sanity checks on integration (default) or a provided environment. This is for post live verification testing.
+The `smoke-tests.yml` workflow runs sanity checks on integration (default) or a provided environment. This is for post deployment verification testing.
