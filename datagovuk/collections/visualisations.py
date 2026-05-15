@@ -35,7 +35,6 @@ def _get_bar_chart(chart_spec):
                 },
                 "legend": {
                     "display": False,
-                    "clip": False,
                 },
                 "tooltip": {
                     "enabled": False,
@@ -74,10 +73,7 @@ def _get_bar_chart(chart_spec):
                     },
                     "ticks": {
                         "padding": 10,
-                        "font": {
-                            "size": size,
-                            "family": "Inter, sans-serif",
-                        },
+                        "font": {"size": size, "family": "Inter, sans-serif"},
                     },
                 },
             },
