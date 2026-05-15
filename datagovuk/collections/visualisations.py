@@ -38,8 +38,7 @@ def _get_bar_chart(chart_spec):
                     "clip": False,
                 },
                 "tooltip": {
-                    "bodyFont": {"size": 20, "family": "Inter, sans-serif", "weight": "bold"},
-                    "titleFont": {"size": 20, "family": "Inter, sans-serif", "weight": "bold"},
+                    "enabled": False,
                 },
             },
             "indexAxis": "y",
