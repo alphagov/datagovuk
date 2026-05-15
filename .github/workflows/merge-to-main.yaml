@@ -1,0 +1,28 @@
+name: Merge to main
+
+on:
+  push:
+    branches: ['main']
+    paths-ignore: ['docs/**']
+
+jobs:
+    ci:
+        uses: ./.github/workflows/ci.yaml
+
+    trivy-scan:
+        uses: ./.github/workflows/trivy-scans.yaml
+        needs: ci
+
+    build-image:
+        uses: ./.github/workflows/build-image.yaml
+        needs: trivy-scan
+        with:
+            buildType: build_push
+            gitRef: ${{ github.sha }}
+
+    create-integration-pr:
+        uses: ./.github/workflows/create-integration-pr.yaml
+        needs: build-image
+        with:
+            gitRef: ${{ github.ref_name }}
+        secrets: inherit

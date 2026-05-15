@@ -1,0 +1,24 @@
+name: Create staging/production deploy PRs in govuk-dgu-charts
+
+on:
+    workflow_dispatch:
+    push:
+        tags:
+        - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+    smoke_tests:
+        name: Smoke Tests
+        uses: ./.github/workflows/smoke-tests.yml
+        with:
+            ref: ${{ github.ref_name }}
+            environment: integration
+        secrets: inherit
+
+    build_and_push:
+        name: Build and push datagovuk image on tags
+        uses: ./.github/workflows/build-image-on-tags.yaml
+        needs: smoke_tests
+        with:
+            buildType: build_push_with_gittag
+            gitRef: ${{ github.ref_name }}

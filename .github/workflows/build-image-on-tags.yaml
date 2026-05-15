@@ -2,9 +2,16 @@ name: Build and push datagovuk image on tags
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_call:
+    inputs:
+      buildType:
+        description: Decide on what to build
+        required: false
+        type: string
+      gitRef:
+        description: Commit, tag or branch name to deploy
+        required: false
+        type: string
 
 jobs:
   build_and_push:
@@ -15,5 +22,5 @@ jobs:
       id-token: write
     uses: ./.github/workflows/build-image.yaml
     with:
-      buildType: build_push_with_gittag
-      gitRef: ${{ github.ref_name }}
+      buildType: ${{ inputs.buildType || github.event.inputs.buildType || 'build_push_with_gittag' }}
+      gitRef: ${{ inputs.gitRef || github.event.inputs.gitRef || github.ref_name }}

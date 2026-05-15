@@ -9,6 +9,8 @@ on:
 
 jobs:
   create_pr:
+    # Make sure the build image suceeds before creating the PR. Also, allow workflow_dispatch manual calls.
+    if: ${{ (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push') || github.event_name == 'workflow_dispatch' }}
     name: Create charts PR on tags creation
     runs-on: ubuntu-latest
     steps:
@@ -16,7 +18,17 @@ jobs:
       - name: Set GH_REF
         run: |
           git fetch -t -q
-          GH_REF=$(git describe --tags "$(git rev-list --tags --max-count=1)")
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            GH_REF=$(git tag --points-at "${{ github.event.workflow_run.head_sha }}" | head -n1)
+          else
+            GH_REF=$(git describe --tags "$(git rev-list --tags --max-count=1)")
+          fi
+
+          if [ -z "$GH_REF" ]; then
+            echo "Unable to resolve tag for PR creation"
+            exit 1
+          fi
+
           echo "GH_REF=$GH_REF" >> "$GITHUB_ENV"
       - run: bash ./docker/create-pr.sh
         env:
