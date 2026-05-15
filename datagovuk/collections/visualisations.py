@@ -35,6 +35,7 @@ def _get_bar_chart(chart_spec):
                 },
                 "legend": {
                     "display": False,
+                    "clip": False,
                 },
                 "tooltip": {
                     "bodyFont": {"size": 20, "family": "Inter, sans-serif", "weight": "bold"},
@@ -73,7 +74,11 @@ def _get_bar_chart(chart_spec):
                         "color": "#5D5D5D",
                     },
                     "ticks": {
-                        "font": {"size": size, "family": "Inter, sans-serif"},
+                        "padding": 10,
+                        "font": {
+                            "size": size,
+                            "family": "Inter, sans-serif",
+                        },
                     },
                 },
             },
