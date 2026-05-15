@@ -25,9 +25,6 @@ on:
         description: Commit, tag or branch name to deploy
         required: false
         type: string
-  push:
-    branches:
-      - main
 
 env:
   BUILD_TYPE : ${{ inputs.buildType || 'build_push' }}
