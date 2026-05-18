@@ -1,9 +1,10 @@
 name: Merge to main
 
 on:
-  pull_request:
-    paths-ignore: ['docs/**']
-    types: [opened, synchronize]
+    workflow_dispatch:
+    pull_request:
+        paths-ignore: ['docs/**']
+        types: [opened, synchronize, reopened]
 
 
 jobs:
