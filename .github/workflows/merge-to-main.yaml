@@ -1,9 +1,10 @@
 name: Merge to main
 
 on:
-  push:
-    branches: ['DGUK-561-test-merge-to-main']
+  pull_request:
     paths-ignore: ['docs/**']
+    types: [opened, synchronize]
+
 
 jobs:
     ci:
