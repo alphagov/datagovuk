@@ -11,6 +11,9 @@ on:
 
 jobs:
     ci:
+        permissions:
+            contents: read
+            security-events: write
         uses: ./.github/workflows/ci.yml
 
     trivy-scan:
