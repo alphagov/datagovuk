@@ -2,7 +2,7 @@ name: Merge to main
 
 on:
   push:
-    branches: ['main']
+    branches: ['DGUK-561-test-merge-to-main']
     paths-ignore: ['docs/**']
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
         uses: ./.github/workflows/build-image.yaml
         needs: trivy-scan
         with:
-            buildType: build_push
+            buildType: build_only
             gitRef: ${{ github.sha }}
 
     create-integration-pr:
