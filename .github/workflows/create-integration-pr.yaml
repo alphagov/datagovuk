@@ -2,12 +2,15 @@ name: Create integration charts PR
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: [ "Build and push multi-arch images" ]
-    types:
-      - completed
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      gitRef:
+        description: Commit, tag or branch to deploy
+        required: false
+        type: string
+    secrets:
+      PR_GITHUB_TOKEN:
+        required: true
 
 jobs:
   create_pr:
