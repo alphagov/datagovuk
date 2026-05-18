@@ -21,6 +21,10 @@ jobs:
         needs: ci
 
     build-image:
+        permissions:
+            contents: read
+            packages: write
+            id-token: write
         uses: ./.github/workflows/build-image.yaml
         needs: trivy-scan
         with:
