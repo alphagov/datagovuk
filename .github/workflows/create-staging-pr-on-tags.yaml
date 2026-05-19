@@ -1,0 +1,25 @@
+name: Create charts PR on tags creation
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [ "Build and push datagovuk image on tags" ]
+    types:
+      - completed
+
+jobs:
+  create_pr:
+    name: Create charts PR on tags creation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set GH_REF
+        run: |
+          git fetch -t -q
+          GH_REF=$(git describe --tags "$(git rev-list --tags --max-count=1)")
+          echo "GH_REF=$GH_REF" >> "$GITHUB_ENV"
+      - run: bash ./docker/create-pr.sh
+        env:
+          GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
+          IS_TAG: "true"
+          ENVS: "staging"

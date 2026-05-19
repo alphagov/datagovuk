@@ -22,4 +22,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
           IS_TAG: "true"
-          ENVS: "staging,production"
+          ENVS: "production"
