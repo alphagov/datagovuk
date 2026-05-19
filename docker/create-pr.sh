@@ -33,7 +33,8 @@ for ENV in $(echo $ENVS | tr "," " "); do
       if git ls-remote --exit-code --heads origin "${BRANCH}" >/dev/null 2>&1; then
         echo "Branch ${BRANCH} already exists on govuk-dgu-charts — skipping"
       else
-        git checkout -b ${BRANCH}
+        git fetch --quiet origin main
+        git checkout -b "${BRANCH}" origin/main
         git commit -m "Update datagovuk image tags for ${ENV} to ${IMAGE_TAG}"
         git push --set-upstream origin "${BRANCH}"
         gh pr create --title "Update datagovuk image tags for ${ENV} (${IMAGE_TAG})" --base main --head "${BRANCH}" --fill --repo alphagov/govuk-dgu-charts
