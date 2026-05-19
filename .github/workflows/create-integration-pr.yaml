@@ -16,8 +16,6 @@ jobs:
   create_pr:
     name: Create integration charts PR
     runs-on: ubuntu-latest
-    # Only run when the build workflow succeeded, not on failures
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout datagovuk repository
         uses: actions/checkout@v6
