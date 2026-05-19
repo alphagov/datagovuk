@@ -1,4 +1,4 @@
-name: Create charts PR on tags creation
+name: Create production charts PR on tags creation
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   create_pr:
-    name: Create charts PR on tags creation
+    name: Create production charts PR on tags creation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
