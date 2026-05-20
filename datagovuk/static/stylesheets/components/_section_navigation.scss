@@ -1,6 +1,9 @@
 .datagovuk-section-navigation .datagovuk-section-navigation__item {
-  padding: 10px;
-  margin-bottom: 15px;
+  a {
+    display: block;
+    margin-bottom: 15px;
+    padding: 10px;
+  }
 }
 
 .datagovuk-section-navigation .datagovuk-section-navigation__item.datagovuk-section-navigation__item--selected {
