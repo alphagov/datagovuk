@@ -14,8 +14,8 @@ jobs:
       environment: "integration"
       expected_sha: ${{ github.sha }}
 
-  promote_release_tag:
-    name: Promote integration image to staging and production
+  tag_for_staging_production:
+    name: Tag the image for use in staging and production
     needs: smoke_tests
     runs-on: ubuntu-latest
     permissions:
