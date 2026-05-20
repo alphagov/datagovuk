@@ -1,6 +1,12 @@
 name: Smoke Tests
 
 on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'The environment to run tests against; staging or integration'
+        required: true
+        type: string
   workflow_dispatch:
     inputs:
       ref:
@@ -25,8 +31,8 @@ env:
   REF: ${{ github.event.inputs.ref || github.head_ref || 'main' }}
   BASE_URL: ${{ github.event.inputs.base_url || 'https://datagovuk.eks.integration.govuk.digital' }}
   EXPECTED_SHA: ${{ github.event.inputs.expected_sha || '' }}
-  E2E_BASIC_AUTH_USERNAME: ${{ secrets[format('E2E_BASIC_AUTH_USERNAME_{0}', github.event.inputs.environment)] }}
-  E2E_BASIC_AUTH_PASSWORD: ${{ secrets[format('E2E_BASIC_AUTH_PASSWORD_{0}', github.event.inputs.environment)] }}
+  E2E_BASIC_AUTH_USERNAME: ${{ secrets[format('E2E_BASIC_AUTH_USERNAME_{0}', inputs.environment || github.event.inputs.environment)] }}
+  E2E_BASIC_AUTH_PASSWORD: ${{ secrets[format('E2E_BASIC_AUTH_PASSWORD_{0}', inputs.environment || github.event.inputs.environment)] }}
 
 jobs:
   smoke-tests:
