@@ -47,6 +47,17 @@ just compress      # Compress CSS/JS referenced by {% compress %} tags
 just collectstatic # Collect static files for non-local environments
 ```
 
+## System context
+
+This Django app is replacing parts of the Ruby/Rails "datagovuk_find" application — the public frontend for data.gov.uk. The broader system:
+
+- **CKAN** — publishing backend for dataset creation/management
+- **Find (Ruby/Rails)** — currently still handles dataset search (the "directory" link in the header navigates to the Rails app's search results page)
+- **This app (Find v2)** — serves the non-search pages (static content, collections, data manual, etc.) and will eventually take over search too
+- Both deployed on AWS EKS within GOV.UK's AWS infrastructure
+
+Reference: https://docs.publishing.service.gov.uk/manual/data-gov-uk-architecture.html
+
 ## Architecture
 
 Django 6.0 application serving the data.gov.uk website. Key characteristics:
