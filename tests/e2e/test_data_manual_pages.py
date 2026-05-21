@@ -37,6 +37,19 @@ class TestDataManualHome:
         content = lazy_page.locator(".datagovuk-data-manual-hero__header")
         expect(content).to_have_text("Data manual")
 
+    @pytest.mark.smoke
+    def test_home_page(self, page, live_server_url):
+        page.goto(live_server_url + reverse("data_manual:home"))
+        expect(page.get_by_role("heading", name="Data manual", level=1)).to_be_visible()
+
+    @pytest.mark.smoke
+    def test_non_home_page(self, page, live_server_url):
+        page.goto(
+            live_server_url
+            + reverse("data_manual:data_manual_page", kwargs={"data_manual_name": "who-this-manual-is-for"}),
+        )
+        expect(page.get_by_role("heading", name="Data manual", level=2)).to_be_visible()
+
     @pytest.mark.parametrize(
         "lazy_page",
         [
