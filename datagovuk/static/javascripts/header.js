@@ -15,7 +15,7 @@ class DatagovukHeader {
     }
 
     this.$menus.forEach($menu => {
-      $menu.hidden = true
+      $menu.style.display = 'none'
     })
 
     this.$mobileButton.setAttribute('aria-expanded', 'false')
@@ -66,7 +66,7 @@ class DatagovukHeader {
       this.$mobileButton.setAttribute('aria-expanded', 'true')
 
       this.$menus.forEach($menu => {
-        $menu.hidden = false
+        $menu.style.display = 'block'
       })
     }
   }
@@ -80,13 +80,13 @@ class DatagovukHeader {
     if (shouldOpen) {
       $clickedButton.setAttribute('aria-expanded', 'true')
       const $menu = this.getMenuFor($clickedButton)
-      $menu.hidden = false
+      $menu.style.display = 'block'
     }
   }
 
   closeAll() {
     this.$menus.forEach($menu => {
-      $menu.hidden = true
+      $menu.style.display = 'none'
     })
 
     this.$mobileButton.setAttribute('aria-expanded', 'false')
