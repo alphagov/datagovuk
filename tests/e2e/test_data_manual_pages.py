@@ -34,10 +34,8 @@ class TestDataManualHome:
     )
     def test_heading(self, lazy_page, live_server_url):
         lazy_page.goto(live_server_url + reverse("data_manual:home"))
-        content = lazy_page.locator(".datagovuk-main")
-        expect(content.get_by_role("heading", level=2)).to_have_text(
-            "Data manual",
-        )
+        content = lazy_page.locator(".datagovuk-data-manual-hero__header")
+        expect(content).to_have_text("Data manual")
 
     @pytest.mark.parametrize(
         "lazy_page",
