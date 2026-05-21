@@ -62,5 +62,3 @@ The most common source of problems when running locally is when `.envs/local/.dj
 `just` should list out other common commands in the project
 
 ## Docs
-
-Developer docs are located in `docs/`.
