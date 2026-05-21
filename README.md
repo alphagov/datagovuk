@@ -63,4 +63,4 @@ The most common source of problems when running locally is when `.envs/local/.dj
 
 ## Docs
 
-Developer docs are located in `docs/`.
+Developer docs are located in `docs/`
