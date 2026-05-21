@@ -10,7 +10,6 @@ jobs:
         uses: ./.github/workflows/ci.yml
         permissions:
             contents: read
-            security-events: write
 
     trivy-scan:
         uses: ./.github/workflows/trivy-scans.yaml
