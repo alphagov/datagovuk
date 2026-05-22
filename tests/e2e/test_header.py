@@ -44,6 +44,10 @@ def test_header(page, live_server_url) -> None:
     expect(page.get_by_role("link", name="General guidance")).to_be_visible()
     expect(page.get_by_role("link", name="Tell us what you think")).to_be_visible()
     expect(page.get_by_role("link", name="Join a data community")).to_be_visible()
+    # Ensure directory link works
+    page.get_by_role("banner").get_by_role("link", name="Directory").click()
+    expect(page).to_have_url(live_server_url + "/search")
+    page.goto(live_server_url)
 
 
 @pytest.mark.smoke
@@ -62,3 +66,7 @@ def test_header_mobile(mobile_page, live_server_url) -> None:
     ).to_be_visible()
     expect(mobile_page.get_by_role("link", name="Who this manual is for")).to_be_visible()
     expect(mobile_page.get_by_role("banner").get_by_role("link", name="Directory")).to_be_visible()
+    # Ensure directory link works
+    mobile_page.get_by_role("banner").get_by_role("link", name="Directory").click()
+    expect(mobile_page).to_have_url(live_server_url + "/search")
+    mobile_page.goto(live_server_url)
