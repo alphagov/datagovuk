@@ -1,0 +1,37 @@
+name: Create charts PR on tags creation
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [ "Tag datagovuk image for staging and production" ]
+    types:
+      - completed
+
+jobs:
+  create_pr:
+    name: Create charts PR on tags creation
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set GH_REF from workflow trigger
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            GH_REF="${{ github.event.workflow_run.head_branch }}"
+          else
+            GH_REF="${{ github.ref_name }}"
+          fi
+
+          if [[ ! "${GH_REF}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Expected release tag like v1.2.3, got ${GH_REF}"
+            exit 1
+          fi
+
+          echo "GH_REF=$GH_REF" >> "$GITHUB_ENV"
+      - run: bash ./docker/create-pr.sh
+        env:
+          GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
+          IS_TAG: "true"
+          ENVS: "staging,production"
