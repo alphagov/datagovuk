@@ -71,7 +71,7 @@ e2e-install-playwright:
 
 # e2e-codegen: Generate a new end to end test with playwright recorder
 e2e-codegen +args:
-    uv run playwright codegen --target python-pytest -o tests/e2e/{{args}} 127.0.0.1:8000
+    uv run playwright codegen --target python-pytest -o tests/e2e/{{args}} http://localhost:8000
 
 # e2e-debug: Run e2e test in debug mode (local/host, no Docker)
 # Requires: just e2e-install-playwright (one-time setup)
