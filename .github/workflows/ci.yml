@@ -48,7 +48,7 @@ jobs:
         run: cp .envs/.local/.django.example .envs/.local/.django
 
       - name: Build and cache local backend
-        uses: docker/bake-action@v7
+        uses: docker/bake-action@v7.1.0
         with:
           push: false
           load: true
