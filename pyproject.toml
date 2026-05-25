@@ -33,11 +33,11 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "coverage==7.13.5",
+  "coverage==7.14.0",
   "django-coverage-plugin==3.2.2",
   "django-debug-toolbar==6.3.0",
   "django-extensions==4.1",
-  "django-stubs[compatible-mypy]==6.0.3",
+  "django-stubs[compatible-mypy]==6.0.4",
   "djlint==1.36.4",
   "factory-boy==3.3.3",
   "ipdb==0.13.13",
