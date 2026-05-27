@@ -12,15 +12,12 @@
     <meta name="robots" content="index, follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#FFFFFF" />
-
-    <!-- START: OG Image Content Type -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.data.gov.uk/" />
     {% if page_title %}<meta property="og:title" content="data.gov.uk - {{ page_title }}" />{% endif %}
     {% if page_description %}<meta property="og:description" content="{{ page_description }}" />{% endif %}
     <meta property="og:image" content="{{ static('images/datagovuk-opengraph-image.png') }}" />
     <meta property="og:image:alt" content="data.gov.uk - {{ page_title }}" />
-    <!-- FINISH: OG Image Content Type -->
 
     {% compress css %}
       <link href="{{ static('stylesheets/govuk-frontend-6.0.0.min.css') }}" rel="stylesheet" />
