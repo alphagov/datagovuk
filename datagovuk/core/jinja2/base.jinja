@@ -18,9 +18,8 @@
     <meta property="og:url" content="https://www.data.gov.uk/" />
     {% if page_title %}<meta property="og:title" content="data.gov.uk - {{ page_title }}" />{% endif %}
     {% if page_description %}<meta property="og:description" content="{{ page_description }}" />{% endif %}
-    <meta property="og:image"
-          content="https://www.gov.uk/assets/frontend/govuk-opengraph-image-4196a4d6333cf92aaf720047f56cfd91b3532d7635fc21ebcf0d5897df6b5f77.png" />
-    <meta property="og:image:alt" content="A mockup of the GovUK." />
+    <meta property="og:image" content="{{ static('images/datagovuk-opengraph-image.png') }}" />
+    <meta property="og:image:alt" content="data.gov.uk - {{ page_title }}" />
     <!-- FINISH: OG Image Content Type -->
 
     {% compress css %}
