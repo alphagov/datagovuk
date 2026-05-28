@@ -14,8 +14,11 @@ jobs:
     name: Run smoke tests on integration environment
     uses: ./.github/workflows/smoke-tests.yml
     with:
+      base_url: "https://find.eks.integration.govuk.digital"
       environment: "INTEGRATION"
       expected_sha: 8b1fd63b64eb54e23d718d6fdc5ccf9d377670a3
+      fake_username: "reusable-fake-user"
+      fake_password: "reusable-fake-password"
 
   tag_for_staging_production:
     name: Tag the image for use in staging and production
