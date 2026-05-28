@@ -33,7 +33,7 @@ on:
 
 env:
   REF: ${{ github.event.inputs.ref || github.head_ref || 'main' }}
-  BASE_URL: ${{ github.event.inputs.base_url || 'https://datagovuk.eks.integration.govuk.digital' }}
+  BASE_URL: ${{ inputs.base_url || 'https://find.eks.integration.govuk.digital"' }}
   EXPECTED_SHA: ${{ inputs.expected_sha || '' }}
   E2E_BASIC_AUTH_USERNAME: ${{ secrets[format('E2E_BASIC_AUTH_USERNAME_{0}', inputs.environment)] }}
   E2E_BASIC_AUTH_PASSWORD: ${{ secrets[format('E2E_BASIC_AUTH_PASSWORD_{0}', inputs.environment)] }}
@@ -73,7 +73,7 @@ jobs:
           UNTIL_MAX=20 # Maximum number of attempts
           SLEEP_TIME=10 # Seconds between polls
 
-          until [ $NEXT_WAIT_TIME -eq $UNTIL_MAX ] || [ "$(curl -s ${{ env.BASE_URL }}/version/)" == "${{ env.EXPECTED_SHA }}" ]; do
+          until [ $NEXT_WAIT_TIME -eq $UNTIL_MAX ] || [ "$(curl -u ${{ env.E2E_BASIC_AUTH_USERNAME }}:${{ env.E2E_BASIC_AUTH_PASSWORD }} -s ${{ env.BASE_URL }}/version/)" == "${{ env.EXPECTED_SHA }}" ]; do
             echo "Waiting for datagovuk deployment to be ready - expecting sha '${{ env.EXPECTED_SHA }}'..."
             sleep $SLEEP_TIME
             NEXT_WAIT_TIME=$((NEXT_WAIT_TIME+1))
@@ -105,7 +105,7 @@ jobs:
       - name: Verify datagovuk deployment SHA unchanged
         if: env.EXPECTED_SHA != ''
         run: |
-          if [ "$(curl -s ${{ env.BASE_URL }}/version/)" != "${{ env.EXPECTED_SHA }}" ]; then
+          if [ "$(curl -u ${{ env.E2E_BASIC_AUTH_USERNAME }}:${{ env.E2E_BASIC_AUTH_PASSWORD }} -s ${{ env.BASE_URL }}/version/)" != "${{ env.EXPECTED_SHA }}" ]; then
             echo "Deployment sha for datagovuk changed during smoke test run!"
             exit 1
           fi
