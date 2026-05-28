@@ -7,7 +7,7 @@ on:
       - test-DGKU-564
   pull_request:
     branches:
-      - test-DGKU-564
+      - DGUK-564-tag-image-for-staging-and-prod
   # push:
   #   tags:
   #     - 'v*.*.*'
