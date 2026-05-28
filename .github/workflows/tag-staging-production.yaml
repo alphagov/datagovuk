@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - test-DGKU-564
+  pull_request:
+    branches:
+      - test-DGKU-564
   # push:
   #   tags:
   #     - 'v*.*.*'
