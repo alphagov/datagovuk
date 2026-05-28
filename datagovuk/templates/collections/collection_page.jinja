@@ -17,7 +17,8 @@
   <div class="govuk-width-container datagovuk-width-container datagovuk-collection-header">
     <img src="{{ static('images/collections/badge-' ~ collection_slug ~ '.png') }}"
          class="datagovuk-collection-header__image"
-         alt="" />
+         alt=""
+         aria-hidden="true" />
 
     <p class="govuk-body datagovuk-body datagovuk-body-uppercase">Collection</p>
 
@@ -92,7 +93,8 @@
               <div class="datagovuk-collection-pagination__card-inner">
                 <img src="{{ static('images/icons/arrow.svg') }}"
                      class="datagovuk-collection-pagination__arrow datagovuk-collection-pagination__arrow--previous"
-                     alt="" />
+                     alt=""
+                     aria-hidden="true" />
                 <p class="govuk-body datagovuk-body">{{ previous_page.title }}</p>
               </div>
             </a>
@@ -103,7 +105,8 @@
               <div class="datagovuk-collection-pagination__card-inner">
                 <img src="{{ static('images/icons/arrow.svg') }}"
                      class="datagovuk-collection-pagination__arrow datagovuk-collection-pagination__arrow--next"
-                     alt="" />
+                     alt=""
+                     aria-hidden="true" />
                 <p class="govuk-body datagovuk-body">{{ next_page.title }}</p>
               </div>
             </a>
