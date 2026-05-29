@@ -10,6 +10,7 @@ jobs:
   smoke_tests:
     name: Run smoke tests on integration environment
     uses: ./.github/workflows/smoke-tests.yml
+    secrets: inherit
     with:
       environment: "integration"
       expected_sha: ${{ github.sha }}
