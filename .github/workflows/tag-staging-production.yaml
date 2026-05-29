@@ -1,0 +1,83 @@
+name: Tag image for staging and production
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - test-DGUK-564-tag-image-for-staging-and-prod
+  pull_request:
+    branches:
+      - DGUK-564-tag-image-for-staging-and-prod
+  # push:
+  #   tags:
+  #     - 'v*.*.*'
+
+jobs:
+  smoke_tests:
+    name: Run smoke tests on integration environment
+    uses: ./.github/workflows/smoke-tests.yml
+    secrets: inherit
+    with:
+      base_url: "https://find.eks.integration.govuk.digital"
+      environment: "INTEGRATION"
+      expected_sha: 8b1fd63b64eb54e23d718d6fdc5ccf9d377670a3
+      ref: ${{ github.head_ref || github.ref_name || 'main' }}
+
+  tag_for_staging_production:
+    name: Tag the image for use in staging and production
+    needs: smoke_tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE_REPO: ghcr.io/alphagov/datagovuk
+      INTEGRATION_SHA: 8b1fd63b64eb54e23d718d6fdc5ccf9d377670a3
+      RELEASE_TAG: ${{ github.ref_name }} # e.g. v1.2.3
+    steps:
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get image digest from integration SHA
+        run: |
+          set -euo pipefail
+
+          image="${IMAGE_REPO}:sha-${INTEGRATION_SHA}"
+
+          docker buildx imagetools inspect "${image}" > /tmp/image_inspect.txt
+          digest="$(awk '/Digest:/ { print $2; exit }' /tmp/image_inspect.txt)"
+          if [[ -z "${digest}" || ! "${digest}" =~ ^sha256:[0-9a-f]{64}$ ]]; then
+            echo "Failed to resolve manifest digest for ${image}"
+            cat /tmp/image_inspect.txt
+            exit 1
+          fi
+
+          echo "Resolved image: ${image} and digest: ${digest}"
+          echo "DIGEST=${digest}" >> "$GITHUB_ENV"
+
+      # - name: Create Docker tag from Release tag
+      #   run: |
+      #     set -euo pipefail
+
+      #     target_image="${IMAGE_REPO}:${RELEASE_TAG}"
+
+      #     docker buildx imagetools create -t "${target_image}" "${IMAGE_REPO}@${DIGEST}"
+
+      #     inspect_output="$(docker buildx imagetools inspect "${target_image}")"
+      #     target_digest="$(awk '/Digest:/ { print $2; exit }' <<< "${inspect_output}")"
+
+      #     if [[ "${target_digest}" != "${DIGEST}" ]]; then
+      #       echo "Digest mismatch after promotion. source=${DIGEST} target=${target_digest}"
+      #       echo "${inspect_output}"
+      #       exit 1
+      #     fi
+
+      #     echo "Promoted ${IMAGE_REPO}:sha-${INTEGRATION_SHA} to ${target_image}"
+      #     echo "Verified target digest: ${target_digest}"
