@@ -34,7 +34,7 @@ jobs:
     env:
       IMAGE_REPO: ghcr.io/alphagov/datagovuk
       INTEGRATION_SHA: 8b1fd63b64eb54e23d718d6fdc5ccf9d377670a3
-      RELEASE_TAG: ${{ github.ref_name }} # e.g. v1.2.3
+      RELEASE_TAG: v1.1.0-test # e.g. v1.2.3
     steps:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -63,22 +63,22 @@ jobs:
           echo "Resolved image: ${image} and digest: ${digest}"
           echo "DIGEST=${digest}" >> "$GITHUB_ENV"
 
-      # - name: Create Docker tag from Release tag
-      #   run: |
-      #     set -euo pipefail
+      - name: Create Docker tag from Release tag
+        run: |
+          set -euo pipefail
 
-      #     target_image="${IMAGE_REPO}:${RELEASE_TAG}"
+          target_image="${IMAGE_REPO}:${RELEASE_TAG}"
 
-      #     docker buildx imagetools create -t "${target_image}" "${IMAGE_REPO}@${DIGEST}"
+          docker buildx imagetools create -t "${target_image}" "${IMAGE_REPO}@${DIGEST}"
 
-      #     inspect_output="$(docker buildx imagetools inspect "${target_image}")"
-      #     target_digest="$(awk '/Digest:/ { print $2; exit }' <<< "${inspect_output}")"
+          inspect_output="$(docker buildx imagetools inspect "${target_image}")"
+          target_digest="$(awk '/Digest:/ { print $2; exit }' <<< "${inspect_output}")"
 
-      #     if [[ "${target_digest}" != "${DIGEST}" ]]; then
-      #       echo "Digest mismatch after promotion. source=${DIGEST} target=${target_digest}"
-      #       echo "${inspect_output}"
-      #       exit 1
-      #     fi
+          if [[ "${target_digest}" != "${DIGEST}" ]]; then
+            echo "Digest mismatch after promotion. source=${DIGEST} target=${target_digest}"
+            echo "${inspect_output}"
+            exit 1
+          fi
 
-      #     echo "Promoted ${IMAGE_REPO}:sha-${INTEGRATION_SHA} to ${target_image}"
-      #     echo "Verified target digest: ${target_digest}"
+          echo "Promoted ${IMAGE_REPO}:sha-${INTEGRATION_SHA} to ${target_image}"
+          echo "Verified target digest: ${target_digest}"
