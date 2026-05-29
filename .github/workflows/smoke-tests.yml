@@ -1,6 +1,21 @@
 name: Smoke Tests
 
 on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'The environment to run tests against; staging or integration'
+        required: true
+        type: string
+      expected_sha:
+        description: 'Expected sha on running instance to test'
+        required: false
+        type: string
+      ref:
+        description: 'Branch name or git tag to check out'
+        default: 'main'
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       ref:
@@ -22,11 +37,11 @@ on:
         type: string
 
 env:
-  REF: ${{ github.event.inputs.ref || github.head_ref || 'main' }}
-  BASE_URL: ${{ github.event.inputs.base_url || 'https://datagovuk.eks.integration.govuk.digital' }}
-  EXPECTED_SHA: ${{ github.event.inputs.expected_sha || '' }}
-  E2E_BASIC_AUTH_USERNAME: ${{ secrets[format('E2E_BASIC_AUTH_USERNAME_{0}', github.event.inputs.environment)] }}
-  E2E_BASIC_AUTH_PASSWORD: ${{ secrets[format('E2E_BASIC_AUTH_PASSWORD_{0}', github.event.inputs.environment)] }}
+  REF: ${{ inputs.ref || github.head_ref || 'main' }}
+  BASE_URL: ${{ inputs.base_url || 'https://find.eks.integration.govuk.digital' }}
+  EXPECTED_SHA: ${{ inputs.expected_sha || '' }}
+  E2E_BASIC_AUTH_USERNAME: ${{ secrets[format('E2E_BASIC_AUTH_USERNAME_{0}', inputs.environment)] }}
+  E2E_BASIC_AUTH_PASSWORD: ${{ secrets[format('E2E_BASIC_AUTH_PASSWORD_{0}', inputs.environment)] }}
 
 jobs:
   smoke-tests:
