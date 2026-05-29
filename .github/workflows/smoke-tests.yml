@@ -11,6 +11,11 @@ on:
         description: 'Expected sha on running instance to test'
         required: false
         type: string
+      ref:
+        description: 'Branch name or git tag to check out'
+        default: 'main'
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       ref:
@@ -32,8 +37,8 @@ on:
         type: string
 
 env:
-  REF: ${{ github.event.inputs.ref || github.head_ref || 'main' }}
-  BASE_URL: ${{ inputs.base_url || 'https://find.eks.integration.govuk.digital"' }}
+  REF: ${{ inputs.ref || github.head_ref || 'main' }}
+  BASE_URL: ${{ inputs.base_url || 'https://find.eks.integration.govuk.digital' }}
   EXPECTED_SHA: ${{ inputs.expected_sha || '' }}
   E2E_BASIC_AUTH_USERNAME: ${{ secrets[format('E2E_BASIC_AUTH_USERNAME_{0}', inputs.environment)] }}
   E2E_BASIC_AUTH_PASSWORD: ${{ secrets[format('E2E_BASIC_AUTH_PASSWORD_{0}', inputs.environment)] }}
