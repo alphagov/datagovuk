@@ -1,14 +1,14 @@
-# name: CodeQL
+name: CodeQL
 
-# on:
-#   push:
-#     branches: ['main']
-#   pull_request:
-#     branches: ['main']
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
 
-# jobs:
-#   analyze:
-#     name: CodeQL SAST scan
-#     uses: alphagov/govuk-infrastructure/.github/workflows/codeql-analysis.yml@main
-#     permissions:
-#       security-events: write
+jobs:
+  analyze:
+    name: CodeQL SAST scan
+    uses: alphagov/govuk-infrastructure/.github/workflows/codeql-analysis.yml@main
+    permissions:
+      security-events: write

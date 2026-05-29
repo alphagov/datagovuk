@@ -1,99 +1,99 @@
-# name: CI
+name: CI
 
-# # Enable Buildkit and let compose use it to speed up image building
-# env:
-#   DOCKER_BUILDKIT: 1
-#   COMPOSE_DOCKER_CLI_BUILD: 1
+# Enable Buildkit and let compose use it to speed up image building
+env:
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
 
-# on:
-#   pull_request:
-#     branches: ['main']
-#     paths-ignore: ['docs/**']
-#   workflow_call:
+on:
+  pull_request:
+    branches: ['main']
+    paths-ignore: ['docs/**']
+  workflow_call:
 
-# concurrency:
-#   group: ${{ github.head_ref || github.run_id }}
-#   cancel-in-progress: true
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
-# jobs:
-#   linter:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout Code Repository
-#         uses: actions/checkout@v6
-#         with:
-#           submodules: recursive
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
 
-#       - name: Set up Python
-#         uses: actions/setup-python@v6
-#         with:
-#           python-version-file: '.python-version'
-#       - name: Run pre-commit
-#         uses: pre-commit/action@v3.0.1
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: '.python-version'
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
 
-#   # With no caching at all, the entire ci process takes 3m to complete!
-#   pytest:
-#     runs-on: ubuntu-latest
+  # With no caching at all, the entire ci process takes 3m to complete!
+  pytest:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout Code Repository
-#         uses: actions/checkout@v6
-#         with:
-#           submodules: recursive
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
 
-#       - name: Set up Docker Buildx
-#         uses: docker/setup-buildx-action@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
 
-#       - name: Copy env file
-#         run: cp .envs/.local/.django.example .envs/.local/.django
+      - name: Copy env file
+        run: cp .envs/.local/.django.example .envs/.local/.django
 
-#       - name: Build and cache local backend
-#         uses: docker/bake-action@v7.1.0
-#         with:
-#           push: false
-#           load: true
-#           files: docker-compose.local.yml
-#           targets: django
-#           set: |
-#             django.cache-from=type=gha,scope=django-${{ github.ref_name }}
-#             django.cache-from=type=gha,scope=django-main
-#             django.cache-to=type=gha,scope=django-${{ github.ref_name }},mode=max
+      - name: Build and cache local backend
+        uses: docker/bake-action@v7.1.0
+        with:
+          push: false
+          load: true
+          files: docker-compose.local.yml
+          targets: django
+          set: |
+            django.cache-from=type=gha,scope=django-${{ github.ref_name }}
+            django.cache-from=type=gha,scope=django-main
+            django.cache-to=type=gha,scope=django-${{ github.ref_name }},mode=max
 
-#       # TODO: Re-instate this when we have a DB..
-#       #- name: Check DB Migrations
-#       #  run: docker compose -f docker-compose.local.yml run --rm django python manage.py makemigrations --check
+      # TODO: Re-instate this when we have a DB..
+      #- name: Check DB Migrations
+      #  run: docker compose -f docker-compose.local.yml run --rm django python manage.py makemigrations --check
 
-#       # TODO: Re-instate this when we have a DB..
-#       #- name: Run DB Migrations
-#       #  run: docker compose -f docker-compose.local.yml run --rm django python manage.py migrate
+      # TODO: Re-instate this when we have a DB..
+      #- name: Run DB Migrations
+      #  run: docker compose -f docker-compose.local.yml run --rm django python manage.py migrate
 
-#       - name: Run Unit Tests with coverage
-#         run: |
-#           docker compose -f docker-compose.local.yml up -d
-#           docker compose -f docker-compose.local.yml exec django coverage run -m pytest datagovuk/
-#           docker compose -f docker-compose.local.yml exec django coverage html
+      - name: Run Unit Tests with coverage
+        run: |
+          docker compose -f docker-compose.local.yml up -d
+          docker compose -f docker-compose.local.yml exec django coverage run -m pytest datagovuk/
+          docker compose -f docker-compose.local.yml exec django coverage html
 
-#       - name: Run E2E Tests
-#         run: |
-#           docker compose -f docker-compose.local.yml exec django pytest tests/e2e/
+      - name: Run E2E Tests
+        run: |
+          docker compose -f docker-compose.local.yml exec django pytest tests/e2e/
 
-#       - name: Upload E2E failure traces
-#         if: failure()
-#         uses: actions/upload-artifact@v7
-#         with:
-#           name: e2e-failure-traces
-#           path: e2e-failure-traces
+      - name: Upload E2E failure traces
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-failure-traces
+          path: e2e-failure-traces
 
-#       - name: Upload artifacts
-#         if: success()
-#         uses: actions/upload-artifact@v7
-#         with:
-#           name: coverage-artifacts
-#           path: htmlcov
+      - name: Upload artifacts
+        if: success()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-artifacts
+          path: htmlcov
 
-#       - name: Fail under 100% coverage
-#         run: |
-#           docker compose -f docker-compose.local.yml run django coverage report --fail-under=100
+      - name: Fail under 100% coverage
+        run: |
+          docker compose -f docker-compose.local.yml run django coverage report --fail-under=100
 
-#       - name: Tear down the Stack
-#         run: docker compose -f docker-compose.local.yml down
+      - name: Tear down the Stack
+        run: docker compose -f docker-compose.local.yml down
