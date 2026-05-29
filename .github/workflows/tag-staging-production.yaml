@@ -21,6 +21,7 @@ jobs:
       base_url: "https://find.eks.integration.govuk.digital"
       environment: "INTEGRATION"
       expected_sha: 8b1fd63b64eb54e23d718d6fdc5ccf9d377670a3
+      # TODO: remove github.head_ref after completing manual testing of workflow
       ref: ${{ github.head_ref || github.ref_name || 'main' }}
 
   tag_for_staging_production:

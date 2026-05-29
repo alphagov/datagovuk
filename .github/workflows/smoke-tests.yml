@@ -42,7 +42,7 @@ on:
 
 env:
   REF: ${{ inputs.ref || github.head_ref || 'main' }}
-  BASE_URL: ${{ inputs.base_url || 'https://datagovuk.eks.integration.govuk.digital' }}
+  BASE_URL: ${{ inputs.base_url || 'https://find.eks.integration.govuk.digital' }}
   EXPECTED_SHA: ${{ inputs.expected_sha || '' }}
   E2E_BASIC_AUTH_USERNAME: ${{ secrets[format('E2E_BASIC_AUTH_USERNAME_{0}', inputs.environment)] }}
   E2E_BASIC_AUTH_PASSWORD: ${{ secrets[format('E2E_BASIC_AUTH_PASSWORD_{0}', inputs.environment)] }}
