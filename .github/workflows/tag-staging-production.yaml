@@ -74,8 +74,8 @@ jobs:
           echo "Promoted ${IMAGE_REPO}:sha-${INTEGRATION_SHA} to ${target_image}"
           echo "Verified target digest: ${target_digest}"
 
-  create_charts_pr:
-    name: Create charts PR on tags creation
+  create_deployment_prs:
+    name: Create deployment PRs on tags creation
     needs: tag_for_staging_production
     uses: ./.github/workflows/create-deploy-prs.yaml
     secrets: inherit

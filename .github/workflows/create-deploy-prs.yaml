@@ -27,7 +27,7 @@ on:
         required: true
 
 jobs:
-  create_pr:
+  create_deployment_prs:
     name: Create deployment PRs
     runs-on: ubuntu-latest
     steps:
