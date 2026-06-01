@@ -23,7 +23,7 @@ jobs:
     env:
       IMAGE_REPO: ghcr.io/alphagov/datagovuk
       INTEGRATION_SHA: "1234567890abcdef1234567890abcdef12345678"
-      RELEASE_TAG: "v1.0.0-test" # e.g. v1.2.3
+      RELEASE_TAG: "v0.0.0-test-dguk-565" # e.g. v1.2.3
     steps:
       - run: echo "job to tag commented out atm"
   #     - name: Setup Docker Buildx

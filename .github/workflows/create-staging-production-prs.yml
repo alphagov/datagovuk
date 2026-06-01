@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*.*.*' # e.g. v1.2.3
+    branches:
+      - test-DGUK-565-update-trigger-for-workflow
 
 jobs:
   tag_for_staging_production:
@@ -21,4 +23,4 @@ jobs:
       IS_TAG: "true"
       ENVS: "staging,production"
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
-      GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
+      GH_REF: v0.0.0-test-dguk-565
