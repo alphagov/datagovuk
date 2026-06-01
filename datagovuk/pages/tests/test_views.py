@@ -18,7 +18,19 @@ def test_home(client):
 
     assert response.status_code == HTTPStatus.OK
     assert response.headers["Cache-Control"] == "max-age=1800, public"
-    assert "data.gov.uk - The home of UK public data" in response.content.decode()
+    response_content = response.content.decode()
+    assert "data.gov.uk - The home of UK public data" in response_content
+    assert "Test feature flag enabled" not in response_content
+
+
+def test_home_test_feature_flag_enabled(client, settings):
+    settings.FEATURE_FLAGS_ENABLED = ["test-feature-flag"]
+    url = reverse("pages:home")
+    response = client.get(url)
+
+    assert response.status_code == HTTPStatus.OK
+    response_content = response.content.decode()
+    assert "Test feature flag enabled" in response_content
 
 
 def test_about(client):
