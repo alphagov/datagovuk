@@ -7,6 +7,10 @@ on:
     branches:
       - test-DGUK-565-update-trigger-for-workflow
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   tag_for_staging_production:
     name: Tag datagovuk image for staging and production
@@ -15,6 +19,7 @@ jobs:
 
   create_deployment_prs:
     name: Create deployment PRs
+    needs: tag_for_staging_production
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
