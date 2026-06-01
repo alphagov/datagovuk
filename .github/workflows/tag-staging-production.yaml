@@ -82,4 +82,4 @@ jobs:
     with:
       IS_TAG: "true"
       ENVS: "staging,production"
-      GH_REF: "v1.2.3"
+      GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
