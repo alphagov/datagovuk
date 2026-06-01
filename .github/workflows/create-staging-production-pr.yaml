@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - run: bash ./docker/create-pr.sh
+      # - run: bash ./docker/create-pr.sh
+      - run: echo "job to create PR commented out atm"
     env:
       IS_TAG: "true"
       ENVS: "staging,production"
