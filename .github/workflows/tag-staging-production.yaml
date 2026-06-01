@@ -2,9 +2,7 @@ name: Tag datagovuk image for staging and production
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*.*.*'
+  workflow_call:
 
 jobs:
   smoke_tests:
