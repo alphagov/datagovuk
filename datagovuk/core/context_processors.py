@@ -72,3 +72,9 @@ def google_tag_manager(request):
         "GOOGLE_TAG_MANAGER_AUTH": settings.GOOGLE_TAG_MANAGER_AUTH,
         "GOOGLE_TAG_MANAGER_PREVIEW": settings.GOOGLE_TAG_MANAGER_PREVIEW,
     }
+
+
+def feature_flags(request):
+    return {
+        "FEATURE_FLAGS": settings.FEATURE_FLAGS,
+    }

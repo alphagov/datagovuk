@@ -103,6 +103,11 @@
 
     {% include "includes/footer.jinja" %}
 
+    {# The following is purely for determining if the feature flag mechanism is working in tests. We never expect this feature flag to be present in production. #}
+    {% if is_feature_flag_enabled(FEATURE_FLAGS.TEST_FEATURE_FLAG) %}
+      Test feature flag enabled.
+    {% endif %}
+
     <script type="module" src="{{ static("javascripts/govuk-frontend-6.0.0.min.js") }}"></script>
     {% compress js %}
       <script src="{{ static('javascripts/header.js') }}"></script>

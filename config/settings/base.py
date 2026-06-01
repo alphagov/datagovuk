@@ -1,6 +1,7 @@
 # ruff: noqa: ERA001
 """Base settings to build other settings files upon."""
 
+from enum import Enum
 from pathlib import Path
 
 import environ
@@ -204,6 +205,7 @@ TEMPLATES = [
                 "datagovuk.core.context_processors.data_manual",
                 "datagovuk.core.context_processors.data_manual_menu_items",
                 "datagovuk.core.context_processors.google_tag_manager",
+                "datagovuk.core.context_processors.feature_flags",
             ],
             "extensions": [
                 "compressor.contrib.jinja2ext.CompressorExtension",
@@ -299,3 +301,10 @@ DATAGOVUK_CONTENT_DATA_MANUAL_ROOT = f"{DATAGOVUK_CONTENT_ROOT}data-manual/"
 DATAGOVUK_CONTENT_PAGES_ROOT = f"{DATAGOVUK_CONTENT_ROOT}content-pages/"
 
 DATAGOVUK_GIT_SHA = env("GIT_SHA", default=None)
+
+
+class FEATURE_FLAGS(Enum):  # noqa: N801
+    TEST_FEATURE_FLAG = "test-feature-flag"
+
+
+FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
