@@ -23,17 +23,20 @@ class CollectionPageView(RenderedMarkdownView):
     def collection_pages(self):
         collection_pages = []
         selected_index = 0
-        for index, collection_page in enumerate(COLLECTIONS[self.kwargs["collection_name"]]):
-            is_selected = collection_page["slug"] == self.kwargs["collection_page_name"]
-            collection_pages.append(
-                {
-                    **collection_page,
-                    "url": f"/collections/{self.kwargs['collection_name']}/{collection_page['slug']}",
-                    "selected": is_selected,
-                },
-            )
-            if is_selected:
-                selected_index = index
+
+        for index, collection in enumerate(COLLECTIONS):
+            is_selected: bool = collection["slug"] == self.kwargs["collection_page_name"]
+            for topic in collection["topics"]:
+                collection_pages.append(
+                    {
+                        **topic,
+                        "url": f"/collections/{self.kwargs['collection_name']}/{topic['slug']}",
+                        "selected": is_selected,
+                    },
+                )
+                if is_selected:
+                    selected_index = index
+
         return collection_pages, selected_index
 
     def get_context_data(self, **kwargs):
@@ -50,6 +53,9 @@ class CollectionPageView(RenderedMarkdownView):
         context["collection_pages"] = collection_pages
         if context["visualisation_data"]:
             context["visualisation"] = get_visualisation(context["visualisation_data"])
+
+        context["testingText"] = "Just testing this out."
+
         return context
 
 
@@ -86,9 +92,18 @@ class CollectionView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         collection_name = self.kwargs["collection_name"]
         try:
-            collection_page_name = COLLECTIONS[collection_name][0]["slug"]
+            for collection in COLLECTIONS:
+                if collection_name == collection["slug"]:
+                    if len(collection["topics"]) < 1:
+                        message = f"Collection {collection_name} has no topics"
+                        raise Http404(message)
+                    collection_page_name = collection["topics"][0]["slug"]
+                    break
+            else:
+                message = f"Collection {collection_name} not found"
+                raise Http404(message)
         except KeyError as error:
-            message = f"Collection {collection_name} not found"
+            message = f"Collection {collection_name} malformed"
             raise Http404(message) from error
         return reverse(
             "collections:collection_page",
