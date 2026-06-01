@@ -20,4 +20,5 @@ jobs:
     env:
       IS_TAG: "true"
       ENVS: "staging,production"
+      GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
       GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
