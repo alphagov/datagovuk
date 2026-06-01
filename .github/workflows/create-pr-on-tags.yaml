@@ -1,0 +1,23 @@
+name: Create deployment PRs on release tags creation
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # e.g. v1.2.3
+
+jobs:
+  tag_for_staging_production:
+    name: Tag datagovuk image for staging and production
+    uses: ./.github/workflows/tag-staging-production.yaml
+    secrets: inherit
+
+  create_deployment_prs:
+    name: Create deployment PRs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: bash ./docker/create-pr.sh
+    env:
+      IS_TAG: "true"
+      ENVS: "staging,production"
+      GH_REF: ${{ github.ref_name }} # e.g. v1.2.3

@@ -2,9 +2,7 @@ name: Tag datagovuk image for staging and production
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - 'v*.*.*'
+  workflow_call:
 
 jobs:
   smoke_tests:
@@ -73,13 +71,3 @@ jobs:
 
           echo "Promoted ${IMAGE_REPO}:sha-${INTEGRATION_SHA} to ${target_image}"
           echo "Verified target digest: ${target_digest}"
-
-  create_deployment_prs:
-    name: Create deployment PRs on tags creation
-    needs: tag_for_staging_production
-    uses: ./.github/workflows/create-deploy-prs.yaml
-    secrets: inherit
-    with:
-      IS_TAG: "true"
-      ENVS: "staging,production"
-      GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
