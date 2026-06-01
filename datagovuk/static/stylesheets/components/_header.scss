@@ -5,7 +5,7 @@
 .datagovuk-header__inner {
     display: flex;
     flex-wrap: wrap;
-    align-items: start;
+    align-items: center;
     gap: 0 20px;
 }
 
@@ -16,7 +16,7 @@
 
 .datagovuk-header__logo-link {
     display: block;
-    width: 165px;
+    width: 170px;
     text-decoration: none;
 }
 
@@ -90,6 +90,21 @@
     text-decoration: underline;
 }
 
+.datagovuk-menu__spotlight-tag {
+    display: inline-block;
+    font-size: 13px;
+    font-family: Inter, sans-serif;
+    font-weight: 600;
+    line-height: 1;
+    padding: 3px 7px;
+    border-radius: 4px;
+    background-color: #F1FAF0;
+    color: #333333;
+    vertical-align: middle;
+    margin-left: 6px;
+    text-decoration: none;
+}
+
 /* Desktop styling overrides */
 @media (min-width: $desktop-header-breakpoint) {
 
@@ -98,7 +113,7 @@
     }
 
     .datagovuk-header__logo-link {
-        width: 235px;
+        width: 234px;
     }
 
     .datagovuk-header__link,
