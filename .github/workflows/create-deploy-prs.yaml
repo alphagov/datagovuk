@@ -1,0 +1,40 @@
+name: Create deployment PRs
+
+on:
+  workflow_dispatch:
+    inputs:
+      IS_TAG:
+        type: string
+        required: true
+      ENVS:
+        type: string
+        required: true
+      GH_REF:
+        type: string
+        required: true
+  workflow_call:
+    inputs:
+      IS_TAG:
+        type: string
+        required: true
+      ENVS:
+        type: string
+        description: "List of environments to create deployment PRs for (e.g. staging,production)"
+        required: true
+      GH_REF:
+        type: string
+        description: "The Git reference (e.g. tag or branch) to create deployment PRs for"
+        required: true
+
+jobs:
+  create_pr:
+    name: Create deployment PRs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: bash ./docker/create-pr.sh
+        env:
+          GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
+          IS_TAG: ${{ github.event.inputs.IS_TAG }}
+          ENVS: ${{ github.event.inputs.ENVS }}
+          GH_REF: ${{ github.event.inputs.GH_REF }}
