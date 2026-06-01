@@ -4,6 +4,8 @@ from django.templatetags.static import static
 from django.urls import reverse
 from jinja2 import Environment
 
+from .feature_flags import is_feature_flag_enabled
+
 
 def environment(**options):
     env = Environment(**options)  # noqa: S701
@@ -19,6 +21,7 @@ def environment(**options):
         {
             "static": static,
             "url": reverse,
+            "is_feature_flag_enabled": is_feature_flag_enabled,
         },
     )
     return env
