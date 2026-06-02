@@ -24,20 +24,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
-          payload=$(cat <<'JSON'
-          {
-            "channel": "datagovuk-technical",
-            "text": "Test notification from GitHub Actions",
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "Test notification from *datagovuk*.\nRun: '"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"'"
-                }
-              }
-            ]
-          }
-          JSON
-          )
-          curl -sS -X POST -H "Content-type: application/json" --data "$payload" "$SLACK_WEBHOOK_URL"
+          curl -sS -X POST \
+            -H "Content-type: application/json" \
+            --data '{"text":"Hello, this is a test notification"}' \
+            "$SLACK_WEBHOOK_URL"
