@@ -1,6 +1,7 @@
 name: Notify Slack on main workflow failures
 
 on:
+  # TODO: Remove this workflow_dispatch trigger after testing (36b7ea138e77645a26211a2953b30fe996f94dcd)
   workflow_dispatch:
   workflow_run:
     workflows:
@@ -16,6 +17,7 @@ on:
 
 jobs:
   notify-slack:
+    # TODO: Remove this workflow_dispatch condition after testing (36b7ea138e77645a26211a2953b30fe996f94dcd)
     if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.head_branch == 'main') }}
     runs-on: ubuntu-latest
     steps:
