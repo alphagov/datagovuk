@@ -1,3 +1,7 @@
+from django.conf import settings
+
+from datagovuk.core.feature_flags import is_feature_flag_enabled
+
 COLLECTIONS = [
     {
         "title": "Business and Economy",
@@ -126,17 +130,21 @@ COLLECTIONS = [
             {"title": "Maritime and shipping", "slug": "maritime-and-shipping"},
         ],
     },
-    # spotlight collections begin here...
-    {
-        "title": "Early years",
-        "type": "spotlight",
-        "slug": "early-years",
-        "description": "Child development, health, vaccinations, school readiness",
-        "topics": [
-            {"title": "Sample page", "slug": "sample-page"},
-        ],
-    },
 ]
+
+if is_feature_flag_enabled(settings.FEATURE_FLAGS.EARLY_YEARS):
+    COLLECTIONS.append(
+        {
+            "title": "Early years",
+            "type": "spotlight",
+            "slug": "early-years",
+            "description": "Child development, health, vaccinations, school readiness",
+            "topics": [
+                {"title": "Sample page", "slug": "sample-page"},
+            ],
+        },
+    )
+
 
 COLLECTIONS_BY_SLUG = {collection["slug"]: collection for collection in COLLECTIONS}
 
