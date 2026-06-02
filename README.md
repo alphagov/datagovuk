@@ -67,7 +67,7 @@ Developer docs are located in `docs/`.
 
 ## Running on Heroku
 
-This app is deployable on Heroku with the Procfile included from the Cookiecutter (with db migrations commented out) 
+This app is deployable on Heroku with the Procfile included from the Cookiecutter (with db migrations commented out)
 
 The settings file to use is: [config/settings/heroku.py](config/settings/heroku.py) and the following environment variables should be set using `heroku config:set` or the Heroku dashboard.
 
