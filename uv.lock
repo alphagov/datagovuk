@@ -290,14 +290,14 @@ requires-dist = [
     { name = "django", specifier = "==6.0.5" },
     { name = "django-compressor", specifier = "==4.6.0" },
     { name = "django-environ", specifier = "==0.13.0" },
-    { name = "django-health-check", specifier = "==4.4.0" },
+    { name = "django-health-check", specifier = "==4.4.1" },
     { name = "django-libsass", specifier = "==0.9" },
     { name = "django-prometheus", specifier = "==2.4.0" },
     { name = "gunicorn", specifier = "==26.0.0" },
     { name = "jinja2", specifier = "==3.1.6" },
     { name = "mistune", specifier = "==3.2.1" },
     { name = "pillow", specifier = "==12.2.0" },
-    { name = "python-frontmatter", specifier = "==1.1.0" },
+    { name = "python-frontmatter", specifier = "==1.2.0" },
     { name = "python-slugify", specifier = "==8.0.4" },
     { name = "sentry-sdk", specifier = "==2.60.0" },
     { name = "whitenoise", specifier = "==6.12.0" },
@@ -319,7 +319,7 @@ dev = [
     { name = "pytest", specifier = "==9.0.3" },
     { name = "pytest-django", specifier = "==4.12.0" },
     { name = "pytest-lazy-fixtures", specifier = "==1.4.0" },
-    { name = "pytest-playwright", specifier = "==0.7.2" },
+    { name = "pytest-playwright", specifier = "==0.8.0" },
     { name = "pytest-sugar", specifier = "==1.1.1" },
     { name = "ruff", specifier = "==0.15.13" },
     { name = "werkzeug", extras = ["watchdog"], specifier = "==3.1.8" },
@@ -433,15 +433,15 @@ wheels = [
 
 [[package]]
 name = "django-health-check"
-version = "4.4.0"
+version = "4.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
     { name = "dnspython" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f3/91/604e73b1c74da15af9a249a76c78b76f715f79e67d6937682957ae8cd407/django_health_check-4.4.0.tar.gz", hash = "sha256:1529886e49c8b443454e129e36fd024a09d025268ae8fb2e60816482c64530bb", size = 21713, upload-time = "2026-04-19T17:46:40.44Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d8/c3/99dbf858f939cbf709bf82648daa63632a81484d59b888e92ec687601091/django_health_check-4.4.1.tar.gz", hash = "sha256:2658c21710c09632f75318bb66b5865ff0721f82bab812193d479680773e4c0b", size = 21751, upload-time = "2026-05-15T16:08:37.517Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/f8/dfa721f8c25e5e1d7cad7742b4daf0eeafb29f8d8c19e005289c74dd53a5/django_health_check-4.4.0-py3-none-any.whl", hash = "sha256:23595410569c4987c60bd44cd7e5a59a0f2826c838499ffe887a976905314753", size = 26824, upload-time = "2026-04-19T17:46:39.226Z" },
+    { url = "https://files.pythonhosted.org/packages/26/df/697390fe7bdfefd1e48e29c190ebe255c45db4c1819d58b76fbc826bc5a8/django_health_check-4.4.1-py3-none-any.whl", hash = "sha256:363d94e839c90a75e822694f260ca31bd42978d948ad77ea1df18c7f68ff9021", size = 26877, upload-time = "2026-05-15T16:08:36.192Z" },
 ]
 
 [[package]]
@@ -1132,7 +1132,7 @@ wheels = [
 
 [[package]]
 name = "pytest-playwright"
-version = "0.7.2"
+version = "0.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "playwright" },
@@ -1140,9 +1140,9 @@ dependencies = [
     { name = "pytest-base-url" },
     { name = "python-slugify" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e8/6b/913e36aa421b35689ec95ed953ff7e8df3f2ee1c7b8ab2a3f1fd39d95faf/pytest_playwright-0.7.2.tar.gz", hash = "sha256:247b61123b28c7e8febb993a187a07e54f14a9aa04edc166f7a976d88f04c770", size = 16928, upload-time = "2025-11-24T03:43:22.53Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/58/ef/172eb8e23c80491fc72f1401c72f9305663873649351306a38b18406b0c9/pytest_playwright-0.8.0.tar.gz", hash = "sha256:7888d4a2443160c82e0c506c437076679f86b36d1910427250d90fbf1843a981", size = 17132, upload-time = "2026-05-18T10:16:15.919Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/76/61/4d333d8354ea2bea2c2f01bad0a4aa3c1262de20e1241f78e73360e9b620/pytest_playwright-0.7.2-py3-none-any.whl", hash = "sha256:8084e015b2b3ecff483c2160f1c8219b38b66c0d4578b23c0f700d1b0240ea38", size = 16881, upload-time = "2025-11-24T03:43:24.423Z" },
+    { url = "https://files.pythonhosted.org/packages/fe/71/1c545fac6a9054b52b3771238fb2dc6e8f1d0ccec116e1c7786ec191887c/pytest_playwright-0.8.0-py3-none-any.whl", hash = "sha256:856aae6efd4bc055f2ef229c647768760bcaad5cd3a5983c314ac260a974a933", size = 17143, upload-time = "2026-05-18T10:16:18.226Z" },
 ]
 
 [[package]]
@@ -1173,14 +1173,14 @@ wheels = [
 
 [[package]]
 name = "python-frontmatter"
-version = "1.1.0"
+version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/96/de/910fa208120314a12f9a88ea63e03707261692af782c99283f1a2c8a5e6f/python-frontmatter-1.1.0.tar.gz", hash = "sha256:7118d2bd56af9149625745c58c9b51fb67e8d1294a0c76796dafdc72c36e5f6d", size = 16256, upload-time = "2024-01-16T18:50:04.052Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e9/21/88aefb4f1de6661b5a003175e21e4a5ad94f5e52b2abf4170a11883c7d81/python_frontmatter-1.2.0.tar.gz", hash = "sha256:5b26ccd3cb85af77feb11d83b922c7bb5aeccb0c9d3fb236b938c600b6322984", size = 16890, upload-time = "2026-05-17T23:42:05.493Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/49/87/3c8da047b3ec5f99511d1b4d7a5bc72d4b98751c7e78492d14dc736319c5/python_frontmatter-1.1.0-py3-none-any.whl", hash = "sha256:335465556358d9d0e6c98bbeb69b1c969f2a4a21360587b9873bfc3b213407c1", size = 9834, upload-time = "2024-01-16T18:50:00.911Z" },
+    { url = "https://files.pythonhosted.org/packages/1c/b1/ec12e3e746234006b77dec69d53878253b1da09dbb55fa3cb456083d9069/python_frontmatter-1.2.0-py3-none-any.whl", hash = "sha256:e1ee1d4300450a2f84e778eb4f70edf573da6cd7d463801066f05edc4e819c78", size = 10396, upload-time = "2026-05-17T23:42:04.637Z" },
 ]
 
 [[package]]
