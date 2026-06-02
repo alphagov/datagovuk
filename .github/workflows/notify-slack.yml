@@ -9,6 +9,7 @@ on:
       - Trivy Security Scan
       - Tag datagovuk image for staging and production
       - Create deployment PRs on release tags creation
+      - Test slack notification with failure
       - Create integration PR
     types:
       - completed
