@@ -1,6 +1,7 @@
-name: Notify Slack on main workflow failures
-
 on:
+  push:
+    branches:
+      - test-DGUK-583-add-slack-notifications-cicd
   workflow_run:
     workflows:
       - Build and push multi-arch images
@@ -16,12 +17,27 @@ on:
 
 jobs:
   notify-slack:
-    if: ${{ github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.head_branch == 'test-DGUK-583-add-slack-notifications-cicd' }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.head_branch == 'main') }}
     runs-on: ubuntu-latest
     steps:
-      - name: Notify Slack if failure on main
-        uses: alphagov/govuk-infrastructure/.github/actions/report-run-failure@main
-        with:
-          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          channel: "datagovuk-technical"
-          message: "${{ github.event.workflow_run.name }} failed on main: ${{ github.event.workflow_run.html_url }}"
+      - name: Send test Slack notification
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          payload=$(cat <<'JSON'
+          {
+            "channel": "datagovuk-technical",
+            "text": "Test notification from GitHub Actions",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "Test notification from *datagovuk*.\nRun: '"${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"'"
+                }
+              }
+            ]
+          }
+          JSON
+          )
+          curl -sS -X POST -H "Content-type: application/json" --data "$payload" "$SLACK_WEBHOOK_URL"
