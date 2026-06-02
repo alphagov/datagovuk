@@ -1,5 +1,3 @@
-name: Notify Slack on main workflow failures
-
 on:
   workflow_dispatch:
   workflow_call:
