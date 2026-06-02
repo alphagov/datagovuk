@@ -1,0 +1,30 @@
+{
+  "name": "datagovuk-preview",
+  "description": "This is a preview application deployment of datagovuk",
+  "stack": "heroku-26",
+  "env": {
+    "DJANGO_SETTINGS_MODULE": {
+      "value": "config.settings.heroku"
+    },
+    "DJANGO_SECRET_KEY": {
+      "generator": "secret"
+    },
+    "BASIC_AUTH_USERNAME": {
+      "required": true
+    },
+    "BASIC_AUTH_PASSWORD": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
