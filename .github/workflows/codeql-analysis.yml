@@ -12,3 +12,14 @@ jobs:
     uses: alphagov/govuk-infrastructure/.github/workflows/codeql-analysis.yml@main
     permissions:
       security-events: write
+  
+  notify-slack-if-failure-on-main:
+    runs-on: ubuntu-latest
+    needs: analyze
+    steps:
+      - name: Notify Slack if failure on main
+        if: ${{ failure() }}
+        uses: alphagov/govuk-infrastructure/.github/actions/report-run-failure@main
+        with:
+          slack_webhook_url: ${{ secrets.GOVUK_SLACK_WEBHOOK_URL }}
+          channel: datagovuk-technical
