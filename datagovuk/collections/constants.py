@@ -133,9 +133,7 @@ COLLECTIONS = [
         "slug": "early-years",
         "description": "Child development, health, vaccinations, school readiness",
         "topics": [
-            {"title": "Childcare providers", "slug": "childcare-providers"},
-            {"title": "Child development (age 2 to 2 and a half)", "slug": "child-development"},
-            {"title": "Childhood vaccinations", "slug": "childhood-vaccinations"},
+            {"title": "Sample page", "slug": "sample-page"},
         ],
     },
 ]
