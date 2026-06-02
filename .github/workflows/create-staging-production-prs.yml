@@ -27,11 +27,3 @@ jobs:
       ENVS: "staging,production"
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
       GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
-
-  notify-slack:
-    if: ${{ failure() }}
-    needs:
-      - tag_for_staging_production
-      - create_deployment_prs
-    uses: ./.github/workflows/notify-slack.yml
-    secrets: inherit

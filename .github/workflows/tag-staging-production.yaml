@@ -71,11 +71,3 @@ jobs:
 
           echo "Promoted ${IMAGE_REPO}:sha-${INTEGRATION_SHA} to ${target_image}"
           echo "Verified target digest: ${target_digest}"
-
-  notify-slack:
-    if: ${{ failure() }}
-    needs:
-      - smoke_tests
-      - tag_for_staging_production
-    uses: ./.github/workflows/notify-slack.yml
-    secrets: inherit
