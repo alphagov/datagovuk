@@ -135,9 +135,6 @@ COLLECTIONS = [
         "topics": [
             {"title": "Childcare providers", "slug": "childcare-providers"},
             {"title": "Child development (age 2 to 2 and a half)", "slug": "child-development"},
-            {"title": "School readiness", "slug": "school-readiness"},
-            {"title": "Child health (0 to 5 years)", "slug": "child-health"},
-            {"title": "Health visitor reviews", "slug": "health-visitor-reviews"},
             {"title": "Childhood vaccinations", "slug": "childhood-vaccinations"},
         ],
     },
