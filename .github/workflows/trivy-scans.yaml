@@ -25,3 +25,10 @@ jobs:
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
           exit-code: '1'
+
+  notify-slack:
+    if: ${{ failure() }}
+    needs:
+      - trivy-security-scan
+    uses: ./.github/workflows/notify-slack.yml
+    secrets: inherit

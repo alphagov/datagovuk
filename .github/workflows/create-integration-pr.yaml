@@ -28,3 +28,10 @@ jobs:
           GH_REF: ${{ github.event.workflow_run.head_branch || github.ref_name }}
           IS_TAG: "false"
           ENVS: "integration"
+
+  notify-slack:
+    if: ${{ failure() }}
+    needs:
+      - create_pr
+    uses: ./.github/workflows/notify-slack.yml
+    secrets: inherit
