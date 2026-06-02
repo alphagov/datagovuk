@@ -1,0 +1,125 @@
+name: Report workflow run status to Slack
+description: Send a Slack notification for workflow runs across branches and tags
+
+inputs:
+  slack_webhook_url:
+    description: Slack incoming webhook URL
+    required: true
+  channel:
+    description: Slack channel name (without #)
+    required: true
+  status:
+    description: Optional run status override (success, failure, cancelled)
+    required: false
+    default: ""
+  title:
+    description: Optional custom title for the Slack message
+    required: false
+    default: ""
+  message:
+    description: Optional custom message body
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+  - name: Validate inputs and build metadata
+    shell: bash
+    run: |
+      [[ "${{ inputs.slack_webhook_url }}" ]] || { echo "slack_webhook_url input is empty"; exit 1; }
+      [[ "${{ inputs.channel }}" ]] || { echo "channel input is empty"; exit 1; }
+
+      status="${{ inputs.status }}"
+      if [[ -z "$status" ]]; then
+        status="${{ job.status }}"
+      fi
+      status="$(echo "$status" | tr '[:upper:]' '[:lower:]')"
+
+      case "$status" in
+        success)
+          emoji=":white_check_mark:"
+          color="#2eb886"
+          status_label="Success"
+          ;;
+        cancelled)
+          emoji=":warning:"
+          color="#daa038"
+          status_label="Cancelled"
+          ;;
+        *)
+          emoji=":x:"
+          color="#a30200"
+          status_label="Failure"
+          ;;
+      esac
+
+      ref_label="Branch"
+      if [[ "${{ github.ref_type }}" == "tag" ]]; then
+        ref_label="Tag"
+      fi
+
+      title="${{ inputs.title }}"
+      if [[ -z "$title" ]]; then
+        title="$emoji Workflow ${status_label}"
+      fi
+
+      echo "status=$status" >> "$GITHUB_OUTPUT"
+      echo "color=$color" >> "$GITHUB_OUTPUT"
+      echo "status_label=$status_label" >> "$GITHUB_OUTPUT"
+      echo "ref_label=$ref_label" >> "$GITHUB_OUTPUT"
+      echo "title=$title" >> "$GITHUB_OUTPUT"
+    id: meta
+
+  - name: Send Slack notification
+    uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+    with:
+      errors: true
+      webhook: ${{ inputs.slack_webhook_url }}
+      webhook-type: incoming-webhook
+      payload: |
+        {
+          "channel": "${{ inputs.channel }}",
+          "text": "${{ steps.meta.outputs.title }}",
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "${{ steps.meta.outputs.title }}",
+                "emoji": true
+              }
+            },
+            {
+              "type": "section",
+              "fields": [
+                { "type": "mrkdwn", "text": "*Repository:*\n${{ github.repository }}" },
+                { "type": "mrkdwn", "text": "*Workflow:*\n${{ github.workflow }}" },
+                { "type": "mrkdwn", "text": "*Event:*\n${{ github.event_name }}" },
+                { "type": "mrkdwn", "text": "*${{ steps.meta.outputs.ref_label }}:*\n${{ github.ref_name }}" },
+                { "type": "mrkdwn", "text": "*Status:*\n${{ steps.meta.outputs.status_label }}" }
+              ]
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "${{ inputs.message }}"
+              }
+            },
+            {
+              "type": "actions",
+              "elements": [
+                {
+                  "type": "button",
+                  "action_id": "button-view-workflow",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "View Run"
+                  },
+                  "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                }
+              ]
+            }
+          ]
+        }

@@ -118,3 +118,4 @@ jobs:
       - name: Tear down the Stack
         if: always()
         run: docker compose -f docker-compose.local.yml down
+
