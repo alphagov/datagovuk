@@ -32,3 +32,17 @@ jobs:
         with:
             gitRef: ${{ github.ref_name }}
         secrets: inherit
+
+    notify_slack_on_failure:
+        name: Notify Slack on failure
+        if: ${{ always() && failure() }}
+        needs: [ci, trivy-scan, build-image, create-integration-pr]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6
+            - uses: ./.github/actions/notify-slack
+              with:
+                  slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+                  channel: datagovuk-technical
+                  status: failure
+                  message: Merge to main workflow failed

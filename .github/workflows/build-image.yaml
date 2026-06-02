@@ -239,3 +239,4 @@ jobs:
           IMAGEREF: '${{ env.REGISTRY_BASE }}/${{ fromJson(needs.configure_builds.outputs.app_metadata).name }}:${{ steps.app-metadata.outputs.version }}'
         run: |
           docker buildx imagetools inspect "$IMAGEREF"
+
