@@ -11,7 +11,7 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[".herokuapp.com"])
 # BASIC AUTH
 # ------------------------------------------------------------------------------
 # Required on all heroku apps, not just preview. No default values, startup fails
-# if not set. Set using heroku config:set in cli or via dashboard.ADMINS
+# if not set. Set using heroku config:set in cli or via dashboard.
 # Preview apps can have set at pipeline level so all get the same credentials
 BASIC_AUTH_USERNAME = env("BASIC_AUTH_USERNAME")
 BASIC_AUTH_PASSWORD = env("BASIC_AUTH_PASSWORD")
