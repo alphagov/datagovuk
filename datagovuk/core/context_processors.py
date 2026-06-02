@@ -1,49 +1,13 @@
 from django.conf import settings
 
-from datagovuk.collections.constants import COLLECTIONS
+from datagovuk.collections.constants import COLLECTIONS_BY_TYPE
 from datagovuk.data_manual.constants import DATA_MANUAL_PAGES
-
-
-def _retrieve_collections(collections: list):
-    returned_list = []
-
-    for collection in collections:
-        if collection["type"] != "collection":
-            continue
-
-        returned_list.append(
-            {
-                "title": collection["title"],
-                "slug": collection["slug"],
-                "description": collection["description"],
-            },
-        )
-
-    return returned_list
-
-
-def _retrieve_spotlights(collections: list):
-    returned_list = []
-
-    for collection in collections:
-        if collection["type"] != "spotlight":
-            continue
-
-        returned_list.append(
-            {
-                "title": collection["title"],
-                "slug": collection["slug"],
-                "description": collection["description"],
-            },
-        )
-
-    return returned_list
 
 
 def collections(request):
     return {
-        "collections": _retrieve_collections(COLLECTIONS),
-        "spotlights": _retrieve_spotlights(COLLECTIONS),
+        "collections": COLLECTIONS_BY_TYPE["collection"],
+        "spotlights": COLLECTIONS_BY_TYPE["spotlight"],
     }
 
 

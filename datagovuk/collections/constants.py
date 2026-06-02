@@ -126,32 +126,26 @@ COLLECTIONS = [
             {"title": "Maritime and shipping", "slug": "maritime-and-shipping"},
         ],
     },
+    # spotlight collections begin here...
     {
-        "title": "Spotlight 1",
+        "title": "Early years",
         "type": "spotlight",
-        "slug": "business-and-economy",
-        "description": "Company information, prices, trade, economic indicators",
-        "topics": [],
-    },
-    {
-        "title": "Spotlight 2",
-        "type": "spotlight",
-        "slug": "business-and-economy",
-        "description": "Company information, prices, trade, economic indicators",
-        "topics": [],
-    },
-    {
-        "title": "Spotlight 3",
-        "type": "spotlight",
-        "slug": "business-and-economy",
-        "description": "Company information, prices, trade, economic indicators",
-        "topics": [],
-    },
-    {
-        "title": "Spotlight 4",
-        "type": "spotlight",
-        "slug": "business-and-economy",
-        "description": "Company information, prices, trade, economic indicators",
-        "topics": [],
+        "slug": "early-years",
+        "description": "Child development, health, vaccinations, school readiness",
+        "topics": [
+            {"title": "Childcare providers", "slug": "childcare-providers"},
+            {"title": "Child development (age 2 to 2 and a half)", "slug": "child-development"},
+            {"title": "School readiness", "slug": "school-readiness"},
+            {"title": "Child health (0 to 5 years)", "slug": "child-health"},
+            {"title": "Health visitor reviews", "slug": "health-visitor-reviews"},
+            {"title": "Childhood vaccinations", "slug": "childhood-vaccinations"},
+        ],
     },
 ]
+
+COLLECTIONS_BY_SLUG = {collection["slug"]: collection for collection in COLLECTIONS}
+
+COLLECTIONS_BY_TYPE = {
+    "collection": [collection for collection in COLLECTIONS if collection["type"] == "collection"],
+    "spotlight": [collection for collection in COLLECTIONS if collection["type"] == "spotlight"],
+}

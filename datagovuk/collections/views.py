@@ -21,6 +21,7 @@ class CollectionPageView(RenderedMarkdownView):
 
     @property
     def collection_pages(self):
+        collection_page_name = self.kwargs["collection_page_name"]
         collection_pages = []
         selected_index = 0
 
@@ -37,7 +38,7 @@ class CollectionPageView(RenderedMarkdownView):
                 if is_selected:
                     selected_index = index
 
-        return collection_pages, selected_index
+        return collection_pages, selected_index, collection_page_name
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -45,16 +46,15 @@ class CollectionPageView(RenderedMarkdownView):
         context["collection"] = self.kwargs["collection_name"].replace("-", " ").capitalize()
         context["collection_slug"] = self.kwargs["collection_name"]
         context["page_last_updated"] = date.strptime(context["page_last_updated"], "%Y-%m-%d")
-        collection_pages, selected_index = self.collection_pages
+        collection_pages, selected_index, collection_page_name = self.collection_pages
         if selected_index > 0:
             context["previous_page"] = collection_pages[selected_index - 1]
         if selected_index < len(collection_pages) - 1:
             context["next_page"] = collection_pages[selected_index + 1]
         context["collection_pages"] = collection_pages
+        context["collection_page_name"] = collection_page_name
         if context["visualisation_data"]:
             context["visualisation"] = get_visualisation(context["visualisation_data"])
-
-        context["testingText"] = "Just testing this out."
 
         return context
 
