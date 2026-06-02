@@ -8,7 +8,7 @@ from django.views.generic.base import RedirectView, View
 from datagovuk.core.markdown import get_safe_markdown_path, get_template_context_from_markdown
 from datagovuk.core.views import RenderedMarkdownView
 
-from .constants import COLLECTIONS, COLLECTIONS_BY_SLUG
+from .constants import COLLECTIONS_BY_SLUG
 from .visualisations import get_visualisation, get_visualisation_spec
 
 
@@ -90,19 +90,11 @@ class CollectionView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         collection_name = self.kwargs["collection_name"]
         try:
-            for collection in COLLECTIONS:
-                if collection_name == collection["slug"]:
-                    if len(collection["topics"]) < 1:
-                        message = f"Collection {collection_name} has no topics"
-                        raise Http404(message)
-                    collection_page_name = collection["topics"][0]["slug"]
-                    break
-            else:
-                message = f"Collection {collection_name} not found"
-                raise Http404(message)
+            collection = COLLECTIONS_BY_SLUG[collection_name]
         except KeyError as error:
-            message = f"Collection {collection_name} malformed"
+            message = f"Collection {collection_name} not found"
             raise Http404(message) from error
+        collection_page_name = collection["topics"][0]["slug"]
         return reverse(
             "collections:collection_page",
             kwargs={
