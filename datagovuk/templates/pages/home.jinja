@@ -17,7 +17,8 @@
         The home of UK public data to inform decisions and build services
       </h1>
       <p class="govuk-body datagovuk-body">
-        <a href="{{ url('pages:roadmap') }}" class="govuk-link datagovuk-link datagovuk-home-hero__link">Find out more about the new data.gov.uk</a>
+        <a href="{{ url('pages:roadmap') }}" class="govuk-link datagovuk-link datagovuk-home-hero__link">Find out more
+        about the National Data Library</a>
       </p>
     </div>
 
@@ -38,13 +39,37 @@
                  class="datagovuk-home-collections__item-image" />
             <div class="datagovuk-home-collections__item-content">
               <h3 class="govuk-body datagovuk-body datagovuk-home-collections__item-heading">
-                <a href="/collections/{{ collection["slug"] }}" class="govuk-link datagovuk-link">{{ collection["title"] }}</a>
+                <a href="/collections/{{ collection['slug'] }}" class="govuk-link datagovuk-link">{{ collection["title"] }}</a>
               </h3>
               <p class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ collection["description"] }}</p>
             </div>
           </div>
         {% endfor %}
       </div>
+    </div>
+
+    <div class="datagovuk-home-spotlight datagovuk-home-section">
+
+      <div class="datagovuk-home-spotlight__panel">
+        <h2 class="govuk-heading-l datagovuk-heading-l datagovuk-home-spotlight__heading">Spotlight</h2>
+        <div class="datagovuk-home-spotlight__collection">
+          <img src="{{ static('images/collections/badge-early-years.png') }}"
+               width="108"
+               height="108"
+               alt=""
+               class="datagovuk-home-spotlight__badge" />
+          <div class="datagovuk-home-spotlight__text">
+            <h3 class="govuk-body datagovuk-body datagovuk-home-spotlight__title">
+              <a href="/collections/early-years" class="govuk-link datagovuk-link datagovuk-home-spotlight__link">Early
+              years</a>
+            </h3>
+            <p class="govuk-body datagovuk-body datagovuk-home-spotlight__description">
+              Child development, health, vaccinations, school readiness
+            </p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="datagovuk-home-cards datagovuk-home-section">
@@ -80,21 +105,24 @@
       <div class="datagovuk-home-publications__items">
         <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
           <a href="https://dataingovernment.blog.gov.uk/2026/03/25/whats-changing-on-data-gov-uk-and-why/"
-             class="govuk-link datagovuk-link datagovuk-home-publications__link">What’s changing on data.gov.uk and why</a>
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">What's changing on National Data Library and why</a>
           <p class="govuk-body datagovuk-body datagovuk-home-publications__date">25 March 2026</p>
         </div>
         <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
           <a href="https://dataingovernment.blog.gov.uk/2026/03/16/using-data-standards-to-support-people-at-risk/"
-             class="govuk-link datagovuk-link datagovuk-home-publications__link">Using data standards to support people at risk</a>
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">Using data standards to support people at
+          risk</a>
           <p class="govuk-body datagovuk-body datagovuk-home-publications__date">16 March 2026</p>
         </div>
         <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
           <a href="https://dataingovernment.blog.gov.uk/2026/02/27/securing-personal-data-across-government/"
-             class="govuk-link datagovuk-link datagovuk-home-publications__link">Securing personal data across government</a>
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">Securing personal data across
+          government</a>
           <p class="govuk-body datagovuk-body datagovuk-home-publications__date">27 February 2026</p>
         </div>
         <p class="govuk-body datagovuk-body">
-          <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="https://dataingovernment.blog.gov.uk/">More blog posts</a>
+          <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="https://dataingovernment.blog.gov.uk/">More
+          blog posts</a>
         </p>
       </div>
 

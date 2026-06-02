@@ -8,7 +8,7 @@ from django.views.generic.base import RedirectView, View
 from datagovuk.core.markdown import get_safe_markdown_path, get_template_context_from_markdown
 from datagovuk.core.views import RenderedMarkdownView
 
-from .constants import COLLECTIONS
+from .constants import COLLECTIONS_BY_SLUG
 from .visualisations import get_visualisation, get_visualisation_spec
 
 
@@ -23,17 +23,20 @@ class CollectionPageView(RenderedMarkdownView):
     def collection_pages(self):
         collection_pages = []
         selected_index = 0
-        for index, collection_page in enumerate(COLLECTIONS[self.kwargs["collection_name"]]):
-            is_selected = collection_page["slug"] == self.kwargs["collection_page_name"]
+
+        collection = COLLECTIONS_BY_SLUG[self.kwargs["collection_name"]]
+
+        for index, topic in enumerate(collection["topics"]):
+            selected_index = index if topic["slug"] == self.kwargs["collection_page_name"] else selected_index
+            is_selected: bool = topic["slug"] == self.kwargs["collection_page_name"]
             collection_pages.append(
                 {
-                    **collection_page,
-                    "url": f"/collections/{self.kwargs['collection_name']}/{collection_page['slug']}",
+                    **topic,
+                    "url": f"/collections/{self.kwargs['collection_name']}/{topic['slug']}",
                     "selected": is_selected,
                 },
             )
-            if is_selected:
-                selected_index = index
+
         return collection_pages, selected_index
 
     def get_context_data(self, **kwargs):
@@ -50,6 +53,7 @@ class CollectionPageView(RenderedMarkdownView):
         context["collection_pages"] = collection_pages
         if context["visualisation_data"]:
             context["visualisation"] = get_visualisation(context["visualisation_data"])
+
         return context
 
 
@@ -86,10 +90,11 @@ class CollectionView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         collection_name = self.kwargs["collection_name"]
         try:
-            collection_page_name = COLLECTIONS[collection_name][0]["slug"]
+            collection = COLLECTIONS_BY_SLUG[collection_name]
         except KeyError as error:
             message = f"Collection {collection_name} not found"
             raise Http404(message) from error
+        collection_page_name = collection["topics"][0]["slug"]
         return reverse(
             "collections:collection_page",
             kwargs={
