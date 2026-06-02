@@ -26,5 +26,5 @@ jobs:
         run: |
           curl -sS -X POST \
             -H "Content-type: application/json" \
-            --data '{"text":"Hello, this is a test notification"}' \
+            --data '{"text":"Test notification from repo: '"${{ github.event.repository.name }}"'"}' \
             "$SLACK_WEBHOOK_URL"
