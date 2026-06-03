@@ -158,7 +158,8 @@ BASE_COLLECTIONS = [
 
 def get_collections():
     # Copy the base list so we don't accidentally mutate the global constant across requests
-    return list(BASE_COLLECTIONS)
+    collections = list(BASE_COLLECTIONS)
+    return collections
 
 
 def get_collections_by_slug():

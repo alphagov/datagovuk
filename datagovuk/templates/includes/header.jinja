@@ -19,12 +19,11 @@
       <div class="datagovuk-menu__items">
         {% for collection in collections %}
           <a href="{{ url('collections:collection', kwargs={'collection_name': collection['slug']}) }}"
-             class="govuk-link datagovuk-link datagovuk-menu__item-link">{{ collection["title"] }}</a>
+             class="govuk-link datagovuk-link datagovuk-menu__item-link{% if collection.type == "spotlight" %} datagovuk-menu__item-spotlight-link{% endif %}">
+            {{ collection["title"] }}
+            {% if collection.type == "spotlight" %}<span class="datagovuk-menu__spotlight-tag">Spotlight</span>{% endif %}
+          </a>
         {% endfor %}
-        <a href="/collections/early-years"
-           class="govuk-link datagovuk-link datagovuk-menu__item-link datagovuk-menu__item-spotlight-link">
-          Early years <span class="datagovuk-menu__spotlight-tag">Spotlight</span>
-        </a>
       </div>
     </div>
     <button type="button"
