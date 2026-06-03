@@ -50,11 +50,13 @@
         flex-direction: column;
         gap: 20px;
         margin: 0 -15px;
-        padding: 15px;
+        padding: 30px 15px;
 
         @media (min-width: 40.0625em) {
+            border-radius: 30px;
             flex-direction: row;
             gap: 30px;
+            margin: 0;
             padding: 30px;
         }
     }
