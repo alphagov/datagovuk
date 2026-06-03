@@ -164,11 +164,3 @@ def get_collections():
 
 def get_collections_by_slug():
     return {collection["slug"]: collection for collection in get_collections()}
-
-
-def get_collections_by_type():
-    collections = get_collections()
-    return {
-        "collection": [collection for collection in collections if collection["type"] == "collection"],
-        "spotlight": [collection for collection in collections if collection["type"] == "spotlight"],
-    }
