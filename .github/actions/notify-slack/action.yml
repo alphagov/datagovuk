@@ -88,11 +88,10 @@ runs:
             },
             {
               "type": "section",
-              "fields": [
-                { "type": "mrkdwn", "text": "*Repo:*\n${{ github.repository }}" },
-                { "type": "mrkdwn", "text": "*Workflow:*\n${{ github.workflow }}" },
-                { "type": "mrkdwn", "text": "*${{ steps.meta.outputs.ref_label }}:*\n${{ github.ref_name }}" }
-              ]
+              "text": {
+                "type": "mrkdwn",
+                "text": "*Repo:*\n${{ github.repository }}\n*Workflow:*\n${{ github.workflow }}\n*${{ steps.meta.outputs.ref_label }}:*\n${{ github.ref_name }}"
+              }
             },
             {
               "type": "actions",
