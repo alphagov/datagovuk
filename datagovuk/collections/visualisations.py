@@ -72,7 +72,6 @@ def _get_bar_chart(chart_spec):
                         "color": "#5D5D5D",
                     },
                     "ticks": {
-                        "padding": 10,
                         "font": {"size": size, "family": "Inter, sans-serif"},
                     },
                 },
