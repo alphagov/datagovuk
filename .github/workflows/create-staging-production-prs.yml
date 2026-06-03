@@ -4,20 +4,34 @@ on:
   push:
     tags:
       - 'v*.*.*' # e.g. v1.2.3
+    branches:
+      - test-DGUK-583-add-slack-notifications-for-non-main-flows
 
 permissions:
   contents: read
   packages: write
 
 jobs:
-  tag_for_staging_production:
-    name: Tag datagovuk image for staging and production
-    uses: ./.github/workflows/tag-staging-production.yaml
-    secrets: inherit
+  # tag_for_staging_production:
+  #   name: Tag datagovuk image for staging and production
+  #   uses: ./.github/workflows/tag-staging-production.yaml
+  #   secrets: inherit
 
-  create_deployment_prs:
-    name: Create deployment PRs
-    needs: tag_for_staging_production
+  # create_deployment_prs:
+  #   name: Create deployment PRs
+  #   needs: tag_for_staging_production
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #     - run: bash ./docker/create-pr.sh
+  #   env:
+  #     IS_TAG: "true"
+  #     ENVS: "staging,production"
+  #     GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
+  #     GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
+
+  trigger-failure:
+    name: Trigger failure for testing Slack notifications
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -31,7 +45,7 @@ jobs:
   report_run_failure:
     name: Report run failure to Slack
     if: ${{ failure() }}
-    needs: [create_deployment_prs, tag_for_staging_production]
+    needs: [trigger-failure]
     runs-on: ubuntu-latest
     steps:
       - uses: ./.github/actions/report-run-failure
