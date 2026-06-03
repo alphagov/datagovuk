@@ -27,3 +27,16 @@ jobs:
       ENVS: "staging,production"
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
       GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
+
+  notify_slack_on_failure:
+    name: Notify Slack on failure
+    if: ${{ always() && (needs.create_deployment_prs.result != 'success' || needs.tag_for_staging_production.result != 'success') }}
+    needs: [create_deployment_prs, tag_for_staging_production]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/notify-slack
+        with:
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          channel: datagovuk-technical
+          status: ${{ needs.create_deployment_prs.result }}
