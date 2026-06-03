@@ -44,6 +44,12 @@ def test_homepage_spotlight_links(page, live_server_url, enable_early_years):
     expect(link).to_have_attribute("href", "/collections/early-years")
 
 
+def test_homepage_spotlight_links_feature_flag_off_not_present(page, live_server_url):
+    page.goto(live_server_url)
+    spotlight_item = page.locator(".datagovuk-home-spotlight__panel")
+    expect(spotlight_item).not_to_be_attached()
+
+
 def test_homepage_card_links(page, live_server_url):
     page.goto(live_server_url)
     expect(page.locator("#main").get_by_role("link", name="Data manual")).to_be_visible()
