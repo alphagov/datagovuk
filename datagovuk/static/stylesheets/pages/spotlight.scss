@@ -43,14 +43,14 @@
     }
 
     &__panel {
+        align-items: center;
+        background-color: #FBF4F7;
+        border-radius: 30px;
         display: flex;
         flex-direction: column;
         gap: 20px;
-        padding: 30px;
-        border-radius: 30px;
-        background-color: #FBF4F7;
-        align-items: center;
         margin-bottom: 20px;
+        padding: 30px;
 
         @media (min-width: 40.0625em) {
             flex-direction: row;
