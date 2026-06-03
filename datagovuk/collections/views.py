@@ -24,7 +24,12 @@ class CollectionPageView(RenderedMarkdownView):
         collection_pages = []
         selected_index = 0
 
-        collection = get_collections_by_slug()[self.kwargs["collection_name"]]
+        collection_name = self.kwargs["collection_name"]
+        try:
+            collection = get_collections_by_slug()[collection_name]
+        except KeyError as error:
+            message = f"Collection {collection_name} not found"
+            raise Http404(message) from error
 
         for index, topic in enumerate(collection["topics"]):
             selected_index = index if topic["slug"] == self.kwargs["collection_page_name"] else selected_index
