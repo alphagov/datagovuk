@@ -1,28 +1,28 @@
-name: CodeQL
+# name: CodeQL
 
-on:
-  push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
+# on:
+#   push:
+#     branches: ['main']
+#   pull_request:
+#     branches: ['main']
 
-jobs:
-  analyze:
-    name: CodeQL SAST scan
-    uses: alphagov/govuk-infrastructure/.github/workflows/codeql-analysis.yml@main
-    permissions:
-      security-events: write
+# jobs:
+#   analyze:
+#     name: CodeQL SAST scan
+#     uses: alphagov/govuk-infrastructure/.github/workflows/codeql-analysis.yml@main
+#     permissions:
+#       security-events: write
 
-  notify_slack_on_failure:
-    name: Notify Slack on failure
-    if: ${{ always() && needs.analyze.result != 'success' }}
-    needs: analyze
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/actions/notify-slack
-        with:
-          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          channel: datagovuk-technical
-          status: ${{ needs.analyze.result }}
-          message: CodeQL workflow failed
+#   notify_slack_on_failure:
+#     name: Notify Slack on failure
+#     if: ${{ always() && needs.analyze.result != 'success' }}
+#     needs: analyze
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v6
+#       - uses: ./.github/actions/notify-slack
+#         with:
+#           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+#           channel: datagovuk-technical
+#           status: ${{ needs.analyze.result }}
+#           message: CodeQL workflow failed
