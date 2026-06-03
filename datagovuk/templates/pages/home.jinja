@@ -30,7 +30,7 @@
       </p>
 
       <div class="datagovuk-home-collections__items">
-        {% for collection in collections if collection.type == "collection" %}
+        {% for collection in collections if collection.is_spotlight == False %}
           <div class="datagovuk-home-collections__item">
             <img src="{{ static('images/collections/badge-' + collection['slug'] + '.png') }}"
                  width="108"

@@ -1,8 +1,8 @@
 BASE_COLLECTIONS = [
     {
         "title": "Business and Economy",
-        "type": "collection",
         "slug": "business-and-economy",
+        "is_spotlight": False,
         "description": "Company information, prices, trade, economic indicators",
         "topics": [
             {"title": "UK trade", "slug": "uk-trade"},
@@ -19,8 +19,8 @@ BASE_COLLECTIONS = [
     },
     {
         "title": "Environment",
-        "type": "collection",
         "slug": "environment",
+        "is_spotlight": False,
         "description": "Nature, climate, floods, mapping",
         "topics": [
             {"title": "Weather", "slug": "weather"},
@@ -45,8 +45,8 @@ BASE_COLLECTIONS = [
     },
     {
         "title": "Government",
-        "type": "collection",
         "slug": "government",
+        "is_spotlight": False,
         "description": "Election results, local government finance, Council Tax",
         "topics": [
             {"title": "Election results", "slug": "election-results"},
@@ -59,8 +59,8 @@ BASE_COLLECTIONS = [
     },
     {
         "title": "Land and property",
-        "type": "collection",
         "slug": "land-and-property",
+        "is_spotlight": False,
         "description": "Housing, ownership, planning, addresses",
         "topics": [
             {"title": "UK house prices", "slug": "uk-house-prices"},
@@ -78,8 +78,8 @@ BASE_COLLECTIONS = [
     },
     {
         "title": "People",
-        "type": "collection",
         "slug": "people",
+        "is_spotlight": False,
         "description": "Population, health, immigration, social mobility",
         "topics": [
             {"title": "Births", "slug": "births"},
@@ -109,8 +109,8 @@ BASE_COLLECTIONS = [
     },
     {
         "title": "Transport",
-        "type": "collection",
         "slug": "transport",
+        "is_spotlight": False,
         "description": "Roads, driving, public transport, shipping",
         "topics": [
             {"title": "Road traffic", "slug": "road-traffic"},

@@ -32,7 +32,7 @@ def test_homepage_has_cache_control_header_set(page, live_server_url):
 def test_homepage_collections_links(page, live_server_url):
     page.goto(live_server_url)
     collection_items = page.locator(".datagovuk-home-collections__items")
-    collections = [collection for collection in get_collections() if collection["type"] == "collection"]
+    collections = [collection for collection in get_collections() if not collection["is_spotlight"]]
     for collection in collections:
         link = collection_items.get_by_role("link", name=collection["title"], exact=True)
         expect(link).to_have_attribute("href", f"/collections/{collection['slug']}")
