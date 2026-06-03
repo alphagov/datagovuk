@@ -38,7 +38,7 @@ jobs:
       app_metadata: ${{ steps.set-matrix.outputs.app_metadata }}
       runs_on: ${{ steps.set-matrix.outputs.runs_on }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         with:
           ref: ${{ inputs.gitRef || github.ref }}
           show-progress: false
@@ -73,7 +73,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Git Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ inputs.gitRef || github.ref }}
           show-progress: false
