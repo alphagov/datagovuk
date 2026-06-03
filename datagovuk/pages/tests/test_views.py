@@ -49,8 +49,7 @@ def test_cookies(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Cookies on data.gov.uk - data.gov.uk" in response_content
-    assert "Cookies on data.gov.uk" in response_content
+    assert "Cookies - data.gov.uk" in response_content
 
 
 def test_accessibility(client):
