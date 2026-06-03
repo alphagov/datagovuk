@@ -37,6 +37,13 @@ def test_homepage_collections_links(page, live_server_url):
         expect(link).to_have_attribute("href", f"/collections/{collection['slug']}")
 
 
+def test_homepage_spotlight_links(page, live_server_url, enable_early_years):
+    page.goto(live_server_url)
+    spotlight_item = page.locator(".datagovuk-home-spotlight__panel")
+    link = spotlight_item.get_by_role("link", name="Early years", exact=True)
+    expect(link).to_have_attribute("href", "/collections/early-years")
+
+
 def test_homepage_card_links(page, live_server_url):
     page.goto(live_server_url)
     expect(page.locator("#main").get_by_role("link", name="Data manual")).to_be_visible()
