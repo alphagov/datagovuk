@@ -16,10 +16,6 @@ inputs:
     description: Optional custom title for the Slack message
     required: false
     default: ""
-  message:
-    description: Optional custom message body
-    required: false
-    default: ""
 
 runs:
   using: composite
@@ -93,19 +89,10 @@ runs:
             {
               "type": "section",
               "fields": [
-                { "type": "mrkdwn", "text": "*Repository:*\n${{ github.repository }}" },
+                { "type": "mrkdwn", "text": "*Repo:*\n${{ github.repository }}" },
                 { "type": "mrkdwn", "text": "*Workflow:*\n${{ github.workflow }}" },
-                { "type": "mrkdwn", "text": "*Event:*\n${{ github.event_name }}" },
-                { "type": "mrkdwn", "text": "*${{ steps.meta.outputs.ref_label }}:*\n${{ github.ref_name }}" },
-                { "type": "mrkdwn", "text": "*Status:*\n${{ steps.meta.outputs.status_label }}" }
+                { "type": "mrkdwn", "text": "*${{ steps.meta.outputs.ref_label }}:*\n${{ github.ref_name }}" }
               ]
-            },
-            {
-              "type": "section",
-              "text": {
-                "type": "mrkdwn",
-                "text": "${{ inputs.message }}"
-              }
             },
             {
               "type": "actions",

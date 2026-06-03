@@ -46,4 +46,3 @@ jobs:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           channel: datagovuk-technical
           status: ${{ needs.trigger-failure.result }}
-          message: create-staging-production-prs workflow failed

@@ -25,4 +25,3 @@
 #           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
 #           channel: datagovuk-technical
 #           status: ${{ needs.analyze.result }}
-#           message: CodeQL workflow failed
