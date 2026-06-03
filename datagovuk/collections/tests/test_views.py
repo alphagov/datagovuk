@@ -135,7 +135,7 @@ class TestCollectionPageView:
             "collections:collection_page",
             kwargs={
                 "collection_name": "early-years",
-                "collection_page_name": "sample-page",
+                "collection_page_name": "childcare-providers",
             },
         )
         response = client.get(url)
@@ -153,7 +153,7 @@ class TestCollectionView:
             ("land-and-property", "uk-house-prices"),
             ("people", "births"),
             ("transport", "road-traffic"),
-            ("early-years", "sample-page"),
+            ("early-years", "childcare-providers"),
         ],
     )
     def test_view_success(
