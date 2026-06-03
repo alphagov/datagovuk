@@ -1,7 +1,7 @@
 import pytest
 from playwright.sync_api import expect
 
-from datagovuk.collections.constants import COLLECTIONS_BY_TYPE
+from datagovuk.collections.constants import get_collections_by_type
 
 COLLECTIONS = {
     "Business and economy": "/collections/business-and-economy",
@@ -32,7 +32,7 @@ def test_homepage_has_cache_control_header_set(page, live_server_url):
 def test_homepage_collections_links(page, live_server_url):
     page.goto(live_server_url)
     collection_items = page.locator(".datagovuk-home-collections__items")
-    for collection in COLLECTIONS_BY_TYPE["collection"]:
+    for collection in get_collections_by_type()["collection"]:
         link = collection_items.get_by_role("link", name=collection["title"], exact=True)
         expect(link).to_have_attribute("href", f"/collections/{collection['slug']}")
 
