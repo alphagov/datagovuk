@@ -13,15 +13,14 @@ jobs:
 
     trivy-scan:
         uses: ./.github/workflows/trivy-scans.yaml
-        needs: ci
 
     build-image:
         uses: ./.github/workflows/build-image.yaml
+        needs: trivy-scan
         permissions:
             contents: read
             packages: write
             id-token: write
-        needs: trivy-scan
         with:
             buildType: build_push
             gitRef: ${{ github.sha }}
