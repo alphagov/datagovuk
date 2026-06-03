@@ -2,7 +2,7 @@ from django.conf import settings
 
 from datagovuk.core.feature_flags import is_feature_flag_enabled
 
-COLLECTIONS = [
+BASE_COLLECTIONS = [
     {
         "title": "Business and Economy",
         "type": "collection",
@@ -132,23 +132,31 @@ COLLECTIONS = [
     },
 ]
 
-if is_feature_flag_enabled(settings.FEATURE_FLAGS.EARLY_YEARS):
-    COLLECTIONS.append(
-        {
-            "title": "Early years",
-            "type": "spotlight",
-            "slug": "early-years",
-            "description": "Child development, health, vaccinations, school readiness",
-            "topics": [
-                {"title": "Sample page", "slug": "sample-page"},
-            ],
-        },
-    )
+
+def get_collections():
+    # Copy the base list so we don't accidentally mutate the global constant across requests
+    collections = list(BASE_COLLECTIONS)
+
+    if is_feature_flag_enabled(settings.FEATURE_FLAGS.EARLY_YEARS):
+        collections.append(
+            {
+                "title": "Early years",
+                "type": "spotlight",
+                "slug": "early-years",
+                "description": "Child development, health, vaccinations, school readiness",
+                "topics": [{"title": "Sample page", "slug": "sample-page"}],
+            },
+        )
+    return collections
 
 
-COLLECTIONS_BY_SLUG = {collection["slug"]: collection for collection in COLLECTIONS}
+def get_collections_by_slug():
+    return {collection["slug"]: collection for collection in get_collections()}
 
-COLLECTIONS_BY_TYPE = {
-    "collection": [collection for collection in COLLECTIONS if collection["type"] == "collection"],
-    "spotlight": [collection for collection in COLLECTIONS if collection["type"] == "spotlight"],
-}
+
+def get_collections_by_type():
+    collections = get_collections()
+    return {
+        "collection": [collection for collection in collections if collection["type"] == "collection"],
+        "spotlight": [collection for collection in collections if collection["type"] == "spotlight"],
+    }

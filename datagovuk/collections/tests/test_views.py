@@ -141,9 +141,16 @@ class TestCollectionView:
             ("land-and-property", "uk-house-prices"),
             ("people", "births"),
             ("transport", "road-traffic"),
+            ("early-years", "sample-page"),
         ],
     )
-    def test_view_success(self, client, collection_name, expected_collection_page_name):
+    def test_view_success(
+        self,
+        client,
+        enable_early_years,
+        collection_name,
+        expected_collection_page_name,
+    ):
 
         url = reverse(
             "collections:collection",
