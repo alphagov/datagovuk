@@ -26,7 +26,8 @@
              class="govuk-link datagovuk-link datagovuk-menu__item-link">{{ collection["title"] }}</a>
         {% endfor %}
         {% if is_feature_flag_enabled(FEATURE_FLAGS.EARLY_YEARS) %}
-          <a href="/collections/early-years" class="govuk-link datagovuk-link datagovuk-menu__item-link">
+          <a href="/collections/early-years"
+             class="govuk-link datagovuk-link datagovuk-menu__item-link datagovuk-menu__item-spotlight-link">
             Early years <span class="datagovuk-menu__spotlight-tag">Spotlight</span>
           </a>
         {% endif %}
