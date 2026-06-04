@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 All project commands use `just` (install with `brew install just`). Run `just` alone to list available commands.
 
 ```bash
-just init          # First-time setup: installs uv, pre-commit, copies envfile, initialises submodules
+just init          # First-time setup: installs uv, pre-commit, copies envfile
 just up            # Start Docker containers (app at http://localhost:8000)
 just down          # Stop containers
 just build         # Rebuild Docker image
@@ -55,7 +55,6 @@ Django 6.0 application serving the data.gov.uk website. Key characteristics:
 - **Content**: Markdown files with YAML front matter, parsed via `python-frontmatter` and rendered with `mistune`.
 - **Static files**: Served by WhiteNoise in production; `django-compressor` + `django-libsass` for SCSS compilation.
 - **Settings**: Environment-split under `config/settings/` (`base.py`, `local.py`, `production.py`, `test.py`). Env vars loaded via `django-environ`.
-- **Git submodule**: `datagovuk_find/` is a separate Ruby/Rails application (alphagov/datagovuk_find). Keep it updated with `git submodule update --remote`.
 
 Django apps under `datagovuk/`:
 - `core` — shared utilities and base functionality
