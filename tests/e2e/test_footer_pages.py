@@ -90,7 +90,7 @@ def test_privacy_and_terms_page_content(page, live_server_url):
 @pytest.mark.smoke
 def test_roadmap_page_content(page, live_server_url):
     page.goto(live_server_url + "/roadmap/")
-    expect(page.get_by_role("heading", level=1)).to_have_text("Our plan for data.gov.uk")
+    expect(page.get_by_role("heading", level=1)).to_have_text("Our plan for the National Data Libraray")
     expect(page.get_by_role("heading", level=2, name="data.gov.uk roadmap")).to_be_visible()
     expect(page.get_by_role("heading", level=3, name="Now")).to_be_visible()
     expect(page.get_by_role("link", name="Complete the feedback form").first).to_have_attribute(
