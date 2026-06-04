@@ -9,7 +9,7 @@ def test_components(client):
 
     assert response.status_code == HTTPStatus.OK
     assert response.headers["Cache-Control"] == "max-age=1800, public"
-    assert "Components - data.gov.uk" in response.content.decode()
+    assert "Components - National Data Library" in response.content.decode()
 
 
 def test_home(client):
@@ -19,7 +19,7 @@ def test_home(client):
     assert response.status_code == HTTPStatus.OK
     assert response.headers["Cache-Control"] == "max-age=1800, public"
     response_content = response.content.decode()
-    assert "data.gov.uk - The home of UK public data" in response_content
+    assert "National Data Library - The home of UK public data" in response_content
     assert "Test feature flag enabled" not in response_content
 
 
@@ -39,8 +39,8 @@ def test_about(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "About - data.gov.uk" in response_content
-    assert "About data.gov.uk" in response_content
+    assert "About - National Data Library" in response_content
+    assert "About - National Data Library" in response_content
 
 
 def test_cookies(client):
@@ -49,7 +49,7 @@ def test_cookies(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Cookies - data.gov.uk" in response_content
+    assert "Cookies - National Data Library" in response_content
 
 
 def test_accessibility(client):
@@ -58,7 +58,7 @@ def test_accessibility(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Accessibility - data.gov.uk" in response_content
+    assert "Accessibility - National Data Library" in response_content
     assert "Accessibility statement for data.gov.uk" in response_content
 
 
@@ -68,7 +68,7 @@ def test_support(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Support - data.gov.uk" in response_content
+    assert "Support - National Data Library" in response_content
     assert "If you’re a civil servant" in response_content  # noqa: RUF001
 
 
@@ -77,8 +77,8 @@ def test_team(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Team - data.gov.uk" in response_content
-    assert "data.gov.uk team" in response_content
+    assert "Team - National Data Library" in response_content
+    assert "National Data Library team" in response_content
 
 
 def test_privacy_and_terms(client):
@@ -86,7 +86,7 @@ def test_privacy_and_terms(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Privacy and terms - data.gov.uk" in response_content
+    assert "Privacy and terms - National Data Library" in response_content
     assert "Terms of use" in response_content
 
 
@@ -95,5 +95,5 @@ def test_roadmap(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Our plan for data.gov.uk - data.gov.uk" in response_content
-    assert "data.gov.uk roadmap" in response_content
+    assert "Our plan for National Data Library - National Data Library" in response_content
+    assert "National Data Library roadmap" in response_content

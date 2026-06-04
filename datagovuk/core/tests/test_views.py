@@ -85,7 +85,7 @@ class TestTestError400View:
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.BAD_REQUEST
-        assert "Bad request - data.gov.uk" in response.content.decode()
+        assert "Bad request - National Data Library" in response.content.decode()
 
 
 class TestTestError403View:
@@ -94,7 +94,7 @@ class TestTestError403View:
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.FORBIDDEN
-        assert "Forbidden - data.gov.uk" in response.content.decode()
+        assert "Forbidden - National Data Library" in response.content.decode()
 
 
 class TestTestError500View:
