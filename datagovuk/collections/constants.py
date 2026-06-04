@@ -1,7 +1,3 @@
-from django.conf import settings
-
-from datagovuk.core.feature_flags import is_feature_flag_enabled
-
 BASE_COLLECTIONS = [
     {
         "title": "Business and Economy",
@@ -130,44 +126,39 @@ BASE_COLLECTIONS = [
             {"title": "Maritime and shipping", "slug": "maritime-and-shipping"},
         ],
     },
+    {
+        "title": "Early years",
+        "type": "spotlight",
+        "slug": "early-years",
+        "description": "Child development, health, vaccinations, school readiness",
+        "topics": [
+            {"title": "Childcare providers", "slug": "childcare-providers"},
+            {
+                "title": "Early years development review",
+                "slug": "early-years-development-review",
+            },
+            {
+                "title": "Long-term development, learning and wellbeing studies",
+                "slug": "long-term-development-learning-and-wellbeing-studies",
+            },
+            {"title": "Education statistics", "slug": "education-statistics"},
+            {
+                "title": "Early years health indicators",
+                "slug": "early-years-health-indicators",
+            },
+            {
+                "title": "Child height and weight",
+                "slug": "child-height-and-weight",
+            },
+            {"title": "Childhood vaccinations", "slug": "childhood-vaccinations"},
+        ],
+    },
 ]
 
 
 def get_collections():
     # Copy the base list so we don't accidentally mutate the global constant across requests
-    collections = list(BASE_COLLECTIONS)
-
-    if is_feature_flag_enabled(settings.FEATURE_FLAGS.EARLY_YEARS):
-        collections.append(
-            {
-                "title": "Early years",
-                "type": "spotlight",
-                "slug": "early-years",
-                "description": "Child development, health, vaccinations, school readiness",
-                "topics": [
-                    {"title": "Childcare providers", "slug": "childcare-providers"},
-                    {
-                        "title": "Early years development review",
-                        "slug": "early-years-development-review",
-                    },
-                    {
-                        "title": "Long-term development, learning and wellbeing studies",
-                        "slug": "long-term-development-learning-and-wellbeing-studies",
-                    },
-                    {"title": "Education statistics", "slug": "education-statistics"},
-                    {
-                        "title": "Early years health indicators",
-                        "slug": "early-years-health-indicators",
-                    },
-                    {
-                        "title": "Child height and weight",
-                        "slug": "child-height-and-weight",
-                    },
-                    {"title": "Childhood vaccinations", "slug": "childhood-vaccinations"},
-                ],
-            },
-        )
-    return collections
+    return list(BASE_COLLECTIONS)
 
 
 def get_collections_by_slug():

@@ -3,11 +3,7 @@
     <div class="datagovuk-header__logo">
       <a class="datagovuk-header__logo-link" href="/">
 
-        {% if is_feature_flag_enabled(FEATURE_FLAGS.EARLY_YEARS) %}
-          <img src="{{ static('images/logo-inter-3.svg') }}" width="200" height="61" class="datagovuk-header__logo-image" alt="Home" />
-        {% else %}
-          <img src="{{ static('images/logo.svg') }}" width="200" height="61" class="datagovuk-header__logo-image" alt="Home" />
-        {% endif %}
+        <img src="{{ static('images/logo-inter-3.svg') }}" width="200" height="61" class="datagovuk-header__logo-image" alt="Home" />
       </a>
     </div>
     <button type="button"
@@ -25,12 +21,10 @@
           <a href="{{ url('collections:collection', kwargs={'collection_name': collection['slug']}) }}"
              class="govuk-link datagovuk-link datagovuk-menu__item-link">{{ collection["title"] }}</a>
         {% endfor %}
-        {% if is_feature_flag_enabled(FEATURE_FLAGS.EARLY_YEARS) %}
-          <a href="/collections/early-years"
-             class="govuk-link datagovuk-link datagovuk-menu__item-link datagovuk-menu__item-spotlight-link">
-            Early years <span class="datagovuk-menu__spotlight-tag">Spotlight</span>
-          </a>
-        {% endif %}
+        <a href="/collections/early-years"
+           class="govuk-link datagovuk-link datagovuk-menu__item-link datagovuk-menu__item-spotlight-link">
+          Early years <span class="datagovuk-menu__spotlight-tag">Spotlight</span>
+        </a>
       </div>
     </div>
     <button type="button"
