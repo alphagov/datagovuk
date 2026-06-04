@@ -40,6 +40,14 @@
       })(window,document,'script','dataLayer','{{ GOOGLE_TAG_MANAGER_ID }}');
       </script>
     {% endif %}
+
+    {% if VITE_ENV == 'development' %}
+      <script type="module" src="http://localhost:5173/@vite/client"></script>
+      <script type="module" src="http://localhost:5173/main.js"></script>
+    {% else %}
+      <link rel="stylesheet" href="{{ static('assets/bundle.css') }}" />
+      <script type="module" src="{{ static('assets/bundle.js') }}"></script>
+    {% endif %}
   </head>
 
   <body class="govuk-template__body">

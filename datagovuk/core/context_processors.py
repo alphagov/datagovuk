@@ -48,3 +48,9 @@ def feature_flags(request):
     return {
         "FEATURE_FLAGS": settings.FEATURE_FLAGS,
     }
+
+
+def vite_env_processor(request):
+    return {
+        "VITE_ENV": getattr(settings, "VITE_ENV", "production"),
+    }
