@@ -22,7 +22,15 @@
       </li>
     </ul>
     <div class="govuk-!-margin-bottom-9">
-      Built by the <a href="{{ url('pages:team') }}" class="govuk-footer__link datagovuk-footer__link datagovuk-link">data.gov.uk team</a>
+      Built by the
+      <a href="{{ url('pages:team') }}" class="govuk-footer__link datagovuk-footer__link datagovuk-link">
+        {% if is_feature_flag_enabled(FEATURE_FLAGS.EARLY_YEARS) %}
+          National Data Library
+        {% else %}
+          data.gov.uk
+        {% endif %}
+        team
+      </a>
     </div>
     <div class="govuk-!-margin-bottom-6">
       All content is available under the
