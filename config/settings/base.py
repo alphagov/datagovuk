@@ -308,4 +308,7 @@ class FEATURE_FLAGS(Enum):  # noqa: N801
     EARLY_YEARS = "early-years"
 
 
-FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
+FEATURE_FLAGS_ENABLED = [
+    *env.list("FEATURE_FLAGS_ENABLED", default=[]),
+    "early-years",
+]
