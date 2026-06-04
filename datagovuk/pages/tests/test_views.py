@@ -40,7 +40,7 @@ def test_about(client):
 
     assert response.status_code == HTTPStatus.OK
     assert "About - National Data Library" in response_content
-    assert "About data.gov.uk" in response_content
+    assert "About the National Data Library" in response_content
 
 
 def test_cookies(client):
@@ -59,7 +59,7 @@ def test_accessibility(client):
 
     assert response.status_code == HTTPStatus.OK
     assert "Accessibility - National Data Library" in response_content
-    assert "Accessibility statement for data.gov.uk" in response_content
+    assert "Accessibility statement for the National Data Library" in response_content
 
 
 def test_support(client):
@@ -78,7 +78,7 @@ def test_team(client):
 
     assert response.status_code == HTTPStatus.OK
     assert "Team - National Data Library" in response_content
-    assert "data.gov.uk team" in response_content
+    assert "National Data Library team" in response_content
 
 
 def test_privacy_and_terms(client):
@@ -95,5 +95,5 @@ def test_roadmap(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Our plan for data.gov.uk - National Data Library" in response_content
-    assert "data.gov.uk roadmap" in response_content
+    assert "Our plan for the National Data Library - National Data Library" in response_content
+    assert "National Data Library roadmap" in response_content
