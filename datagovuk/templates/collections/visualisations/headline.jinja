@@ -21,13 +21,15 @@
           {{ "+" if is_trending_up else "-" }}{{ item.value_change | intcomma }}
         </span>
       {% endif %}
-      <span class="datagovuk-headline__change-value-percent govuk-body datagovuk-body">
-        {% if item.value_change %}
-          ({{ item.percent_change }}%)
-        {% else %}
-          {{ "+" if is_trending_up else "-" }}{{ item.percent_change }}%
-        {% endif %}
-      </span>
+      {% if item.percent_change %}
+        <span class="datagovuk-headline__change-value-percent govuk-body datagovuk-body">
+          {% if item.value_change %}
+            ({{ item.percent_change }}%)
+          {% else %}
+            {{ "+" if is_trending_up else "-" }}{{ item.percent_change }}%
+          {% endif %}
+        </span>
+      {% endif %}
     </div>
 
     <p class="govuk-body datagovuk-body">{{ item.analysis }}</p>
