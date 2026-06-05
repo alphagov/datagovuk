@@ -3,12 +3,12 @@ from django.urls import reverse
 from playwright.sync_api import expect
 from pytest_lazy_fixtures import lf
 
-from datagovuk.collections.constants import COLLECTIONS_BY_SLUG
+from datagovuk.collections.constants import get_collections_by_slug
 
 
 @pytest.mark.smoke
 def test_collection_pages(page, live_server_url):
-    for collection_slug, collection_pages in COLLECTIONS_BY_SLUG.items():
+    for collection_slug, collection_pages in get_collections_by_slug().items():
         for collection_page in collection_pages["topics"]:
             collection_path = reverse(
                 "collections:collection_page",

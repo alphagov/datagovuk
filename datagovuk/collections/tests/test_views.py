@@ -130,6 +130,18 @@ class TestCollectionPageView:
 
         assert response.status_code == HTTPStatus.NOT_FOUND
 
+    def test_view_early_years_not_found_when_feature_flag_off(self, client):
+        url = reverse(
+            "collections:collection_page",
+            kwargs={
+                "collection_name": "early-years",
+                "collection_page_name": "childcare-providers",
+            },
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.NOT_FOUND
+
 
 class TestCollectionView:
     @pytest.mark.parametrize(
@@ -141,9 +153,16 @@ class TestCollectionView:
             ("land-and-property", "uk-house-prices"),
             ("people", "births"),
             ("transport", "road-traffic"),
+            ("early-years", "childcare-providers"),
         ],
     )
-    def test_view_success(self, client, collection_name, expected_collection_page_name):
+    def test_view_success(
+        self,
+        client,
+        enable_early_years,
+        collection_name,
+        expected_collection_page_name,
+    ):
 
         url = reverse(
             "collections:collection",

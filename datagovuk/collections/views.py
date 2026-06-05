@@ -8,7 +8,7 @@ from django.views.generic.base import RedirectView, View
 from datagovuk.core.markdown import get_safe_markdown_path, get_template_context_from_markdown
 from datagovuk.core.views import RenderedMarkdownView
 
-from .constants import COLLECTIONS_BY_SLUG
+from .constants import get_collections_by_slug
 from .visualisations import get_visualisation, get_visualisation_spec
 
 
@@ -24,7 +24,12 @@ class CollectionPageView(RenderedMarkdownView):
         collection_pages = []
         selected_index = 0
 
-        collection = COLLECTIONS_BY_SLUG[self.kwargs["collection_name"]]
+        collection_name = self.kwargs["collection_name"]
+        try:
+            collection = get_collections_by_slug()[collection_name]
+        except KeyError as error:
+            message = f"Collection {collection_name} not found"
+            raise Http404(message) from error
 
         for index, topic in enumerate(collection["topics"]):
             selected_index = index if topic["slug"] == self.kwargs["collection_page_name"] else selected_index
@@ -90,7 +95,7 @@ class CollectionView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         collection_name = self.kwargs["collection_name"]
         try:
-            collection = COLLECTIONS_BY_SLUG[collection_name]
+            collection = get_collections_by_slug()[collection_name]
         except KeyError as error:
             message = f"Collection {collection_name} not found"
             raise Http404(message) from error

@@ -3,12 +3,17 @@
 {% from "macros/common.jinja" import cta_button %}
 
 {% block page_title %}
-  data.gov.uk - The home of UK public data
+  National Data Library - The home of UK public data - data.gov.uk
 {% endblock page_title %}
 
 {% block page_description %}
   The home of UK public data to inform decisions and build services
 {% endblock page_description %}
+
+{% set site_name = "data.gov.uk" %}
+{% if is_feature_flag_enabled(FEATURE_FLAGS.EARLY_YEARS) %}
+  {% set site_name = "the National Data Library" %}
+{% endif %}
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
@@ -18,7 +23,7 @@
       </h1>
       <p class="govuk-body datagovuk-body">
         <a href="{{ url('pages:roadmap') }}" class="govuk-link datagovuk-link datagovuk-home-hero__link">Find out more
-        about the National Data Library</a>
+        about {{ site_name }}</a>
       </p>
     </div>
 
@@ -48,29 +53,31 @@
       </div>
     </div>
 
-    <div class="datagovuk-home-spotlight datagovuk-home-section">
+    {% if is_feature_flag_enabled(FEATURE_FLAGS.EARLY_YEARS) %}
+      <div class="datagovuk-home-spotlight datagovuk-home-section">
 
-      <div class="datagovuk-home-spotlight__panel">
-        <h2 class="govuk-heading-l datagovuk-heading-l datagovuk-home-spotlight__heading">Spotlight</h2>
-        <div class="datagovuk-home-spotlight__collection">
-          <img src="{{ static('images/collections/badge-early-years.png') }}"
-               width="108"
-               height="108"
-               alt=""
-               class="datagovuk-home-spotlight__badge" />
-          <div class="datagovuk-home-spotlight__text">
-            <h3 class="govuk-body datagovuk-body datagovuk-home-spotlight__title">
-              <a href="/collections/early-years" class="govuk-link datagovuk-link datagovuk-home-spotlight__link">Early
-              years</a>
-            </h3>
-            <p class="govuk-body datagovuk-body datagovuk-home-spotlight__description">
-              Child development, health, vaccinations, school readiness
-            </p>
+        <div class="datagovuk-home-spotlight__panel">
+          <h2 class="govuk-heading-l datagovuk-heading-l datagovuk-home-spotlight__heading">Spotlight</h2>
+          <div class="datagovuk-home-spotlight__collection">
+            <img src="{{ static('images/collections/badge-early-years.png') }}"
+                 width="108"
+                 height="108"
+                 alt=""
+                 class="datagovuk-home-spotlight__badge" />
+            <div class="datagovuk-home-spotlight__text">
+              <h3 class="govuk-body datagovuk-body datagovuk-home-spotlight__title">
+                <a href="/collections/early-years" class="govuk-link datagovuk-link datagovuk-home-spotlight__link">Early
+                years</a>
+              </h3>
+              <p class="govuk-body datagovuk-body datagovuk-home-spotlight__description">
+                Child development, health, vaccinations, school readiness
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-    </div>
+      </div>
+    {% endif %}
 
     <div class="datagovuk-home-cards datagovuk-home-section">
 
@@ -100,12 +107,16 @@
 
     <div class="datagovuk-home-publications">
 
-      <h2 class="govuk-heading-l datagovuk-heading-l datagovuk-home-publications__heading">Blog posts</h2>
-
+      <h2 class="govuk-heading-l datagovuk-heading-l datagovuk-home-publications__heading">Updates</h2>
       <div class="datagovuk-home-publications__items">
         <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
+          <a href="https://www.gov.uk/government/news/faster-support-for-children-to-get-school-ready-as-tech-sec-vows-to-better-connect-public-services"
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">Faster support for children to get school ready as Tech Sec vows to better connect public services</a>
+          <p class="govuk-body datagovuk-body datagovuk-home-publications__date">4 June 2026</p>
+        </div>
+        <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
           <a href="https://dataingovernment.blog.gov.uk/2026/03/25/whats-changing-on-data-gov-uk-and-why/"
-             class="govuk-link datagovuk-link datagovuk-home-publications__link">What's changing on National Data Library and why</a>
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">What's changing on data.gov.uk and why</a>
           <p class="govuk-body datagovuk-body datagovuk-home-publications__date">25 March 2026</p>
         </div>
         <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
@@ -113,12 +124,6 @@
              class="govuk-link datagovuk-link datagovuk-home-publications__link">Using data standards to support people at
           risk</a>
           <p class="govuk-body datagovuk-body datagovuk-home-publications__date">16 March 2026</p>
-        </div>
-        <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
-          <a href="https://dataingovernment.blog.gov.uk/2026/02/27/securing-personal-data-across-government/"
-             class="govuk-link datagovuk-link datagovuk-home-publications__link">Securing personal data across
-          government</a>
-          <p class="govuk-body datagovuk-body datagovuk-home-publications__date">27 February 2026</p>
         </div>
         <p class="govuk-body datagovuk-body">
           <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="https://dataingovernment.blog.gov.uk/">More

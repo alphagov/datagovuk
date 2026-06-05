@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.2
         with:
           submodules: recursive
 
@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.2
         with:
           submodules: recursive
 
@@ -48,7 +48,7 @@ jobs:
         run: cp .envs/.local/.django.example .envs/.local/.django
 
       - name: Build and cache local backend
-        uses: docker/bake-action@v7.1.0
+        uses: docker/bake-action@v7.2.0
         with:
           push: false
           load: true

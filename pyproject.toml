@@ -25,7 +25,7 @@ dependencies = [
   "jinja2==3.1.6",
   "mistune==3.2.1",
   "pillow==12.2.0",
-  "python-frontmatter==1.2.0",
+  "python-frontmatter==1.3.0",
   "python-slugify==8.0.4",
   "sentry-sdk==2.60.0",
   "whitenoise==6.12.0",
@@ -49,7 +49,7 @@ dev = [
   "pytest-lazy-fixtures==1.4.0",
   "pytest-playwright==0.8.0",
   "pytest-sugar==1.1.1",
-  "ruff==0.15.13",
+  "ruff==0.15.14",
   "werkzeug[watchdog]==3.1.8",
 ]
 
@@ -171,7 +171,7 @@ format_js = false
 preserve_blank_lines = true
 # TODO: remove T002 when fixed https://github.com/djlint/djLint/issues/687
 # TODO: Remove J004, J018 when links fully moved over to this repo
-ignore = "H006,H030,H031,T002,J004,J018"
+ignore = "H006,H030,H031,T002,J004,J018,H021"
 include = "H017,H035"
 indent = 2
 profile = "jinja"

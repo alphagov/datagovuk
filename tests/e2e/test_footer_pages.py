@@ -11,7 +11,6 @@ def test_footer_pages(page, live_server_url):
         "Accessibility": "/accessibility/",
         "Cookies": "/cookies/",
         "Privacy and terms": "/privacy-and-terms/",
-        "data.gov.uk team": "/team/",
     }
 
     page.goto(live_server_url)
@@ -26,7 +25,7 @@ def test_footer_pages(page, live_server_url):
 def test_about_page_content(page, live_server_url):
     page.goto(live_server_url + "/about/")
 
-    expect(page.get_by_role("heading", level=1)).to_have_text("About data.gov.uk")
+    expect(page.get_by_role("heading", level=1)).to_have_text("About the National Data Library")
     expect(
         page.get_by_role("heading", level=2, name="Changes to the previous data.gov.uk functionality"),
     ).to_be_visible()
@@ -42,7 +41,7 @@ def test_about_page_content(page, live_server_url):
 @pytest.mark.smoke
 def test_accessibility_page_content(page, live_server_url):
     page.goto(live_server_url + "/accessibility/")
-    expect(page.get_by_role("heading", level=1)).to_have_text("Accessibility statement for data.gov.uk")
+    expect(page.get_by_role("heading", level=1)).to_have_text("Accessibility statement for the National Data Library")
     expect(page.get_by_role("heading", level=2, name="How accessible this website is")).to_be_visible()
     expect(page.get_by_role("heading", level=2, name="Feedback and contact information")).to_be_visible()
     expect(page.get_by_role("link", name="AbilityNet")).to_have_attribute("href", "https://mcmw.abilitynet.org.uk/")
@@ -66,7 +65,7 @@ def test_support_page_content(page, live_server_url):
 
 def test_team_page_content(page, live_server_url):
     page.goto(live_server_url + "/team/")
-    expect(page.get_by_role("heading", level=1)).to_have_text("data.gov.uk team")
+    expect(page.get_by_role("heading", level=1)).to_have_text("National Data Library team")
     expect(page.get_by_role("link", name="#datagovuk")).to_have_attribute(
         "href",
         "https://ukgovernmentdigital.slack.com/archives/C037J3GTE4T",
@@ -90,8 +89,9 @@ def test_privacy_and_terms_page_content(page, live_server_url):
 @pytest.mark.smoke
 def test_roadmap_page_content(page, live_server_url):
     page.goto(live_server_url + "/roadmap/")
-    expect(page.get_by_role("heading", level=1)).to_have_text("Our plan for data.gov.uk")
-    expect(page.get_by_role("heading", level=2, name="data.gov.uk roadmap")).to_be_visible()
+    expect(page.get_by_role("heading", level=1)).to_have_text("Our plan for the National Data Library")
+    expect(page.get_by_role("heading", level=2, name="National Data Library roadmap")).to_be_visible()
+
     expect(page.get_by_role("heading", level=3, name="Now")).to_be_visible()
     expect(page.get_by_role("link", name="Complete the feedback form").first).to_have_attribute(
         "href",
