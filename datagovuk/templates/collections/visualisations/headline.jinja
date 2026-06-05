@@ -18,7 +18,7 @@
       </span>
       {% if item.value_change %}
         <span class="datagovuk-headline__change-value govuk-body datagovuk-body">
-          {{ "+" if is_trending_up else "-" }}{{ item.value_change | intcomma }}
+          {{ item.value_change | intcomma }}
         </span>
       {% endif %}
       {% if item.percent_change %}
@@ -26,7 +26,7 @@
           {% if item.value_change %}
             ({{ item.percent_change }}%)
           {% else %}
-            {{ "+" if is_trending_up else "-" }}{{ item.percent_change }}%
+            {{ item.percent_change }}%
           {% endif %}
         </span>
       {% endif %}
