@@ -49,7 +49,7 @@ dev = [
   "pytest-lazy-fixtures==1.4.0",
   "pytest-playwright==0.8.0",
   "pytest-sugar==1.1.1",
-  "ruff==0.15.13",
+  "ruff==0.15.14",
   "werkzeug[watchdog]==3.1.8",
 ]
 
