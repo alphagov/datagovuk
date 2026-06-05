@@ -157,7 +157,6 @@ def test_collection_page_download(lazy_page, live_server_url):
     download = download_info.value
     assert download.suggested_filename == "total-uk-imports-exports.csv"
 
-
 def test_collection_page_with_aria_current_page(page, live_server_url):
     url = reverse(
         "collections:collection_page",
@@ -168,7 +167,6 @@ def test_collection_page_with_aria_current_page(page, live_server_url):
         "aria-current",
         "page",
     )
-
 
 def test_collection_page_with_aria_current_mobile(mobile_page, live_server_url):
     url = reverse(
