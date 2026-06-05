@@ -99,6 +99,7 @@ def test_collection_page_headline_is_visible(lazy_page, live_server_url):
     expect(headline_column.locator(".datagovuk-headline__number", has_text="256.1")).to_be_visible()
     expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="+1.9%")).to_be_visible()
 
+
 @pytest.mark.parametrize(
     "lazy_page",
     [
@@ -121,6 +122,7 @@ def test_collection_page_headline_no_percent_change(lazy_page, live_server_url, 
     expect(headline_column.locator(".datagovuk-headline__number", has_text="68.3%")).to_be_visible()
     expect(headline_column.locator(".datagovuk-headline__change-value", has_text="+3.1%")).to_be_visible()
     expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="(%)")).not_to_be_visible()
+
 
 @pytest.mark.parametrize(
     "lazy_page",
@@ -157,6 +159,7 @@ def test_collection_page_download(lazy_page, live_server_url):
     download = download_info.value
     assert download.suggested_filename == "total-uk-imports-exports.csv"
 
+
 def test_collection_page_with_aria_current_page(page, live_server_url):
     url = reverse(
         "collections:collection_page",
@@ -167,6 +170,7 @@ def test_collection_page_with_aria_current_page(page, live_server_url):
         "aria-current",
         "page",
     )
+
 
 def test_collection_page_with_aria_current_mobile(mobile_page, live_server_url):
     url = reverse(
