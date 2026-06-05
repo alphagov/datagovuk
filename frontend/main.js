@@ -12,5 +12,3 @@ import "../datagovuk/static/javascripts/index.js";
  * Check to ensure that this works!
  */
 import "../datagovuk_find/app/assets/javascripts/cookie-settings.js";
-
-console.clear();

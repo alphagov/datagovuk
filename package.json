@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "chartjs-plugin-datalabels": "^2.2.0",
     "chokidar": "^5.0.0",
     "detect-libc": "^2.1.2",
     "fdir": "^6.5.0",

@@ -53,3 +53,8 @@ INSTALLED_APPS += ["django_extensions"]
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+# Allow local Vite development server resources while running frontend locally.
+SECURE_CSP = ""
+SECURE_CSP["script-src"] += ["http://localhost:5173"]
+SECURE_CSP["connect-src"] += ["http://localhost:5173", "ws://localhost:5173"]
+SECURE_CSP["style-src"] += ["http://localhost:5173"]
