@@ -6,29 +6,44 @@ on:
     paths-ignore: ['docs/**']
 
 jobs:
-    ci:
-        uses: ./.github/workflows/ci.yml
-        permissions:
-            contents: read
+  ci:
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
 
-    trivy-scan:
-        uses: ./.github/workflows/trivy-scans.yaml
-        needs: ci
+  trivy-scan:
+    uses: ./.github/workflows/trivy-scans.yaml
+    needs: ci
 
-    build-image:
-        uses: ./.github/workflows/build-image.yaml
-        permissions:
-            contents: read
-            packages: write
-            id-token: write
-        needs: trivy-scan
+  build-image:
+    uses: ./.github/workflows/build-image.yaml
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    needs: trivy-scan
+    with:
+      buildType: build_push
+      gitRef: ${{ github.sha }}
+
+  create-integration-pr:
+    uses: ./.github/workflows/create-integration-pr.yaml
+    needs: build-image
+    with:
+      gitRef: ${{ github.ref_name }}
+    secrets: inherit
+
+  notify-slack-if-failure-on-main:
+    runs-on: ubuntu-latest
+    needs:
+      - ci
+      - trivy-scan
+      - build-image
+      - create-integration-pr
+    steps:
+      - name: Notify Slack if failure on main
+        if: ${{ failure() }}
+        uses: alphagov/govuk-infrastructure/.github/actions/report-run-failure@main
         with:
-            buildType: build_push
-            gitRef: ${{ github.sha }}
-
-    create-integration-pr:
-        uses: ./.github/workflows/create-integration-pr.yaml
-        needs: build-image
-        with:
-            gitRef: ${{ github.ref_name }}
-        secrets: inherit
+          slack_webhook_url: ${{ secrets.GOVUK_SLACK_WEBHOOK_URL }}
+          channel: datagovuk-technical
