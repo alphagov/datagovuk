@@ -1,0 +1,53 @@
+name: Create production PR
+
+on:
+  workflow_run:
+    workflows: [ "Create charts PR on tags creation" ]
+    types:
+      - completed
+
+jobs:
+  poll_staging:
+    name: Poll staging deployment for expected SHA
+    runs-on: ubuntu-latest
+    steps:
+      - name: Poll staging deployment
+        run: |
+          set -euo pipefail
+          max_retries=4
+          start_delay=300 # 5 minutes
+          retry_after=120 # 2 minutes
+          retries=0
+          echo "Waiting for ${start_delay} seconds before starting to poll..."
+          sleep $start_delay
+
+          while [ $retries -lt $max_retries ]; do
+            if curl -sS "https://www.staging.data.gov.uk/version/" | grep -q "${{ github.sha }}"; then
+              echo "Staging deployment is live with expected SHA: ${{ github.sha }}"
+              exit 0
+            fi
+            echo "Expected SHA not found in staging deployment. Retrying in ${retry_after} seconds..."
+            sleep $retry_after
+            retries=$((retries + 1))
+          done
+
+          echo "Staging deployment did not update to expected SHA after $max_retries attempts."
+
+          exit 1
+  smoke_test_staging:
+    name: Run smoke tests on staging environment
+    needs: poll_staging
+    uses: ./.github/workflows/smoke-tests.yml
+    with:
+      environment: "staging"
+      expected_sha: ${{ github.sha }}
+      # this contains a more aggressive poll so it should find the staging /version sha immediately
+  create_production_pr:
+    needs: smoke_test_staging
+    runs-on: ubuntu-latest
+    steps:
+      - run: bash ./docker/create-pr.sh
+    env:
+      GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
+      IS_TAG: "true"
+      ENVS: "staging"
