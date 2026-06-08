@@ -1,6 +1,9 @@
 name: Create production PR
 
 on:
+  push:
+    branches:
+      - test-DGUK-609-poll-for-staging-deployment
   workflow_run:
     workflows: [ "Create staging deployment PR on release tag" ]
     types:
@@ -22,8 +25,8 @@ jobs:
           sleep $start_delay
 
           while [ $retries -lt $max_retries ]; do
-            if curl -sS "https://www.staging.data.gov.uk/version/" | grep -q "${{ github.sha }}"; then
-              echo "Staging deployment is live with expected SHA: ${{ github.sha }}"
+            if curl -sS "https://www.staging.data.gov.uk/version/" | grep -q "5a30d8847dc1547fc15c8d6ae008d0f74d62a722"; then
+              echo "Staging deployment is live with expected SHA: 5a30d8847dc1547fc15c8d6ae008d0f74d62a722"
               exit 0
             fi
             echo "Expected SHA not found in staging deployment. Retrying in ${retry_after / 60} minutes..."
