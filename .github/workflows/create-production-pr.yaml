@@ -46,7 +46,7 @@ jobs:
     with:
       base_url: "https://find.eks.staging.govuk.digital"
       environment: "staging"
-      expected_sha: ${{ github.sha }}
+      expected_sha: "5a30d8847dc1547fc15c8d6ae008d0f74d62a722"
 
   create_production_pr:
     needs: smoke_test_staging
