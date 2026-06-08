@@ -41,6 +41,7 @@ jobs:
   smoke_test_staging:
     name: Run smoke tests on staging environment
     needs: poll_staging
+    secrets: inherit
     uses: ./.github/workflows/smoke-tests.yml
     secrets:
       E2E_BASIC_AUTH_USERNAME: ${{ secrets.E2E_BASIC_AUTH_USERNAME_STAGING }}
