@@ -12,13 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#FFFFFF" />
 
-    {% compress css %}
-      <link href="{{ static('stylesheets/govuk-frontend-6.0.0.min.css') }}" rel="stylesheet" />
-      <link type="text/x-scss" href="{{ static('stylesheets/application.scss') }}" rel="stylesheet" />
-    {% endcompress %}
-
     <link rel="icon" href="{{ static('images/favicon.png') }}" />
-
     {% if GOOGLE_TAG_MANAGER_ID %}
       {% set gtm_attributes = [] %}
 
@@ -41,13 +35,7 @@
       </script>
     {% endif %}
 
-    {% if VITE_ENV == 'development' %}
-      <script type="module" src="http://localhost:5173/@vite/client"></script>
-      <script type="module" src="http://localhost:5173/main.js"></script>
-    {% else %}
-      <link rel="stylesheet" href="{{ static('assets/bundle.css') }}" />
-      <script type="module" src="{{ static('assets/bundle.js') }}"></script>
-    {% endif %}
+    {% if VITE_ENV != 'development' %}<link rel="stylesheet" href="{{ static('assets/bundle.css') }}" />{% endif %}
   </head>
 
   <body class="govuk-template__body">
@@ -117,13 +105,15 @@
     {% endif %}
 
     <script type="module" src="{{ static("javascripts/govuk-frontend-6.0.0.min.js") }}"></script>
-    {% compress js %}
-      <script src="{{ static('javascripts/header.js') }}"></script>
-      <script src="{{ static('javascripts/section-navigation.js') }}"></script>
-      <script src="{{ static('javascripts/cookies.js') }}"></script>
-      {% block extra_js %}
-      {% endblock extra_js %}
-    {% endcompress %}
+    {% if VITE_ENV == 'development' %}
+      <script type="module" src="http://localhost:5173/@vite/client"></script>
+      <script type="module" src="http://localhost:5173/main.js"></script>
+    {% else %}
+      <script type="module" src="{{ static('assets/bundle.js') }}"></script>
+    {% endif %}
+
+    {% block extra_js %}
+    {% endblock extra_js %}
     <script type="module" nonce="{{ csp_nonce }}">
       import { initAll } from "{{ static("javascripts/govuk-frontend-6.0.0.min.js") }}"
       initAll()
