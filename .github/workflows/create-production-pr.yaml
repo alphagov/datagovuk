@@ -21,7 +21,7 @@ jobs:
           start_delay=300 # 5 minutes
           retry_after=60 # 1 minute
           retries=0
-          echo "Waiting for ${start_delay / 60} minutes before starting to poll..."
+          echo "Waiting for $((start_delay / 60)) minutes before starting to poll..."
           sleep $start_delay
 
           while [ $retries -lt $max_retries ]; do
@@ -29,7 +29,7 @@ jobs:
               echo "Staging deployment is live with expected SHA: 5a30d8847dc1547fc15c8d6ae008d0f74d62a722"
               exit 0
             fi
-            echo "Expected SHA not found in staging deployment. Retrying in ${retry_after / 60} minutes..."
+            echo "Expected SHA not found in staging deployment. Retrying in $((retry_after / 60)) minutes..."
             sleep $retry_after
             retries=$((retries + 1))
           done
