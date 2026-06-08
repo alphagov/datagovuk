@@ -19,9 +19,9 @@
       <div class="datagovuk-menu__items">
         {% for collection in collections %}
           <a href="{{ url('collections:collection', kwargs={'collection_name': collection['slug']}) }}"
-             class="govuk-link datagovuk-link datagovuk-menu__item-link{% if collection.type == "spotlight" %} datagovuk-menu__item-spotlight-link{% endif %}">
+             class="govuk-link datagovuk-link datagovuk-menu__item-link{% if collection.is_spotlight %} datagovuk-menu__item-spotlight-link{% endif %}">
             {{ collection["title"] }}
-            {% if collection.is_spotlight == True %}<span class="datagovuk-menu__spotlight-tag">Spotlight</span>{% endif %}
+            {% if collection.is_spotlight %}<span class="datagovuk-menu__spotlight-tag">Spotlight</span>{% endif %}
           </a>
         {% endfor %}
       </div>

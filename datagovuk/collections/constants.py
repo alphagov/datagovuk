@@ -2,7 +2,6 @@ BASE_COLLECTIONS = [
     {
         "title": "Business and Economy",
         "slug": "business-and-economy",
-        "is_spotlight": False,
         "description": "Company information, prices, trade, economic indicators",
         "topics": [
             {"title": "UK trade", "slug": "uk-trade"},
@@ -20,7 +19,6 @@ BASE_COLLECTIONS = [
     {
         "title": "Environment",
         "slug": "environment",
-        "is_spotlight": False,
         "description": "Nature, climate, floods, mapping",
         "topics": [
             {"title": "Weather", "slug": "weather"},
@@ -46,7 +44,6 @@ BASE_COLLECTIONS = [
     {
         "title": "Government",
         "slug": "government",
-        "is_spotlight": False,
         "description": "Election results, local government finance, Council Tax",
         "topics": [
             {"title": "Election results", "slug": "election-results"},
@@ -60,7 +57,6 @@ BASE_COLLECTIONS = [
     {
         "title": "Land and property",
         "slug": "land-and-property",
-        "is_spotlight": False,
         "description": "Housing, ownership, planning, addresses",
         "topics": [
             {"title": "UK house prices", "slug": "uk-house-prices"},
@@ -79,7 +75,6 @@ BASE_COLLECTIONS = [
     {
         "title": "People",
         "slug": "people",
-        "is_spotlight": False,
         "description": "Population, health, immigration, social mobility",
         "topics": [
             {"title": "Births", "slug": "births"},
@@ -110,7 +105,6 @@ BASE_COLLECTIONS = [
     {
         "title": "Transport",
         "slug": "transport",
-        "is_spotlight": False,
         "description": "Roads, driving, public transport, shipping",
         "topics": [
             {"title": "Road traffic", "slug": "road-traffic"},
@@ -128,7 +122,7 @@ BASE_COLLECTIONS = [
     },
     {
         "title": "Early years",
-        "type": "spotlight",
+        "is_spotlight": True,
         "slug": "early-years",
         "description": "Child development, health, vaccinations, school readiness",
         "topics": [
