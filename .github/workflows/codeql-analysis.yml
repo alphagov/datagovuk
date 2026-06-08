@@ -21,5 +21,5 @@ jobs:
         if: ${{ failure() }}
         uses: alphagov/govuk-infrastructure/.github/actions/report-run-failure@main
         with:
-          slack_webhook_url: ${{ secrets.GOVUK_SLACK_WEBHOOK_URL }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           channel: datagovuk-technical
