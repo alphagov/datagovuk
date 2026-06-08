@@ -16,6 +16,13 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[".herokuapp.com"])
 BASIC_AUTH_USERNAME = env("BASIC_AUTH_USERNAME")
 BASIC_AUTH_PASSWORD = env("BASIC_AUTH_PASSWORD")
 
+# GIT SHA override from base
+# ------------------------------------------------------------------------------
+# This depends on dyno metadata being enabled on the heroku datagovuk app
+# See https://devcenter.heroku.com/articles/dyno-metadata
+# This makes a number of build time env vars available at runtime.
+DATAGOVUK_GIT_SHA = env("HEROKU_BUILD_COMMIT", default=None)
+
 # SECURITY
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-proxy-ssl-header
