@@ -37,6 +37,7 @@ jobs:
 
   smoke_test_staging:
     name: Run smoke tests on staging environment
+    needs: poll_staging
     uses: ./.github/workflows/smoke-tests.yml
     secrets: inherit
     with:
