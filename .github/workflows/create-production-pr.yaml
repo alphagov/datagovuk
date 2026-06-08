@@ -25,7 +25,7 @@ jobs:
           sleep $start_delay
 
           while [ $retries -lt $max_retries ]; do
-            if curl -sS "https://www.staging.data.gov.uk/version/" | grep -q "5a30d8847dc1547fc15c8d6ae008d0f74d62a722"; then
+            if curl -sS "https://find.eks.staging.govuk.digital/version/" | grep -q "5a30d8847dc1547fc15c8d6ae008d0f74d62a722"; then
               echo "Staging deployment is live with expected SHA: 5a30d8847dc1547fc15c8d6ae008d0f74d62a722"
               exit 0
             fi
