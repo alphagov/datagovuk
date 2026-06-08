@@ -1,30 +1,30 @@
-name: Create integration charts PR
+# name: Create integration charts PR
 
-on:
-  workflow_dispatch:
-  workflow_call:
-    inputs:
-      gitRef:
-        description: Commit, tag or branch to deploy
-        required: false
-        type: string
-    secrets:
-      PR_GITHUB_TOKEN:
-        required: true
+# on:
+#   workflow_dispatch:
+#   workflow_call:
+#     inputs:
+#       gitRef:
+#         description: Commit, tag or branch to deploy
+#         required: false
+#         type: string
+#     secrets:
+#       PR_GITHUB_TOKEN:
+#         required: true
 
-jobs:
-  create_pr:
-    name: Create integration charts PR
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout datagovuk repository
-        uses: actions/checkout@v6.0.2
-        with:
-          repository: alphagov/datagovuk
-      - name: Update integration SHA
-        run: bash ./docker/create-pr.sh
-        env:
-          GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
-          GH_REF: ${{ github.event.workflow_run.head_branch || github.ref_name }}
-          IS_TAG: "false"
-          ENVS: "integration"
+# jobs:
+#   create_pr:
+#     name: Create integration charts PR
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout datagovuk repository
+#         uses: actions/checkout@v6.0.2
+#         with:
+#           repository: alphagov/datagovuk
+#       - name: Update integration SHA
+#         run: bash ./docker/create-pr.sh
+#         env:
+#           GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
+#           GH_REF: ${{ github.event.workflow_run.head_branch || github.ref_name }}
+#           IS_TAG: "false"
+#           ENVS: "integration"
