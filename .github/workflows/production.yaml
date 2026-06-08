@@ -2,7 +2,7 @@ name: Create production PR
 
 on:
   workflow_run:
-    workflows: [ "Create charts PR on tags creation" ]
+    workflows: [ "Create staging deployment PR on release tag" ]
     types:
       - completed
 
@@ -18,7 +18,7 @@ jobs:
           start_delay=300 # 5 minutes
           retry_after=120 # 2 minutes
           retries=0
-          echo "Waiting for ${start_delay} seconds before starting to poll..."
+          echo "Waiting for ${start_delay / 60} minutes before starting to poll..."
           sleep $start_delay
 
           while [ $retries -lt $max_retries ]; do
@@ -26,7 +26,7 @@ jobs:
               echo "Staging deployment is live with expected SHA: ${{ github.sha }}"
               exit 0
             fi
-            echo "Expected SHA not found in staging deployment. Retrying in ${retry_after} seconds..."
+            echo "Expected SHA not found in staging deployment. Retrying in ${retry_after / 60} minutes..."
             sleep $retry_after
             retries=$((retries + 1))
           done
@@ -41,7 +41,7 @@ jobs:
     with:
       environment: "staging"
       expected_sha: ${{ github.sha }}
-      # this contains a more aggressive poll so it should find the staging /version sha immediately
+
   create_production_pr:
     needs: smoke_test_staging
     runs-on: ubuntu-latest
@@ -50,4 +50,4 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
       IS_TAG: "true"
-      ENVS: "staging"
+      ENVS: "production"

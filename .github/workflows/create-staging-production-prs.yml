@@ -1,4 +1,4 @@
-name: Create deployment PRs on release tags creation
+name: Create staging deployment PR on release tag
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
       - run: bash ./docker/create-pr.sh
     env:
       IS_TAG: "true"
-      ENVS: "staging,production"
+      ENVS: "staging"
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
       GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
 
