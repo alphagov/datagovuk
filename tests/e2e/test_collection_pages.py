@@ -107,7 +107,7 @@ def test_collection_page_headline_is_visible(lazy_page, live_server_url):
         lf("mobile_page"),
     ],
 )
-def test_collection_page_headline_no_percent_change(lazy_page, live_server_url, enable_early_years):
+def test_collection_page_headline_no_percent_change(lazy_page, live_server_url):
     url = reverse(
         "collections:collection_page",
         kwargs={"collection_name": "early-years", "collection_page_name": "education-statistics"},
