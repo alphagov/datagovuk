@@ -34,10 +34,11 @@ jobs:
           echo "Staging deployment did not update to expected SHA after $max_retries attempts."
 
           exit 1
+
   smoke_test_staging:
     name: Run smoke tests on staging environment
-    needs: poll_staging
     uses: ./.github/workflows/smoke-tests.yml
+    secrets: inherit
     with:
       environment: "staging"
       expected_sha: ${{ github.sha }}
