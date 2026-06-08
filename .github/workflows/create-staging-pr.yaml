@@ -15,8 +15,8 @@ jobs:
     uses: ./.github/workflows/tag-staging-production.yaml
     secrets: inherit
 
-  create_deployment_prs:
-    name: Create deployment PRs
+  create_staging_deployment_pr:
+    name: Create staging deployment PR
     needs: tag_for_staging_production
     runs-on: ubuntu-latest
     steps:
