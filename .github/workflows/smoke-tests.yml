@@ -15,10 +15,6 @@ on:
         description: 'Expected sha on running instance to test'
         required: false
         type: string
-      base_url:
-        description: 'Root URL of the running instance to test (e.g. https://staging.data.gov.uk)'
-        required: false
-        type: string
   workflow_dispatch:
     inputs:
       ref:
