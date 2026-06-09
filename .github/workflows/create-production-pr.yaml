@@ -41,6 +41,7 @@ jobs:
     uses: ./.github/workflows/smoke-tests.yml
     secrets: inherit
     with:
+      base_url: "https://find.eks.staging.govuk.digital"
       environment: "staging"
       expected_sha: ${{ github.sha }}
 
@@ -54,3 +55,4 @@ jobs:
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
       IS_TAG: "true"
       ENVS: "production"
+      GH_REF: ${{ github.ref_name }} # e.g. v1.2.3

@@ -11,9 +11,8 @@ on:
         description: 'Expected sha on running instance to test'
         required: false
         type: string
-      ref:
-        description: 'Branch name or git tag to check out'
-        default: 'main'
+      base_url:
+        description: 'Root URL of the running instance to test (e.g. https://staging.data.gov.uk)'
         required: false
         type: string
   workflow_dispatch:
