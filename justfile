@@ -105,3 +105,11 @@ prod-up *args:
 prod-down *args:
     @echo "Stopping production containers..."
     docker compose -f docker-compose.production.yml down {{args}}
+
+
+# Run the live Vite build to create assets accessible to the app
+build-vite-assets:
+    @echo "Building production ready Vite assets..."
+    npx vite build
+    @echo "Finished building. Now triggering 'collectstatic'..."
+    just collectstatic
