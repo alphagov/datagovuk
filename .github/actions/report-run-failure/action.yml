@@ -36,13 +36,13 @@ runs:
               "type": "section",
               "text": {
                 "type": "mrkdwn",
-                "text": "The <https://github.com/${{ github.repository }}> failed on ${{ github.ref_name }}.\n${{ inputs.message }}"
+                "text": "*Repo:* *${{ github.repository }}*\n*Workflow*: *${{ github.workflow }}* failed"
               },
               "accessory": {
                 "type": "button",
                 "text": {
                     "type": "plain_text",
-                    "text": "Check the build logs"
+                    "text": "View failed workflow run"
                 },
                 "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                 "action_id": "button-view-workflow"

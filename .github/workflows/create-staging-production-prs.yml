@@ -34,19 +34,16 @@ jobs:
     name: Trigger failure for testing Slack notifications
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
       - run: exit 1
-
-  trigger-second-failure:
-    name: Trigger second failure for testing Slack notifications
-    needs: trigger-failure
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "working as expected"
 
   report_run_failure:
     name: Report run failure to Slack
-    needs: [trigger-second-failure]
     if: ${{ failure() }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Reporting failure to Slack"
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/report-run-failure
+        with:
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          channel: datagovuk-technical
