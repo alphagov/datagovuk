@@ -56,7 +56,8 @@ Example PR; https://github.com/alphagov/datagovuk/pull/127
 
 ### Switching a feature flag on locally
 
-This can be achieved by setting the feature flag on in `.envs/.local/.django` e.g.
+This can be achieved by setting the feature flag on in `.envs/.local/.django-overrides` 
+(or `.envs/.local/.django` to switch on for the whole team) e.g.
 ```
 FEATURE_FLAGS_ENABLED=test-feature-flag,early-years
 ```
