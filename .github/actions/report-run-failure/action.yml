@@ -1,0 +1,52 @@
+# Customised from alphagov/govuk-infrastructure .github/actions/report-run-failure/action.yml
+name: "Report GitHub workflow run failure to Slack"
+description: "Report Github run failure to a nominated slack channel"
+inputs:
+  slack_webhook_url:
+    description: "Slack webhook URL"
+    required: true
+  channel:
+    description: "Name of the channel to send failure notifications to"
+    required: true
+  message:
+    description: "Optional, custom message that can be included in the notification"
+    default: ""
+runs:
+  using: "composite"
+  steps:
+  - name: Validate inputs
+    run: |
+      # run checks as github actions required is not being enforced - https://github.com/actions/runner/issues/1070
+      [[ "${{ inputs.slack_webhook_url }}" ]] || { echo "slack_webhook_url input is empty" ; exit 1; }
+      [[ "${{ inputs.channel }}" ]] || { echo "channel input is empty" ; exit 1; }
+    shell: bash
+
+  - name: Send slack message
+    uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+    with:
+      errors: true
+      webhook: ${{ inputs.slack_webhook_url }}
+      webhook-type: incoming-webhook
+      payload: |
+        {
+          "channel": "${{ inputs.channel }}",
+          "text": "The <https://github.com/${{ github.repository }}> Github run failed.",
+          "blocks": [
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "*Repo:* ${{ github.repository }} \n*Workflow:* ${{ github.workflow }} failed"
+              },
+              "accessory": {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "text": "View failed workflow run"
+                },
+                "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                "action_id": "button-view-workflow"
+              }
+            }
+          ]
+        }
