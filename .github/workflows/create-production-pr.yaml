@@ -50,6 +50,7 @@ jobs:
     name: Create production deployment PR
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6.0.2
       - run: bash ./docker/create-pr.sh
     env:
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
