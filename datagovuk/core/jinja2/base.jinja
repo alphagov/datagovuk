@@ -13,10 +13,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#FFFFFF" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.data.gov.uk/" />
+    <meta property="og:url" content="{{ request.build_absolute_uri() }}" />
     {% if page_title %}
-      <meta property="og:title" content="data.gov.uk - {{ page_title }}" />
-      <meta property="og:image:alt" content="data.gov.uk - {{ page_title }}" />
+      <meta property="og:title" content="National Data Library - {{ page_title }}" />
+      <meta property="og:image:alt" content="National Data Library - {{ page_title }}" />
     {% endif %}
 
     {% if page_description %}<meta property="og:description" content="{{ page_description }}" />{% endif %}
