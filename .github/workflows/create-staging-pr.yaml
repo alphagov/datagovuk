@@ -2,6 +2,8 @@ name: Create staging deployment PR on release tag
 
 on:
   push:
+    branches:
+      - "test-DGUK-609-poll-for-staging-deployment"
     tags:
       - 'v*.*.*' # e.g. v1.2.3
 
@@ -20,10 +22,4 @@ jobs:
     needs: tag_for_staging_production
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.2
-      - run: bash ./docker/create-pr.sh
-    env:
-      IS_TAG: "true"
-      ENVS: "staging"
-      GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
-      GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
+      - run: echo "successfull fake run"
