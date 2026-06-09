@@ -11,30 +11,27 @@ on:
         description: 'Expected sha on running instance to test'
         required: false
         type: string
-      base_url:
-        description: 'Root URL of the running instance to test (e.g. https://staging.data.gov.uk)'
-        required: false
-        type: string
+    secrets:
+      E2E_BASIC_AUTH_USERNAME:
+        required: true
+      E2E_BASIC_AUTH_PASSWORD:
+        required: true
   workflow_dispatch:
     inputs:
-      base_url:
-        description: 'Root URL of the running instance to test (e.g. https://staging.data.gov.uk)'
-        required: true
-        type: string
       expected_sha:
         description: 'Expected sha on running instance to test'
         required: false
         type: string
       environment:
         description: 'The environment to run tests against; staging or integration'
-        required: false
+        required: true
         type: string
 
 env:
-  BASE_URL: ${{ inputs.base_url || 'https://find.eks.integration.govuk.digital' }}
+  BASE_URL: ${{ format('https://find.eks.{0}.govuk.digital', inputs.environment) }}
   EXPECTED_SHA: ${{ inputs.expected_sha || '' }}
-  E2E_BASIC_AUTH_USERNAME: ${{ secrets[format('E2E_BASIC_AUTH_USERNAME_{0}', inputs.environment)] }}
-  E2E_BASIC_AUTH_PASSWORD: ${{ secrets[format('E2E_BASIC_AUTH_PASSWORD_{0}', inputs.environment)] }}
+  E2E_BASIC_AUTH_USERNAME: ${{ secrets.E2E_BASIC_AUTH_USERNAME || secrets[format('E2E_BASIC_AUTH_USERNAME_{0}', inputs.environment)] }}
+  E2E_BASIC_AUTH_PASSWORD: ${{ secrets.E2E_BASIC_AUTH_PASSWORD || secrets[format('E2E_BASIC_AUTH_PASSWORD_{0}', inputs.environment)] }}
 
 jobs:
   smoke-tests:

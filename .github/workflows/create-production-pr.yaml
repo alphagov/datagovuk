@@ -39,9 +39,10 @@ jobs:
     name: Run smoke tests on staging environment
     needs: poll_staging
     uses: ./.github/workflows/smoke-tests.yml
-    secrets: inherit
+    secrets:
+      E2E_BASIC_AUTH_USERNAME: ${{ secrets.E2E_BASIC_AUTH_USERNAME_STAGING }}
+      E2E_BASIC_AUTH_PASSWORD: ${{ secrets.E2E_BASIC_AUTH_PASSWORD_STAGING }}
     with:
-      base_url: "https://find.eks.staging.govuk.digital"
       environment: "staging"
       expected_sha: ${{ github.sha }}
 
@@ -50,7 +51,7 @@ jobs:
     name: Create production deployment PR
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@v6.0.3
       - run: bash ./docker/create-pr.sh
     env:
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}

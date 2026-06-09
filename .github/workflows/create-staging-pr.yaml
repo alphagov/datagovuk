@@ -31,10 +31,10 @@ jobs:
   report_run_failure:
     name: Report run failure to Slack
     if: ${{ failure() }}
-    needs: [create_deployment_prs]
+    needs: [create_staging_deployment_pr]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.3
       - uses: ./.github/actions/report-run-failure
         with:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
