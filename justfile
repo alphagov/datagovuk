@@ -13,8 +13,8 @@ init:
     uv tool install pre-commit --with pre-commit-uv
     @echo "Initialising pre-commit..."
     pre-commit install
-    @echo "Copying envfile if target does not exist..."
-    @test -f .envs/.local/.django || cp .envs/.local/.django.example .envs/.local/.django
+    @echo "Copying overrides envfile if target does not exist..."
+    @test -f .envs/.local/.django-overrides || cp .envs/.local/.django-overrides.example .envs/.local/.django-overrides
     @echo ""
     @echo "datagovuk install is initialised for local development. Bring up the containers with '$ just up'"
 
