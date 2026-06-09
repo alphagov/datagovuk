@@ -37,15 +37,18 @@ jobs:
       - uses: actions/checkout@v6
       - run: exit 1
 
-  report_run_failure:
-    name: Report run failure to Slack
-    if: ${{ failure() }}
-    needs: [trigger-failure]
+  trigger-second-failure:
+    name: Trigger second failure for testing Slack notifications
+    needs: trigger-failure
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: ./.github/actions/report-run-failure
-        with:
-          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          channel: datagovuk-technical
-          message: "The workflow for creating deployment PRs on release tag creation has failed."
+      - run: exit 1
+
+  report_run_failure:
+    name: Report run failure to Slack
+    if: ${{ failure() }}
+    needs: trigger-second-failure
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Reporting failure to Slack"
