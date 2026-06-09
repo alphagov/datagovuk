@@ -43,6 +43,7 @@ jobs:
     needs: [trigger-failure]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/report-run-failure
         with:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
