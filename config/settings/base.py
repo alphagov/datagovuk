@@ -188,7 +188,7 @@ MEDIA_URL = "/media/"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "DIRS": [str(APPS_DIR / "templates")],
+        "APP_DIRS": True,
         "OPTIONS": {
             "environment": "datagovuk.core.jinja2.environment",
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
