@@ -13,6 +13,8 @@ services:
       - /app/.venv
     env_file:
       - path: ./.envs/.local/.django
+        required: true
+      - path: ./.envs/.local/.django-overrides
         required: false
     ports:
       - '8000:8000'

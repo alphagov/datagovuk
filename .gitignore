@@ -277,7 +277,8 @@ datagovuk/media/
 .envs/*
 !.envs/.local/
 .envs/.local/*
-!.envs/.local/.django.example
+!.envs/.local/.django
+!.envs/.local/.django-overrides.example
 .envs/.production/*
 !.envs/.production/
 !.envs/.production/.django.example

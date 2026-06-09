@@ -39,9 +39,14 @@ just init
 
 The project should now be running and accessible at `http://localhost:8000/`
 
-### Troubleshooting
+### Environment variables
 
-The most common source of problems when running locally is when `.envs/local/.django` is missing something that is present in `.envs/local/.django.example` - check this first!
+Local environment variables are committed to the repository in `.envs/.local/.django`
+and are therefore shared between the development team.
+
+You can override environment variables for your local copy by editing `.envs/.local/.django-overrides`.
+This allows developers to customise their local `datagovuk` instance e.g. with
+custom feature flags and other settings (e.g. `GOOGLE_TAG_MANAGER_ID`, `ALLOWED_HOSTS`)
 
 ## Basic Commands
 
