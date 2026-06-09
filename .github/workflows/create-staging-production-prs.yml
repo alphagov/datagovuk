@@ -34,7 +34,6 @@ jobs:
     name: Trigger failure for testing Slack notifications
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
       - run: exit 1
 
   trigger-second-failure:
@@ -42,13 +41,12 @@ jobs:
     needs: trigger-failure
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - run: exit 1
+      - run: echo "working as expected"
 
   report_run_failure:
     name: Report run failure to Slack
+    needs: [trigger-second-failure]
     if: ${{ failure() }}
-    needs: trigger-second-failure
     runs-on: ubuntu-latest
     steps:
       - run: echo "Reporting failure to Slack"
