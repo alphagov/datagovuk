@@ -1,8 +1,8 @@
 {
-  "title": "Total live birth counts, England and Wales, 1938 to 2024",
+  "title": "Total live birth counts, England and Wales, 1938 to 2025",
   "visualisation_type": "line",
-  "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/bulletins/birthsummarytablesenglandandwales/2024refreshedpopulations",
-  "download": "live-births-england-and-wales-1938-2024.csv",
+  "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/bulletins/birthsummarytablesenglandandwales/2025",
+  "download": "live-births-england-and-wales-1938-2025.csv",
   "publisher": "Office for National Statistics",
   "visualisation_suffix": "k",
   "min_value": 1,
@@ -96,7 +96,8 @@
         "2021": 624,
         "2022": 605,
         "2023": 591,
-        "2024": 594
+        "2024": 594,
+        "2025": 585
       }
     }
   ]
