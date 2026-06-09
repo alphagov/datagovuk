@@ -37,10 +37,19 @@ jobs:
       - uses: actions/checkout@v6
       - run: exit 1
 
+  trigger-second-failure:
+    name: Trigger failure for testing Slack notifications
+    needs: trigger-failure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: echo "This job is expected to be skipped as the previous job has already failed" && exit 1
+
+
   report_run_failure:
     name: Report run failure to Slack
     if: ${{ failure() }}
-    needs: trigger-failure
+    needs: [trigger-second-failure]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6

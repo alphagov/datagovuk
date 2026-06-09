@@ -36,7 +36,7 @@ runs:
               "type": "section",
               "text": {
                 "type": "mrkdwn",
-                "text": "*Repo:* *${{ github.repository }}*\n*Workflow*: *${{ github.workflow }}* failed"
+                "text": "*Repo:* ${{ github.repository }} \n*Workflow:* ${{ github.workflow }} failed"
               },
               "accessory": {
                 "type": "button",
