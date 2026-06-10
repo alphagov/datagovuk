@@ -22,7 +22,7 @@ jobs:
           sleep $start_delay
 
           while [ $retries -lt $max_retries ]; do
-            if curl -sS "https://www.staging.data.gov.uk/version/" | grep -q "${{ github.sha }}"; then
+            if curl -sS "https://find.eks.staging.govuk.digital/version/" | grep -q "${{ github.sha }}"; then
               echo "Staging deployment is live with expected SHA: ${{ github.sha }}"
               exit 0
             fi
