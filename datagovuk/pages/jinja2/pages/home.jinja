@@ -1,0 +1,129 @@
+{% extends "base.jinja" %}
+
+{% from "macros/common.jinja" import cta_button %}
+
+{% block page_title %}
+  National Data Library - The home of UK public data - data.gov.uk
+{% endblock page_title %}
+
+{% block page_description %}
+  The home of UK public data to inform decisions and build services
+{% endblock page_description %}
+
+{% block main %}
+  <div class="govuk-width-container datagovuk-width-container">
+    <div class="datagovuk-home-hero">
+      <h1 class="govuk-heading-xl datagovuk-heading-xl datagovuk-home-hero__heading">
+        The home of UK public data to inform decisions and build services
+      </h1>
+      <p class="govuk-body datagovuk-body">
+        <a href="{{ url('pages:roadmap') }}" class="govuk-link datagovuk-link datagovuk-home-hero__link">Find out more
+        about the National Data Library</a>
+      </p>
+    </div>
+
+    <div class="datagovuk-home-collections datagovuk-home-section">
+      <h2 class="govuk-heading-l datagovuk-heading-l datagovuk-home-collections__heading">Collections</h2>
+
+      <p class="govuk-body datagovuk-body datagovuk-home-collections__description">
+        Curated collections of high-quality, accessible data
+      </p>
+
+      <div class="datagovuk-home-collections__items">
+        {% for collection in collections if not collection.is_spotlight %}
+          <div class="datagovuk-home-collections__item">
+            <img src="{{ static('images/collections/badge-' + collection['slug'] + '.png') }}"
+                 width="108"
+                 height="108"
+                 alt=""
+                 class="datagovuk-home-collections__item-image" />
+            <div class="datagovuk-home-collections__item-content">
+              <h3 class="govuk-body datagovuk-body datagovuk-home-collections__item-heading">
+                <a href="/collections/{{ collection['slug'] }}" class="govuk-link datagovuk-link">{{ collection["title"] }}</a>
+              </h3>
+              <p class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ collection["description"] }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="datagovuk-home-spotlight datagovuk-home-section">
+
+      <div class="datagovuk-home-spotlight__panel">
+        <h2 class="govuk-heading-l datagovuk-heading-l datagovuk-home-spotlight__heading">Spotlight</h2>
+        <div class="datagovuk-home-spotlight__collection">
+          <img src="{{ static('images/collections/badge-early-years.png') }}"
+               width="108"
+               height="108"
+               alt=""
+               class="datagovuk-home-spotlight__badge" />
+          <div class="datagovuk-home-spotlight__text">
+            <h3 class="govuk-body datagovuk-body datagovuk-home-spotlight__title">
+              <a href="/collections/early-years" class="govuk-link datagovuk-link datagovuk-home-spotlight__link">Early
+              years</a>
+            </h3>
+            <p class="govuk-body datagovuk-body datagovuk-home-spotlight__description">
+              Child development, health, vaccinations, school readiness
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="datagovuk-home-cards datagovuk-home-section">
+
+      <div class="datagovuk-home-card datagovuk-home-card--data-manual">
+
+        <h2 class="govuk-heading-m datagovuk-heading-m datagovuk-home-card__heading">Data manual</h2>
+
+        <p class="govuk-body datagovuk-body datagovuk-home-card__description">
+          A guide to working with data in government and the public sector
+        </p>
+
+        {{ cta_button(url('data_manual:home') , 'Data manual', 'link') }}
+
+      </div>
+
+      <div class="datagovuk-home-card datagovuk-home-card--data-manual">
+
+        <h2 class="govuk-heading-m datagovuk-heading-m datagovuk-home-card__heading">Directory</h2>
+
+        <p class="govuk-body datagovuk-body datagovuk-home-card__description">
+          You can still search the original open data directory, which we're working&nbsp;on
+        </p>
+
+        {{ cta_button('/search', 'Directory', 'link') }}
+      </div>
+    </div>
+
+    <div class="datagovuk-home-publications">
+
+      <h2 class="govuk-heading-l datagovuk-heading-l datagovuk-home-publications__heading">Updates</h2>
+      <div class="datagovuk-home-publications__items">
+        <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
+          <a href="https://www.gov.uk/government/news/faster-support-for-children-to-get-school-ready-as-tech-sec-vows-to-better-connect-public-services"
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">Faster support for children to get school ready as Tech Sec vows to better connect public services</a>
+          <p class="govuk-body datagovuk-body datagovuk-home-publications__date">4 June 2026</p>
+        </div>
+        <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
+          <a href="https://dataingovernment.blog.gov.uk/2026/03/25/whats-changing-on-data-gov-uk-and-why/"
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">What's changing on data.gov.uk and why</a>
+          <p class="govuk-body datagovuk-body datagovuk-home-publications__date">25 March 2026</p>
+        </div>
+        <div class="govuk-body datagovuk-body datagovuk-home-publications__item">
+          <a href="https://dataingovernment.blog.gov.uk/2026/03/16/using-data-standards-to-support-people-at-risk/"
+             class="govuk-link datagovuk-link datagovuk-home-publications__link">Using data standards to support people at
+          risk</a>
+          <p class="govuk-body datagovuk-body datagovuk-home-publications__date">16 March 2026</p>
+        </div>
+        <p class="govuk-body datagovuk-body">
+          <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="https://dataingovernment.blog.gov.uk/">More
+          blog posts</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+{% endblock main %}

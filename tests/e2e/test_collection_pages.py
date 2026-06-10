@@ -95,6 +95,35 @@ def test_collection_page_headline_is_visible(lazy_page, live_server_url):
     expect(lazy_page.get_by_role("heading", name="Buses and coaches")).to_be_visible()
     expect(lazy_page.get_by_text("Increase of 1.9% from 2023 to")).to_be_visible()
     expect(lazy_page.get_by_text("Increase of 1.7% from 2023 to")).to_be_visible()
+    headline_column = lazy_page.locator(".datagovuk-headline__column").first
+    expect(headline_column.locator(".datagovuk-headline__number", has_text="256.1")).to_be_visible()
+    expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="1.9%")).to_be_visible()
+
+
+@pytest.mark.parametrize(
+    "lazy_page",
+    [
+        lf("page"),
+        lf("mobile_page"),
+    ],
+)
+def test_collection_page_headline_no_percent_change(lazy_page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "early-years", "collection_page_name": "education-statistics"},
+    )
+    lazy_page.goto(live_server_url + url)
+
+    expect(lazy_page.get_by_role("heading", name="Good level of development")).to_be_visible()
+    expect(lazy_page.get_by_role("heading", name="Expected level across all early learning goals")).to_be_visible()
+    expect(lazy_page.get_by_text("In 2024/25, up from 65.2% in 2021/22.")).to_be_visible()
+    expect(lazy_page.get_by_text("In 2024/25, up from 63.4% in 2021/22.")).to_be_visible()
+    headline_column = lazy_page.locator(".datagovuk-headline__column").first
+    expect(headline_column.locator(".datagovuk-headline__number", has_text="68.3%")).to_be_visible()
+    expect(
+        headline_column.locator(".datagovuk-headline__change-value", has_text="3.1 percentage points"),
+    ).to_be_visible()
+    expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="(%)")).not_to_be_visible()
 
 
 @pytest.mark.parametrize(

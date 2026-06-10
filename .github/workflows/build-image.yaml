@@ -27,7 +27,7 @@ on:
         type: string
 
 env:
-  BUILD_TYPE : ${{ inputs.buildType || 'build_push' }}
+  BUILD_TYPE: ${{ inputs.buildType || 'build_push' }}
   REGISTRY_BASE: ghcr.io/alphagov
 
 jobs:
@@ -77,7 +77,6 @@ jobs:
         with:
           ref: ${{ inputs.gitRef || github.ref }}
           show-progress: false
-          submodules: 'true'
 
       - name: Setup Docker BuildX
         uses: docker/setup-buildx-action@v4
@@ -226,7 +225,7 @@ jobs:
 
       - name: Create App Image Manifest Lists
         env:
-          IMAGEREF_PREFIX: '${{ env.REGISTRY_BASE }}/${{ fromJson(needs.configure_builds.outputs.app_metadata).name }}'
+          IMAGEREF_PREFIX: "${{ env.REGISTRY_BASE }}/${{ fromJson(needs.configure_builds.outputs.app_metadata).name }}"
         working-directory: /tmp/digests/app
         run: |
           tag_args=$(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON")
@@ -236,6 +235,6 @@ jobs:
 
       - name: Inspect App Images
         env:
-          IMAGEREF: '${{ env.REGISTRY_BASE }}/${{ fromJson(needs.configure_builds.outputs.app_metadata).name }}:${{ steps.app-metadata.outputs.version }}'
+          IMAGEREF: "${{ env.REGISTRY_BASE }}/${{ fromJson(needs.configure_builds.outputs.app_metadata).name }}:${{ steps.app-metadata.outputs.version }}"
         run: |
           docker buildx imagetools inspect "$IMAGEREF"

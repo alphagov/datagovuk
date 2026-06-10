@@ -1,7 +1,7 @@
 import pytest
 from playwright.sync_api import expect
 
-from datagovuk.collections.constants import get_collections_by_type
+from datagovuk.collections.constants import get_collections
 
 COLLECTIONS = {
     "Business and economy": "/collections/business-and-economy",
@@ -32,22 +32,17 @@ def test_homepage_has_cache_control_header_set(page, live_server_url):
 def test_homepage_collections_links(page, live_server_url):
     page.goto(live_server_url)
     collection_items = page.locator(".datagovuk-home-collections__items")
-    for collection in get_collections_by_type()["collection"]:
+    collections = [collection for collection in get_collections() if not collection.get("is_spotlight", False)]
+    for collection in collections:
         link = collection_items.get_by_role("link", name=collection["title"], exact=True)
         expect(link).to_have_attribute("href", f"/collections/{collection['slug']}")
 
 
-def test_homepage_spotlight_links(page, live_server_url, enable_early_years):
+def test_homepage_spotlight_links(page, live_server_url):
     page.goto(live_server_url)
     spotlight_item = page.locator(".datagovuk-home-spotlight__panel")
     link = spotlight_item.get_by_role("link", name="Early years", exact=True)
     expect(link).to_have_attribute("href", "/collections/early-years")
-
-
-def test_homepage_spotlight_links_feature_flag_off_not_present(page, live_server_url):
-    page.goto(live_server_url)
-    spotlight_item = page.locator(".datagovuk-home-spotlight__panel")
-    expect(spotlight_item).not_to_be_attached()
 
 
 def test_homepage_card_links(page, live_server_url):
@@ -82,7 +77,7 @@ def test_footer_links_have_correct_hrefs(page, live_server_url):
         "href",
         "/privacy-and-terms/",
     )
-    expect(page.get_by_role("link", name="data.gov.uk team", exact=True)).to_have_attribute(
+    expect(page.get_by_role("link", name="National Data Library team", exact=True)).to_have_attribute(
         "href",
         "/team/",
     )

@@ -25,6 +25,8 @@ class FEATURE_FLAGS(Enum):  # noqa: N801
 ```
 The feature flag will be disabled by default.
 
+Example PR; https://github.com/alphagov/datagovuk/pull/127
+
 ### Checking a feature flag in templates
 
 Feature flags can be interrogated in templates to conditionally show/hide functionality;
@@ -33,6 +35,8 @@ Feature flags can be interrogated in templates to conditionally show/hide functi
    <early years specific HTML>
 {% endif %}
 ```
+
+Example PR; https://github.com/alphagov/datagovuk/pull/127
 
 ### Checking a feature flag in python
 
@@ -48,9 +52,12 @@ if is_feature_flag_active(settings.FEATURE_FLAGS.EARLY_YEARS):
     ...
 ```
 
+Example PR; https://github.com/alphagov/datagovuk/pull/127
+
 ### Switching a feature flag on locally
 
-This can be achieved by setting the feature flag on in `.envs/.local/.django` e.g.
+This can be achieved by setting the feature flag on in `.envs/.local/.django-overrides` 
+(or `.envs/.local/.django` to switch on for the whole team) e.g.
 ```
 FEATURE_FLAGS_ENABLED=test-feature-flag,early-years
 ```
@@ -66,3 +73,7 @@ variable for the environment in the https://github.com/alphagov/govuk-dgu-charts
 This should be achieved by setting the `FEATURE_FLAGS_ENABLED` default value in 
 `config.settings.base`.  The feature flag should be deleted from the codebase 
 once we are happy that things are working and we don't need to switch it off again.
+
+
+Example PR switching on a feature flag in production; https://github.com/alphagov/datagovuk/pull/138
+Example PR cleaning up a feature flag; https://github.com/alphagov/datagovuk/pull/142

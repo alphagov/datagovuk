@@ -130,12 +130,17 @@ class TestCollectionPageView:
 
         assert response.status_code == HTTPStatus.NOT_FOUND
 
-    def test_view_early_years_not_found_when_feature_flag_off(self, client):
+    def test_view_missing_collection_config_not_found(self, client, settings):
+        # Test that a 404 is returned when a content file is present but the collection is missing
+        # from collection constants
+        settings.DATAGOVUK_CONTENT_ROOT = "datagovuk/collections/tests/content/"
+        settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT = "datagovuk/collections/tests/content/"
+
         url = reverse(
             "collections:collection_page",
             kwargs={
-                "collection_name": "early-years",
-                "collection_page_name": "childcare-providers",
+                "collection_name": "sample-collection",
+                "collection_page_name": "sample-page",
             },
         )
         response = client.get(url)
@@ -159,7 +164,6 @@ class TestCollectionView:
     def test_view_success(
         self,
         client,
-        enable_early_years,
         collection_name,
         expected_collection_page_name,
     ):
@@ -182,7 +186,7 @@ class TestCollectionView:
         )
         assert response.url == expected_redirect_url
 
-    def test_view_missing_collection_not_found(self, client):
+    def test_view_missing_collection_markdown_file_not_found(self, client):
 
         url = reverse(
             "collections:collection",

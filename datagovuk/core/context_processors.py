@@ -1,13 +1,12 @@
 from django.conf import settings
 
-from datagovuk.collections.constants import get_collections_by_type
+from datagovuk.collections.constants import get_collections
 from datagovuk.data_manual.constants import DATA_MANUAL_PAGES
 
 
 def collections(request):
     return {
-        "collections": get_collections_by_type()["collection"],
-        "spotlights": get_collections_by_type()["spotlight"],
+        "collections": get_collections(),
     }
 
 

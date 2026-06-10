@@ -27,3 +27,15 @@ jobs:
       ENVS: "staging,production"
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
       GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
+
+  report_run_failure:
+    name: Report run failure to Slack
+    if: ${{ failure() }}
+    needs: [create_deployment_prs]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: ./.github/actions/report-run-failure
+        with:
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          channel: datagovuk-technical

@@ -188,7 +188,7 @@ MEDIA_URL = "/media/"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "DIRS": [str(APPS_DIR / "templates")],
+        "APP_DIRS": True,
         "OPTIONS": {
             "environment": "datagovuk.core.jinja2.environment",
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
@@ -305,10 +305,6 @@ DATAGOVUK_GIT_SHA = env("GIT_SHA", default=None)
 
 class FEATURE_FLAGS(Enum):  # noqa: N801
     TEST_FEATURE_FLAG = "test-feature-flag"
-    EARLY_YEARS = "early-years"
 
 
-FEATURE_FLAGS_ENABLED = [
-    *env.list("FEATURE_FLAGS_ENABLED", default=[]),
-    "early-years",
-]
+FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
