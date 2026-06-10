@@ -1,5 +1,4 @@
 .datagovuk-section-navigation .datagovuk-section-navigation__item {
-  margin-bottom: 10px;
   padding: 10px;
   margin-bottom: 15px;
 
@@ -65,7 +64,7 @@
     width: 8px;
     border-bottom: 2px solid $datagovuk-black;
     border-right: 2px solid $datagovuk-black;
-    margin: 0px 10px 0px 2px;
+    margin: 0px 10px 0px 10px;
 }
 
 .datagovuk-section-navigation__button[aria-expanded="true"]:after {
