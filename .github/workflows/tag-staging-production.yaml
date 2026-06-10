@@ -8,7 +8,9 @@ jobs:
   smoke_tests:
     name: Run smoke tests on integration environment
     uses: ./.github/workflows/smoke-tests.yml
-    secrets: inherit
+    secrets:
+      E2E_BASIC_AUTH_USERNAME: ${{ secrets.E2E_BASIC_AUTH_USERNAME_INTEGRATION }}
+      E2E_BASIC_AUTH_PASSWORD: ${{ secrets.E2E_BASIC_AUTH_PASSWORD_INTEGRATION }}
     with:
       environment: "integration"
       expected_sha: ${{ github.sha }}
