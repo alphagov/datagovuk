@@ -1,4 +1,4 @@
-name: Create deployment PRs on release tags creation
+name: Create staging deployment PR on release tag
 
 on:
   push:
@@ -15,8 +15,8 @@ jobs:
     uses: ./.github/workflows/tag-staging-production.yaml
     secrets: inherit
 
-  create_deployment_prs:
-    name: Create deployment PRs
+  create_staging_deployment_pr:
+    name: Create staging deployment PR
     needs: tag_for_staging_production
     runs-on: ubuntu-latest
     steps:
@@ -24,18 +24,22 @@ jobs:
       - run: bash ./docker/create-pr.sh
     env:
       IS_TAG: "true"
-      ENVS: "staging,production"
+      ENVS: "staging"
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
       GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
 
   report_run_failure:
     name: Report run failure to Slack
-    if: ${{ failure() }}
-    needs: [create_deployment_prs]
+    if: ${{ always() }}
+    needs: [create_staging_deployment_pr]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.2
-      - uses: ./.github/actions/report-run-failure
+      - name: Checkout Repository
+        if: ${{ failure() }}
+        uses: actions/checkout@v6.0.3
+      - name: Notify slack of failure
+        if: ${{ failure() }}
+        uses: ./.github/actions/report-run-failure
         with:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           channel: datagovuk-technical

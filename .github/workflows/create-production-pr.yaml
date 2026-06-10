@@ -1,0 +1,76 @@
+name: Create production deployment PR
+
+on:
+  workflow_run:
+    workflows: [ "Create staging deployment PR on release tag" ]
+    types:
+      - completed
+
+jobs:
+  poll_staging:
+    name: Poll staging deployment for expected SHA
+    runs-on: ubuntu-latest
+    steps:
+      - name: Poll staging deployment
+        run: |
+          set -euo pipefail
+          max_retries=4
+          start_delay=300 # 5 minutes
+          retry_after=60 # 1 minute
+          retries=0
+          echo "Waiting for ${start_delay / 60} minutes before starting to poll..."
+          sleep $start_delay
+
+          while [ $retries -lt $max_retries ]; do
+            if curl -sS "https://find.eks.staging.govuk.digital/version/" | grep -q "${{ github.sha }}"; then
+              echo "Staging deployment is live with expected SHA: ${{ github.sha }}"
+              exit 0
+            fi
+            echo "Expected SHA not found in staging deployment. Retrying in ${retry_after / 60} minutes..."
+            sleep $retry_after
+            retries=$((retries + 1))
+          done
+
+          echo "Staging deployment did not update to expected SHA after $max_retries attempts."
+
+          exit 1
+
+  smoke_test_staging:
+    name: Run smoke tests on staging environment
+    needs: poll_staging
+    uses: ./.github/workflows/smoke-tests.yml
+    secrets:
+      E2E_BASIC_AUTH_USERNAME: ${{ secrets.E2E_BASIC_AUTH_USERNAME_STAGING }}
+      E2E_BASIC_AUTH_PASSWORD: ${{ secrets.E2E_BASIC_AUTH_PASSWORD_STAGING }}
+    with:
+      environment: "staging"
+      expected_sha: ${{ github.sha }}
+
+  create_production_deployment_pr:
+    needs: smoke_test_staging
+    name: Create production deployment PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.3
+      - run: bash ./docker/create-pr.sh
+    env:
+      GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
+      IS_TAG: "true"
+      ENVS: "production"
+      GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
+
+  report_run_failure:
+    name: Report run failure to Slack
+    if: ${{ always() }}
+    needs: [create_production_deployment_pr]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        if: ${{ failure() }}
+        uses: actions/checkout@v6.0.3
+      - name: Notify slack of failure
+        if: ${{ failure() }}
+        uses: ./.github/actions/report-run-failure
+        with:
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          channel: datagovuk-technical
