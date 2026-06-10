@@ -1,9 +1,6 @@
 name: Create production PR
 
 on:
-  push:
-    branches:
-      - test-DGUK-609-poll-for-staging-deployment
   workflow_run:
     workflows: [ "Create staging deployment PR on release tag" ]
     types:
