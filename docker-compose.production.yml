@@ -11,6 +11,8 @@ services:
     env_file:
       - path: ./.envs/.production/.django
         required: true
+    environment:
+      VITE_ENV: ${VITE_ENV:-production}
     ports:
       - '8001:8000'
     command: /start

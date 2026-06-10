@@ -16,6 +16,8 @@ services:
         required: true
       - path: ./.envs/.local/.django-overrides
         required: false
+    environment:
+      VITE_ENV: ${VITE_ENV:-development}
     ports:
       - '8000:8000'
     command: /start
