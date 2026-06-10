@@ -18,7 +18,7 @@ jobs:
         run: |
           set -euo pipefail
           max_retries=4
-          start_delay=300 # 5 minutes
+          start_delay=1 # 1 second
           retry_after=60 # 1 minute
           retries=0
           echo "Waiting for $((start_delay / 60)) minutes before starting to poll..."
