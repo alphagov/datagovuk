@@ -7,10 +7,6 @@ on:
         description: 'The environment to run tests against; staging or integration'
         required: true
         type: string
-      base_url:
-        description: 'Root URL of the running instance to test (e.g. https://staging.data.gov.uk)'
-        required: false
-        type: string
       expected_sha:
         description: 'Expected sha on running instance to test'
         required: false
