@@ -37,7 +37,7 @@ for ENV in $(echo $ENVS | tr "," " "); do
         git checkout -b "${BRANCH}" origin/main
         git commit -m "Update datagovuk image tags for ${ENV} to ${IMAGE_TAG}"
         git push --set-upstream origin "${BRANCH}"
-        gh pr create --title "Update datagovuk image tags for ${ENV} (${IMAGE_TAG})" --base main --head "${BRANCH}" --fill --repo alphagov/govuk-dgu-charts
+        gh pr create --title "TESTING: ${ENV} (${IMAGE_TAG})" --base main --head "${BRANCH}" --fill --repo alphagov/govuk-dgu-charts
       fi
     fi
   )
