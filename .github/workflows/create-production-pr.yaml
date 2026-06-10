@@ -64,12 +64,16 @@ jobs:
 
   report_run_failure:
     name: Report run failure to Slack
-    if: ${{ failure() }}
+    if: ${{ always() }}
     needs: [create_production_pr]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
-      - uses: ./.github/actions/report-run-failure
+      - name: Checkout Repository
+        if: ${{ failure() }}
+        uses: actions/checkout@v6.0.3
+      - name: Notify slack of failure
+        if: ${{ failure() }}
+        uses: ./.github/actions/report-run-failure
         with:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           channel: datagovuk-technical
