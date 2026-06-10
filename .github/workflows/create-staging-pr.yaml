@@ -1,43 +1,43 @@
-name: Create staging deployment PR on release tag
+# name: Create staging deployment PR on release tag
 
-on:
-  push:
-    branches:
-      - "test-DGUK-609-poll-for-staging-deployment"
-    tags:
-      - 'v*.*.*' # e.g. v1.2.3
+# on:
+#   push:
+#     branches:
+#       - "test-DGUK-609-poll-for-staging-deployment"
+#     tags:
+#       - 'v*.*.*' # e.g. v1.2.3
 
-permissions:
-  contents: read
-  packages: write
+# permissions:
+#   contents: read
+#   packages: write
 
-jobs:
-  tag_for_staging_production:
-    name: Tag datagovuk image for staging and production
-    uses: ./.github/workflows/tag-staging-production.yaml
-    secrets: inherit
+# jobs:
+#   tag_for_staging_production:
+#     name: Tag datagovuk image for staging and production
+#     uses: ./.github/workflows/tag-staging-production.yaml
+#     secrets: inherit
 
-  create_staging_deployment_pr:
-    name: Create staging deployment PR
-    needs: tag_for_staging_production
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6.0.2
-      - run: bash ./docker/create-pr.sh
-    env:
-      IS_TAG: "true"
-      ENVS: "staging"
-      GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
-      GH_REF: "v1.5.0" # e.g. v1.2.3
+#   create_staging_deployment_pr:
+#     name: Create staging deployment PR
+#     needs: tag_for_staging_production
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v6.0.2
+#       - run: bash ./docker/create-pr.sh
+#     env:
+#       IS_TAG: "true"
+#       ENVS: "staging"
+#       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
+#       GH_REF: "v1.5.0" # e.g. v1.2.3
 
-  report_run_failure:
-    name: Report run failure to Slack
-    if: ${{ failure() }}
-    needs: [create_staging_deployment_pr]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6.0.3
-      - uses: ./.github/actions/report-run-failure
-        with:
-          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          channel: datagovuk-technical
+#   report_run_failure:
+#     name: Report run failure to Slack
+#     if: ${{ failure() }}
+#     needs: [create_staging_deployment_pr]
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v6.0.3
+#       - uses: ./.github/actions/report-run-failure
+#         with:
+#           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+#           channel: datagovuk-technical
