@@ -9,8 +9,18 @@
     </title>
 
     {% if page_description %}<meta name="description" content="{{ page_description }}" />{% endif %}
+    <meta name="robots" content="index, follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#FFFFFF" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ request.build_absolute_uri() }}" />
+    {% if page_title %}
+      <meta property="og:title" content="National Data Library - {{ page_title }}" />
+      <meta property="og:image:alt" content="National Data Library - {{ page_title }}" />
+    {% endif %}
+
+    {% if page_description %}<meta property="og:description" content="{{ page_description }}" />{% endif %}
+    <meta property="og:image" content="{{ static('images/datagovuk-opengraph-image.png') }}" />
 
     {% compress css %}
       <link href="{{ static('stylesheets/govuk-frontend-6.0.0.min.css') }}" rel="stylesheet" />
