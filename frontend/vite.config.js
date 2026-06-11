@@ -3,7 +3,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   // Point to our frontend asset directory
-  root: resolve(__dirname, 'frontend'),
+  root: resolve(__dirname, 'src'),
 
   server: {
     // Enable CORS so your python app on localhost:5050 can fetch assets from localhost:5173
@@ -16,15 +16,15 @@ export default defineConfig({
   },
   build: {
     // Output directly to your Python application's static folder
-    outDir: resolve(__dirname, 'app/static/dist'),
+    outDir: resolve(__dirname, '../datagovuk/static/assets'),
     emptyOutDir: true,
 
     // Disable asset hashing for simpler integration in the live build
     rollupOptions: {
-      input: resolve(__dirname, 'frontend/main.js'),
+      input: resolve(__dirname, 'src/main.js'),
       output: {
-        entryFileNames: 'assets/bundle.js',
-        assetFileNames: 'assets/bundle.[ext]',
+        entryFileNames: 'bundle.js',
+        assetFileNames: 'bundle.[ext]',
       },
     },
   },
