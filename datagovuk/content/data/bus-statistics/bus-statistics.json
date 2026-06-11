@@ -1,0 +1,36 @@
+{
+    "title": "Passenger bus journeys on local services (millions)",
+    "visualisation_type": "line",
+    "source": "https://www.gov.uk/government/statistical-data-sets/bus-statistics-data-tables",
+    "download": "bus-journeys-millions.csv",
+    "publisher": "Department for Transport",
+    "series": [
+  {
+    "name": "Great Britain",
+    "color": "#b30000",
+    "data": {
+    "2005": 4608.582644,
+    "2006": 4699.493989,
+    "2007": 4892.641921,
+    "2008": 5142.78878,
+    "2009": 5249.910438,
+    "2010": 5188.240957,
+    "2011": 5164.316647,
+    "2012": 5190.915515,
+    "2013": 5099.230372,
+    "2014": 5200.65223,
+    "2015": 5142.45132,
+    "2016": 5022.918268,
+    "2017": 4930.457982,
+    "2018": 4832.757651,
+    "2019": 4786.91941,
+    "2020": 4528.460734,
+    "2021": 1734.184618,
+    "2022": 3121.724301,
+    "2023": 3743.115618,
+    "2024": 4029.968226,
+    "2025": 4078.191035
+    }
+  }
+]
+}
