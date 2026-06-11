@@ -5,10 +5,16 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import sync_playwright
 
 PLAYWRIGHT_HOST = os.getenv("PLAYWRIGHT_HOST", "127.0.0.1")
+VITE_ENV = os.getenv("VITE_ENV", "production")
 DOCKER_HOSTNAME = "django"
 BASE_URL = os.getenv("BASE_URL")
 E2E_BASIC_AUTH_USERNAME = os.getenv("E2E_BASIC_AUTH_USERNAME")
 E2E_BASIC_AUTH_PASSWORD = os.getenv("E2E_BASIC_AUTH_PASSWORD")
+
+
+@pytest.fixture
+def vite_env():
+    return VITE_ENV
 
 
 @pytest.fixture

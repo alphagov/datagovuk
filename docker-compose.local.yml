@@ -16,9 +16,27 @@ services:
         required: true
       - path: ./.envs/.local/.django-overrides
         required: false
+    environment:
+      VITE_ENV: ${VITE_ENV:-development}
     ports:
       - '8000:8000'
     command: /start
+
+  vite:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    image: datagovuk_local_vite
+    container_name: datagovuk_local_vite
+    working_dir: /app
+    volumes:
+      - ./frontend:/app:z
+      - /app/node_modules
+    environment:
+      VITE_ENV: ${VITE_ENV:-development}
+    ports:
+      - '5173:5173'
+    command: npm run dev -- --host 0.0.0.0 --strictPort --port 5173
 
   playwright:
     build:

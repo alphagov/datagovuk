@@ -1,6 +1,7 @@
 # ruff: noqa: ERA001
 """Base settings to build other settings files upon."""
 
+import os
 from enum import Enum
 from pathlib import Path
 
@@ -16,6 +17,11 @@ READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(BASE_DIR / ".env"))
+
+VITE_ENV = os.environ.get("VITE_ENV", "production")
+STATICFILES_DIRS = [
+    str(BASE_DIR / "app" / "static" / "dist"),
+]
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -206,6 +212,8 @@ TEMPLATES = [
                 "datagovuk.core.context_processors.data_manual_menu_items",
                 "datagovuk.core.context_processors.google_tag_manager",
                 "datagovuk.core.context_processors.feature_flags",
+                "datagovuk.core.context_processors.feature_flags",
+                "datagovuk.core.context_processors.vite_env_processor",
             ],
             "extensions": [
                 "compressor.contrib.jinja2ext.CompressorExtension",
