@@ -57,7 +57,7 @@ jobs:
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
       IS_TAG: "true"
       ENVS: "production"
-      GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
+      GH_REF: ${{ github.event.workflow_run.head_branch }} # e.g. v0.0.0 (the release tag that triggered the workflow_run.workflows)
 
   report_run_failure:
     name: Report run failure to Slack
