@@ -1,12 +1,12 @@
 {
-    "title": "Road traffic mileage",
+    "title": "Road traffic mileage (billion vehicle miles)",
     "visualisation_type": "line",
     "source": "https://roadtraffic.dft.gov.uk",
     "publisher": "Department for Transport",
     "download": "road-traffic-mileage.csv",
       "series": [
       {
-      "name": "All motor vehicles (billion vehicle miles)",
+      "name": "All motor vehicles",
       "color": "#000000",
       "data": {
         "1993": 256.2,
