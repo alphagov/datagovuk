@@ -2,7 +2,7 @@
   "title": "Electricity production (GWh)",
   "visualisation_type": "line",
   "source": "https://www.gov.uk/government/statistics/electricity-chapter-5-digest-of-united-kingdom-energy-statistics-dukes",
-  "download": "electricity-sources.csv",
+  "download": "electricity-production-1996-2024.csv",
   "publisher": "Department for Energy Security and Net Zero",
   "min_value": 0,
   "max_value": 800000,
