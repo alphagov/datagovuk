@@ -5,8 +5,8 @@ websites:
     link-text: Electricity statistics
 api:
 dataset:
-page-last-updated: "2026-03-24"
-visualisation-data:
+page-last-updated: "2026-06-12"
+visualisation-data: electricity-production/electricity-production-1996-2024.json
 contact:
 status: for-publication
 ---
