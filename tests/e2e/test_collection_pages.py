@@ -87,7 +87,7 @@ def test_collection_page_bar_chart_is_visible(lazy_page, live_server_url):
 def test_collection_page_headline_is_visible(lazy_page, live_server_url):
     url = reverse(
         "collections:collection_page",
-        kwargs={"collection_name": "transport", "collection_page_name": "road-traffic"},
+        kwargs={"collection_name": "business-and-economy", "collection_page_name": "get-company-information"},
     )
     lazy_page.goto(live_server_url + url)
 
