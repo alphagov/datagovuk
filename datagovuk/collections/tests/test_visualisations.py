@@ -46,9 +46,8 @@ def test_get_visualisation_bar_chart():
 
 
 def test_get_visualisation_headline():
-    visualisation = get_visualisation("road-traffic/road-traffic-headline.json")
+    visualisation = get_visualisation("get-company-information/companies-house-register-headlines.json")
 
     assert isinstance(visualisation["visualisation"], Headline)
     assert visualisation["type"] == "headline"
-    assert visualisation["title"] == "Road traffic levels by vehicle type"
-    assert "Billion vehicle miles" in str(visualisation["visualisation"])
+    assert visualisation["title"] == "Companies incorporated and dissolved (2024-25)"
