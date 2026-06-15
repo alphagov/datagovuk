@@ -93,7 +93,7 @@ def test_collection_page_headline_is_visible(lazy_page, live_server_url):
 
     expect(lazy_page.get_by_role("heading", name="Company formations")).to_be_visible()
     expect(lazy_page.get_by_role("heading", name="Company dissolutions")).to_be_visible()
-    expect(lazy_page.get_by_text("In 2024/2025 compared to 2023/2024.")).to_be_visible()
+    expect(lazy_page.get_by_text("In 2024/2025 compared to 2023/2024.").first).to_be_visible()
     headline_column = lazy_page.locator(".datagovuk-headline__column").first
     expect(headline_column.locator(".datagovuk-headline__number", has_text="801864")).to_be_visible()
     expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="9.7%")).to_be_visible()
