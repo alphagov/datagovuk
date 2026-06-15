@@ -51,3 +51,4 @@ def test_get_visualisation_headline():
     assert isinstance(visualisation["visualisation"], Headline)
     assert visualisation["type"] == "headline"
     assert visualisation["title"] == "Companies incorporated and dissolved (2024-25)"
+    assert "New companies incorporated 2024/2025" in str(visualisation["visualisation"])
