@@ -6,7 +6,7 @@ websites:
 api:
 dataset:
 page-last-updated: "2026-06-12"
-visualisation-data: electricity-production/electricity-production-1996-2024.json
+visualisation-data: electricity-generation/electricity-generation-1996-2024.json
 contact:
 status: for-publication
 ---

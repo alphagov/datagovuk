@@ -1,15 +1,15 @@
 {
-  "title": "Electricity production (GWh)",
+  "title": "Electricity generation (GWh)",
   "visualisation_type": "line",
   "source": "https://www.gov.uk/government/statistics/electricity-chapter-5-digest-of-united-kingdom-energy-statistics-dukes",
-  "download": "electricity-production-1996-2024.csv",
+  "download": "electricity-generation-1996-2024.csv",
   "publisher": "Department for Energy Security and Net Zero",
   "min_value": 0,
   "max_value": 800000,
   "series": [
     {
-      "name": "Total renewable generation",
-      "title": "Electricity production",
+      "name": "Renewables",
+      "title": "Electricity generation",
       "color": "#b30000",
       "data": {
         "1996":	6101.72,
@@ -44,8 +44,8 @@
       }
     },
     {
-      "name": "Total low carbon generation",
-      "title": "Electricity production",
+      "name": "Low carbon",
+      "title": "Electricity generation",
       "color": "#525a90",
       "data": {
         "1996":	100773,
@@ -80,8 +80,8 @@
       }
     },
     {
-      "name": "Total fossil fuel generation",
-      "title": "Electricity production",
+      "name": "Fossil fuels",
+      "title": "Electricity generation",
       "color": "#00890B",
       "data": {
         "1996":	244257,
