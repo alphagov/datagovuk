@@ -58,6 +58,13 @@ The resulting CSV contains metadata header rows and three time series (annual, q
 
 The file [inflation/inflation.json](inflation/inflation.json) uses the data from the csv file as its `series.data` object.
 
+### MOT test results
+
+Source: https://www.gov.uk/government/statistical-data-sets/mot-testing-data-for-great-britain
+Table: MOT test results by class of vehicle
+
+Filter Period to Total, filter Class to Total. Export columns 'Financial year', 'Tests', and 'Fails' to .csv.
+Invert financial year to be most recent at the bottom.
 
 ### Storm overflows
 
