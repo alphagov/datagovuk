@@ -9,7 +9,7 @@ api:
 dataset:
   url: https://www.planning.data.gov.uk/dataset/
   link-text: Planning data datasets
-page-last-updated: "2026-03-24"
+page-last-updated: "2026-06-16"
 visualisation-data:
 contact:
 status: for-publication
