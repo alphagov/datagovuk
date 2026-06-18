@@ -66,7 +66,7 @@ Table: MOT test results by class of vehicle
 Filter Period to Total, filter Class to Total.
 Export columns 'Financial year', 'Tests', and 'Fails' to .csv.
 Invert financial year to be most recent at the bottom.
-Divide tests and fails by 1 million and rename columns (tests_millions, fails_millions).
+Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
 
 ### Storm overflows
 
