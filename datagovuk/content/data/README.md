@@ -63,8 +63,10 @@ The file [inflation/inflation.json](inflation/inflation.json) uses the data from
 Source: https://www.gov.uk/government/statistical-data-sets/mot-testing-data-for-great-britain
 Table: MOT test results by class of vehicle
 
-Filter Period to Total, filter Class to Total. Export columns 'Financial year', 'Tests', and 'Fails' to .csv.
+Filter Period to Total, filter Class to Total.
+Export columns 'Financial year', 'Tests', and 'Fails' to .csv.
 Invert financial year to be most recent at the bottom.
+Divide tests and fails by 1 million and rename columns (tests_millions, fails_millions).
 
 ### Storm overflows
 
