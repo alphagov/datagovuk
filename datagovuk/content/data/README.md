@@ -42,7 +42,7 @@ The file [births/live-births-england-and-wales-1938-2024.json](births/live-birth
 Source: https://assets.publishing.service.gov.uk/media/688a31dda11f859994409290/DUKES_5.6.xlsx
 Found on https://www.gov.uk/government/statistics/electricity-chapter-5-digest-of-united-kingdom-energy-statistics-dukes, DUKES 5.6.
 
-Extracted rows for fuel as 'Total renewable generation [note 13]', 'Total low carbon generation [note 14]', 'Total fossil fuel generation [note 15]' for Generation type as 'All generating companies' from table 5.6B (Electricity generated, GWh). Removed the references to notes, transposed data, and saved to [electricity-generation/electricity-generation.csv](electricity-generation/electricity-generation.csv).
+Extracted rows for fuel as 'Total all generating companies', 'Total low carbon generation [note 14]', 'Total fossil fuel generation [note 15]' for Generation type as 'All generating companies' from Table 5.6B (Electricity generated, GWh). Removed the references to notes, transposed data with the years, and saved to [electricity-generation/electricity-generation.csv](electricity-generation/electricity-generation.csv).
 
 
 ### Fuel and oil prices
