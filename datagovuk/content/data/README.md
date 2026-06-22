@@ -6,6 +6,14 @@ any processing (manual) that was done to that data.
 
 ## Line and bar charts
 
+### Agricultural commodities: milk prices
+Source: [https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk](https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk)
+Table: United Kingdom milk prices and composition of milk - dataset
+Sheet: Prices_Annual
+
+Extract 'Year' and 'Price (pence per litre)' columns. Remove rows where there is no data.
+Copy data into fresh .csv to remove footnotes and extra formatting.
+
 ### Air quality
 
 The source webpage for the data is [https://www.gov.uk/government/statistics/air-quality-statistics/days-with-moderate-or-higher-air-pollution-includes-sulphur-dioxide](https://www.gov.uk/government/statistics/air-quality-statistics/days-with-moderate-or-higher-air-pollution-includes-sulphur-dioxide)
@@ -36,6 +44,10 @@ The visualisation data was downloaded via a form on that page which triggers a d
 The Year and Number of Live Births columns were extracted from the xlsx to create [births/live-births-england-and-wales-1938-2024.csv](births/live-births-england-and-wales-1938-2024.csv)
 
 The file [births/live-births-england-and-wales-1938-2024.json](births/live-births-england-and-wales-1938-2024.json) uses the data from the csv file as its `series.data` object.
+
+### Energy prices
+Source: [https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics](https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics)
+Average annual domestic energy bills
 
 ### Fuel and oil prices
 
