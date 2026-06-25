@@ -45,7 +45,7 @@ Table DRT121A, car driving tests conducted, passes, and pass rates by financial 
 Filter to select financial year, select all but the most current data showing 'year to date'.
 Copy into new .csv, convert numbers columns to 'number' type and remove trailing decimal points.
 Divide numbers by 1 million and round to 2 decimal places.
-Rename date column to Financial Year.
+Rename date column to Financial Year, and remove the second year to keep the axis labels concise.
 
 ### Fuel and oil prices
 
