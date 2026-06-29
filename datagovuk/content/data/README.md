@@ -93,6 +93,18 @@ Invert financial year to be most recent at the bottom.
 Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
 Remove the second year in finanial year to make the axis labels neater.
 
+### Service assessments
+Source: https://www.gov.uk/service-standard-reports
+
+Filter assessment date to a year.
+Filter result by red, amber, and green. The number of reports will show at the top - note how many are there for each option.
+Update the year to be the following year.
+Repeat the filtering by red, amber, and green and noting these.
+
+Calculate the percentage of reports in each year for each outcome - e.g. 3 red outcomes out of 10 total reports in 2024 = 30%.
+Calculate the percentage point change and direction (up or down), and round to 1 decimal place.
+The trend should be based on the percentage point change, not the change in number of reports.
+
 ### Storm overflows
 
 > [!WARNING]
