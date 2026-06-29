@@ -20,7 +20,7 @@ jobs:
     needs: tag_for_staging_production
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@v6.0.3
       - run: bash ./docker/create-pr.sh
     env:
       IS_TAG: "true"

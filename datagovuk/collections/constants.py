@@ -1,6 +1,6 @@
 BASE_COLLECTIONS = [
     {
-        "title": "Business and Economy",
+        "title": "Business and economy",
         "slug": "business-and-economy",
         "description": "Company information, prices, trade, economic indicators",
         "topics": [
