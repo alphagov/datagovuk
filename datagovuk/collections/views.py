@@ -49,7 +49,8 @@ class CollectionPageView(RenderedMarkdownView):
         context["slug"] = self.kwargs["collection_page_name"]
         context["collection"] = self.kwargs["collection_name"].replace("-", " ").capitalize()
         context["collection_slug"] = self.kwargs["collection_name"]
-        context["page_last_updated"] = date.strptime(context["page_last_updated"], "%Y-%m-%d")
+        # TODO: Fix up this python3.14 -> python3.12 hack
+        context["page_last_updated"] = date.today()  # noqa: DTZ011
         collection_pages, selected_index = self.collection_pages
         if selected_index > 0:
             context["previous_page"] = collection_pages[selected_index - 1]

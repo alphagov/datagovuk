@@ -49,7 +49,7 @@ class BasicAuthMiddleware:
             encoded_credentials = auth_header[6:].encode()
             decoded_credentials = base64.b64decode(encoded_credentials).decode()
             username, password = decoded_credentials.split(":", 1)
-        except BinasciiError, ValueError:
+        except (BinasciiError, ValueError):
             return self._unauthorized()
 
         if constant_time_compare(username, self.username) and constant_time_compare(
