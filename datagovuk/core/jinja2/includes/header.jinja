@@ -44,6 +44,20 @@
         <a href="/search" class="govuk-link datagovuk-link datagovuk-menu__item-link">Directory</a>
       </div>
     </div>
+    <a class="datagovuk-header__link" href="{{ url('publishing:home') }}">Publishing</a>
+    <div class="datagovuk-menu">
+      <div class="datagovuk-menu__items">
+        <a href="{{ url('publishing:home') }}" class="govuk-link datagovuk-link datagovuk-menu__item-link">Publishing</a>
+      </div>
+    </div>
   </div>
-  {% if user %}{{ user.email }}{% endif %}
+  {% if user %}
+    <div class="govuk-width-container datagovuk-width-container datagovuk-user">
+      <p class="govuk-body datagovuk-body">Logged in as {{ user.email }}</p>
+      <form action="{{ url('users:logout') }}" method="post">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+        <button class="govuk-button datagovuk-button datagovuk-button--secondary" type="submit">Log Out</button>
+      </form>
+    </div>
+  {% endif %}
 </header>

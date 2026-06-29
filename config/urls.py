@@ -23,6 +23,7 @@ urlpatterns = [
         never_cache(prometheus_views.ExportToDjangoView),
         name="prometheus-django-metrics",
     ),
+    path("publishing/", include("datagovuk.publishing.urls", namespace="publishing")),
     path("users/", include("datagovuk.users.urls", namespace="users")),
     path("one-login/", include("govuk_onelogin_django.urls", namespace="govuk_onelogin")),
 ]

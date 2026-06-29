@@ -85,6 +85,7 @@ LOCAL_APPS = [
     "datagovuk.data_manual",
     "datagovuk.collections",
     "datagovuk.users",
+    "datagovuk.publishing",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -103,7 +104,8 @@ AUTHENTICATION_BACKENDS = [
 # --- GOV.UK One Login Specific Settings ---
 
 # The URL users are sent to if they hit a @login_required view
-LOGIN_URL = "login"  # A view containing your "Sign in with GOV.UK One Login" button
+LOGIN_URL = "users:login"  # A view containing your "Sign in with GOV.UK One Login" button
+LOGOUT_REDIRECT_URL = "pages:home"
 
 # Where users landing back from a successful authentication redirect to
 LOGIN_REDIRECT_URL = "pages:home"
