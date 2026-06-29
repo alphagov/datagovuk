@@ -7,7 +7,7 @@
   "visualisation_suffix": "b",
   "series": [
     {
-      "name": "Council tax receipts (billion £)",
+      "name": "Council tax receipts (£)",
       "color": "#000000",
       "data": {
         "2000": 12.242,
