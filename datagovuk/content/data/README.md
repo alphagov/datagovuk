@@ -37,6 +37,21 @@ The Year and Number of Live Births columns were extracted from the xlsx to creat
 
 The file [births/live-births-england-and-wales-1938-2024.json](births/live-births-england-and-wales-1938-2024.json) uses the data from the csv file as its `series.data` object.
 
+### Electricity generation
+
+Source: https://assets.publishing.service.gov.uk/media/688a31dda11f859994409290/DUKES_5.6.xlsx
+Found on https://www.gov.uk/government/statistics/electricity-chapter-5-digest-of-united-kingdom-energy-statistics-dukes, DUKES 5.6.
+
+From Table 5.6B (Electricity generated, GWh).
+Extracted rows for generation type as 'All generating companies' where fuel is:
+- 'Nuclear';
+- 'Total all generating companies';
+- 'Total renewable generation [note 13];
+- 'Total fossil fuel generation [note 15]'.
+
+Removed the references to notes, transposed data with the years, and saved to [electricity-generation/electricity-generation.csv](electricity-generation/electricity-generation.csv).
+
+
 ### Fuel and oil prices
 
 The source webpage for the data is [https://www.gov.uk/government/statistical-data-sets/oil-and-petroleum-products-monthly-statistics](https://www.gov.uk/government/statistical-data-sets/oil-and-petroleum-products-monthly-statistics)
