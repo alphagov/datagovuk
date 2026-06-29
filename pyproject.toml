@@ -7,10 +7,10 @@ license = { text = "MIT" }
 authors = [
   { name = "Brendan Smith", email = "brendan.smith@cabinet-office.digital.gov.uk" },
 ]
-requires-python = "==3.14.*"
+requires-python = "==3.12.*"
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
   "argon2-cffi==25.1.0",
@@ -21,6 +21,7 @@ dependencies = [
   "django-health-check==4.4.2",
   "django-libsass==0.9",
   "django-prometheus==2.5.0",
+  "govuk-onelogin-django==0.4.18",
   "gunicorn==26.0.0",
   "jinja2==3.1.6",
   "mistune==3.2.1",
@@ -131,7 +132,7 @@ keep_full_version = true
 
 # ==== mypy ====
 [tool.mypy]
-python_version = "3.14"
+python_version = "3.12"
 check_untyped_defs = true
 ignore_missing_imports = true
 warn_unused_ignores = true
