@@ -89,9 +89,10 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ENV PATH="/${VIRTUAL_ENV}/bin:$PATH"
 ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.12/site-packages"
 
-ADD zscaler.pem /usr/local/share/ca-certificates/zscaler.pem
-ENV SSL_CERT_FILE="/usr/local/share/ca-certificates/zscaler.pem"
-ENV REQUESTS_CA_BUNDLE="/usr/local/share/ca-certificates/zscaler.pem"
+# Uncomment with zscaler issues...
+#ADD zscaler_live_chain.pem /usr/local/share/ca-certificates/zscaler.pem
+#ENV SSL_CERT_FILE="/usr/local/share/ca-certificates/zscaler.pem"
+#ENV REQUESTS_CA_BUNDLE="/usr/local/share/ca-certificates/zscaler.pem"
 
 COPY ./docker/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
