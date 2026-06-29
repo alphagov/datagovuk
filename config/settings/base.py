@@ -61,6 +61,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
+    "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.sites",
@@ -74,6 +75,7 @@ THIRD_PARTY_APPS = [
     "compressor",
     "django_prometheus",
     "health_check",
+    "govuk_onelogin_django",
     "chartkick.django",
 ]
 
@@ -82,6 +84,7 @@ LOCAL_APPS = [
     "datagovuk.pages",
     "datagovuk.data_manual",
     "datagovuk.collections",
+    "datagovuk.users",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -90,7 +93,38 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
-AUTHENTICATION_BACKENDS = []
+AUTHENTICATION_BACKENDS = [
+    # django admin..
+    "django.contrib.auth.backends.ModelBackend",
+    # publishers..
+    "govuk_onelogin_django.backends.OneLoginBackend",
+]
+
+# --- GOV.UK One Login Specific Settings ---
+
+# The URL users are sent to if they hit a @login_required view
+LOGIN_URL = "login"  # A view containing your "Sign in with GOV.UK One Login" button
+
+# Where users landing back from a successful authentication redirect to
+LOGIN_REDIRECT_URL = "dashboard"
+
+# Your client credentials obtained from the GOV.UK Admin console
+GOV_UK_ONE_LOGIN_CLIENT_ID = env("GOV_UK_ONE_LOGIN_CLIENT_ID", None)
+
+# NOTE: GOV.UK One Login requires a Base64-encoded representation of your private RSA key
+# You can generate this in bash with: base64 -i private_key.pem
+GOV_UK_ONE_LOGIN_CLIENT_SECRET = env("GOV_UK_ONE_LOGIN_CLIENT_SECRET", None)
+
+GOV_UK_ONE_LOGIN_OPENID_CONFIG_URL = "https://oidc.integration.account.gov.uk/.well-known/openid-configuration"
+
+# Scopes vary depending on whether you want basic authentication or full Identity Proofing (Level 2)
+# e.g., "openid email" or "openid email profile"
+GOV_UK_ONE_LOGIN_SCOPE = "openid email"
+
+# Required configuration values dictated by your service level requirements
+GOV_UK_ONE_LOGIN_AUTHENTICATION_LEVEL = "Cl.Cm"  # Medium level authentication (Standard for basic login)
+GOV_UK_ONE_LOGIN_CONFIDENCE_LEVEL = "none"  # Use "P2" if you are verifying physical identities
+
 # PASSWORDS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#password-hashers
