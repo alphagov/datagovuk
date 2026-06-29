@@ -46,6 +46,14 @@ logs *args:
 manage +args:
     @docker compose run --rm django python ./manage.py {{args}}
 
+# makemigrations: Executes `manage.py makemigrations` command
+makemigrations *args:
+    @docker compose run --rm django python ./manage.py makemigrations {{args}}
+
+# migrate: Executes `manage.py migrate` command
+migrate *args:
+    @docker compose run --rm django python ./manage.py migrate {{args}}
+
 # shell: Executes `manage.py shell` command.
 shell:
     @docker compose run --rm django python ./manage.py shell

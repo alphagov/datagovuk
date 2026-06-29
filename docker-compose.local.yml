@@ -18,7 +18,19 @@ services:
         required: false
     ports:
       - '8000:8000'
+    depends_on:
+      - db
     command: /start
+
+  db:
+    image: postgres:17-alpine
+    container_name: datagovuk_local_db
+    environment:
+      - POSTGRES_DB=django
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+    ports:
+      - "5432:5432"
 
   playwright:
     build:
