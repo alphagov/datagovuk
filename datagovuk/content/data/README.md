@@ -45,9 +45,21 @@ The Year and Number of Live Births columns were extracted from the xlsx to creat
 
 The file [births/live-births-england-and-wales-1938-2024.json](births/live-births-england-and-wales-1938-2024.json) uses the data from the csv file as its `series.data` object.
 
+
+### Driving tests
+
+Source: https://www.gov.uk/government/statistical-data-sets/driving-test-and-theory-test-data-cars
+Table DRT121A, car driving tests conducted, passes, and pass rates by financial quarter and financial year: Great Britain
+
+Filter to select financial year, select all but the most current data showing 'year to date'.
+Copy into new .csv, convert numbers columns to 'number' type and remove trailing decimal points.
+Divide numbers by 1 million and round to 2 decimal places.
+Rename date column to Financial Year, and remove the second year to keep the axis labels concise.
+
 ### Energy prices
 Source: [https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics](https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics)
 Average annual domestic energy bills
+
 
 ### Fuel and oil prices
 

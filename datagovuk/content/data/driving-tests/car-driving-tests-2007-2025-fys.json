@@ -1,0 +1,56 @@
+{
+  "title": "Car driving tests by financial year (millions)",
+  "visualisation_type": "line",
+  "visualisation_suffix": "m",
+  "source": "https://www.gov.uk/government/statistical-data-sets/driving-test-and-theory-test-data-cars#car-driving-test-data-for-great-britain",
+  "download": "driving-tests-2007-2025-fys.csv",
+  "publisher": "Driver and Vehicle Standards Agency",
+  "series": [
+    {"color": "#C27A9A",
+      "name": "Tests conducted",
+      "data": {
+        "2007": 1.76,
+        "2008": 1.74,
+        "2009": 1.53,
+        "2010": 1.61,
+        "2011": 1.57,
+        "2012": 1.44,
+        "2013": 1.48,
+        "2014": 1.53,
+        "2015": 1.54,
+        "2016": 1.73,
+        "2017": 1.72,
+        "2018": 1.66,
+        "2019": 1.60,
+        "2020": 0.44,
+        "2021": 1.54,
+        "2022": 1.69,
+        "2023": 1.95,
+        "2024": 1.84
+      }},
+        {
+      "color": "#00890B",
+      "name": "Tests passed",
+      "data": {
+        "2007": 0.78,
+        "2008": 0.79,
+        "2009": 0.70,
+        "2010": 0.74,
+        "2011": 0.74,
+        "2012": 0.68,
+        "2013": 0.70,
+        "2014": 0.72,
+        "2015": 0.72,
+        "2016": 0.82,
+        "2017": 0.80,
+        "2018": 0.76,
+        "2019": 0.73,
+        "2020": 0.22,
+        "2021": 0.75,
+        "2022": 0.82,
+        "2023": 0.93,
+        "2024": 0.90
+      }
+    }
+  ]
+}
