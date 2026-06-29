@@ -6,6 +6,14 @@ any processing (manual) that was done to that data.
 
 ## Line and bar charts
 
+### Agricultural commodities: milk prices
+Source: [https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk](https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk)
+Table: United Kingdom milk prices and composition of milk - dataset
+Sheet: Prices_Annual
+
+Extract 'Year' and 'Price (pence per litre)' columns. Remove rows where there is no data.
+Copy data into fresh .csv to remove footnotes and extra formatting.
+
 ### Air quality
 
 The source webpage for the data is [https://www.gov.uk/government/statistics/air-quality-statistics/days-with-moderate-or-higher-air-pollution-includes-sulphur-dioxide](https://www.gov.uk/government/statistics/air-quality-statistics/days-with-moderate-or-higher-air-pollution-includes-sulphur-dioxide)
@@ -37,6 +45,10 @@ The Year and Number of Live Births columns were extracted from the xlsx to creat
 
 The file [births/live-births-england-and-wales-1938-2024.json](births/live-births-england-and-wales-1938-2024.json) uses the data from the csv file as its `series.data` object.
 
+### Energy prices
+Source: [https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics](https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics)
+Average annual domestic energy bills
+
 ### Fuel and oil prices
 
 The source webpage for the data is [https://www.gov.uk/government/statistical-data-sets/oil-and-petroleum-products-monthly-statistics](https://www.gov.uk/government/statistical-data-sets/oil-and-petroleum-products-monthly-statistics)
@@ -58,6 +70,7 @@ The resulting CSV contains metadata header rows and three time series (annual, q
 
 The file [inflation/inflation.json](inflation/inflation.json) uses the data from the csv file as its `series.data` object.
 
+
 ### Local government finance: council tax
 
 Source: https://www.gov.uk/government/statistical-data-sets/live-tables-on-local-government-finance
@@ -69,6 +82,18 @@ Rename Year to 'Financial year'.
 Change the year to just the first in the range (e.g. 2000 to 2001 becomes 2000).
 Rename 'Total receipts...' to 'Council tax reciepts (billion £)'.
 Divide the values by a thousand.
+
+### MOT test results
+
+Source: https://www.gov.uk/government/statistical-data-sets/mot-testing-data-for-great-britain
+Table: MOT test results by class of vehicle
+
+Filter Period to Total, filter Class to Total.
+Export columns 'Financial year', 'Tests', and 'Fails' to .csv.
+Invert financial year to be most recent at the bottom.
+Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
+Remove the second year in finanial year to make the axis labels neater.
+
 
 ### Storm overflows
 

@@ -1,0 +1,46 @@
+{
+  "title": "MOT tests and failures by financial year (millions)",
+  "publisher": "Driver and Vehicle Standards Agency",
+  "source": "https://www.gov.uk/government/statistical-data-sets/mot-testing-data-for-great-britain",
+  "download": "mot-tests-and-failures-2016-2025-fys.csv",
+  "visualisation_type": "line",
+  "visualisation_suffix": "m",
+  "series": [
+    {
+      "name": "Tests",
+      "color": "#00890B",
+      "data": {
+        "2013": 29.16,
+        "2014": 29.36,
+        "2015": 29.72,
+        "2016": 30.42,
+        "2017": 30.59,
+        "2018": 31.34,
+        "2019": 31.82,
+        "2020": 31.97,
+        "2021": 33.51,
+        "2022": 34.5,
+        "2023": 34.71,
+        "2024": 35.23
+      }
+    },
+    {
+      "name": "Test failures",
+      "color": "#C27A9A",
+      "data": {
+        "2013": 8.81,
+        "2014": 8.42,
+        "2015": 8.19,
+        "2016": 8.06,
+        "2017": 7.92,
+        "2018": 8.1,
+        "2019": 7.73,
+        "2020": 7.47,
+        "2021": 7.67,
+        "2022": 7.67,
+        "2023": 7.89,
+        "2024": 7.9
+      }
+    }
+  ]
+}
