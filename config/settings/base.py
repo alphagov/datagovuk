@@ -106,7 +106,7 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_URL = "login"  # A view containing your "Sign in with GOV.UK One Login" button
 
 # Where users landing back from a successful authentication redirect to
-LOGIN_REDIRECT_URL = "dashboard"
+LOGIN_REDIRECT_URL = "pages:home"
 
 # Your client credentials obtained from the GOV.UK Admin console
 GOV_UK_ONE_LOGIN_CLIENT_ID = env("GOV_UK_ONE_LOGIN_CLIENT_ID", None)
@@ -123,7 +123,7 @@ GOV_UK_ONE_LOGIN_SCOPE = "openid email"
 
 # Required configuration values dictated by your service level requirements
 GOV_UK_ONE_LOGIN_AUTHENTICATION_LEVEL = "Cl.Cm"  # Medium level authentication (Standard for basic login)
-GOV_UK_ONE_LOGIN_CONFIDENCE_LEVEL = "none"  # Use "P2" if you are verifying physical identities
+GOV_UK_ONE_LOGIN_CONFIDENCE_LEVEL = "P0"  # Use "P2" if you are verifying physical identities
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
@@ -155,6 +155,7 @@ MIDDLEWARE = [
     "datagovuk.core.middleware.CacheControlMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -240,6 +241,7 @@ TEMPLATES = [
                 "datagovuk.core.context_processors.data_manual_menu_items",
                 "datagovuk.core.context_processors.google_tag_manager",
                 "datagovuk.core.context_processors.feature_flags",
+                "datagovuk.users.context_processors.user",
             ],
             "extensions": [
                 "compressor.contrib.jinja2ext.CompressorExtension",
