@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:python3.14-bookworm-slim AS python-build-stage
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS python-build-stage
 
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=0
 
@@ -87,7 +87,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync
 
 ENV PATH="/${VIRTUAL_ENV}/bin:$PATH"
-ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.14/site-packages"
+ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.12/site-packages"
+
+ADD zscaler.pem /usr/local/share/ca-certificates/zscaler.pem
+ENV SSL_CERT_FILE="/usr/local/share/ca-certificates/zscaler.pem"
+ENV REQUESTS_CA_BUNDLE="/usr/local/share/ca-certificates/zscaler.pem"
 
 COPY ./docker/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint

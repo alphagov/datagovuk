@@ -285,3 +285,5 @@ datagovuk/media/
 
 # Vim
 *.swp
+
+*.pem
