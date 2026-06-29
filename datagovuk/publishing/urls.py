@@ -6,4 +6,5 @@ app_name = "publishing"
 
 urlpatterns = [
     path("", views.HomeView.as_view(), name="home"),
+    path("register/", views.PublisherRegistrationView.as_view(), name="register"),
 ]

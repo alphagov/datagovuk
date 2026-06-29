@@ -53,7 +53,11 @@
   </div>
   {% if user %}
     <div class="govuk-width-container datagovuk-width-container datagovuk-user">
-      <p class="govuk-body datagovuk-body">Logged in as {{ user.email }}</p>
+      <p class="govuk-body datagovuk-body">
+        Logged in as {{ user.email }}
+        <br />
+        {% if publisher %}Publisher {{ publisher.name }}{% endif %}
+      </p>
       <form action="{{ url('users:logout') }}" method="post">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
         <button class="govuk-button datagovuk-button datagovuk-button--secondary" type="submit">Log Out</button>
