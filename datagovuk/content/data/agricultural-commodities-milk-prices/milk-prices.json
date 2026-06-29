@@ -1,5 +1,5 @@
 {
-  "title": "Farmgate milk prices (pence per litre)",
+  "title": "Average price paid to farmers by dairies (pence per litre)",
   "visualisation_type": "line",
   "source": "https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk",
   "download": "milk_prices_farmgate_annual_1995-2025.csv",
