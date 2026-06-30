@@ -10,11 +10,15 @@
       <div class="govuk-grid-column-two-thirds-from-desktop">
         <h1 class="govuk-heading-xl datagovuk-heading-xl">{{ publisher.name }}</h1>
 
-        <h2 class="govuk-heading-l datagovuk-heading-l">Harvesters</h2>
-        {% for harvest_source in harvester_sources %}
-          <p class="govuk-body datagovuk-body">{{ harvest_source.title }}</p>
+        <h2 class="govuk-heading-l datagovuk-heading-l">Catalogues</h2>
+        {% for catalogue in catalogues %}
+          <p class="govuk-body datagovuk-body">
+            <a class="govuk-link datagovuk-link" href="{{ url('publishing:catalogue_detail', kwargs={'slug': catalogue.slug}) }}">
+              {{ catalogue.title }}
+            </a>
+          </p>
         {% endfor %}
-        <a href="{{ url('publishing:add_harvest_source') }}" role="button" class="govuk-button datagovuk-button">
+        <a href="{{ url('publishing:add_catalogue') }}" role="button" class="govuk-button datagovuk-button">
           Add harvest source
         </a>
       </div>

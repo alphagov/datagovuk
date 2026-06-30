@@ -7,5 +7,6 @@ app_name = "publishing"
 urlpatterns = [
     path("", views.HomeView.as_view(), name="home"),
     path("register/", views.PublisherRegistrationView.as_view(), name="register"),
-    path("harvest/add-harvest-source/", views.AddHarvestSourceView.as_view(), name="add_harvest_source"),
+    path("catalogue/add/", views.AddCatalogueView.as_view(), name="add_catalogue"),
+    path("catalogue/<slug:slug>/", views.CatalogueDetailView.as_view(), name="catalogue_detail"),
 ]

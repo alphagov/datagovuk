@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import HarvestSource, Publisher
+from .models import Catalogue, Publisher
 
 
 class PublisherRegistrationForm(forms.ModelForm):
@@ -9,10 +9,10 @@ class PublisherRegistrationForm(forms.ModelForm):
         fields = ["name", "description"]
 
 
-class HarvestSourceForm(forms.ModelForm):
+class CatalogueForm(forms.ModelForm):
     class Meta:
-        model = HarvestSource
-        fields = ["url", "title", "source_type", "harvest_frequency"]
+        model = Catalogue
+        fields = ["url", "title", "catalogue_type", "harvest_frequency"]
 
     def __init__(self, *args, **kwargs):
         self.publisher = kwargs.pop("publisher")

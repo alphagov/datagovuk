@@ -38,8 +38,8 @@ class PublisherMember(models.Model):
         return f"{self.publisher.name}:{self.user.email}"
 
 
-class HarvestSource(models.Model):
-    class SourceType(models.TextChoices):
+class Catalogue(models.Model):
+    class CatalogueType(models.TextChoices):
         DCAT_RDF = "DCAT_RDF", "DCAT RDF"
 
     class HarvestFrequency(models.TextChoices):
@@ -57,7 +57,7 @@ class HarvestSource(models.Model):
     title = models.CharField(max_length=200)
     slug = models.CharField(max_length=210)
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
-    source_type = models.CharField(max_length=30, choices=SourceType.choices)
+    catalogue_type = models.CharField(max_length=30, choices=CatalogueType.choices)
     harvest_frequency = models.CharField(max_length=30, choices=HarvestFrequency.choices)
 
     class Meta:
