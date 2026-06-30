@@ -26,6 +26,6 @@ class PublisherRegistrationView(LoginRequiredMixin, CreateView):
             role=PublisherMember.Role.ADMIN,
         )
         membership.save()
-        self.request.session["publisher"] = instance.id
+        self.request.session["publisher"] = str(instance.id)
 
         return super().form_valid(form)

@@ -10,7 +10,9 @@ class PublisherMiddleware:
         if not request.user.is_authenticated:
             return self.get_response(request)
 
-        allowed_publisher_ids = request.user.publishers.all().values_list("id", flat=True)
+        allowed_publisher_ids = [
+            str(publisher_id) for publisher_id in request.user.publishers.all().values_list("id", flat=True)
+        ]
         user_has_publisher = len(allowed_publisher_ids) > 0
         if not user_has_publisher:
             return self.get_response(request)

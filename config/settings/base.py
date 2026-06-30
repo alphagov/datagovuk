@@ -108,7 +108,7 @@ LOGIN_URL = "users:login"  # A view containing your "Sign in with GOV.UK One Log
 LOGOUT_REDIRECT_URL = "pages:home"
 
 # Where users landing back from a successful authentication redirect to
-LOGIN_REDIRECT_URL = "pages:home"
+LOGIN_REDIRECT_URL = "publishing:home"
 
 # Your client credentials obtained from the GOV.UK Admin console
 GOV_UK_ONE_LOGIN_CLIENT_ID = env("GOV_UK_ONE_LOGIN_CLIENT_ID", None)
