@@ -4,10 +4,11 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
 from .forms import PublisherRegistrationForm
+from .mixins import PublisherLoginRequiredMixin
 from .models import Publisher, PublisherMember
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
+class HomeView(PublisherLoginRequiredMixin, TemplateView):
     template_name = "publishing/home.jinja"
 
 
@@ -25,5 +26,6 @@ class PublisherRegistrationView(LoginRequiredMixin, CreateView):
             role=PublisherMember.Role.ADMIN,
         )
         membership.save()
+        self.request.session["publisher"] = instance.id
 
         return super().form_valid(form)

@@ -158,6 +158,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "datagovuk.publishing.middleware.PublisherMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -244,6 +245,7 @@ TEMPLATES = [
                 "datagovuk.core.context_processors.google_tag_manager",
                 "datagovuk.core.context_processors.feature_flags",
                 "datagovuk.users.context_processors.user",
+                "datagovuk.publishing.context_processors.publisher",
             ],
             "extensions": [
                 "compressor.contrib.jinja2ext.CompressorExtension",
