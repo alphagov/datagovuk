@@ -2,6 +2,7 @@ import uuid
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.text import slugify
 
 
 class Publisher(models.Model):
@@ -35,3 +36,42 @@ class PublisherMember(models.Model):
 
     def __str__(self):
         return f"{self.publisher.name}:{self.user.email}"
+
+
+class HarvestSource(models.Model):
+    class SourceType(models.TextChoices):
+        DCAT_RDF = "DCAT_RDF", "DCAT RDF"
+
+    class HarvestFrequency(models.TextChoices):
+        DAILY = "DAILY", "Daily"
+        WEEKLY = "WEEKLY", "Weekly"
+        MONTHLY = "MONTHLY", "Monthly"
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
+    created_at = models.DateField(auto_now_add=True)
+    url = models.URLField()
+    title = models.CharField(max_length=200)
+    slug = models.CharField(max_length=210)
+    publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
+    source_type = models.CharField(max_length=30, choices=SourceType.choices)
+    harvest_frequency = models.CharField(max_length=30, choices=HarvestFrequency.choices)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["publisher_id", "slug"],
+                name="unique_publisher_slug",
+            ),
+        ]
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)

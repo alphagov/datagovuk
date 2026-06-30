@@ -8,7 +8,15 @@
   <div class="govuk-width-container datagovuk-width-container govuk-!-margin-top-9">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds-from-desktop">
-        <h1 class="govuk-heading-xl datagovuk-heading-xl">Publishing</h1>
+        <h1 class="govuk-heading-xl datagovuk-heading-xl">{{ publisher.name }}</h1>
+
+        <h2 class="govuk-heading-l datagovuk-heading-l">Harvesters</h2>
+        {% for harvest_source in harvester_sources %}
+          <p class="govuk-body datagovuk-body">{{ harvest_source.title }}</p>
+        {% endfor %}
+        <a href="{{ url('publishing:add_harvest_source') }}" role="button" class="govuk-button datagovuk-button">
+          Add harvest source
+        </a>
       </div>
     </div>
   </div>
