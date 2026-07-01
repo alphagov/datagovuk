@@ -26,6 +26,7 @@ urlpatterns = [
     path("publishing/", include("datagovuk.publishing.urls", namespace="publishing")),
     path("users/", include("datagovuk.users.urls", namespace="users")),
     path("one-login/", include("govuk_onelogin_django.urls", namespace="govuk_onelogin")),
+    path("mock-catalogue/", include("datagovuk.mock_catalogues.urls", namespace="mock_catalogues")),
 ]
 
 handler500 = "datagovuk.core.views.server_error"

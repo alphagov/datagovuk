@@ -1,0 +1,57 @@
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+ @prefix dct: <http://purl.org/dc/terms/> .
+ @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+ @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+ <http://localhost:8000/mock-catalogue/dcat/dataset-1> a dcat:Dataset ;
+ dct:license <http://reference.data.gov.uk/id/open-government-licence> ;
+    dct:description "To provide a more detailed understanding of the flood insurance market Defra commissioned this survey of the availability and affordability of flood insurance for households, including a comparison between those at risk of flooding and those not at risk." ;
+    dct:identifier "97ec452e-7098-4f02-a912-216ab3e30cee" ;
+    dct:issued "2023-06-02T10:10:40.369685"^^xsd:dateTime ;
+    dct:modified "2025-07-28T15:52:28.911414"^^xsd:dateTime ;
+    dct:publisher [ a foaf:Organization ;
+            foaf:name "Department for Environment, Food & Rural Affairs" ] ;
+    dct:title "Affordability and availability of flood insurance - final report" ;
+    dcat:distribution <http://localhost:8000/mock-catalogue/dcat/dataset-1-resource-1> .
+
+<http://localhost:8000/mock-catalogue/dcat/dataset-1-resource-1> a dcat:Distribution ;
+ dct:license <http://reference.data.gov.uk/id/open-government-licence> ;
+    dct:description "Link to final report page 6,7 and 85" ;
+    dct:issued "2023-09-24T10:27:17.088870"^^xsd:dateTime ;
+    dct:modified "2025-07-28T15:52:28.951592"^^xsd:dateTime ;
+    dct:title "Affordability and availability of flood insurance - final report" ;
+    dcat:accessURL <http://localhost:8000/mock-catalogue/dcat/dataset-1-resource-1> .
+
+
+
+<http://localhost:8000/mock-catalogue/dcat/dataset-2> a dcat:Dataset ;
+ dct:license <http://reference.data.gov.uk/id/open-government-licence> ;
+    dct:description """PLEASE NOTE: As of 25th May 2023 this catalog/data-sets is no longer updated and has been Retired.
+
+Animal Reporting and Movement Service (ARMS) data reports on total number of deer movements (both non-electronic and electronic) from January 2017 to June 2017.""" ;
+    dct:identifier "01fabcc5-1324-4eff-86b7-306a27405cdc" ;
+    dct:issued "2023-06-02T10:09:53.181724"^^xsd:dateTime ;
+    dct:modified "2017-08-22T00:00:00+00:00"^^xsd:dateTime ;
+    dct:publisher [ a foaf:Organization ;
+            foaf:name "Department for Environment, Food & Rural Affairs" ] ;
+    dct:title "Animal Reporting and Movement Service - Deer movements 2017" ;
+    dcat:distribution <http://localhost:8000/mock-catalogue/dcat/dataset-2-resource-1>,
+        <http://localhost:8000/mock-catalogue/dcat/dataset-2-resource-2> .
+
+<http://localhost:8000/mock-catalogue/dcat/dataset-2-resource-1> a dcat:Distribution ;
+ dct:license <http://reference.data.gov.uk/id/open-government-licence> ;
+    dct:description "Excel spread sheet for download April to June 2017." ;
+    dct:format "XLS" ;
+    dct:issued "2023-09-24T10:25:41.937397"^^xsd:dateTime ;
+    dct:modified "2025-07-28T11:01:20.044570"^^xsd:dateTime ;
+    dct:title "Excel spread sheet for download April to June 2017." ;
+    dcat:accessURL <http://localhost:8000/mock-catalogue/dcat/dataset-2-resource-1> ;
+    dcat:mediaType "application/vnd.ms-excel" .
+
+<http://localhost:8000/mock-catalogue/dcat/dataset-2-resource-2> a dcat:Distribution ;
+    dct:description "Excel spread sheet for download January to March 2017." ;
+    dct:format "XLS" ;
+    dct:issued "2023-09-24T10:25:41.937392"^^xsd:dateTime ;
+    dct:modified "2025-07-28T11:01:20.037780"^^xsd:dateTime ;
+    dct:title "Excel spread sheet for download January to March 2017." ;
+    dcat:accessURL <http://localhost:8000/mock-catalogue/dcat/dataset-2-resource-2> ;
+    dcat:mediaType "application/vnd.ms-excel" .
