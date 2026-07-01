@@ -14,7 +14,9 @@
           <tbody class="govuk-table__body">
             <tr class="govuk-table__row">
               <th scope="row" class="govuk-table__header">URL</th>
-              <td class="govuk-table__cell">{{ catalogue.url }}</td>
+              <td class="govuk-table__cell" style="word-break: break-all">
+                <a href="{{ catalogue.url }}" class="govuk-link datagovuk-link">{{ catalogue.url }}</a>
+              </td>
             </tr>
             <tr class="govuk-table__row">
               <th scope="row" class="govuk-table__header">Catalogue type</th>
@@ -26,6 +28,53 @@
             </tr>
           </tbody>
         </table>
+        <h2 class="govuk-heading-l datagovuk-heading-l">Latest harvest</h2>
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Status</dt>
+            <dd class="govuk-summary-list__value">
+              <strong class="govuk-tag govuk-tag--grey">Queued</strong>
+              <strong class="govuk-tag govuk-tag--yellow">Harvesting</strong>
+              <strong class="govuk-tag govuk-tag--green">Completed</strong>
+              <strong class="govuk-tag govuk-tag--red">Failed</strong>
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Started</dt>
+            <dd class="govuk-summary-list__value">
+              A few seconds ago
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Datasets</dt>
+            <dd class="govuk-summary-list__value">
+              <p class="govuk-body">
+                <a href="#" class="govuk-link datagovuk-link">2 catalogued</a>
+              </p>
+              <p class="govuk-body">
+                <a href="#" class="govuk-link datagovuk-link">2 validated</a>
+              </p>
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Resources</dt>
+            <dd class="govuk-summary-list__value">
+              <p class="govuk-body">
+                <a href="#" class="govuk-link datagovuk-link">10 catalogued</a>
+              </p>
+              <p class="govuk-body">
+                <a href="#" class="govuk-link datagovuk-link">8 validated</a>
+              </p>
+              <p class="govuk-body">
+                <a href="#" class="govuk-link datagovuk-link">2 marked broken</a>
+              </p>
+              <p class="govuk-body">
+                <a href="#" class="govuk-link datagovuk-link">9 marked orphaned</a>
+              </p>
+            </dd>
+          </div>
+        </dl>
+        <a href="#" class="govuk-link datagovuk-link">View the full harvest log</a>
       </div>
     </div>
   </div>
