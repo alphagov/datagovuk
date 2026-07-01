@@ -82,6 +82,19 @@ The resulting CSV contains metadata header rows and three time series (annual, q
 
 The file [inflation/inflation.json](inflation/inflation.json) uses the data from the csv file as its `series.data` object.
 
+
+### Local government finance: council tax
+
+Source: https://www.gov.uk/government/statistical-data-sets/live-tables-on-local-government-finance
+Table: Council Tax receipts live table, England, Q4 2025 to 2026
+Sheet: Table_1
+
+Extract the columns for 'Year' and 'Total receipts of council taxes collected during the financial year'.
+Rename Year to 'Financial year'.
+Change the year to just the first in the range (e.g. 2000 to 2001 becomes 2000).
+Rename 'Total receipts...' to 'Council tax reciepts (billion £)'.
+Divide the values by a thousand.
+
 ### MOT test results
 
 Source: https://www.gov.uk/government/statistical-data-sets/mot-testing-data-for-great-britain
@@ -92,6 +105,7 @@ Export columns 'Financial year', 'Tests', and 'Fails' to .csv.
 Invert financial year to be most recent at the bottom.
 Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
 Remove the second year in finanial year to make the axis labels neater.
+
 
 ### Storm overflows
 
