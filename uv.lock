@@ -372,6 +372,7 @@ dependencies = [
     { name = "python-frontmatter" },
     { name = "python-slugify" },
     { name = "sentry-sdk" },
+    { name = "watchdog" },
     { name = "whitenoise" },
 ]
 
@@ -418,6 +419,7 @@ requires-dist = [
     { name = "python-frontmatter", specifier = "==1.3.0" },
     { name = "python-slugify", specifier = "==8.0.4" },
     { name = "sentry-sdk", specifier = "==2.62.0" },
+    { name = "watchdog", specifier = "==6.0.0" },
     { name = "whitenoise", specifier = "==6.12.0" },
 ]
 

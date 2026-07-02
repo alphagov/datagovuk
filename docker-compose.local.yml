@@ -52,7 +52,7 @@ services:
     depends_on:
       - db
       - redis
-    command: celery -A config.celery worker --loglevel=info
+    command: watchmedo auto-restart --directory=./ --pattern="*.py" --recursive -- celery -A config.celery worker --loglevel=info
 
   playwright:
     build:

@@ -75,3 +75,38 @@ class Catalogue(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+class HarvestRun(models.Model):
+    class HarvestStatus(models.TextChoices):
+        QUEUED = "QUEUED", "Queued"
+        HARVESTING = "HARVESTING", "Harvesting"
+        SUCCEEDED = "SUCCEEDED", "Succeeded"
+        FAILED = "FAILED", "Failed"
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
+    started_at = models.DateTimeField(auto_now_add=True)
+    ended_at = models.DateTimeField(auto_now_add=True)
+    catalogue = models.ForeignKey(Catalogue, on_delete=models.CASCADE)
+    status = models.CharField(max_length=30, choices=HarvestStatus.choices)
+    catalogue_result = models.TextField()
+
+
+class HarvestRunEvent(models.Model):
+    # TODO: The modelling here is very much not ideal by using charfields where we should use generic relations...
+    #   but it's a prototype..
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    harvest_run = models.ForeignKey(HarvestRun, on_delete=models.CASCADE)
+    verb = models.CharField(max_length=50)
+    object = models.TextField()
+    target = models.TextField()
+    additional_context = models.TextField()
