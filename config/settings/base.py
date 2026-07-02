@@ -348,3 +348,6 @@ class FEATURE_FLAGS(Enum):  # noqa: N801
 
 
 FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
+
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://redis:6379/0"

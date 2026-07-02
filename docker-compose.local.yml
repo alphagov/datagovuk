@@ -32,6 +32,28 @@ services:
     ports:
       - "5432:5432"
 
+  redis:
+    image: redis:7-alpine
+    container_name: datagovuk_local_redis
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    image: datagovuk_local_django
+    container_name: datagovuk_local_celery_worker
+    volumes:
+      - .:/app:z
+      - /app/.venv
+    env_file:
+      - path: ./.envs/.local/.django
+        required: true
+      - path: ./.envs/.local/.django-overrides
+        required: false
+    depends_on:
+      - db
+      - redis
+    command: celery -A config.celery worker --loglevel=info
+
   playwright:
     build:
       context: ./docker/playwright

@@ -14,6 +14,7 @@ classifiers = [
 ]
 dependencies = [
   "argon2-cffi==25.1.0",
+  "celery==5.6.3",
   "chartkick==1.1.0",
   "django==6.0.6",
   "django-compressor==4.6.0",
@@ -21,6 +22,7 @@ dependencies = [
   "django-health-check==4.4.2",
   "django-libsass==0.9",
   "django-prometheus==2.5.0",
+  "django-redis==7.0.0",
   "govuk-onelogin-django==0.4.18",
   "gunicorn==26.0.0",
   "jinja2==3.1.6",
