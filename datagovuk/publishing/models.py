@@ -76,6 +76,11 @@ class Catalogue(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+    @property
+    def latest_harvest_run(self):
+        if self.harvest_run.all().count() > 0:
+            return self.harvest_run.all().order_by("-started_at")[0]
+
 
 class HarvestRun(models.Model):
     class HarvestStatus(models.TextChoices):
@@ -91,12 +96,27 @@ class HarvestRun(models.Model):
     )
     started_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField(auto_now_add=True)
-    catalogue = models.ForeignKey(Catalogue, on_delete=models.CASCADE)
+    catalogue = models.ForeignKey(Catalogue, on_delete=models.CASCADE, related_name="harvest_run")
     status = models.CharField(max_length=30, choices=HarvestStatus.choices)
     catalogue_result = models.TextField()
 
+    @property
+    def run_event_counts(self):
+        event_counts = self.run_event.all().values("verb").annotate(total_events=models.Count("id"))
+        event_count_by_verb = {event_count["verb"]: event_count["total_events"] for event_count in event_counts}
+        return event_count_by_verb
+
 
 class HarvestRunEvent(models.Model):
+    class Verb(models.TextChoices):
+        CATALOGUE_VALIDATED = "CATALOGUE_VALIDATED", "Catalogue marked valid"
+        CATALOGUE_INVALIDATED = "CATALOGUE_INVALIDATED", "Catalogue marked invalid"
+        LISTING_CATALOGUED = "LISTING_CATALOGUED", "Listing catalogued"
+        LINK_CATALOGUED = "LINK_CATALOGUED", "Link catalogued"
+        LINK_VALIDATED = "LINK_VALIDATED", "Link marked valid"
+        LINK_INVALIDATED = "LINK_INVALIDATED", "Link marked invalid"
+        LINK_ORPHANED = "LINK_ORPHANED", "Link marked orphan"
+
     # TODO: The modelling here is very much not ideal by using charfields where we should use generic relations...
     #   but it's a prototype..
     id = models.UUIDField(
@@ -105,8 +125,8 @@ class HarvestRunEvent(models.Model):
         editable=False,
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    harvest_run = models.ForeignKey(HarvestRun, on_delete=models.CASCADE)
-    verb = models.CharField(max_length=50)
+    harvest_run = models.ForeignKey(HarvestRun, on_delete=models.CASCADE, related_name="run_event")
+    verb = models.CharField(max_length=50, choices=Verb.choices)
     object = models.TextField()
     target = models.TextField()
     additional_context = models.TextField()

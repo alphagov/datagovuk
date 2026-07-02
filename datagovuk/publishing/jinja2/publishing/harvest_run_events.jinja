@@ -1,0 +1,57 @@
+{% extends "base.jinja" %}
+
+{% block page_title %}
+  Harvest run events - National Data Library
+{% endblock page_title %}
+
+{% block main %}
+  <div class="govuk-width-container datagovuk-width-container govuk-!-margin-top-9">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds-from-desktop govuk-body datagovuk-body">
+        <h1 class="govuk-heading-xl datagovuk-heading-xl">Event log for {{ run_events[0].harvest_run.catalogue.title }}</h1>
+        <p>Harvest started {{ run_events[0].harvest_run.started_at|naturaltime }}</p>
+        {% for run_event in run_events %}
+          <dl class="govuk-summary-list" style="margin-bottom: 0">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Event</dt>
+              <dd class="govuk-summary-list__value">
+                {{ run_event.get_verb_display() }}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Object</dt>
+              <dd class="govuk-summary-list__value">
+                {{ run_event.object }}
+              </dd>
+            </div>
+            {% if run_event.target %}
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Target</dt>
+                <dd class="govuk-summary-list__value">
+                  {{ run_event.target }}
+                </dd>
+              </div>
+            {% endif %}
+            {% if run_event.target %}
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Target</dt>
+                <dd class="govuk-summary-list__value">
+                  {{ run_event.target }}
+                </dd>
+              </div>
+            {% endif %}
+            {% if run_event.additional_context %}
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Additional context</dt>
+                <dd class="govuk-summary-list__value">
+                  {{ run_event.additional_context }}
+                </dd>
+              </div>
+            {% endif %}
+          </dl>
+          <p style="margin-top: 0">{{ run_event.created_at|naturaltime }}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

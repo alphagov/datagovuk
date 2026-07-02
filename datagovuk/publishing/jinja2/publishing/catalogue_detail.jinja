@@ -29,6 +29,7 @@
               {{ catalogue.get_harvest_frequency_display() }}
             </dd>
           </div>
+          {#
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">! Problems</dt>
             <dd class="govuk-summary-list__value">
@@ -40,55 +41,75 @@
               </p>
             </dd>
           </div>
+          #}
         </dl>
 
-        <h2 class="govuk-heading-l datagovuk-heading-l">Latest harvest</h2>
-        <dl class="govuk-summary-list">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Status</dt>
-            <dd class="govuk-summary-list__value">
-              <strong class="govuk-tag govuk-tag--grey">Queued</strong>
-              <strong class="govuk-tag govuk-tag--yellow">Harvesting</strong>
-              <strong class="govuk-tag govuk-tag--green">Completed</strong>
-              <strong class="govuk-tag govuk-tag--red">Failed</strong>
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Started</dt>
-            <dd class="govuk-summary-list__value">
-              A few seconds ago
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Listings</dt>
-            <dd class="govuk-summary-list__value">
-              <p class="govuk-body">
-                <a href="#" class="govuk-link datagovuk-link">2 catalogued</a>
-              </p>
-              <p class="govuk-body">
-                <a href="#" class="govuk-link datagovuk-link">2 validated</a>
-              </p>
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Links</dt>
-            <dd class="govuk-summary-list__value">
-              <p class="govuk-body">
-                <a href="#" class="govuk-link datagovuk-link">10 catalogued</a>
-              </p>
-              <p class="govuk-body">
-                <a href="#" class="govuk-link datagovuk-link">8 validated</a>
-              </p>
-              <p class="govuk-body">
-                <a href="#" class="govuk-link datagovuk-link">2 marked broken</a>
-              </p>
-              <p class="govuk-body">
-                <a href="#" class="govuk-link datagovuk-link">9 marked orphaned</a>
-              </p>
-            </dd>
-          </div>
-        </dl>
-        <a href="#" class="govuk-link datagovuk-link">View the full harvest log</a>
+        {% set latest_harvest_run = catalogue.latest_harvest_run %}
+        {% if latest_harvest_run %}
+          {% set event_counts = latest_harvest_run.run_event_counts %}
+          <h2 class="govuk-heading-l datagovuk-heading-l">Latest harvest</h2>
+          <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Status</dt>
+              <dd class="govuk-summary-list__value">
+                {% if latest_harvest_run.status == "QUEUED" %}
+                  <strong class="govuk-tag govuk-tag--grey">Queued</strong>
+                {% elif latest_harvest_run.status == "HARVESTING" %}
+                  <strong class="govuk-tag govuk-tag--yellow">Harvesting</strong>
+                {% elif latest_harvest_run.status == "SUCCEEDED" %}
+                  <strong class="govuk-tag govuk-tag--green">Succeeded</strong>
+                {% elif latest_harvest_run.status == "FAILED" %}
+                  <strong class="govuk-tag govuk-tag--red">Failed</strong>
+                {% endif %}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Started</dt>
+              <dd class="govuk-summary-list__value">
+                {{ latest_harvest_run.started_at|naturaltime }}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Ended</dt>
+              <dd class="govuk-summary-list__value">
+                {{ latest_harvest_run.ended_at|naturaltime }}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Listings</dt>
+              <dd class="govuk-summary-list__value">
+                {% if event_counts["LISTING_CATALOGUED"] %}
+                  <p class="govuk-body">
+                    <a href="#" class="govuk-link datagovuk-link">{{ event_counts["LISTING_CATALOGUED"] }} catalogued</a>
+                  </p>
+                {% endif %}
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key">Links</dt>
+              <dd class="govuk-summary-list__value">
+                {% if event_counts["LINK_CATALOGUED"] %}
+                  <p class="govuk-body">
+                    <a href="#" class="govuk-link datagovuk-link">{{ event_counts["LINK_CATALOGUED"] }} catalogued</a>
+                  </p>
+                {% endif %}
+                {% if event_counts["LINK_VALIDATED"] %}
+                  <p class="govuk-body">
+                    <a href="#" class="govuk-link datagovuk-link">{{ event_counts["LINK_VALIDATED"] }} validated</a>
+                  </p>
+                {% endif %}
+                {% if event_counts["LINK_INVALIDATED"] %}
+                  <p class="govuk-body">
+                    <a href="#" class="govuk-link datagovuk-link">{{ event_counts["LINK_INVALIDATED"] }} marked broken</a>
+                  </p>
+                {% endif %}
+              </dd>
+            </div>
+          </dl>
+          <a href="{{ url('publishing:harvest_run_events', kwargs={'harvest_run_id': latest_harvest_run.id}) }}"
+             class="govuk-link datagovuk-link">View the full harvest log</a>
+        {% endif %}
+
       </div>
     </div>
   </div>

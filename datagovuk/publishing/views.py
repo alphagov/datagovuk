@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
 from .forms import CatalogueForm, PublisherRegistrationForm
 from .mixins import PublisherLoginRequiredMixin
-from .models import Catalogue, Publisher, PublisherMember
+from .models import Catalogue, HarvestRunEvent, Publisher, PublisherMember
 
 
 class HomeView(PublisherLoginRequiredMixin, TemplateView):
@@ -53,3 +53,12 @@ class CatalogueDetailView(PublisherLoginRequiredMixin, DetailView):
     model = Catalogue
     context_object_name = "catalogue"
     template_name = "publishing/catalogue_detail.jinja"
+
+
+class HarvestRunEventsView(PublisherLoginRequiredMixin, ListView):
+    model = HarvestRunEvent
+    context_object_name = "run_events"
+    template_name = "publishing/harvest_run_events.jinja"
+
+    def get_queryset(self):
+        return HarvestRunEvent.objects.filter(harvest_run__id=self.kwargs["harvest_run_id"])
