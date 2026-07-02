@@ -80,7 +80,8 @@
               <dd class="govuk-summary-list__value">
                 {% if event_counts["LISTING_CATALOGUED"] %}
                   <p class="govuk-body">
-                    <a href="#" class="govuk-link datagovuk-link">{{ event_counts["LISTING_CATALOGUED"] }} catalogued</a>
+                    <a href="{{ url('publishing:harvest_run_events', kwargs={'harvest_run_id': latest_harvest_run.id}) }}?verb=LISTING_CATALOGUED"
+                       class="govuk-link datagovuk-link">{{ event_counts["LISTING_CATALOGUED"] }} catalogued</a>
                   </p>
                 {% endif %}
               </dd>
@@ -90,17 +91,20 @@
               <dd class="govuk-summary-list__value">
                 {% if event_counts["LINK_CATALOGUED"] %}
                   <p class="govuk-body">
-                    <a href="#" class="govuk-link datagovuk-link">{{ event_counts["LINK_CATALOGUED"] }} catalogued</a>
+                    <a href="{{ url('publishing:harvest_run_events', kwargs={'harvest_run_id': latest_harvest_run.id}) }}?verb=LINK_CATALOGUED"
+                       class="govuk-link datagovuk-link">{{ event_counts["LINK_CATALOGUED"] }} catalogued</a>
                   </p>
                 {% endif %}
                 {% if event_counts["LINK_VALIDATED"] %}
                   <p class="govuk-body">
-                    <a href="#" class="govuk-link datagovuk-link">{{ event_counts["LINK_VALIDATED"] }} validated</a>
+                    <a href="{{ url('publishing:harvest_run_events', kwargs={'harvest_run_id': latest_harvest_run.id}) }}?verb=LINK_VALIDATED"
+                       class="govuk-link datagovuk-link">{{ event_counts["LINK_VALIDATED"] }} validated</a>
                   </p>
                 {% endif %}
                 {% if event_counts["LINK_INVALIDATED"] %}
                   <p class="govuk-body">
-                    <a href="#" class="govuk-link datagovuk-link">{{ event_counts["LINK_INVALIDATED"] }} marked broken</a>
+                    <a href="{{ url('publishing:harvest_run_events', kwargs={'harvest_run_id': latest_harvest_run.id}) }}?verb=LINK_INVALIDATED"
+                       class="govuk-link datagovuk-link">{{ event_counts["LINK_INVALIDATED"] }} marked broken</a>
                   </p>
                 {% endif %}
               </dd>

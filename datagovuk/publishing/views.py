@@ -61,4 +61,9 @@ class HarvestRunEventsView(PublisherLoginRequiredMixin, ListView):
     template_name = "publishing/harvest_run_events.jinja"
 
     def get_queryset(self):
-        return HarvestRunEvent.objects.filter(harvest_run__id=self.kwargs["harvest_run_id"])
+        queryset = HarvestRunEvent.objects.filter(harvest_run__id=self.kwargs["harvest_run_id"])
+        verb_filter = self.request.GET.get("verb")
+        if verb_filter:
+            queryset = queryset.filter(verb__iexact=verb_filter)
+
+        return queryset
