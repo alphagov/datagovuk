@@ -38,7 +38,7 @@ jobs:
       app_metadata: ${{ steps.set-matrix.outputs.app_metadata }}
       runs_on: ${{ steps.set-matrix.outputs.runs_on }}
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
         with:
           ref: ${{ inputs.gitRef || github.ref }}
           show-progress: false
@@ -73,13 +73,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Git Checkout
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v7.0.0
         with:
           ref: ${{ inputs.gitRef || github.ref }}
           show-progress: false
 
       - name: Setup Docker BuildX
-        uses: docker/setup-buildx-action@v4
+        uses: docker/setup-buildx-action@v4.1.0
 
       - name: Calculate Image Tags
         id: calculate-image-tags
@@ -99,7 +99,7 @@ jobs:
           fi
 
       - name: Generate App Image Metadata
-        uses: docker/metadata-action@v6
+        uses: docker/metadata-action@v6.1.0
         id: app-metadata
         with:
           flavor: |
@@ -174,7 +174,7 @@ jobs:
           version: "version=28.5.2"
 
       - name: Setup Docker BuildX
-        uses: docker/setup-buildx-action@v4
+        uses: docker/setup-buildx-action@v4.1.0
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v4.2.0
@@ -202,7 +202,7 @@ jobs:
           merge-multiple: true
 
       - name: Generate App Image Metadata
-        uses: docker/metadata-action@v6
+        uses: docker/metadata-action@v6.1.0
         id: app-metadata
         with:
           flavor: |
