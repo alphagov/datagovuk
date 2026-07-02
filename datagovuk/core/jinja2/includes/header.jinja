@@ -56,7 +56,7 @@
       <p class="govuk-body datagovuk-body">
         Logged in as {{ user.email }}
         <br />
-        {% if publisher %}Publisher {{ publisher.name }}{% endif %}
+        {% if publisher %}{{ publisher.name }}{% endif %}
       </p>
       <form action="{{ url('users:logout') }}" method="post">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />

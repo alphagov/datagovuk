@@ -7,27 +7,41 @@
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container govuk-!-margin-top-9">
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds-from-desktop">
+      <div class="govuk-grid-column-two-thirds-from-desktop govuk-body datagovuk-body">
         <h1 class="govuk-heading-xl datagovuk-heading-xl">{{ catalogue.title }}</h1>
-        <table class="govuk-table">
-          <caption class="govuk-table__caption govuk-table__caption--m">Catalogue details</caption>
-          <tbody class="govuk-table__body">
-            <tr class="govuk-table__row">
-              <th scope="row" class="govuk-table__header">URL</th>
-              <td class="govuk-table__cell" style="word-break: break-all">
-                <a href="{{ catalogue.url }}" class="govuk-link datagovuk-link">{{ catalogue.url }}</a>
-              </td>
-            </tr>
-            <tr class="govuk-table__row">
-              <th scope="row" class="govuk-table__header">Catalogue type</th>
-              <td class="govuk-table__cell">{{ catalogue.get_catalogue_type_display() }}</td>
-            </tr>
-            <tr class="govuk-table__row">
-              <th scope="row" class="govuk-table__header">Harvest frequency</th>
-              <td class="govuk-table__cell">{{ catalogue.get_harvest_frequency_display() }}</td>
-            </tr>
-          </tbody>
-        </table>
+
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">URL</dt>
+            <dd class="govuk-summary-list__value">
+              <a href="{{ catalogue.url }}" class="govuk-link datagovuk-link">{{ catalogue.url }}</a>
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Type</dt>
+            <dd class="govuk-summary-list__value">
+              {{ catalogue.get_catalogue_type_display() }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Frequency</dt>
+            <dd class="govuk-summary-list__value">
+              {{ catalogue.get_harvest_frequency_display() }}
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">! Problems</dt>
+            <dd class="govuk-summary-list__value">
+              <p>
+                <a href="#" class="govuk-link">10 broken links</a>
+              </p>
+              <p>
+                <a href="#" class="govuk-link">Schema is broken</a>
+              </p>
+            </dd>
+          </div>
+        </dl>
+
         <h2 class="govuk-heading-l datagovuk-heading-l">Latest harvest</h2>
         <dl class="govuk-summary-list">
           <div class="govuk-summary-list__row">
@@ -46,7 +60,7 @@
             </dd>
           </div>
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Datasets</dt>
+            <dt class="govuk-summary-list__key">Listings</dt>
             <dd class="govuk-summary-list__value">
               <p class="govuk-body">
                 <a href="#" class="govuk-link datagovuk-link">2 catalogued</a>
@@ -57,7 +71,7 @@
             </dd>
           </div>
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Resources</dt>
+            <dt class="govuk-summary-list__key">Links</dt>
             <dd class="govuk-summary-list__value">
               <p class="govuk-body">
                 <a href="#" class="govuk-link datagovuk-link">10 catalogued</a>
