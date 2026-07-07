@@ -5,7 +5,7 @@ websites:
     link-text: Electricity statistics
 api:
 dataset:
-page-last-updated: "2026-06-12"
+page-last-updated: "2026-07-07"
 visualisation-data: electricity-generation/electricity-generation-1996-2024.json
 contact:
 status: for-publication
