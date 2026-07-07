@@ -51,13 +51,13 @@ jobs:
     name: Create production deployment PR
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - run: bash ./docker/create-pr.sh
     env:
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
       IS_TAG: "true"
       ENVS: "production"
-      GH_REF: ${{ github.ref_name }} # e.g. v1.2.3
+      GH_REF: ${{ github.event.workflow_run.head_branch }} # e.g. v0.0.0 (the release tag that triggered the workflow_run.workflows)
 
   report_run_failure:
     name: Report run failure to Slack
@@ -67,7 +67,7 @@ jobs:
     steps:
       - name: Checkout Repository
         if: ${{ failure() }}
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v7.0.0
       - name: Notify slack of failure
         if: ${{ failure() }}
         uses: ./.github/actions/report-run-failure
