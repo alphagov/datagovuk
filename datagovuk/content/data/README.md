@@ -63,6 +63,20 @@ Copy into new .csv, convert numbers columns to 'number' type and remove trailing
 Divide numbers by 1 million and round to 2 decimal places.
 Rename date column to Financial Year, and remove the second year to keep the axis labels concise.
 
+### Electricity generation
+
+Source: https://assets.publishing.service.gov.uk/media/688a31dda11f859994409290/DUKES_5.6.xlsx
+Found on https://www.gov.uk/government/statistics/electricity-chapter-5-digest-of-united-kingdom-energy-statistics-dukes, DUKES 5.6.
+
+From Table 5.6B (Electricity generated, GWh).
+Extracted rows for generation type as 'All generating companies' where fuel is:
+- 'Nuclear';
+- 'Total all generating companies';
+- 'Total renewable generation [note 13];
+- 'Total fossil fuel generation [note 15]'.
+
+Removed the references to notes, transposed data with the years, and saved to [electricity-generation/electricity-generation.csv](electricity-generation/electricity-generation.csv).
+
 ### Energy prices
 Source: [https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics](https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics)
 Average annual domestic energy bills
