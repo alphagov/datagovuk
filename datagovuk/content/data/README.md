@@ -6,6 +6,14 @@ any processing (manual) that was done to that data.
 
 ## Line and bar charts
 
+### Agricultural commodities: milk prices
+Source: [https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk](https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk)
+Table: United Kingdom milk prices and composition of milk - dataset
+Sheet: Prices_Annual
+
+Extract 'Year' and 'Price (pence per litre)' columns. Remove rows where there is no data.
+Copy data into fresh .csv to remove footnotes and extra formatting.
+
 ### Air quality
 
 The source webpage for the data is [https://www.gov.uk/government/statistics/air-quality-statistics/days-with-moderate-or-higher-air-pollution-includes-sulphur-dioxide](https://www.gov.uk/government/statistics/air-quality-statistics/days-with-moderate-or-higher-air-pollution-includes-sulphur-dioxide)
@@ -37,12 +45,27 @@ The Year and Number of Live Births columns were extracted from the xlsx to creat
 
 The file [births/live-births-england-and-wales-1938-2024.json](births/live-births-england-and-wales-1938-2024.json) uses the data from the csv file as its `series.data` object.
 
+
 ### Bus Travel
 
 Source: https://assets.publishing.service.gov.uk/media/69c11f97cfa346b9d4704a50/bus01.ods
 This is table BUS01 on https://www.gov.uk/government/statistical-data-sets/bus-statistics-data-tables#quarterly-bus-fares-statistics.
 
 Columns 'Year ending March' and 'Great Britain' were extracted from sheet BUS01a and saved to [bus-statistics/bus-journeys-millions-2005-2025.csv](bus-statistics/bus-journeys-millions-2005-2025.csv).
+
+### Driving tests
+
+Source: https://www.gov.uk/government/statistical-data-sets/driving-test-and-theory-test-data-cars
+Table DRT121A, car driving tests conducted, passes, and pass rates by financial quarter and financial year: Great Britain
+
+Filter to select financial year, select all but the most current data showing 'year to date'.
+Copy into new .csv, convert numbers columns to 'number' type and remove trailing decimal points.
+Divide numbers by 1 million and round to 2 decimal places.
+Rename date column to Financial Year, and remove the second year to keep the axis labels concise.
+
+### Energy prices
+Source: [https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics](https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics)
+Average annual domestic energy bills
 
 
 ### Fuel and oil prices
@@ -66,6 +89,16 @@ The resulting CSV contains metadata header rows and three time series (annual, q
 
 The file [inflation/inflation.json](inflation/inflation.json) uses the data from the csv file as its `series.data` object.
 
+### MOT test results
+
+Source: https://www.gov.uk/government/statistical-data-sets/mot-testing-data-for-great-britain
+Table: MOT test results by class of vehicle
+
+Filter Period to Total, filter Class to Total.
+Export columns 'Financial year', 'Tests', and 'Fails' to .csv.
+Invert financial year to be most recent at the bottom.
+Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
+Remove the second year in finanial year to make the axis labels neater.
 
 ### Storm overflows
 
