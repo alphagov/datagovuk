@@ -6,6 +6,7 @@ from playwright.sync_api import expect
 def test_footer_pages(page, live_server_url):
     footer_links = {
         "Roadmap": "/roadmap/",
+        "Data curation": "/data-curation/",
         "About": "/about/",
         "Support": "/support/",
         "Accessibility": "/accessibility/",
@@ -71,6 +72,12 @@ def test_team_page_content(page, live_server_url):
         "https://ukgovernmentdigital.slack.com/archives/C037J3GTE4T",
     )
     expect(page.get_by_role("heading", level=2, name="Team members")).to_be_visible()
+
+
+def test_data_curation_page_content(page, live_server_url):
+    page.goto(live_server_url + "/data-curation/")
+    expect(page.get_by_role("heading", level=1)).to_have_text("Data curation")
+    expect(page.get_by_role("heading", level=2, name="Data collections")).to_be_visible()
 
 
 @pytest.mark.smoke
