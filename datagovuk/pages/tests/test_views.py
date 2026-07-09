@@ -49,7 +49,7 @@ def test_data_curation(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Data curation - National Data Library" in response_content
+    assert "How we curate data - National Data Library" in response_content
     assert "In March 2026, we introduced collections to the National Data Library" in response_content
 
 
