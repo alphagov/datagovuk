@@ -7,6 +7,10 @@
   font-size: 26px;
 }
 
+.datagovuk-content .datagovuk-heading-m {
+  font-size: 24px;
+}
+
 @media (min-width: $desktop-breakpoint) {
   .datagovuk-content .datagovuk-heading-xl {
     font-size: 42px;
@@ -14,6 +18,10 @@
 
   .datagovuk-content .datagovuk-heading-l {
     font-size: 30px;
+  }
+
+  .datagovuk-content .datagovuk-heading-m {
+    font-size: 26px;
   }
 
 }
