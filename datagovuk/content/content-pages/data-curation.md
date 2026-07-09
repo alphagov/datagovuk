@@ -18,7 +18,7 @@ Collections are curated – selected by people with experience and expertise�
 
 ## Curation criteria
 
-- ### Scope (required)
+### Scope (required)
 
 data.gov.uk is only concerned with public sector data. This means data that’s owned or produced by:
 - [government departments, agencies and public bodies](https://www.gov.uk/government/organisations)
@@ -27,11 +27,11 @@ data.gov.uk is only concerned with public sector data. This means data that’s 
 Examples include organisations such as the NHS, Met Office, Office for National Statistics and the Ordnance Survey. 
 Most of this is open data – publicly available under [the Open Government Licence](https://www.nationalarchives.gov.uk/doc/open-government-licence) – but we are not restricted to open data. For example, some Ordnance Survey address data is not open, and the Met Office also offer paid data services. 
 
-- ### Relevance
+### Relevance
 The collections should be relevant to a relatively wide, non-expert audience. This means that the data should cover the basics of the topic and should not be too niche. We want to produce data pages that are interesting and inspiring for those browsing.
 For now, collections have a national focus, though we’re looking into how to support more local data. 
 
-- ### Demand
+### Demand
 We curate the collections by asking what our users need and what they’re looking for.
 We use various sources to answer these questions, including:
 - activity and search on the National Data Library
@@ -40,7 +40,7 @@ We use various sources to answer these questions, including:
 - information about relevant and current social topics, such as unemployment
 - Google Search Console
 
-- ### Quality
+### Quality
 The data should be of a high quality, meaning it should be:
 - up to date
 - accurate and complete
