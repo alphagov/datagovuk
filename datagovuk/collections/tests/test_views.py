@@ -232,7 +232,7 @@ class TestCollectionDownloadView:
     def test_download_no_download_field_not_found(self, client):
         url = reverse(
             "collections:collection_download",
-            kwargs={"collection_name": "transport", "collection_page_name": "road-traffic"},
+            kwargs={"collection_name": "business-and-economy", "collection_page_name": "get-company-information"},
         )
         response = client.get(url)
 
