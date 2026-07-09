@@ -29,7 +29,6 @@ You can [see and comment on upcoming data pages on our Github repository](https:
 You can join the conversation about the National Data Library on our UK Government Digital Slack channel: [#datagovuk](https://ukgovernmentdigital.slack.com/archives/C037J3GTE4T).
 
 
-## Other 
+## Other
 For questions about GOV.UK, check the [GOV.UK help pages](https://www.gov.uk/help) or [contact GOV.UK](https://www.gov.uk/contact/govuk).
 The NHS [publishes its own data](https://digital.nhs.uk/data-and-information/data-collections-and-data-sets/data-sets).  
-
