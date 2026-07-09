@@ -13,8 +13,8 @@ The National Data Library service cannot:
 - combine data from multiple datasets
 - host data
 
-## If you need support
-For support or to report an issue, please use the [GOV.UK support form](https://www.gov.uk/contact/govuk) and mention that it’s about the National Data Library or data.gov.uk.
+## If you need support with an issue
+For support with an issue, please use the [GOV.UK support form](https://www.gov.uk/contact/govuk) and mention that it’s about the National Data Library or data.gov.uk.
 
 Note if this is a quetsion about a dataset on teh dircetory, those are maintained by publishers, so you should contact the publisher directly using the contact details on the dataset’s page. 
 
