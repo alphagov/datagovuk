@@ -43,6 +43,16 @@ def test_about(client):
     assert "About the National Data Library" in response_content
 
 
+def test_data_curation(client):
+    url = reverse("pages:data_curation")
+    response = client.get(url)
+    response_content = response.content.decode()
+
+    assert response.status_code == HTTPStatus.OK
+    assert "Data curation - National Data Library" in response_content
+    assert "In March 2026, we introduced collections to the National Data Library" in response_content
+
+
 def test_cookies(client):
     url = reverse("pages:cookies")
     response = client.get(url)
