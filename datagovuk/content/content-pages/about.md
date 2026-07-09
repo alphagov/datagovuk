@@ -7,10 +7,10 @@ Since 2010, the data.gov.uk website, now known as the National Data Library, has
 In early 2026, we added new features to the site and new branding. These were the first steps to transforming the data.gov.uk website into the UK National Data Library and a commitment to making the service a single trusted gateway to curated, high-quality public sector data. In the first two releases we added:
 
 - a new visual design and name
-- curated [collections](/) of trusted, open data that’s in high demand ([how we curate collections](/data-curation))
+- curated [collections](/) of trusted, open data that’s in high demand ([how we curate collections](/data-curation/))
 - a spotlighted ['Early years'](/collections/early-years) collection to highlight the importance of this data as DSIT launches a new project working with local authorities to explore how better-connected data can support children and families outcomes
-- a [data manual](/data-manual) that signposts the most current and authoritative guidance for people who work with data in the public sector
-- a [roadmap](/roadmap) that explains our current and upcoming work
+- a [data manual](/data-manual/) that signposts the most current and authoritative guidance for people who work with data in the public sector
+- a [roadmap](/roadmap/) that explains our current and upcoming work
 
 ## Changes to the previous data.gov.uk functionality
 The previous service allowing public sector officials to self publish data is still available in the area called 'directory'. We’ve renamed this it to 'directory’ to differentiate it from the data collections and data manual.
