@@ -5,8 +5,8 @@ websites:
     link-text: Bus statistics
 api:
 dataset:
-page-last-updated: "2026-03-24"
-visualisation-data:
+page-last-updated: "2026-06-15"
+visualisation-data: bus-statistics/bus-statistics.json
 contact:
 status: for-publication
 ---

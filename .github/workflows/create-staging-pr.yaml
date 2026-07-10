@@ -20,7 +20,7 @@ jobs:
     needs: tag_for_staging_production
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - run: bash ./docker/create-pr.sh
     env:
       IS_TAG: "true"
@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Checkout Repository
         if: ${{ failure() }}
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v7.0.0
       - name: Notify slack of failure
         if: ${{ failure() }}
         uses: ./.github/actions/report-run-failure
