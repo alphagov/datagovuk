@@ -1,0 +1,31 @@
+{
+  "title": "Average band D council tax by year (£, England)",
+  "visualisation_type": "line",
+  "source": "https://www.gov.uk/government/statistics/council-tax-levels-set-by-local-authorities-in-england-2026-to-2027",
+  "download": "council-tax-avg-band-d-2012-2026.csv",
+  "publisher": "Ministry of Housing, Communities and Local Government",
+  "series": [
+    {
+      "name": "England (£)",
+      "title": "Average band D council tax (£)",
+      "color": "#000000",
+      "data": {
+        "2012": 1444,
+        "2013": 1456,
+        "2014": 1468,
+        "2015": 1484,
+        "2016": 1530,
+        "2017": 1591,
+        "2018": 1671,
+        "2019": 1750,
+        "2020": 1818,
+        "2021": 1898,
+        "2022": 1966,
+        "2023": 2065,
+        "2024": 2171,
+        "2025": 2280,
+        "2026": 2392
+      }
+    }
+  ]
+}

@@ -53,6 +53,15 @@ This is table BUS01 on https://www.gov.uk/government/statistical-data-sets/bus-s
 
 Columns 'Year ending March' and 'Great Britain' were extracted from sheet BUS01a and saved to [bus-statistics/bus-journeys-millions-2005-2025.csv](bus-statistics/bus-journeys-millions-2005-2025.csv).
 
+### Council Tax Average Band D
+Source: https://www.gov.uk/government/statistics/council-tax-levels-set-by-local-authorities-in-england-2026-to-2027
+
+File: Council Tax levels set by local authorities in England 2026 to 2027: Tables 1 to 9
+
+Sheet: Table 3
+
+Copy the 'Year' and 'Pounds £' columns into a .csv. Remove references to the notes.
+
 ### Driving tests
 
 Source: https://www.gov.uk/government/statistical-data-sets/driving-test-and-theory-test-data-cars
