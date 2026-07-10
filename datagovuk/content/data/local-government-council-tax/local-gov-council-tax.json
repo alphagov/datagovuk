@@ -1,13 +1,12 @@
 {
-  "title": "Council tax receipts by financial year (England)" ,
+  "title": "Council tax receipts in England by financial year (£, billions)" ,
   "publisher": "Ministry of Housing, Communities and Local Government",
   "source": "https://www.gov.uk/government/statistical-data-sets/live-tables-on-local-government-finance",
   "download": "council-tax-2000-to-2025.csv",
   "visualisation_type": "line",
-  "visualisation_suffix": "b",
   "series": [
     {
-      "name": "Council tax receipts (£)",
+      "name": "Council tax receipts (£, billions)",
       "color": "#000000",
       "data": {
         "2000": 12.242,
