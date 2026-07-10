@@ -10,4 +10,9 @@ urlpatterns = [
         views.SearchView.as_view(),
         name="search",
     ),
+    path(
+        "dataset/<uuid:uuid>/<slug:slug>",
+        views.DatasetView.as_view(),
+        name="dataset",
+    ),
 ]

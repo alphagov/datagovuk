@@ -1,6 +1,6 @@
 {% extends "base.jinja" %}
 
-{% set page_title = "Components" %}
+{% set page_title = "Search" %}
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
@@ -11,8 +11,13 @@
       <button type="submit">Submit</button>
     </form>
     {% if results %}
-      {{ results.hits }}
-      {% for result in results %}<p>{{ result.title_ngram }}</p>{% endfor %}
+      Hits: {{ results.hits }}
+      {% for result in results %}
+        <p>
+          <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"
+             class="govuk-link datagovuk-link">{{ result.title }}</a>
+        </p>
+      {% endfor %}
     {% endif %}
   </div>
 {% endblock main %}
