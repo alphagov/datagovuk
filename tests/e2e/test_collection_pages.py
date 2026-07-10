@@ -87,17 +87,16 @@ def test_collection_page_bar_chart_is_visible(lazy_page, live_server_url):
 def test_collection_page_headline_is_visible(lazy_page, live_server_url):
     url = reverse(
         "collections:collection_page",
-        kwargs={"collection_name": "transport", "collection_page_name": "road-traffic"},
+        kwargs={"collection_name": "business-and-economy", "collection_page_name": "get-company-information"},
     )
     lazy_page.goto(live_server_url + url)
 
-    expect(lazy_page.get_by_role("heading", name="Cars and taxis")).to_be_visible()
-    expect(lazy_page.get_by_role("heading", name="Buses and coaches")).to_be_visible()
-    expect(lazy_page.get_by_text("Increase of 1.9% from 2023 to")).to_be_visible()
-    expect(lazy_page.get_by_text("Increase of 1.7% from 2023 to")).to_be_visible()
+    expect(lazy_page.get_by_role("heading", name="Company formations")).to_be_visible()
+    expect(lazy_page.get_by_role("heading", name="Company dissolutions")).to_be_visible()
+    expect(lazy_page.get_by_text("In 2024/2025 compared to 2023/2024.").first).to_be_visible()
     headline_column = lazy_page.locator(".datagovuk-headline__column").first
-    expect(headline_column.locator(".datagovuk-headline__number", has_text="256.1")).to_be_visible()
-    expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="1.9%")).to_be_visible()
+    expect(headline_column.locator(".datagovuk-headline__number", has_text="801,864")).to_be_visible()
+    expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="9.7%")).to_be_visible()
 
 
 @pytest.mark.parametrize(

@@ -28,7 +28,7 @@ for ENV in $(echo $ENVS | tr "," " "); do
     if git diff --cached --quiet -- "datagovuk.yaml"; then
       echo "Nothing to commit"
     else
-      BRANCH="ci/${IMAGE_TAG}-${ENV}"
+      BRANCH="ci/datagovuk-${IMAGE_TAG}-${ENV}"
       # Check remote (not local) — git show-ref only sees local refs in a fresh clone
       if git ls-remote --exit-code --heads origin "${BRANCH}" >/dev/null 2>&1; then
         echo "Branch ${BRANCH} already exists on govuk-dgu-charts — skipping"
