@@ -6,7 +6,7 @@ app_name = "directory"
 
 urlpatterns = [
     path(
-        "search/",
+        "search",
         views.SearchView.as_view(),
         name="search",
     ),
