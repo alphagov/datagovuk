@@ -61,6 +61,8 @@ jobs:
 
       - name: Run Unit Tests with coverage
         run: |
+          # TODO: get rid of this once we have a solr image in our docker-compose stack
+          docker network create docker_ckan-2.10
           docker compose -f docker-compose.local.yml up -d
           docker compose -f docker-compose.local.yml exec django coverage run -m pytest datagovuk/
           docker compose -f docker-compose.local.yml exec django coverage html
