@@ -24,7 +24,7 @@ def _flag_required(flag, view_func):
 
 urlpatterns = [
     path(
-        "search",
+        "search/",
         _flag_required(settings.FEATURE_FLAGS.SOLR_SEARCH, views.SearchView.as_view()),
         name="search",
     ),

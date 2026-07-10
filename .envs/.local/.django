@@ -2,4 +2,4 @@ USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
 DJANGO_SETTINGS_MODULE=config.settings.local
 PLAYWRIGHT_HOST=playwright
-SOLR_URL=http://solr:8983/solr/ckan
+SOLR_URL=http://solr-2.10:8983/solr/ckan
