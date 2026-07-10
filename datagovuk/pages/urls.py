@@ -48,6 +48,12 @@ urlpatterns = [
         kwargs={"slug": "roadmap"},
     ),
     path(
+        "data-curation/",
+        views.PagesView.as_view(),
+        name="data_curation",
+        kwargs={"slug": "data-curation"},
+    ),
+    path(
         "cookies/",
         TemplateView.as_view(template_name="pages/cookies.jinja"),
         name="cookies",

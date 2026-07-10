@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 import pytest
 from chartkick.django import BarChart, LineChart
 
@@ -46,9 +49,19 @@ def test_get_visualisation_bar_chart():
 
 
 def test_get_visualisation_headline():
-    visualisation = get_visualisation("road-traffic/road-traffic-headline.json")
+    visualisation = get_visualisation("get-company-information/companies-house-register-headlines.json")
 
     assert isinstance(visualisation["visualisation"], Headline)
     assert visualisation["type"] == "headline"
-    assert visualisation["title"] == "Road traffic levels by vehicle type"
-    assert "Billion vehicle miles" in str(visualisation["visualisation"])
+    assert visualisation["title"] == "Companies incorporated and dissolved (2024-25)"
+    assert "New companies incorporated 2024/2025" in str(visualisation["visualisation"])
+
+
+def test_visualisation_download_file_exists(settings):
+    visualisation_files = list(Path(settings.DATAGOVUK_CONTENT_DATA_ROOT).rglob("*.json"))
+    for file in visualisation_files:
+        data = json.loads(file.read_text(encoding="utf-8"))
+        download_file = data.get("download")
+        if download_file is not None:
+            csv_path = file.parent / download_file
+            assert csv_path.exists()

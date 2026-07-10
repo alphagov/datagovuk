@@ -3,7 +3,7 @@
   "visualisation_type": "line",
   "visualisation_suffix": "m",
   "source": "https://www.gov.uk/government/statistical-data-sets/driving-test-and-theory-test-data-cars#car-driving-test-data-for-great-britain",
-  "download": "driving-tests-2007-2025-fys.csv",
+  "download": "car-driving-tests-millions-2007-2025-fys.csv",
   "publisher": "Driver and Vehicle Standards Agency",
   "series": [
     {"color": "#C27A9A",

@@ -46,6 +46,13 @@ The Year and Number of Live Births columns were extracted from the xlsx to creat
 The file [births/live-births-england-and-wales-1938-2024.json](births/live-births-england-and-wales-1938-2024.json) uses the data from the csv file as its `series.data` object.
 
 
+### Bus Travel
+
+Source: https://assets.publishing.service.gov.uk/media/69c11f97cfa346b9d4704a50/bus01.ods
+This is table BUS01 on https://www.gov.uk/government/statistical-data-sets/bus-statistics-data-tables#quarterly-bus-fares-statistics.
+
+Columns 'Year ending March' and 'Great Britain' were extracted from sheet BUS01a and saved to [bus-statistics/bus-journeys-millions-2005-2025.csv](bus-statistics/bus-journeys-millions-2005-2025.csv).
+
 ### Driving tests
 
 Source: https://www.gov.uk/government/statistical-data-sets/driving-test-and-theory-test-data-cars
@@ -55,6 +62,20 @@ Filter to select financial year, select all but the most current data showing 'y
 Copy into new .csv, convert numbers columns to 'number' type and remove trailing decimal points.
 Divide numbers by 1 million and round to 2 decimal places.
 Rename date column to Financial Year, and remove the second year to keep the axis labels concise.
+
+### Electricity generation
+
+Source: https://assets.publishing.service.gov.uk/media/688a31dda11f859994409290/DUKES_5.6.xlsx
+Found on https://www.gov.uk/government/statistics/electricity-chapter-5-digest-of-united-kingdom-energy-statistics-dukes, DUKES 5.6.
+
+From Table 5.6B (Electricity generated, GWh).
+Extracted rows for generation type as 'All generating companies' where fuel is:
+- 'Nuclear';
+- 'Total all generating companies';
+- 'Total renewable generation [note 13];
+- 'Total fossil fuel generation [note 15]'.
+
+Removed the references to notes, transposed data with the years, and saved to [electricity-generation/electricity-generation.csv](electricity-generation/electricity-generation.csv).
 
 ### Energy prices
 Source: [https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics](https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics)
@@ -93,6 +114,13 @@ Invert financial year to be most recent at the bottom.
 Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
 Remove the second year in finanial year to make the axis labels neater.
 
+### Road traffic mileage
+
+Source: https://roadtraffic.dft.gov.uk/
+
+Copied the dropdown table under 'Road traffic by vehicle type from 1993 to 2025'. Extracted
+columns for 'Year' and 'All motor vehicles' to [road-traffic/road-traffic-mileage.csv](road-traffic/road-traffic-mileage.csv).
+
 ### Service assessments
 Source: https://www.gov.uk/service-standard-reports
 
@@ -104,6 +132,7 @@ Repeat the filtering by red, amber, and green and noting these.
 Calculate the percentage of reports in each year for each outcome - e.g. 3 red outcomes out of 10 total reports in 2024 = 30%.
 Calculate the percentage point change and direction (up or down), and round to 1 decimal place.
 The trend should be based on the percentage point change, not the change in number of reports.
+
 
 ### Storm overflows
 
@@ -208,14 +237,3 @@ but for our purposes we only used `Incorporations` and `Dissolved`.
 The resulting csv used is here: [get-company-information/companies-register-activities-april-2024-to-march-2025.csv](get-company-information/companies-register-activities-april-2024-to-march-2025.csv)
 
 The file [get-company-information/companies-house-register-headlines.json](get-company-information/companies-house-register-headlines.json) uses the data from the csv file as its `items` object. Note % change was calculated using the figures in csv.
-
-
-## Road traffic
-
-The source webpage for the data is [https://roadtraffic.dft.gov.uk/downloads](https://roadtraffic.dft.gov.uk/downloads)
-
-The visualisation data was downloaded from here [https://storage.googleapis.com/dft-statistics/road-traffic/downloads/data-gov-uk/region_traffic_by_vehicle_type.csv](https://storage.googleapis.com/dft-statistics/road-traffic/downloads/data-gov-uk/region_traffic_by_vehicle_type.csv)
-
-The download contains traffic data for all UK regions and multiple vehicle types. Only the `cars_and_taxis` and `buses_and_coaches` columns were kept, and only the "All" region rows (which sum all regions) were retained to create [road-traffic/road-traffic-2023-2024.csv](road-traffic/road-traffic-2023-2024.csv)
-
-The file [road-traffic/road-traffic-headline.json](road-traffic/road-traffic-headline.json) uses the data from the csv file as its `items` object. Values are expressed in billion vehicle miles (raw figures divided by 1,000,000,000). Percent change was calculated using the figures in the csv.
