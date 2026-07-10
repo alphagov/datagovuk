@@ -30,7 +30,7 @@ class DatasetView(TemplateView):
         client = get_solr_client()
         solr_query = f"id:{dataset_id} AND state:active"
         results = client.search(solr_query, start=0, rows=1)
-        if not results:
+        if not results.hits > 0:
             message = f"Active dataset {dataset_id} not found"
             raise Http404(message)
         document = results.docs[0]
