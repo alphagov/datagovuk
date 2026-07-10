@@ -10,6 +10,7 @@ urlpatterns = [
     path("", include("datagovuk.core.urls", namespace="core")),
     path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
     path("collections/", include("datagovuk.collections.urls", namespace="collections")),
+    path("", include("datagovuk.directory.urls", namespace="directory")),
     path(
         "health/",
         HealthCheckView.as_view(

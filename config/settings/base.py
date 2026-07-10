@@ -82,6 +82,7 @@ LOCAL_APPS = [
     "datagovuk.pages",
     "datagovuk.data_manual",
     "datagovuk.collections",
+    "datagovuk.directory",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -308,3 +309,5 @@ class FEATURE_FLAGS(Enum):  # noqa: N801
 
 
 FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
+
+SOLR_URL = env("SOLR_URL", default=None)
