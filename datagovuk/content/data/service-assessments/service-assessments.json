@@ -10,7 +10,7 @@
         "value": 3,
         "analysis": "In 2025 compared to 2024.",
         "trend": "down",
-        "value_change": -5,
+        "value_change": 5,
         "percent_change": 7.5
       },
       {
@@ -19,7 +19,7 @@
         "value": 14,
         "analysis": "In 2025 compared to 2024.",
         "trend": "",
-        "value_change": -13,
+        "value_change": 13,
         "percent_change": 6.3
       },
       {
