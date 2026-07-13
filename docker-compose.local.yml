@@ -19,8 +19,9 @@ services:
     ports:
       - '8000:8000'
     command: /start
-    networks:
-      - ckan-2.10
+    depends_on:
+      solr:
+        condition: service_healthy
 
   playwright:
     build:
@@ -30,11 +31,29 @@ services:
     container_name: datagovuk_local_playwright
     ports:
       - '3000:3000'
-    networks:
-      - ckan-2.10
 
-networks:
-  ckan-2.10:
-      driver: bridge
-      external: true
-      name: docker_ckan-2.10
+  solr:
+    image: ghcr.io/alphagov/solr:2.10
+    ports:
+      - "8983:8983"
+    volumes:
+      - solr_data:/opt/solr/server/solr/ckan/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8983/solr/ckan/admin/ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  solr-data:
+    build:
+      context: ./docker/solr
+      dockerfile: ./Dockerfile
+    environment:
+      SOLR_URL: "http://solr:8983/solr/ckan"
+    depends_on:
+      solr:
+        condition: service_healthy
+    command: ["python", "load_data.py"]
+
+volumes:
+  solr_data:
