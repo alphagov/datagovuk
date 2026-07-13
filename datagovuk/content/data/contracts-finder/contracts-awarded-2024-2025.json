@@ -1,0 +1,35 @@
+  {
+    "title": "Contacts awarded and suppliers",
+    "visualisation_type": "headline",
+    "source": "https://www.contractsfinder.service.gov.uk/Search",
+    "publisher": "Government Commercial Agency",
+    "items": [
+      {
+        "subtitle": "Contracts awarded",
+        "description": "2025/26 financial year",
+        "value": 34968,
+        "analysis": "compared to 2024/25.",
+        "trend": "down",
+        "value_change": 19749,
+        "percent_change": 36.1
+      },
+      {
+        "subtitle": "Small and medium-sized enterprises",
+        "description": "2025/26 financial year",
+        "value": 12533,
+        "analysis": "compared to 2024/25.",
+        "trend": "down",
+        "value_change": 8974,
+        "percent_change": 41.7
+      },
+      {
+        "subtitle": "Voluntary, community and social enterprises",
+        "description": "2025/26 financial year",
+        "value": 475,
+        "analysis": "compared to 2024/25.",
+        "trend": "down",
+        "value_change": 544,
+        "percent_change": 53.4
+      }
+    ]
+  }

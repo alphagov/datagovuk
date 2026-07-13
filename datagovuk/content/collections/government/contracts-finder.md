@@ -6,7 +6,7 @@ websites:
 api:
 dataset:
 page-last-updated: "2026-03-24"
-visualisation-data:
+visualisation-data: contracts-finder/contracts-awarded-2024-2025.json
 contact:
 status: for-publication
 ---
