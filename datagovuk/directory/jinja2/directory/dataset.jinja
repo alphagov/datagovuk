@@ -53,9 +53,15 @@
               <th scope="row" class="govuk-table__header">
                 <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name }}</a>
               </th>
-              <td class="govuk-table__cell govuk-table__cell--numeric">{{ resource.resource_type }}</td>
+              <td class="govuk-table__cell govuk-table__cell--numeric">{{ resource.format }}</td>
               <td class="govuk-table__cell govuk-table__cell--numeric">{{ resource.created }}</td>
-              <td class="govuk-table__cell govuk-table__cell--numeric">Not available</td>
+              <td class="govuk-table__cell govuk-table__cell--numeric">
+                {% if resource.format|upper == 'CSV' %}
+                  <a href="#">Preview</a>
+                {% else %}
+                  Not available
+                {% endif %}
+              </td>
             </tr>
           {% endfor %}
         </tbody>

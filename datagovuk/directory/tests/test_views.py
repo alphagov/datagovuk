@@ -5,6 +5,11 @@ import pytest
 from django.urls import reverse
 
 
+@pytest.fixture(autouse=True)
+def directory_feature_flag(settings):
+    settings.FEATURE_FLAGS_ENABLED = [settings.FEATURE_FLAGS.SOLR_SEARCH.value]
+
+
 @pytest.fixture
 def mock_solr_results_factory():
     """
@@ -102,6 +107,12 @@ class TestSearchView:
         assert response.context_data["results"].hits == 2  # noqa: PLR2004
         assert len(response.context_data["results"].docs) == 2  # noqa: PLR2004
 
+    def test_search_view_returns_404_if_feature_flag_not_enabled(self, client, settings):
+        settings.FEATURE_FLAGS_ENABLED = []
+        url = reverse("directory:search")
+        response = client.get(url, {"q": "multi"})
+        assert response.status_code == HTTPStatus.NOT_FOUND
+
 
 class TestDatasetView:
     def test_view_existing_dataset_returns_ok(self, client, mock_solr_client, mock_solr_results_factory):
@@ -189,3 +200,10 @@ class TestDatasetView:
         solr_query = call_args[0][0]
         assert f"id:{test_uuid}" in solr_query
         assert "state:active" in solr_query
+
+    def test_dataset_view_returns_404_if_feature_flag_not_enabled(self, client, settings):
+        settings.FEATURE_FLAGS_ENABLED = []
+        test_uuid = "550e8400-e29b-41d4-a716-446655440002"
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "active-dataset"})
+        response = client.get(url)
+        assert response.status_code == HTTPStatus.NOT_FOUND
