@@ -57,3 +57,5 @@ First, you should consider:
 - does the data seem a good fit based on our curation criteria?
 
 We’ll review all requests for new data pages and contact you if you have left us contact details, but we cannot guarantee that we’ll add a page you request.
+
+> Note: You can still self publish open data in the area now named 'directory'. Follow [the guidance for publishers](https://www.data.gov.uk/publishers) to make your data available via [the directory](https://www.data.gov.uk/search)
