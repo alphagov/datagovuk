@@ -62,7 +62,7 @@ jobs:
   report_run_failure:
     name: Report run failure to Slack
     if: ${{ always() }}
-    needs: [create_production_deployment_pr]
+    needs: [poll_staging, smoke_test_staging, create_production_deployment_pr]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository

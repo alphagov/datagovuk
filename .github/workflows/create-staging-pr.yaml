@@ -31,7 +31,7 @@ jobs:
   report_run_failure:
     name: Report run failure to Slack
     if: ${{ always() }}
-    needs: [create_staging_deployment_pr]
+    needs: [tag_for_staging_production, create_staging_deployment_pr]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
