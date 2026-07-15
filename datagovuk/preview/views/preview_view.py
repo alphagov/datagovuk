@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from datagovuk.directory.solr import get_solr_client
 from datagovuk.preview.models import SolrDatafile, SolrDataset
 
-from .views import build_table_data, fetch_csv
+from .utils import build_table_data, fetch_csv
 
 
 class PreviewView(TemplateView):

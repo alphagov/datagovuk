@@ -8,7 +8,6 @@ def is_feature_flag_enabled(feature_flag):
     return feature_flag.value in settings.FEATURE_FLAGS_ENABLED
 
 
-# Can be removed with flag once all released
 def flag_required(flag, view_func):
     @wraps(view_func)
     def wrapped(request, *args, **kwargs):
