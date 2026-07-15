@@ -56,8 +56,9 @@
               <td class="govuk-table__cell govuk-table__cell--numeric">{{ resource.format }}</td>
               <td class="govuk-table__cell govuk-table__cell--numeric">{{ resource.created }}</td>
               <td class="govuk-table__cell govuk-table__cell--numeric">
-                {% if resource.format|upper == 'CSV' %}
-                  <a href="#">Preview</a>
+                {% if resource.format and resource.format|upper == "CSV" %}
+                  <a href="{{ url('preview:preview', kwargs={'dataset_uuid': document.id, 'name': document.name, 'datafile_uuid': resource.id}) }}"
+                     class="govuk-link datagovuk-link">Preview</a>
                 {% else %}
                   Not available
                 {% endif %}

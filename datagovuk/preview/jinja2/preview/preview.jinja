@@ -1,0 +1,42 @@
+{% extends "base.jinja" %}
+
+{% block page_title %}
+  {{ datafile.name }}
+{% endblock page_title %}
+
+{% block main %}
+  {% block content %}
+    <div class="govuk-width-container datagovuk-width-container">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+          <a href="{{ url('directory:dataset', kwargs={'uuid': dataset.uuid, 'slug': dataset.name}) }}"
+             class="govuk-back-link govuk-link datagovuk-link">Back to dataset</a>
+
+          {# TODO: update the class names #}
+          {# TODO: Do we need a datagovuk-caption-l ? #}
+          <h1 class="datagovuk-heading-l govuk-heading-l govuk-!-margin-bottom-8">
+            {{ dataset.title }}
+            <span class="govuk-caption-l">{{ datafile.name }}</span>
+          </h1>
+
+          <p class="govuk-body datagovuk-body">You're previewing the first {{ preview_rows }} rows of this file.</p>
+
+          <a href="{{ datafile.url }}"
+             class="govuk-button datagovuk-button"
+             data-ga-event="preview-download"
+             data-ga-format="CSV"
+             data-ga-publisher="{{ dataset.organisation_name }}">Download the CSV</a>
+        </div>
+
+        <div class="govuk-grid-column-full">
+          <section id="dgu-preview">
+            <div class="dgu-datafile-preview">
+              <div class="dgu-datafile-preview__inner" tabindex="0">{% include "preview/table.jinja" %}</div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  {% endblock content %}
+{% endblock main %}
