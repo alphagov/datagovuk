@@ -20,47 +20,53 @@
             <span class="govuk-caption-l">{{ datafile.name }}</span>
           </h1>
 
-          <p class="govuk-body datagovuk-body">You're previewing the first {{ preview_rows }} rows of this file.</p>
+          {% if preview_exists %}
+            <p class="govuk-body datagovuk-body">You're previewing the first {{ preview_rows }} rows of this file.</p>
 
-          <a href="{{ datafile.url }}"
-             class="govuk-button datagovuk-button"
-             data-ga-event="preview-download"
-             data-ga-format="CSV"
-             data-ga-publisher="{{ dataset.organisation_name }}">Download the CSV</a>
+            <a href="{{ datafile.url }}"
+               class="govuk-button datagovuk-button"
+               data-ga-event="preview-download"
+               data-ga-format="CSV"
+               data-ga-publisher="{{ dataset.organisation_name }}">Download the CSV</a>
+          {% else %}
+            <p class="govuk-body datagovuk-body">Currently there is no preview available for "{{ datafile.name }}".</p>
+          {% endif %}
         </div>
 
-        <div class="govuk-grid-column-full">
-          <section id="dgu-preview">
-            <div class="dgu-datafile-preview">
-              <div class="dgu-datafile-preview__inner" tabindex="0">
-                <table class="govuk-table">
-                  {%- if table_headings %}
-                    <thead class="govuk-table__head">
-                      <tr class="govuk-table__row">
-                        {%- for cell in table_headings %}
-                          <th scope="col" class="govuk-table__header{% if cell.format == 'numeric' %} govuk-table__header--numeric{% endif %}">
-                            {{- cell.text -}}
-                          </th>
-                        {%- endfor %}
-                      </tr>
-                    </thead>
-                  {%- endif %}
-                  <tbody class="govuk-table__body">
-                    {%- for row in table_rows %}
-                      <tr class="govuk-table__row">
-                        {%- for cell in row %}
-                          <td class="govuk-table__cell{% if cell.format == 'numeric' %} govuk-table__cell--numeric{% endif %}">
-                            {{- cell.text -}}
-                          </td>
-                        {%- endfor %}
-                      </tr>
-                    {%- endfor %}
-                  </tbody>
-                </table>
+        {% if preview_exists %}
+          <div class="govuk-grid-column-full">
+            <section id="dgu-preview">
+              <div class="dgu-datafile-preview">
+                <div class="dgu-datafile-preview__inner" tabindex="0">
+                  <table class="govuk-table">
+                    {%- if table_headings %}
+                      <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                          {%- for cell in table_headings %}
+                            <th scope="col" class="govuk-table__header{% if cell.format == 'numeric' %} govuk-table__header--numeric{% endif %}">
+                              {{- cell.text -}}
+                            </th>
+                          {%- endfor %}
+                        </tr>
+                      </thead>
+                    {%- endif %}
+                    <tbody class="govuk-table__body">
+                      {%- for row in table_rows %}
+                        <tr class="govuk-table__row">
+                          {%- for cell in row %}
+                            <td class="govuk-table__cell{% if cell.format == 'numeric' %} govuk-table__cell--numeric{% endif %}">
+                              {{- cell.text -}}
+                            </td>
+                          {%- endfor %}
+                        </tr>
+                      {%- endfor %}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          </section>
-        </div>
+            </section>
+          </div>
+        {% endif %}
       </div>
     </div>
   {% endblock content %}

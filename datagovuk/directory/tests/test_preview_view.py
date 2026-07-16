@@ -81,6 +81,7 @@ class TestPreviewView:
 
         assert response.status_code == HTTP_OK
         assert response.context_data["preview_rows"] == MAX_PREVIEW_ROWS
+        assert response.context_data["preview_exists"] is True
         assert response.context_data["table_headings"] == [
             {"text": "name", "format": False},
             {"text": "age", "format": "numeric"},
@@ -120,12 +121,15 @@ class TestPreviewView:
 
     @patch("datagovuk.directory.views.fetch_csv")
     @patch("datagovuk.directory.views.get_solr_client")
-    def test_preview_returns_404_when_csv_empty(self, mock_solr, mock_fetch_csv, rf):
+    def test_preview_shows_no_preview_message_when_csv_empty(self, mock_solr, mock_fetch_csv, rf):
         mock_solr.return_value.search.return_value.docs = [make_solr_doc()]
         mock_fetch_csv.return_value = []
 
-        with pytest.raises(Http404):
-            call_view(rf)
+        response = call_view(rf)
+
+        assert response.status_code == HTTP_OK
+        assert response.context_data["preview_exists"] is False
+        assert "Currently there is no preview available for" in response.rendered_content
 
     @patch("datagovuk.directory.views.get_solr_client")
     def test_preview_returns_404_when_not_csv(self, mock_solr, rf):

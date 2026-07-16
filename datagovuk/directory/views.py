@@ -57,11 +57,6 @@ class PreviewView(TemplateView):
         headers = all_rows[0] if all_rows else []
         limited_data = all_rows[1:5] if len(all_rows) > 1 else []
 
-        if not limited_data:
-            raise Http404
-
-        datafile.get_preview().exists = True
-
         table_headings, table_rows = build_table_data(headers, limited_data)
 
         context.update(
@@ -71,6 +66,7 @@ class PreviewView(TemplateView):
                 "table_headings": table_headings,
                 "table_rows": table_rows,
                 "preview_rows": len(limited_data),
+                "preview_exists": bool(limited_data),
             },
         )
         return context
