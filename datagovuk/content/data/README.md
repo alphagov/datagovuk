@@ -67,6 +67,9 @@ Rename date column to Financial Year, and remove the second year to keep the axi
 Source: https://www.gov.uk/government/statistical-data-sets/live-tables-on-dwelling-stock-including-vacants
 Table: 100
 
+Make a new sheet. From each sheet (where each sheet is a year), copy the row for England into the new sheet.
+Create a year column and add the headings for the types of dwellings.
+Keep the columns for 'Year', 'Private sector', and 'Total'.
 
 ### Electricity generation
 
