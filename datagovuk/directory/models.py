@@ -32,7 +32,6 @@ class SolrDatafile:
             is_csv=resource_format == "CSV",
         )
 
-    # Lazily create a Preview object for the datafile
     def get_preview(self):
         if self._preview is None:
             self._preview = Preview(url=self.url, format=self.format)

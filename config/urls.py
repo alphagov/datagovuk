@@ -24,10 +24,6 @@ urlpatterns = [
         never_cache(prometheus_views.ExportToDjangoView),
         name="prometheus-django-metrics",
     ),
-    path(
-        "v1/",
-        include("datagovuk.preview.urls", namespace="preview"),
-    ),
 ]
 
 handler500 = "datagovuk.core.views.server_error"

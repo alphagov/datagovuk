@@ -18,4 +18,9 @@ urlpatterns = [
         flag_required(settings.FEATURE_FLAGS.SOLR_SEARCH, views.DatasetView.as_view()),
         name="dataset",
     ),
+    path(
+        "dataset/<uuid:dataset_uuid>/<slug:name>/datafile/<uuid:datafile_uuid>/preview/",
+        flag_required(settings.FEATURE_FLAGS.SOLR_SEARCH, views.PreviewView.as_view()),
+        name="preview",
+    ),
 ]

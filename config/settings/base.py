@@ -83,7 +83,6 @@ LOCAL_APPS = [
     "datagovuk.data_manual",
     "datagovuk.collections",
     "datagovuk.directory",
-    "datagovuk.preview",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

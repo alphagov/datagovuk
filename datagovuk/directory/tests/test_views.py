@@ -216,6 +216,7 @@ class TestDatasetView:
             docs=[
                 {
                     "id": test_uuid,
+                    "name": "csv-dataset",
                     "title": "CSV Dataset",
                     "notes": "Has CSV",
                     "metadata_modified": "2026-01-01T00:00:00Z",
@@ -242,8 +243,8 @@ class TestDatasetView:
         response = client.get(url)
 
         expected_preview_url = reverse(
-            "preview:preview",
-            kwargs={"dataset_uuid": test_uuid, "datafile_uuid": resource_uuid},
+            "directory:preview",
+            kwargs={"dataset_uuid": test_uuid, "name": "csv-dataset", "datafile_uuid": resource_uuid},
         )
         assert expected_preview_url in response.content.decode()
 

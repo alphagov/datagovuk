@@ -2,7 +2,7 @@ from unittest.mock import MagicMock, patch
 
 import requests
 
-from datagovuk.preview.views.utils import (
+from datagovuk.directory.preview_utils import (
     build_table_data,
     fetch_csv,
     fetch_raw_content,
@@ -49,7 +49,7 @@ class TestIsNumeric:
 
 
 class TestFetchRawContent:
-    @patch("datagovuk.preview.views.utils.requests.get")
+    @patch("datagovuk.directory.preview_utils.requests.get")
     def test_returns_truncated_and_normalised_content(self, mock_get):
         mock_response = MagicMock()
         mock_response.content = b"col1,col2\r\nval1,val2\r\n"
@@ -61,7 +61,7 @@ class TestFetchRawContent:
         assert result == "col1,col2\nval1,val2"
         assert "\r" not in result
 
-    @patch("datagovuk.preview.views.utils.requests.get")
+    @patch("datagovuk.directory.preview_utils.requests.get")
     def test_returns_empty_string_on_request_error(self, mock_get):
         mock_get.side_effect = requests.RequestException("timeout")
 
@@ -69,7 +69,7 @@ class TestFetchRawContent:
 
         assert result == ""
 
-    @patch("datagovuk.preview.views.utils.requests.get")
+    @patch("datagovuk.directory.preview_utils.requests.get")
     def test_request_has_range_header(self, mock_get):
         mock_response = MagicMock()
         mock_response.content = b"a,b\n1,2\n"
@@ -83,7 +83,7 @@ class TestFetchRawContent:
 
 
 class TestFetchCsv:
-    @patch("datagovuk.preview.views.utils.fetch_raw_content")
+    @patch("datagovuk.directory.preview_utils.fetch_raw_content")
     def test_returns_parsed_rows(self, mock_fetch):
         mock_fetch.return_value = "name,age\nJohn,30\nDoe,25"
 
@@ -91,7 +91,7 @@ class TestFetchCsv:
 
         assert result == [["name", "age"], ["John", "30"], ["Doe", "25"]]
 
-    @patch("datagovuk.preview.views.utils.fetch_raw_content")
+    @patch("datagovuk.directory.preview_utils.fetch_raw_content")
     def test_returns_empty_list_when_no_content(self, mock_fetch):
         mock_fetch.return_value = ""
 
@@ -99,7 +99,7 @@ class TestFetchCsv:
 
         assert result == []
 
-    @patch("datagovuk.preview.views.utils.fetch_raw_content")
+    @patch("datagovuk.directory.preview_utils.fetch_raw_content")
     def test_skips_empty_rows(self, mock_fetch):
         mock_fetch.return_value = "name,age\n\nJohn,30"
 
