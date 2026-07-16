@@ -73,6 +73,8 @@ class TestPreviewView:
             ["Doe", "25"],
             ["Jane", "40"],
             ["Doe", "35"],
+            ["Apple", "28"],
+            ["Orange", "22"],
         ]
 
         response = call_view(rf)
@@ -89,6 +91,7 @@ class TestPreviewView:
             [{"text": "Jane", "format": False}, {"text": "40", "format": "numeric"}],
             [{"text": "Doe", "format": False}, {"text": "35", "format": "numeric"}],
         ]
+        assert len(response.context_data["table_rows"]) == MAX_PREVIEW_ROWS
 
     @patch("datagovuk.directory.views.fetch_csv")
     @patch("datagovuk.directory.views.get_solr_client")
