@@ -1,7 +1,7 @@
 import json
 from unittest.mock import MagicMock
 
-from datagovuk.directory.models import SolrDatafile, SolrDataset
+from datagovuk.directory.models import Preview, SolrDatafile, SolrDataset
 
 
 class TestSolrDatafileModel:
@@ -100,6 +100,22 @@ class TestSolrDatafileModel:
         )
 
         preview = solr_datafile.get_preview()
+
+        assert preview.url == "https://example.com/test.csv"
+        assert preview.format == "CSV"
+        assert preview.exists is False
+
+    def test_solr_datafile_instantiates_preview(self):
+        solr_datafile = SolrDatafile(
+            name="test.csv",
+            url="https://example.com/test.csv",
+            created_at="2023-01-01T00:00:00Z",
+            format="CSV",
+            uuid="550e8400-e29b-41d4-a716-446655440003",
+            _preview=None,
+        )
+
+        preview = solr_datafile.preview
 
         assert preview.url == "https://example.com/test.csv"
         assert preview.format == "CSV"
@@ -247,3 +263,16 @@ class TestSolrDatasetModel:
         assert solr_dataset.datafiles[0].name == "Data file"
         assert len(solr_dataset.docs) == 1
         assert solr_dataset.docs[0]["name"] == "Supporting doc"
+
+
+class TestPreviewModel:
+    def test_preview_model_from_solr_datafile(self):
+        preview = Preview(
+            url="https://example.com/test.csv",
+            format="CSV",
+            exists=True,
+        )
+
+        assert preview.url == "https://example.com/test.csv"
+        assert preview.format == "CSV"
+        assert preview.exists is True
