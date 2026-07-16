@@ -19,8 +19,8 @@ class SolrDatafile:
     is_csv: bool = False
     _preview: Preview | None = field(default=None, repr=False)
 
-    @classmethod
-    def from_resource(cls, resource: dict, dataset_created_at: str):
+    @staticmethod
+    def from_resource(resource: dict, dataset_created_at: str):
         resource_format = resource.get("format") or ""
         resource_format = resource_format.strip().removeprefix(".").removesuffix(".").upper()
         return SolrDatafile(
@@ -70,8 +70,8 @@ class SolrDataset:
     organisation_name: str = ""
     is_organogram: bool = False
 
-    @classmethod
-    def from_solr_doc(cls, doc: dict):
+    @staticmethod
+    def from_solr_doc(doc: dict):
         dataset_dict = json.loads(doc.get("validated_data_dict", "{}"))
         dataset_created_at = doc.get("metadata_created", "")
 
