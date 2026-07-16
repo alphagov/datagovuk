@@ -10,7 +10,7 @@ app_name = "directory"
 urlpatterns = [
     path(
         "search/",
-        _flag_required(settings.FEATURE_FLAGS.SOLR_SEARCH, views.SearchView.as_view()),
+        flag_required(settings.FEATURE_FLAGS.SOLR_SEARCH, views.SearchView.as_view()),
         name="search",
     ),
     path(
