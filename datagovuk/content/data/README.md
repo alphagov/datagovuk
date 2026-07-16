@@ -70,6 +70,7 @@ Table: 100
 Make a new sheet. From each sheet (where each sheet is a year), copy the row for England into the new sheet.
 Create a year column and add the headings for the types of dwellings.
 Keep the columns for 'Year', 'Private sector', and 'Total'.
+Divide it by millions.
 
 ### Electricity generation
 
