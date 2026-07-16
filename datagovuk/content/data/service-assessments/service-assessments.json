@@ -10,8 +10,8 @@
         "value": 3,
         "analysis": "In 2025 compared to 2024.",
         "trend": "down",
-        "value_change": 5,
-        "percent_change": 62.5
+        "value_change": "-5",
+        "percent_change": "-62.5"
       },
       {
         "subtitle": "Amber",
@@ -19,17 +19,17 @@
         "value": 14,
         "analysis": "In 2025 compared to 2024.",
         "trend": "down",
-        "value_change": 11,
-        "percent_change": 44
+        "value_change": "-11",
+        "percent_change": "-44"
       },
       {
         "subtitle": "Green",
         "description": "The service has met the standard and can continue to the next phase of delivery.",
         "value": 10,
         "analysis": "In 2025 compared to 2024.",
-        "trend": "",
-        "value_change": 0,
-        "percent_change": 0
+        "trend": "down",
+        "value_change": "unchanged",
+        "percent_change": ""
       }
     ]
   }
