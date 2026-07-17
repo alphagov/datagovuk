@@ -94,6 +94,8 @@
 
     <a href="#main" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
+    {% include "includes/survey_banner.jinja" %}
+
     {% include "includes/header.jinja" %}
 
     <main id="main" class="datagovuk-main">
@@ -112,6 +114,7 @@
     {% compress js %}
       <script src="{{ static('javascripts/header.js') }}"></script>
       <script src="{{ static('javascripts/section-navigation.js') }}"></script>
+      <script src="{{ static('javascripts/survey-banner.js') }}"></script>
       <script src="{{ static('javascripts/cookies.js') }}"></script>
       {% block extra_js %}
       {% endblock extra_js %}
