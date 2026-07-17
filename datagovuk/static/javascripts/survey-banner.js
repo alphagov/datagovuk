@@ -5,13 +5,15 @@
   const closeLink = banner.querySelector('.datagovuk-close');
   if (!closeLink) return;
 
-  if (window.sessionStorage.getItem('survey-banner-dismissed') === 'true') {
+  if (document.cookie.includes('survey-banner-dismissed=true')) {
     banner.hidden = true;
   }
 
   closeLink.addEventListener('click', function (event) {
     event.preventDefault();
     banner.hidden = true;
-    window.sessionStorage.setItem('survey-banner-dismissed', 'true');
+
+    // Set cookie to expire in 30 days
+    document.cookie = "survey-banner-dismissed=true; max-age=2592000; path=/; SameSite=Strict";
   });
 })();
