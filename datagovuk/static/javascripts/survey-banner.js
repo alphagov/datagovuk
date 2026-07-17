@@ -5,7 +5,7 @@ class DatagovukSurveyBanner {
 
     if (!this.$closeLink) return
 
-    if (window.GOVUK.getCookie('survey_banner_dismissed') === 'true') {
+    if (window.GOVUK.getCookie('survey_banner_dismissed_2026_07') === 'true') {
       this.$module.hidden = true
       return
     }
@@ -16,7 +16,7 @@ class DatagovukSurveyBanner {
   dismiss(event) {
     event.preventDefault()
     this.$module.hidden = true
-    window.GOVUK.cookie('survey_banner_dismissed', 'true', { days: 30 })
+    window.GOVUK.cookie('survey_banner_dismissed_2026_07', 'true', { days: 30 })
   }
 }
 
