@@ -135,7 +135,14 @@ CACHE_CONTROL_DEFAULT = "max-age=1800, public"
 
 SECURE_CSP = {
     "default-src": [CSP.SELF],
-    "connect-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com", "*.analytics.google.com"],
+    "connect-src": [
+        CSP.SELF,
+        "*.google-analytics.com",
+        "*.googletagmanager.com",
+        "*.analytics.google.com",
+        "s3-eu-west-1.amazonaws.com",
+        "ckan.publishing.service.gov.uk",
+    ],
     "font-src": [CSP.SELF],
     "img-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com"],
     "manifest-src": [CSP.SELF],

@@ -1,3 +1,4 @@
+import json
 from http import HTTPStatus
 from unittest.mock import MagicMock, patch
 
@@ -207,3 +208,75 @@ class TestDatasetView:
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "active-dataset"})
         response = client.get(url)
         assert response.status_code == HTTPStatus.NOT_FOUND
+
+    def test_csv_resource_shows_preview_link(self, client, mock_solr_client, mock_solr_results_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440003"
+        resource_uuid = "660e8400-e29b-41d4-a716-446655440003"
+        mock_solr_client.search.return_value = mock_solr_results_factory(
+            docs=[
+                {
+                    "id": test_uuid,
+                    "name": "csv-dataset",
+                    "title": "CSV Dataset",
+                    "notes": "Has CSV",
+                    "metadata_modified": "2026-01-01T00:00:00Z",
+                    "validated_data_dict": json.dumps(
+                        {
+                            "organization": {"title": "Test Org"},
+                            "resources": [
+                                {
+                                    "id": resource_uuid,
+                                    "name": "Data",
+                                    "url": "http://example.com/data.csv",
+                                    "format": "CSV",
+                                    "created": "2026-01-01",
+                                },
+                            ],
+                        },
+                    ),
+                },
+            ],
+            hits=1,
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "csv-dataset"})
+        response = client.get(url)
+
+        expected_preview_url = reverse(
+            "directory:preview",
+            kwargs={"dataset_uuid": test_uuid, "name": "csv-dataset", "datafile_uuid": resource_uuid},
+        )
+        assert expected_preview_url in response.content.decode()
+
+    def test_non_csv_resource_shows_not_available(self, client, mock_solr_client, mock_solr_results_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440004"
+        mock_solr_client.search.return_value = mock_solr_results_factory(
+            docs=[
+                {
+                    "id": test_uuid,
+                    "title": "XLS Dataset",
+                    "notes": "Has XLS",
+                    "metadata_modified": "2026-01-01T00:00:00Z",
+                    "validated_data_dict": json.dumps(
+                        {
+                            "organization": {"title": "Test Org"},
+                            "resources": [
+                                {
+                                    "id": "some-uuid",
+                                    "name": "Data",
+                                    "url": "http://example.com/data.xls",
+                                    "format": "XLS",
+                                    "created": "2026-01-01",
+                                },
+                            ],
+                        },
+                    ),
+                },
+            ],
+            hits=1,
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "xls-dataset"})
+        response = client.get(url)
+
+        assert "Not available" in response.content.decode()
