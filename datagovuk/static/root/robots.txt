@@ -1,2 +1,2 @@
 User-agent: *
-Disallow: /v1/search
+Disallow: /v1
