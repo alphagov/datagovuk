@@ -1,14 +1,14 @@
 .datagovuk-notification-banner__inner {
   border-left: 4px solid $datagovuk-pink;
   background-color: $datagovuk-light-pink;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .datagovuk-notification-banner__content {
   display: flex;
   align-items: center;
-  min-height: 140px;
   gap: 12px;
 }
 
@@ -36,5 +36,7 @@
     .datagovuk-notification-banner__inner {
         padding-left: 40px;
         padding-right: 40px;
+        padding-top: 0px;
+        padding-bottom: 0px;
     }
 }
