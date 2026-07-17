@@ -1,9 +1,7 @@
 .datagovuk-notification-banner__inner {
   border-left: 4px solid $datagovuk-pink;
   background-color: $datagovuk-light-pink;
-  padding: 30px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 20px 30px;
 }
 
 .datagovuk-notification-banner__content {
@@ -29,14 +27,7 @@
 
 /* Desktop styling overrides */
 @media (min-width: $desktop-header-breakpoint) {
-    .datagovuk-notification-banner__content {
-        min-height: 80px;
-    }
-
     .datagovuk-notification-banner__inner {
-        padding-left: 40px;
-        padding-right: 40px;
-        padding-top: 0px;
-        padding-bottom: 0px;
+        padding: 20px 40px;
     }
 }
