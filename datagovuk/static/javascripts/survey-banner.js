@@ -1,19 +1,27 @@
-(function () {
-  const banner = document.querySelector('[data-module="survey-banner"]');
-  if (!banner) return;
+class DatagovukSurveyBanner {
+  constructor($module) {
+    this.$module = $module
+    this.$closeLink = $module.querySelector('.datagovuk-close')
 
-  const closeLink = banner.querySelector('.datagovuk-close');
-  if (!closeLink) return;
+    if (!this.$closeLink) return
 
-  if (document.cookie.includes('survey-banner-dismissed=true')) {
-    banner.hidden = true;
+    if (window.GOVUK.getCookie('survey_banner_dismissed') === 'true') {
+      this.$module.hidden = true
+      return
+    }
+
+    this.$closeLink.addEventListener('click', (event) => this.dismiss(event))
   }
 
-  closeLink.addEventListener('click', function (event) {
-    event.preventDefault();
-    banner.hidden = true;
+  dismiss(event) {
+    event.preventDefault()
+    this.$module.hidden = true
+    window.GOVUK.cookie('survey_banner_dismissed', 'true', { days: 30 })
+  }
+}
 
-    // Set cookie to expire in 30 days
-    document.cookie = "survey-banner-dismissed=true; max-age=2592000; path=/; SameSite=Strict";
-  });
-})();
+// Initialize
+const $surveyBanner = document.querySelector('.datagovuk-notification-banner')
+if ($surveyBanner) {
+  new DatagovukSurveyBanner($surveyBanner)
+}
