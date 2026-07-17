@@ -49,13 +49,9 @@ def load_data():
     with Path.open(data_file_path) as f:
         docs = json.load(f)
 
-    datasets = orgs = 0
     for doc in docs:
-        if is_org(doc):
-            orgs += 1
-        else:
+        if not is_org(doc):
             doc["type"] = "dataset"  # not stored so not in export and need reset
-            datasets += 1
 
     solr = pysolr.Solr(SOLR_URL, always_commit=True, timeout=30)
 
