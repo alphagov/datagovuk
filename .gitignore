@@ -285,3 +285,6 @@ datagovuk/media/
 
 # Vim
 *.swp
+
+# pem files..
+*.pem
