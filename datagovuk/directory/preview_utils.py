@@ -4,6 +4,8 @@ import re
 
 import requests
 
+from datagovuk.core.utils import capture_exception
+
 HTTP_RANGE_BYTES = "bytes=0-10240"
 HTTP_TIMEOUT = 5
 
@@ -45,7 +47,8 @@ def fetch_raw_content(url: str):
             raw_content = response.content.decode("iso-8859-1")
         raw_content = raw_content.replace("\r\n", "\n").replace("\r", "\n")
         return raw_content.rpartition("\n")[0]
-    except requests.RequestException, UnicodeDecodeError:
+    except (requests.RequestException, UnicodeDecodeError) as e:
+        capture_exception(e)
         return ""
 
 
