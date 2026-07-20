@@ -104,17 +104,16 @@ The resulting CSV contains metadata header rows and three time series (annual, q
 The file [inflation/inflation.json](inflation/inflation.json) uses the data from the csv file as its `series.data` object.
 
 
-### Local government finance: council tax
+### Local government finance
 
 Source: https://www.gov.uk/government/statistical-data-sets/live-tables-on-local-government-finance
-Table: Council Tax receipts live table, England, Q4 2025 to 2026
-Sheet: Table_1
+Table: Capital payments and receipts Q4 2025 to 2026, England
+Sheet: Year_&_Quarter_Series
 
-Extract the columns for 'Year' and 'Total receipts of council taxes collected during the financial year'.
-Rename Year to 'Financial year'.
-Change the year to just the first in the range (e.g. 2000 to 2001 becomes 2000).
-Rename 'Total receipts...' to 'Council tax reciepts (billion £)'.
-Divide the values by a thousand.
+Extract the columns for 'Financial year ending (FYE)', and 'Total capital expenditure'.
+Replace Financial year ending with 'Financial year' and update the values manually; 2011 becomes 2010-11 for example.
+Divide total capital expenditure by 1000 to get the values in billions, and add (£, billions) to the column title.
+Round those values to the nearest 1 decimal point.
 
 ### MOT test results
 
