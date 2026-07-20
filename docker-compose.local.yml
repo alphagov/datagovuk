@@ -35,7 +35,7 @@ services:
   solr:
     image: ghcr.io/alphagov/solr:2.10
     ports:
-      - "8983:8983"
+      - "8984:8983"
     volumes:
       - solr_data:/opt/solr/server/solr/ckan/data
     healthcheck:
