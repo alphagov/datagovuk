@@ -3,9 +3,8 @@ import json
 from django.http import Http404
 from django.views.generic import TemplateView
 
-from .models import SolrDatafile, SolrDataset
 from .preview_utils import build_table_data, fetch_csv
-from .solr import get_solr_client
+from .solr import SolrDatafile, SolrDataset, get_solr_client
 
 
 class SearchView(TemplateView):
