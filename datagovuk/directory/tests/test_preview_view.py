@@ -6,7 +6,7 @@ import pytest
 from django.http import Http404
 from django.urls import reverse
 
-from datagovuk.directory.models import SolrDatafile
+from datagovuk.directory.solr import SolrDatafile
 from datagovuk.directory.views import PreviewView
 
 HTTP_OK = 200
