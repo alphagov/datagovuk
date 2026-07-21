@@ -1,0 +1,112 @@
+name: Push to ECR and promote
+
+on:
+  workflow_run:
+    workflows: ["Build and push multi-arch images"]
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      image_sha:
+        description: Full git SHA of the image to push/promote (must already be in GHCR)
+        required: true
+        type: string
+
+env:
+  APP_NAME: datagovuk
+  AWS_REGION: eu-west-2
+  GHCR_IMAGE: ghcr.io/alphagov/datagovuk
+
+jobs:
+  push_to_integration:
+    name: Push to integration ECR
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    permissions:
+      id-token: write
+      contents: read
+    outputs:
+      image_sha: ${{ steps.resolve-sha.outputs.image_sha }}
+    steps:
+      - name: Resolve image SHA
+        id: resolve-sha
+        run: |
+          SHA="${{ github.event.workflow_run.head_sha || inputs.image_sha }}"
+          echo "image_sha=${SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials (integration)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::836822603246:role/github-actions-deployer-integration
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR (integration)
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Install crane
+        uses: imjasonh/setup-crane@v0.4
+
+      - name: Copy image from GHCR to integration ECR
+        run: |
+          crane copy \
+            ${{ env.GHCR_IMAGE }}:${{ steps.resolve-sha.outputs.image_sha }} \
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ steps.resolve-sha.outputs.image_sha }}
+
+  promote_to_staging:
+    name: Promote to staging ECR
+    needs: push_to_integration
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Configure AWS credentials (staging)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.STAGING_DEPLOYER_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR (staging)
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Install crane
+        uses: imjasonh/setup-crane@v0.4
+
+      - name: Copy image from GHCR to staging ECR
+        run: |
+          crane copy \
+            ${{ env.GHCR_IMAGE }}:${{ needs.push_to_integration.outputs.image_sha }} \
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ needs.push_to_integration.outputs.image_sha }}
+
+  promote_to_production:
+    name: Promote to production ECR
+    needs: [push_to_integration, promote_to_staging]
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Configure AWS credentials (production)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.PRODUCTION_DEPLOYER_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR (production)
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Install crane
+        uses: imjasonh/setup-crane@v0.4
+
+      - name: Copy image from GHCR to production ECR
+        run: |
+          crane copy \
+            ${{ env.GHCR_IMAGE }}:${{ needs.push_to_integration.outputs.image_sha }} \
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ needs.push_to_integration.outputs.image_sha }}
