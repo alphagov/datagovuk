@@ -34,6 +34,7 @@ services:
 
   solr:
     image: ghcr.io/alphagov/solr:2.10
+    platform: linux/amd64
     ports:
       - "8984:8983"
     volumes:
