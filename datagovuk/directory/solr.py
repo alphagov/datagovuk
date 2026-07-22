@@ -5,6 +5,7 @@ import pysolr
 from cache_memoize import cache_memoize
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.text import slugify
 
 ORGANISATIONS_LIMIT = 3000
 
@@ -45,11 +46,14 @@ def _get_filters(filters):
         "type:dataset",
         "-site_id:dgu_organisations.*",
     ]
-    if "publisher" in filters:
+    if filters.get("publisher"):
         all_organisations = _get_organisations_by_title()
         organisation_slug = all_organisations.get(filters["publisher"])
         if organisation_slug:
             solr_filters.append(f"organization:{organisation_slug}")
+    if filters.get("topic"):
+        topic_slug = slugify(filters["topic"])
+        solr_filters.append(f"extras_theme-primary:{topic_slug}")
     return solr_filters
 
 
