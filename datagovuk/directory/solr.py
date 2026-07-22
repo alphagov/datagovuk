@@ -2,8 +2,11 @@ import json
 from dataclasses import dataclass, field
 
 import pysolr
+from cache_memoize import cache_memoize
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+
+ORGANISATIONS_LIMIT = 3000
 
 
 def get_solr_client():
@@ -11,6 +14,55 @@ def get_solr_client():
         message = "SOLR_URL was not set"
         raise ImproperlyConfigured(message)
     return pysolr.Solr(settings.SOLR_URL, always_commit=True, timeout=2)
+
+
+@cache_memoize(10 * 60)
+def _get_organisations_by_title():
+    solr_client = get_solr_client()
+    results = solr_client.search(
+        q="*:*",
+        fq=["site_id:dgu_organisations"],
+        fl=["title", "name"],
+        rows=ORGANISATIONS_LIMIT,
+    )
+
+    organisations = {doc["title"]: doc["name"] for doc in results}
+
+    return organisations
+
+
+def _get_query(query):
+    # TODO: We should do some escaping to avoid any injection in to our SOLR query
+    solr_query = f"(title:({query})^2 OR notes:({query}))"
+    if not query:
+        solr_query = "*:*"
+    return solr_query
+
+
+def _get_filters(filters):
+    solr_filters = [
+        "state:active",
+        "type:dataset",
+        "-site_id:dgu_organisations.*",
+    ]
+    if "publisher" in filters:
+        all_organisations = _get_organisations_by_title()
+        organisation_slug = all_organisations.get(filters["publisher"])
+        if organisation_slug:
+            solr_filters.append(f"organization:{organisation_slug}")
+    return solr_filters
+
+
+def search(query, filters, start=0, rows=20):
+    solr_query = _get_query(query)
+    solr_filters = _get_filters(filters)
+    solr_client = get_solr_client()
+    return solr_client.search(
+        q=solr_query,
+        fq=solr_filters,
+        start=start,
+        rows=rows,
+    )
 
 
 @dataclass
