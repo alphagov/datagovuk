@@ -38,14 +38,14 @@ class SearchView(GETFormView):
 
     def form_valid(self, form):
         query = form.cleaned_data["query"]
-        context = self.get_context_data(query=query)
+        filters = dict(form.cleaned_data)
+        del filters["query"]
+        context = self.get_context_data(query=query, filters=filters)
         return self.render_to_response(context)
 
-    def get_context_data(self, query=None, **kwargs):
+    def get_context_data(self, query=None, filters=None, **kwargs):
         context = super().get_context_data(**kwargs)
         if query is not None:
-            filters = {param: param_value[0] for param, param_value in dict(self.request.GET).items()}
-            query = filters.pop("query")
             results = search(
                 query=query,
                 filters=filters,

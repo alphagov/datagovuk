@@ -1,4 +1,5 @@
 import json
+import re
 from dataclasses import dataclass, field
 
 import pysolr
@@ -46,14 +47,22 @@ def _get_filters(filters):
         "type:dataset",
         "-site_id:dgu_organisations.*",
     ]
+
     if filters.get("publisher"):
         all_organisations = _get_organisations_by_title()
         organisation_slug = all_organisations.get(filters["publisher"])
         if organisation_slug:
             solr_filters.append(f"organization:{organisation_slug}")
+
     if filters.get("topic"):
         topic_slug = slugify(filters["topic"])
         solr_filters.append(f"extras_theme-primary:{topic_slug}")
+
+    if filters.get("open_government_licence_only") is True:
+        ogl_ids = ("uk-ogl", re.compile(r"OGL-UK-.*").pattern, "ogl")
+        ogl_filter_value = " ".join(ogl_ids)
+        solr_filters.append(f"license_id:({ogl_filter_value})")
+
     return solr_filters
 
 
