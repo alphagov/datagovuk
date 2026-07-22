@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseServerError
 from django.template import loader
 from django.views.decorators.csrf import requires_csrf_token
 from django.views.generic import TemplateView, View
+from django.views.generic.edit import FormView
 
 from datagovuk.core.markdown import get_safe_markdown_path, get_template_context_from_markdown
 
@@ -20,6 +21,22 @@ class RenderedMarkdownView(TemplateView):
             get_template_context_from_markdown(markdown_file_path),
         )
         return context
+
+
+class GETFormView(FormView):
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if self.request.GET:
+            kwargs["data"] = self.request.GET
+        return kwargs
+
+    def get(self, request, *args, **kwargs):
+        if request.GET:
+            form = self.get_form()
+            if form.is_valid():
+                return self.form_valid(form)
+            return self.form_invalid(form)
+        return super().get(request, *args, **kwargs)
 
 
 @requires_csrf_token

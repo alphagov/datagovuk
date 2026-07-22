@@ -5,10 +5,8 @@
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
     <form method="get">
-      <label for="query">Search:</label>
-      <input type="text" id="query" name="q" placeholder="Type here..." />
-
-      <button type="submit">Submit</button>
+      {{ form }}
+      <input type="submit" value="Submit" />
     </form>
     {% if results %}
       Hits: {{ results.hits }}
