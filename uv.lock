@@ -286,6 +286,7 @@ dependencies = [
     { name = "argon2-cffi" },
     { name = "chartkick" },
     { name = "django" },
+    { name = "django-cache-memoize" },
     { name = "django-compressor" },
     { name = "django-environ" },
     { name = "django-health-check" },
@@ -329,6 +330,7 @@ requires-dist = [
     { name = "argon2-cffi", specifier = "==25.1.0" },
     { name = "chartkick", specifier = "==1.1.0" },
     { name = "django", specifier = "==6.0.7" },
+    { name = "django-cache-memoize", specifier = "==0.2.1" },
     { name = "django-compressor", specifier = "==4.6.0" },
     { name = "django-environ", specifier = "==0.14.0" },
     { name = "django-health-check", specifier = "==4.4.3" },
@@ -409,6 +411,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d1/a2/e58bec8d7941b914af52a67c35b5709eceed2caa2848f28437f1666ed668/django_appconf-1.2.0.tar.gz", hash = "sha256:15a88d60dd942d6059f467412fe4581db632ef03018a3c183fb415d6fc9e5cec", size = 16127, upload-time = "2025-11-08T15:46:27.304Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e8/e6/4c34d94dfb74bbcbc489606e61f1924933de30d22c593dd1f429f35fbd7f/django_appconf-1.2.0-py3-none-any.whl", hash = "sha256:b81bce5ef0ceb9d84df48dfb623a32235d941c78cc5e45dbb6947f154ea277f4", size = 6500, upload-time = "2025-11-08T15:46:25.957Z" },
+]
+
+[[package]]
+name = "django-cache-memoize"
+version = "0.2.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8a/81/8e07e815118a5afbb9a10e766d9338751cc11ca462dea7f8a509a8fa22c5/django_cache_memoize-0.2.1.tar.gz", hash = "sha256:025ff5d941420247b83452bb183bde172dde7def95501fca829adf8ea01b2b7b", size = 21865, upload-time = "2024-12-18T18:08:52.929Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e8/b4/81550fd4e8ae9e2dd017b761d73fa4aa22dccab13076622ea5a3ec76e7d4/django_cache_memoize-0.2.1-py3-none-any.whl", hash = "sha256:07929d063a03557013875d453a13edc8e3359d3ba8a568b64ac3288578ed8be3", size = 14797, upload-time = "2024-12-18T18:08:51.199Z" },
 ]
 
 [[package]]
