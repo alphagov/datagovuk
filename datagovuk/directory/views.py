@@ -3,21 +3,51 @@ import json
 from django.http import Http404
 from django.views.generic import TemplateView
 
+from datagovuk.core.views import GETFormView
+
+from .forms import SearchForm
 from .preview_utils import build_table_data, fetch_csv
 from .solr import SolrDatafile, SolrDataset, get_solr_client
 
 
-class SearchView(TemplateView):
+class SearchView(GETFormView):
     template_name = "directory/search.jinja"
+    form_class = SearchForm
 
-    def get_context_data(self, **kwargs):
+    def _translate_legacy_params(self, request):
+        legacy_params = {
+            "q": "query",
+            "filters[publisher]": "publisher",
+            "filters[topic]": "topic",
+            "filters[format]": "format",
+            "filters[licence_code]": "open_government_licence_only",
+        }
+        get_params = request.GET.copy()
+        for legacy_param, new_param in legacy_params.items():
+            is_new_param_set = get_params.get(new_param)
+            if is_new_param_set:
+                continue
+            is_legacy_param_set = get_params.get(legacy_param)
+            if is_legacy_param_set:
+                get_params[new_param] = get_params[legacy_param]
+        request.GET = get_params
+
+    def get(self, request, *args, **kwargs):
+        self._translate_legacy_params(request)
+        return super().get(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        query = form.cleaned_data["query"]
+        context = self.get_context_data(query=query)
+        return self.render_to_response(context)
+
+    def get_context_data(self, query="", **kwargs):
         context = super().get_context_data(**kwargs)
-        query = self.request.GET.get("q")
         if query:
             client = get_solr_client()
             solr_query = f"(title:({query})^2 OR notes:({query})) AND NOT organisation:dgu_organisations.*"
 
-            results = client.search(solr_query, start=0, rows=10)
+            results = client.search(solr_query, start=0, rows=20)
             context["results"] = results
         return context
 
