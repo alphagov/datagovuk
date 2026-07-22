@@ -21,6 +21,8 @@ def get_solr_client():
     return pysolr.Solr(settings.SOLR_URL, always_commit=True, timeout=2)
 
 
+# TODO: Ideally we would switch to a redis caching backend to cache this once across
+#   production app servers.  With in-memory caching, this would cache once per-process
 @cache_memoize(10 * 60)
 def _get_organisations_by_title():
     solr_client = get_solr_client()
