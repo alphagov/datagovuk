@@ -7,7 +7,7 @@ from datagovuk.core.views import GETFormView
 
 from .forms import SearchForm
 from .preview_utils import build_table_data, fetch_csv
-from .solr import SolrDatafile, SolrDataset, get_solr_client
+from .solr import SolrDatafile, SolrDataset, get_solr_client, search
 
 
 class SearchView(GETFormView):
@@ -41,13 +41,17 @@ class SearchView(GETFormView):
         context = self.get_context_data(query=query)
         return self.render_to_response(context)
 
-    def get_context_data(self, query="", **kwargs):
+    def get_context_data(self, query=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        if query:
-            client = get_solr_client()
-            solr_query = f"(title:({query})^2 OR notes:({query})) AND NOT organisation:dgu_organisations.*"
-
-            results = client.search(solr_query, start=0, rows=20)
+        if query is not None:
+            filters = {param: param_value[0] for param, param_value in dict(self.request.GET).items()}
+            query = filters.pop("query")
+            results = search(
+                query=query,
+                filters=filters,
+                start=0,
+                rows=20,
+            )
             context["results"] = results
         return context
 

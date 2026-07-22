@@ -2,7 +2,7 @@ from django import forms
 
 
 class SearchForm(forms.Form):
-    query = forms.CharField(label="Search directory", max_length=256)
+    query = forms.CharField(label="Search directory", max_length=256, required=False)
     publisher = forms.CharField(label="Publisher", max_length=256, required=False)
     topic = forms.CharField(label="Topic", max_length=256, required=False)
     format = forms.CharField(label="Format", max_length=50, required=False)
