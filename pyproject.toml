@@ -16,6 +16,7 @@ dependencies = [
   "argon2-cffi==25.1.0",
   "chartkick==1.1.0",
   "django==6.0.7",
+  "django-cache-memoize==0.2.1",
   "django-compressor==4.6.0",
   "django-environ==0.14.0",
   "django-health-check==4.4.3",
