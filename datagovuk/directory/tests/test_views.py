@@ -47,17 +47,20 @@ def mock_get_solr_client(mock_solr_client):
         yield mock_solr_client
 
 
+@pytest.fixture
+def search_url():
+    return reverse("directory:search")
+
+
 class TestSearchView:
-    def test_view_no_query_returns_ok_without_results(self, client):
-        url = reverse("directory:search")
-        response = client.get(url)
+    def test_view_no_query_returns_ok_without_results(self, client, search_url):
+        response = client.get(search_url)
 
         assert response.status_code == HTTPStatus.OK
         assert "results" not in response.context_data
 
-    def test_view_with_query_calls_solr(self, client, sample_solr_docs):
-        url = reverse("directory:search")
-        response = client.get(url, {"q": "test"})
+    def test_view_with_query_calls_solr(self, client, sample_solr_docs, search_url):
+        response = client.get(search_url, {"q": "test"})
 
         assert response.status_code == HTTPStatus.OK
         results = response.context_data["results"]
@@ -69,26 +72,27 @@ class TestSearchView:
         returned_ids = [doc["id"] for doc in results.docs]
         assert "test-uuid-2" not in returned_ids
 
-    def test_view_with_query_no_hits_returns_empty(self, client, sample_solr_docs):
-        url = reverse("directory:search")
-        response = client.get(url, {"q": "nomatch"})
+    def test_view_with_query_no_hits_returns_empty(self, client, sample_solr_docs, search_url):
+        response = client.get(search_url, {"q": "nomatch"})
 
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["results"].hits == 0
         assert response.context_data["results"].docs == []
 
-    def test_view_with_query_multiple_results(self, client, sample_solr_docs):
-        url = reverse("directory:search")
-        response = client.get(url, {"q": "multi"})
+    def test_view_with_query_multiple_results(self, client, sample_solr_docs, search_url):
+        response = client.get(search_url, {"q": "multi"})
 
         assert response.status_code == HTTPStatus.OK
-        assert response.context_data["results"].hits == 2  # noqa: PLR2004
-        assert len(response.context_data["results"].docs) == 2  # noqa: PLR2004
+        expected_ids = [doc["id"] for doc in sample_solr_docs[0:2]]
+        assert response.context_data["results"].hits == len(expected_ids)
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
 
-    def test_search_view_returns_404_if_feature_flag_not_enabled(self, client, settings):
+    # def test_view_filter_publisher(self, client, sample_solr_docs):
+
+    def test_search_view_returns_404_if_feature_flag_not_enabled(self, client, settings, search_url):
         settings.FEATURE_FLAGS_ENABLED = []
-        url = reverse("directory:search")
-        response = client.get(url, {"q": "multi"})
+        response = client.get(search_url, {"q": "multi"})
         assert response.status_code == HTTPStatus.NOT_FOUND
 
 
