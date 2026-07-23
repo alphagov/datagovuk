@@ -206,7 +206,17 @@ The file [social-mobility/unemployment-by-socio-ecomomic-background.json](social
 
 ## Headline figures
 
-## Get company information
+### Contracts Finder
+Source: https://www.contractsfinder.service.gov.uk/Search
+
+Search for procurement stage equals Awarded Contracts. In turn, filter on Awarded suppliers (SMEs and VCSEs) and the date range (careful to select contract awarded date, not publication date) into
+the most recent two financial years (1st April to 31st March).
+
+Note the number of awarded contracts notices for each financial year and each supplier type in a .csv with a column for the category and each financial year.
+
+Divide the most recent FY's value by the year before's value and multiply by 100 to find the percentage. If it's <100, do 100 - answer to get the percentage decrease. If it's >100, do ans - 100 to get the percentage increase.
+
+### Get company information
 
 The source webpage for the data is [https://www.gov.uk/government/statistics/companies-register-activities-statistical-release-april-2024-to-march-2025](https://www.gov.uk/government/statistics/companies-register-activities-statistical-release-april-2024-to-march-2025)
 

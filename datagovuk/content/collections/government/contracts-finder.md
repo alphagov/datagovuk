@@ -5,8 +5,8 @@ websites:
     link-text: Contracts finder
 api:
 dataset:
-page-last-updated: "2026-03-24"
-visualisation-data:
+page-last-updated: "2026-07-23"
+visualisation-data: contracts-finder/contracts-awarded-2024-2025.json
 contact:
 status: for-publication
 ---
