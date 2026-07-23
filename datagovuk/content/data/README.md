@@ -123,6 +123,13 @@ Invert financial year to be most recent at the bottom.
 Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
 Remove the second year in finanial year to make the axis labels neater.
 
+### Road traffic mileage
+
+Source: https://roadtraffic.dft.gov.uk/
+
+Copied the dropdown table under 'Road traffic by vehicle type from 1993 to 2025'. Extracted
+columns for 'Year' and 'All motor vehicles' to [road-traffic/road-traffic-mileage.csv](road-traffic/road-traffic-mileage.csv).
+
 ### Storm overflows
 
 > [!WARNING]
@@ -208,7 +215,17 @@ The file [social-mobility/unemployment-by-socio-ecomomic-background.json](social
 
 ## Headline figures
 
-## Get company information
+### Contracts Finder
+Source: https://www.contractsfinder.service.gov.uk/Search
+
+Search for procurement stage equals Awarded Contracts. In turn, filter on Awarded suppliers (SMEs and VCSEs) and the date range (careful to select contract awarded date, not publication date) into
+the most recent two financial years (1st April to 31st March).
+
+Note the number of awarded contracts notices for each financial year and each supplier type in a .csv with a column for the category and each financial year.
+
+Divide the most recent FY's value by the year before's value and multiply by 100 to find the percentage. If it's <100, do 100 - answer to get the percentage decrease. If it's >100, do ans - 100 to get the percentage increase.
+
+### Get company information
 
 The source webpage for the data is [https://www.gov.uk/government/statistics/companies-register-activities-statistical-release-april-2024-to-march-2025](https://www.gov.uk/government/statistics/companies-register-activities-statistical-release-april-2024-to-march-2025)
 
@@ -226,14 +243,3 @@ but for our purposes we only used `Incorporations` and `Dissolved`.
 The resulting csv used is here: [get-company-information/companies-register-activities-april-2024-to-march-2025.csv](get-company-information/companies-register-activities-april-2024-to-march-2025.csv)
 
 The file [get-company-information/companies-house-register-headlines.json](get-company-information/companies-house-register-headlines.json) uses the data from the csv file as its `items` object. Note % change was calculated using the figures in csv.
-
-
-## Road traffic
-
-The source webpage for the data is [https://roadtraffic.dft.gov.uk/downloads](https://roadtraffic.dft.gov.uk/downloads)
-
-The visualisation data was downloaded from here [https://storage.googleapis.com/dft-statistics/road-traffic/downloads/data-gov-uk/region_traffic_by_vehicle_type.csv](https://storage.googleapis.com/dft-statistics/road-traffic/downloads/data-gov-uk/region_traffic_by_vehicle_type.csv)
-
-The download contains traffic data for all UK regions and multiple vehicle types. Only the `cars_and_taxis` and `buses_and_coaches` columns were kept, and only the "All" region rows (which sum all regions) were retained to create [road-traffic/road-traffic-2023-2024.csv](road-traffic/road-traffic-2023-2024.csv)
-
-The file [road-traffic/road-traffic-headline.json](road-traffic/road-traffic-headline.json) uses the data from the csv file as its `items` object. Values are expressed in billion vehicle miles (raw figures divided by 1,000,000,000). Percent change was calculated using the figures in the csv.

@@ -9,7 +9,7 @@ from django.http import Http404
 
 class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
     def link(self, text, url, title=None):
-        return f'<a href="{url}" class="govuk-link datagovuk-link datagovuk-link--secondary">{text}</a>\n'
+        return f'<a href="{url}" class="govuk-link datagovuk-link datagovuk-link--secondary">{text}</a>'
 
     def heading(self, text, level):
         valid_header_sizes = ["xl", "l", "m", "s"]

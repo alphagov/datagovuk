@@ -77,6 +77,8 @@ class CacheControlMiddleware:
         response = self.get_response(request)
         if response.status_code != HTTPStatus.OK:
             return response
+        if settings.DEBUG:
+            return response
         if not response.has_header("Cache-Control"):
             response.headers["Cache-Control"] = self.default_cache_control
         return response

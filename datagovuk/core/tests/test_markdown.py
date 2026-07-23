@@ -8,8 +8,7 @@ class TestMarkdownToHTMLRenderer:
         rendered_markdown = render_markdown("[Some text](https://example.net/some-path)")
         assert rendered_markdown == (
             '<p class="govuk-body-m datagovuk-body"><a href="https://example.net/some-path" class="govuk-link '
-            'datagovuk-link datagovuk-link--secondary">Some text</a>\n'
-            "</p>\n"
+            'datagovuk-link datagovuk-link--secondary">Some text</a></p>\n'
         )
 
     def test_heading(self):

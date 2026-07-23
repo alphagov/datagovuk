@@ -33,7 +33,7 @@ Our current focus is on setting up the National Data Library foundations on data
 We’ve created [data collections pages](/), organised by theme, based on some of the
 UK’s widely used public datasets. We selected datasets which are well maintained,
 reliable and authoritative, with complete information, wide coverage and which are
-often available via API(s).
+often available via API(s). We have published [criteria we consider when curating data for the collections](/data-curation) where you can read more about this.
 
 We’re testing how we present these curated data pages, including what information
 and design help users understand and use the data. We welcome your input on what
