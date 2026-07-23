@@ -70,6 +70,10 @@ shell:
 bash:
     @docker compose run --rm django bash
 
+# run: Executes docker compose run command
+run +args:
+    @docker compose run --rm {{args}}
+
 # test: Run pytest
 test *args:
     @docker compose exec django pytest {{args}}
