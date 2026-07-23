@@ -121,6 +121,7 @@ Source: https://roadtraffic.dft.gov.uk/
 Copied the dropdown table under 'Road traffic by vehicle type from 1993 to 2025'. Extracted
 columns for 'Year' and 'All motor vehicles' to [road-traffic/road-traffic-mileage.csv](road-traffic/road-traffic-mileage.csv).
 
+
 ### Storm overflows
 
 > [!WARNING]
@@ -234,3 +235,14 @@ but for our purposes we only used `Incorporations` and `Dissolved`.
 The resulting csv used is here: [get-company-information/companies-register-activities-april-2024-to-march-2025.csv](get-company-information/companies-register-activities-april-2024-to-march-2025.csv)
 
 The file [get-company-information/companies-house-register-headlines.json](get-company-information/companies-house-register-headlines.json) uses the data from the csv file as its `items` object. Note % change was calculated using the figures in csv.
+
+### Service assessments
+Source: https://www.gov.uk/service-standard-reports
+
+Filter assessment date to a year.
+Filter result by red, amber, and green. The number of reports will show at the top - note how many are there for each option.
+Update the year to be the following year.
+Repeat the filtering by red, amber, and green and noting these.
+
+Calculate the percentage change in the number of reports for each outcome. e.g. 5 green in 2024, 10 green in 2025 = 100% increase.
+The trend should be based on the change in number of reports for each outcome.
