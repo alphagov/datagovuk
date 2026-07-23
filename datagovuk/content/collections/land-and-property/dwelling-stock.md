@@ -5,7 +5,7 @@ websites:
     link-text: Dwelling stock
 api:
 dataset:
-page-last-updated: "2026-03-24"
+page-last-updated: "2026-07-23"
 visualisation-data: "dwelling-stock/dwelling-stock.json"
 contact:
 status: for-publication
