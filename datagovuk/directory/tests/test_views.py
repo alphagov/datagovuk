@@ -53,11 +53,18 @@ def search_url():
 
 
 class TestSearchView:
-    def test_view_no_query_returns_ok_without_results(self, client, search_url):
+    def test_view_no_query_returns_ok_without_results(self, client, sample_solr_docs, search_url):
         response = client.get(search_url)
 
         assert response.status_code == HTTPStatus.OK
         assert "results" not in response.context_data
+
+    def test_view_empty_query_returns_ok_all_results(self, client, sample_solr_docs, search_url):
+        response = client.get(search_url, {"query": ""})
+
+        assert response.status_code == HTTPStatus.OK
+        assert "results" in response.context_data
+        assert response.context_data["results"].hits == len(sample_solr_docs) - 1
 
     def test_view_with_query_calls_solr(self, client, sample_solr_docs, search_url):
         response = client.get(search_url, {"q": "test"})
