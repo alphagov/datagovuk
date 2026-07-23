@@ -4,6 +4,7 @@
   "source": "https://www.gov.uk/government/statistical-data-sets/live-tables-on-local-government-finance",
   "download": "local_gov_expenditure_2010_to_2026_fy.csv",
   "visualisation_type": "line",
+  "visualisation_suffix": "bn",
   "series": [
     {
       "name": "Total capital expenditure (£, billions)",
