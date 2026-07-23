@@ -50,6 +50,12 @@ class SolrDocumentFactory(factory.DictFactory):
     type = "dataset"
     site_id = "default"
     license_id = ""
+    topic = ""
+
+    class Meta:
+        rename = {
+            "topic": "extras_theme-primary",
+        }
 
 
 class SolrOrganisationFactory(SolrDocumentFactory):
@@ -103,4 +109,11 @@ def sample_solr_docs(solr_doc_factory):
         license_id="ogl",
         organization="regular-publisher-2",
     )
-    return [doc_1, doc_2, doc_3, doc_4]
+    doc_5 = solr_doc_factory(
+        id="66c40d9c-bd29-42a9-9461-cd10d4898664",
+        name="other-dataset-4",
+        title="Other Dataset 4",
+        topic="some-topic",
+        organization="regular-publisher-2",
+    )
+    return [doc_1, doc_2, doc_3, doc_4, doc_5]
