@@ -51,6 +51,10 @@ class SolrDocumentFactory(factory.DictFactory):
     site_id = "default"
 
 
+class SolrOrganisationFactory(SolrDocumentFactory):
+    site_id = "dgu_organisations"
+
+
 @pytest.fixture
 def solr_doc_factory(solr_client):
     """
@@ -61,7 +65,11 @@ def solr_doc_factory(solr_client):
     def _create(**kwargs):
         doc = SolrDocumentFactory(**kwargs)
 
-        solr_client.add([doc])
+        organisation_slug = doc["organization"]
+        organisation_name = organisation_slug.replace("-", " ").capitalize()
+        organisation_doc = SolrOrganisationFactory(title=organisation_name, name=organisation_slug)
+
+        solr_client.add([doc, organisation_doc])
         return doc
 
     return _create
@@ -82,7 +90,7 @@ def sample_solr_docs(solr_doc_factory):
         name="other-dataset-2",
         title="Other Dataset 2",
         notes="multi",
-        organization="regular-publisher",
+        organization="regular-publisher-2",
     )
     doc_3 = solr_doc_factory(
         id="aa8a5b2c-8382-43f7-9f97-dee406c896c4",
