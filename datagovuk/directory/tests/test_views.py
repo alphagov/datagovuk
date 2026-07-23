@@ -48,41 +48,28 @@ def mock_get_solr_client(mock_solr_client):
 
 
 class TestSearchView:
-    def test_view_no_query_returns_ok_without_results(self, client, mock_solr_client):
+    def test_view_no_query_returns_ok_without_results(self, client):
         url = reverse("directory:search")
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.OK
-        mock_solr_client.search.assert_not_called()
         assert "results" not in response.context_data
 
-    def test_view_with_query_calls_solr(self, client, mock_solr_client, mock_solr_results_factory):
-        mock_results = mock_solr_results_factory(
-            docs=[
-                {
-                    "id": "test-uuid-1",
-                    "title": "Test Dataset",
-                    "name": "test-dataset",
-                },
-            ],
-            hits=1,
-        )
-        mock_solr_client.search.return_value = mock_results
-
+    def test_view_with_query_calls_solr(self, client, sample_solr_docs):
         url = reverse("directory:search")
         response = client.get(url, {"q": "test"})
 
         assert response.status_code == HTTPStatus.OK
-        mock_solr_client.search.assert_called_once()
-        call_args = mock_solr_client.search.call_args
-        assert "title:(test)" in call_args[0][0]
-        assert "NOT organisation:dgu_organisations.*" in call_args[0][0]
-        assert response.context_data["results"] == mock_results
+        results = response.context_data["results"]
+        assert results.hits == 1
+        returned_doc = results.docs[0]
+        assert returned_doc["id"] == "66c40d9c-bd29-42a9-9461-cd10d4898662"
+        assert returned_doc["title"] == "Test Dataset"
 
-    def test_view_with_query_no_hits_returns_empty(self, client, mock_solr_client, mock_solr_results_factory):
-        mock_results = mock_solr_results_factory(docs=[], hits=0)
-        mock_solr_client.search.return_value = mock_results
+        returned_ids = [doc["id"] for doc in results.docs]
+        assert "test-uuid-2" not in returned_ids
 
+    def test_view_with_query_no_hits_returns_empty(self, client, sample_solr_docs):
         url = reverse("directory:search")
         response = client.get(url, {"q": "nomatch"})
 
@@ -90,21 +77,11 @@ class TestSearchView:
         assert response.context_data["results"].hits == 0
         assert response.context_data["results"].docs == []
 
-    def test_view_with_query_multiple_results(self, client, mock_solr_client, mock_solr_results_factory):
-        mock_results = mock_solr_results_factory(
-            docs=[
-                {"id": "uuid-1", "title": "First Result", "name": "first"},
-                {"id": "uuid-2", "title": "Second Result", "name": "second"},
-            ],
-            hits=2,
-        )
-        mock_solr_client.search.return_value = mock_results
-
+    def test_view_with_query_multiple_results(self, client, sample_solr_docs):
         url = reverse("directory:search")
         response = client.get(url, {"q": "multi"})
 
         assert response.status_code == HTTPStatus.OK
-        assert mock_solr_client.search.call_count == 1
         assert response.context_data["results"].hits == 2  # noqa: PLR2004
         assert len(response.context_data["results"].docs) == 2  # noqa: PLR2004
 

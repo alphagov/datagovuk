@@ -11,11 +11,15 @@ services:
     volumes:
       - .:/app:z
       - /app/.venv
+      # Mount host docker socket so testcontainers can talk to Docker
+      - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - path: ./.envs/.local/.django
         required: true
       - path: ./.envs/.local/.django-overrides
         required: false
+    environment:
+      - TESTCONTAINERS_HOST_OVERRIDE=host.docker.internal
     ports:
       - '8000:8000'
     command: /start
@@ -39,6 +43,10 @@ services:
       - "8984:8983"
     volumes:
       - solr_data:/opt/solr/server/solr/ckan/data
+    command: >
+      bash -c "precreate-core ckan /opt/solr/server/solr/configsets/ckan;
+               precreate-core ckan-test /opt/solr/server/solr/configsets/ckan; # Set up a ckan-test core with the same config for testing...
+               exec solr -f"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8983/solr/ckan/admin/ping"]
       interval: 5s
