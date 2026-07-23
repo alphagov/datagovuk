@@ -1,5 +1,6 @@
 import itertools
 import json
+import logging
 import re
 from dataclasses import dataclass, field
 
@@ -12,6 +13,8 @@ from django.utils.text import slugify
 from .constants import FORMAT_MAPPINGS, FormatChoices
 
 ORGANISATIONS_LIMIT = 3000
+
+logger = logging.getLogger(__file__)
 
 
 def get_solr_client():
@@ -58,6 +61,8 @@ def _get_filters(filters):
         organisation_slug = all_organisations.get(filters["publisher"])
         if organisation_slug:
             solr_filters.append(f"organization:{organisation_slug}")
+        else:
+            solr_filters.append(f"organization:{filters['publisher']}")
 
     if filters.get("topic"):
         topic_slug = slugify(filters["topic"])

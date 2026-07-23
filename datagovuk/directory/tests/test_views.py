@@ -81,14 +81,24 @@ class TestSearchView:
 
     def test_view_with_query_multiple_results(self, client, sample_solr_docs, search_url):
         response = client.get(search_url, {"q": "multi"})
-
         assert response.status_code == HTTPStatus.OK
         expected_ids = [doc["id"] for doc in sample_solr_docs[0:2]]
         assert response.context_data["results"].hits == len(expected_ids)
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
-    # def test_view_filter_publisher(self, client, sample_solr_docs):
+    def test_view_filter_publisher_documents_match(self, client, sample_solr_docs, search_url):
+        response = client.get(search_url, {"q": "multi", "publisher": "Regular publisher"})
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [sample_solr_docs[0]["id"]]
+        assert response.context_data["results"].hits == len(expected_ids)
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
+    def test_view_filter_publisher_no_documents_match(self, client, sample_solr_docs, search_url):
+        response = client.get(search_url, {"q": "multi", "publisher": "Non-existent"})
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["results"].hits == 0
 
     def test_search_view_returns_404_if_feature_flag_not_enabled(self, client, settings, search_url):
         settings.FEATURE_FLAGS_ENABLED = []
