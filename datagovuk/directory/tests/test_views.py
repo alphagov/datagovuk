@@ -121,6 +121,13 @@ class TestSearchView:
         response = client.get(search_url, {"q": "multi"})
         assert response.status_code == HTTPStatus.NOT_FOUND
 
+    def test_search_view_returns_error_if_form_invalid(self, client, search_url):
+        response = client.get(search_url, {"q": "multi" * 200})
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["form"].errors["query"] == [
+            "Ensure this value has at most 256 characters (it has 1000).",
+        ]
+
 
 class TestDatasetView:
     def test_view_existing_dataset_returns_ok(self, client, mock_solr_client, mock_solr_results_factory):
