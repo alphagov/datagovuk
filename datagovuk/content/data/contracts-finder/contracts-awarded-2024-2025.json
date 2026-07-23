@@ -5,21 +5,21 @@
     "publisher": "Government Commercial Agency",
     "items": [
       {
-        "subtitle": "Contracts awarded",
+        "subtitle": "Total contracts",
         "description": "",
         "value": 34968,
-        "analysis": "compared to 2024/25.",
+        "analysis": "compared to 2024/25",
         "trend": "down",
-        "value_change": "down 19,749",
+        "value_change": "19,749",
         "percent_change": "-36.1"
       },
       {
         "subtitle": "Small and medium-sized enterprises",
         "description": "",
         "value": 12533,
-        "analysis": "compared to 2024/25.",
+        "analysis": "compared to 2024/25",
         "trend": "down",
-        "value_change": "down 8,974",
+        "value_change": "8,974",
         "percent_change": "-41.7"
       }
     ]
