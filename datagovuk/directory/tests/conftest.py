@@ -49,6 +49,7 @@ class SolrDocumentFactory(factory.DictFactory):
     dataset_type = "dataset"
     type = "dataset"
     site_id = "default"
+    license_id = ""
 
 
 class SolrOrganisationFactory(SolrDocumentFactory):
@@ -57,10 +58,6 @@ class SolrOrganisationFactory(SolrDocumentFactory):
 
 @pytest.fixture
 def solr_doc_factory(solr_client):
-    """
-    Factory fixture that generates documents using SolrDocumentFactory
-    and indexes them directly into the test Solr container.
-    """
 
     def _create(**kwargs):
         doc = SolrDocumentFactory(**kwargs)
@@ -77,7 +74,6 @@ def solr_doc_factory(solr_client):
 
 @pytest.fixture
 def sample_solr_docs(solr_doc_factory):
-    """Populates Solr with a set of default documents for standard tests."""
     doc_1 = solr_doc_factory(
         id="66c40d9c-bd29-42a9-9461-cd10d4898662",
         name="test-dataset",
@@ -100,4 +96,11 @@ def sample_solr_docs(solr_doc_factory):
         organization="dgu_organisations_123",
         site_id="dgu_organisations_123",
     )
-    return [doc_1, doc_2, doc_3]
+    doc_4 = solr_doc_factory(
+        id="66c40d9c-bd29-42a9-9461-cd10d4898664",
+        name="other-dataset-3",
+        title="Other Dataset 3",
+        license_id="ogl",
+        organization="regular-publisher-2",
+    )
+    return [doc_1, doc_2, doc_3, doc_4]

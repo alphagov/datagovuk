@@ -100,6 +100,14 @@ class TestSearchView:
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["results"].hits == 0
 
+    def test_view_filter_open_government_licence_only(self, client, sample_solr_docs, search_url):
+        response = client.get(search_url, {"q": "dataset", "open_government_licence_only": "on"})
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [sample_solr_docs[3]["id"]]
+        assert response.context_data["results"].hits == len(expected_ids)
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
     def test_search_view_returns_404_if_feature_flag_not_enabled(self, client, settings, search_url):
         settings.FEATURE_FLAGS_ENABLED = []
         response = client.get(search_url, {"q": "multi"})
