@@ -50,7 +50,7 @@ def _get_filters(filters):
     solr_filters = [
         "state:active",
         "type:dataset",
-        "-site_id:dgu_organisations.*",
+        "-site_id:dgu_organisations*",
     ]
 
     if filters.get("publisher"):
