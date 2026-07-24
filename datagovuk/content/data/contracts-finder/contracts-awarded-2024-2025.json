@@ -1,0 +1,26 @@
+  {
+    "title": "Contacts awarded, 2025/26 financial year",
+    "visualisation_type": "headline",
+    "source": "https://www.contractsfinder.service.gov.uk/Search",
+    "publisher": "Government Commercial Agency",
+    "items": [
+      {
+        "subtitle": "Total contracts",
+        "description": "",
+        "value": 34968,
+        "analysis": "compared to 2024/25",
+        "trend": "down",
+        "value_change": "19,749",
+        "percent_change": "-36.1"
+      },
+      {
+        "subtitle": "Small and medium-sized enterprises",
+        "description": "",
+        "value": 12533,
+        "analysis": "compared to 2024/25",
+        "trend": "down",
+        "value_change": "8,974",
+        "percent_change": "-41.7"
+      }
+    ]
+  }

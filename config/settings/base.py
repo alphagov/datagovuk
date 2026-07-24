@@ -82,6 +82,7 @@ LOCAL_APPS = [
     "datagovuk.pages",
     "datagovuk.data_manual",
     "datagovuk.collections",
+    "datagovuk.directory",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -134,7 +135,14 @@ CACHE_CONTROL_DEFAULT = "max-age=1800, public"
 
 SECURE_CSP = {
     "default-src": [CSP.SELF],
-    "connect-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com", "*.analytics.google.com"],
+    "connect-src": [
+        CSP.SELF,
+        "*.google-analytics.com",
+        "*.googletagmanager.com",
+        "*.analytics.google.com",
+        "s3-eu-west-1.amazonaws.com",
+        "ckan.publishing.service.gov.uk",
+    ],
     "font-src": [CSP.SELF],
     "img-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com"],
     "manifest-src": [CSP.SELF],
@@ -306,6 +314,11 @@ DATAGOVUK_GIT_SHA = env("GIT_SHA", default=None)
 
 class FEATURE_FLAGS(Enum):  # noqa: N801
     TEST_FEATURE_FLAG = "test-feature-flag"
+    SOLR_SEARCH = "solr-search"
 
 
 FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
+
+SOLR_URL = env("SOLR_URL", default=None)
+
+MONKEYPATCH_ZSCALER_SSL = env.bool("MONKEYPATCH_ZSCALER_SSL", False)

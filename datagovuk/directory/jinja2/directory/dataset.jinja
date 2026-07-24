@@ -1,0 +1,74 @@
+{% extends "base.jinja" %}
+
+{% set page_title = "Dataset" %}
+
+{% block main %}
+  <div class="govuk-width-container datagovuk-width-container">
+
+    <h1 class="govuk-heading-xl datagovuk-heading-xl">{{ document.title }}</h1>
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Published by</dt>
+        <dd class="govuk-summary-list__value">
+          {{ document_data["organization"]["title"] }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Last updated</dt>
+        <dd class="govuk-summary-list__value">
+          {{ document.metadata_modified }}
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Topic</dt>
+        <dd class="govuk-summary-list__value">
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Licence</dt>
+        <dd class="govuk-summary-list__value">
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">Summary</dt>
+        <dd class="govuk-summary-list__value">
+          {{ document.notes }}
+        </dd>
+      </div>
+    </dl>
+    <h2 class="govuk-heading-l datagovuk-heading-l">Data links</h2>
+    {% if document_data["resources"] %}
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Link to the data</th>
+            <th scope="col" class="govuk-table__header govuk-table__header--numeric">Format</th>
+            <th scope="col" class="govuk-table__header govuk-table__header--numeric">File added</th>
+            <th scope="col" class="govuk-table__header govuk-table__header--numeric">Preview</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          {% for resource in document_data.resources %}
+            <tr class="govuk-table__row">
+              <th scope="row" class="govuk-table__header">
+                <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name }}</a>
+              </th>
+              <td class="govuk-table__cell govuk-table__cell--numeric">{{ resource.format }}</td>
+              <td class="govuk-table__cell govuk-table__cell--numeric">{{ resource.created }}</td>
+              <td class="govuk-table__cell govuk-table__cell--numeric">
+                {% if resource.format and resource.format|upper == "CSV" %}
+                  <a href="{{ url('directory:preview', kwargs={'dataset_uuid': document.id, 'name': document.name, 'datafile_uuid': resource.id}) }}"
+                     class="govuk-link datagovuk-link">Preview</a>
+                {% else %}
+                  Not available
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>This data hasn’t been released by the publisher.</p>
+    {% endif %}
+  </div>
+{% endblock main %}

@@ -37,10 +37,10 @@ jobs:
         uses: actions/checkout@v7.0.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.1.0
+        uses: docker/setup-buildx-action@v4.2.0
 
       - name: Build and cache local backend
-        uses: docker/bake-action@v7.2.0
+        uses: docker/bake-action@v7.3.0
         with:
           push: false
           load: true
@@ -61,6 +61,7 @@ jobs:
 
       - name: Run Unit Tests with coverage
         run: |
+          # TODO: get rid of this once we have a solr image in our docker-compose stack
           docker compose -f docker-compose.local.yml up -d
           docker compose -f docker-compose.local.yml exec django coverage run -m pytest datagovuk/
           docker compose -f docker-compose.local.yml exec django coverage html

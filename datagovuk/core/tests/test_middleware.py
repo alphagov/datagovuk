@@ -19,6 +19,19 @@ class TestCacheControlMiddleware:
 
         assert cached_response.headers["Cache-Control"] == "max-age=1800, public"
 
+    def test_middleware_debug_setting_on_cache_control_not_added(self, rf, settings):
+        settings.DEBUG = True
+
+        def response(_request):
+            return HttpResponse("ok")
+
+        request = rf.get("/")
+
+        cache_middleware = CacheControlMiddleware(response)
+        cached_response = cache_middleware(request)
+
+        assert cached_response.headers.get("Cache-Control") is None
+
     def test_middleware_cache_control_present_cache_control_not_added(self, rf):
         def response(_request):
             response = HttpResponse("ok")
