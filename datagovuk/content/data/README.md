@@ -63,6 +63,15 @@ Copy into new .csv, convert numbers columns to 'number' type and remove trailing
 Divide numbers by 1 million and round to 2 decimal places.
 Rename date column to Financial Year, and remove the second year to keep the axis labels concise.
 
+### Dwelling stock
+Source: https://www.gov.uk/government/statistical-data-sets/live-tables-on-dwelling-stock-including-vacants
+Table: 100
+
+Make a new sheet. From each sheet (where each sheet is a year), copy the row for England into the new sheet.
+Create a year column and add the headings for the types of dwellings.
+Keep the columns for 'Year', 'Private sector', and 'Total'.
+Divide it by millions.
+
 ### Electricity generation
 
 Source: https://assets.publishing.service.gov.uk/media/688a31dda11f859994409290/DUKES_5.6.xlsx
