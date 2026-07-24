@@ -136,10 +136,10 @@ class TestSearchView:
         assert actual_ids == expected_ids
 
     def test_view_filter_topic(self, client, solr_doc_factory, search_url):
-        matching_doc = solr_doc_factory(topic="some-topic")
+        matching_doc = solr_doc_factory(topic="environment")
         solr_doc_factory()
 
-        response = client.get(search_url, {"q": "dataset", "topic": "Some topic"})
+        response = client.get(search_url, {"q": "dataset", "topic": "Environment"})
 
         assert response.status_code == HTTPStatus.OK
         expected_ids = [matching_doc["id"]]
