@@ -10,62 +10,24 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-          <a href="{{ url('directory:dataset', kwargs={'uuid': dataset.uuid, 'slug': dataset.name}) }}"
-             class="govuk-back-link govuk-link datagovuk-link">Back to dataset</a>
+          <a href="{{ back_link }}" class="govuk-back-link govuk-link datagovuk-link">Back to dataset</a>
 
-          {# TODO: update the class names #}
-          {# TODO: Do we need a datagovuk-caption-l ? #}
-          <h1 class="datagovuk-heading-l govuk-heading-l govuk-!-margin-bottom-8">
+          <h1 class="datagovuk-heading-xl govuk-heading-xl govuk-!-margin-bottom-8">
             {{ dataset.title }}
-            <span class="govuk-caption-l">{{ datafile.name }}</span>
+            <span class="datagovuk-body">{{ datafile.name }}</span>
           </h1>
 
           {% if preview_exists %}
             <p class="govuk-body datagovuk-body">You're previewing the first {{ preview_rows }} rows of this file.</p>
 
-            <a href="{{ datafile.url }}"
-               class="govuk-button datagovuk-button"
-               data-ga-event="preview-download"
-               data-ga-format="CSV"
-               data-ga-publisher="{{ dataset.organisation_name }}">Download the CSV</a>
+            <a href="{{ datafile.url }}" class="govuk-button datagovuk-button">Download the CSV</a>
           {% else %}
             <p class="govuk-body datagovuk-body">Currently there is no preview available for "{{ datafile.name }}".</p>
           {% endif %}
         </div>
 
         {% if preview_exists %}
-          <div class="govuk-grid-column-full">
-            <section id="dgu-preview">
-              <div class="dgu-datafile-preview">
-                <div class="dgu-datafile-preview__inner" tabindex="0">
-                  <table class="govuk-table">
-                    {%- if table_headings %}
-                      <thead class="govuk-table__head">
-                        <tr class="govuk-table__row">
-                          {%- for cell in table_headings %}
-                            <th scope="col" class="govuk-table__header{% if cell.format == 'numeric' %} govuk-table__header--numeric{% endif %}">
-                              {{- cell.text -}}
-                            </th>
-                          {%- endfor %}
-                        </tr>
-                      </thead>
-                    {%- endif %}
-                    <tbody class="govuk-table__body">
-                      {%- for row in table_rows %}
-                        <tr class="govuk-table__row">
-                          {%- for cell in row %}
-                            <td class="govuk-table__cell{% if cell.format == 'numeric' %} govuk-table__cell--numeric{% endif %}">
-                              {{- cell.text -}}
-                            </td>
-                          {%- endfor %}
-                        </tr>
-                      {%- endfor %}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </section>
-          </div>
+          <div class="govuk-grid-column-full govuk-!-margin-bottom-8">{% include "includes/table.jinja" %}</div>
         {% endif %}
       </div>
     </div>

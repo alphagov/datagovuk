@@ -22,5 +22,288 @@
 
     {% include "includes/feedback.jinja" %}
 
+    {% set table_headings = [
+      {
+        "text": "Department"
+      },
+      {
+        "text": "Organisation"
+      },
+      {
+        "text": "There is a lot of text in this cell, so it should wrap to the next line"
+      },
+      {
+        "text": "File size",
+        "format": "numeric"
+      },
+      {
+        "text": "Format"
+      },
+      {
+        "text": "Status"
+      },
+      {
+        "text": "Region"
+      },
+      {
+        "text": "Numeric column",
+        "format": "numeric"
+      },
+      {
+        "text": "Licence"
+      }
+    ] %}
+    {% set table_rows = [
+      [
+        {
+          "text": "Test Department"
+        },
+        {
+          "text": "CO"
+        },
+        {
+          "text": "01 January 2025"
+        },
+        {
+          "text": "1.2MB",
+          "format": "numeric"
+        },
+        {
+          "text": "CSV"
+        },
+        {
+          "text": "Published"
+        },
+        {
+          "text": "England"
+        },
+        {
+          "text": "123",
+          "format": "numeric"
+        },
+        {
+          "text": "OGL v3"
+        }
+      ],
+      [
+        {
+          "text": "Department for Education"
+        },
+        {
+          "text": "DfE"
+        },
+        {
+          "text": "15 March 2025"
+        },
+        {
+          "text": "4.7MB",
+          "format": "numeric"
+        },
+        {
+          "text": "XLSX"
+        },
+        {
+          "text": "Published"
+        },
+        {
+          "text": "England"
+        },
+        {
+          "text": "123",
+          "format": "numeric"
+        },
+        {
+          "text": "OGL v3"
+        }
+      ],
+      [
+        {
+          "text": "Home Office"
+        },
+        {
+          "text": "HO"
+        },
+        {
+          "text": "22 June 2025"
+        },
+        {
+          "text": "890KB",
+          "format": "numeric"
+        },
+        {
+          "text": "PDF"
+        },
+        {
+          "text": "Draft"
+        },
+        {
+          "text": "UK"
+        },
+        {
+          "text": "123",
+          "format": "numeric"
+        },
+        {
+          "text": "OGL v3"
+        }
+      ],
+      [
+        {
+          "text": "HM Treasury"
+        },
+        {
+          "html": "<a href=\"#\" class=\"govuk-link datagovuk-link\">Fake test data 2026</a> (43.4MB)"
+        },
+        {
+          "text": "03 February 2025 03 February 2025 03 February 2025"
+        },
+        {
+          "text": "2.1MB",
+          "format": "numeric"
+        },
+        {
+          "text": "CSV"
+        },
+        {
+          "text": "Published"
+        },
+        {
+          "text": "UK"
+        },
+        {
+          "text": "123",
+          "format": "numeric"
+        },
+        {
+          "text": "OGL v3"
+        }
+      ],
+      [
+        {
+          "text": "HMRC"
+        },
+        {
+          "text": "HMRC"
+        },
+        {
+          "text": "11 April 2025"
+        },
+        {
+          "text": "6.3MB",
+          "format": "numeric"
+        },
+        {
+          "text": "JSON"
+        },
+        {
+          "text": "Published"
+        },
+        {
+          "text": "UK"
+        },
+        {
+          "text": "123",
+          "format": "numeric"
+        },
+        {
+          "text": "OGL v3"
+        }
+      ],
+      [
+        {
+          "text": "Department of Health"
+        },
+        {
+          "text": "DHSC"
+        },
+        {
+          "text": "30 May 2025"
+        },
+        {
+          "text": "3.5MB",
+          "format": "numeric"
+        },
+        {
+          "text": "CSV"
+        },
+        {
+          "text": "Archived"
+        },
+        {
+          "text": "England"
+        },
+        {
+          "text": "123",
+          "format": "numeric"
+        },
+        {
+          "text": "OGL v3"
+        }
+      ],
+      [
+        {
+          "text": "Ministry of Justice"
+        },
+        {
+          "text": "MoJ"
+        },
+        {
+          "text": "08 July 2025"
+        },
+        {
+          "text": "770KB",
+          "format": "numeric"
+        },
+        {
+          "text": "XML"
+        },
+        {
+          "text": "Published"
+        },
+        {
+          "text": "England & Wales"
+        },
+        {
+          "text": "1.23232323",
+          "format": "numeric"
+        },
+        {
+          "text": "OGL v3"
+        }
+      ],
+      [
+        {
+          "text": "DEFRA"
+        },
+        {
+          "text": "DEFRA"
+        },
+        {
+          "text": "19 August 2025"
+        },
+        {
+          "text": "9.1MB",
+          "format": "numeric"
+        },
+        {
+          "text": "CSV"
+        },
+        {
+          "text": "Published"
+        },
+        {
+          "text": "England"
+        },
+        {
+          "text": "-123",
+          "format": "numeric"
+        },
+        {
+          "text": "OGL v3"
+        }
+      ]
+    ] %}
+
+    {% include "includes/table.jinja" %}
   </div>
 {% endblock main %}

@@ -1,0 +1,31 @@
+.datagovuk-table-container {
+    overflow: auto;
+}
+
+.datagovuk-table-container:focus {
+    margin: -3px;
+    border: 3px solid $datagovuk-black;
+    outline: 3px solid $datagovuk-focus;
+}
+
+.datagovuk-table .datagovuk-link:link,
+.datagovuk-table .datagovuk-link:visited {
+  color: $datagovuk-green;
+}
+
+.datagovuk-table__head {
+    background-color: $datagovuk-light-grey;
+}
+
+.datagovuk-table__header {
+    min-width: 210px;
+    padding-right: 30px;
+    padding-left: 10px;
+    color: $datagovuk-black;
+    font-weight: normal;
+}
+
+.datagovuk-table__cell {
+    padding-right: 30px;
+    padding-left: 10px;
+}
