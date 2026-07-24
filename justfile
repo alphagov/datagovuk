@@ -9,14 +9,31 @@ default:
 init:
     @echo "Installing uv..."
     brew install uv
+    @echo ""
     @echo "Installing pre-commit..."
     uv tool install pre-commit --with pre-commit-uv
+    @echo ""
     @echo "Initialising pre-commit..."
     pre-commit install
+    @echo ""
     @echo "Copying overrides envfile if target does not exist..."
     @test -f .envs/.local/.django-overrides || cp .envs/.local/.django-overrides.example .envs/.local/.django-overrides
+    just patch-zscaler-ssl
     @echo ""
-    @echo "datagovuk install is initialised for local development. Bring up the containers with '$ just up'"
+    @echo "datagovuk install is initialised for local development. Bringing up the containers with '$ just up'"
+    just up
+
+patch-zscaler-ssl:
+    @if [ ! -f zscaler.pem ]; then \
+        echo "Patching zscaler SSL..."; \
+        openssl s_client -showcerts -connect www.google.com:443 </dev/null 2>/dev/null | awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/' > zscaler.pem; \
+        echo 'REQUESTS_CA_BUNDLE="/app/zscaler.pem"' >> .envs/.local/.django-overrides; \
+        echo 'SSL_CERT_FILE="/app/zscaler.pem"' >> .envs/.local/.django-overrides; \
+        echo 'MONKEYPATCH_ZSCALER_SSL=true' >> .envs/.local/.django-overrides; \
+        echo "Patching complete."; \
+    else \
+        echo "zscaler.pem already present"; \
+    fi
 
 # build: Build python image.
 build *args:

@@ -19,7 +19,7 @@ Benjamin Klein – Senior Delivery Manager
 
 Brendan Smith – Senior Developer
 
-Geena Vabulas – User Researcher
+Geena Vabulas – Senior User Researcher
 
 Joe Lanman – Senior Designer
 

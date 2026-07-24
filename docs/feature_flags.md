@@ -45,10 +45,10 @@ Feature flags can be interrogated in python code (e.g. a view) as follows:
 ```
 from django.conf import settings
 
-from datagovuk.feature_flags import is_feature_flag_active
+from datagovuk.core.feature_flags import is_feature_flag_enabled
 ...
 
-if is_feature_flag_active(settings.FEATURE_FLAGS.EARLY_YEARS):
+if is_feature_flag_enabled(settings.FEATURE_FLAGS.EARLY_YEARS):
     ...
 ```
 
