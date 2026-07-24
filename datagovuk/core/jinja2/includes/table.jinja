@@ -1,0 +1,29 @@
+<div class="govuk-!-margin-bottom-8">
+  <div class="datagovuk-table-container" tabindex="0">
+    <table class="govuk-table datagovuk-table">
+      {%- if table_headings %}
+        <thead class="govuk-table__head datagovuk-table__head">
+          <tr class="govuk-table__row">
+            {%- for cell in table_headings %}
+              <th scope="col"
+                  class="govuk-table__header{% if cell.format == 'numeric' %} govuk-table__header--numeric{% endif %} datagovuk-table__header govuk-body datagovuk-body">
+                {{- cell.html | safe if cell.html else cell.text -}}
+              </th>
+            {%- endfor %}
+          </tr>
+        </thead>
+      {%- endif %}
+      <tbody class="govuk-table__body">
+        {%- for row in table_rows %}
+          <tr class="govuk-table__row">
+            {%- for cell in row %}
+              <td class="govuk-table__cell{% if cell.format == 'numeric' %} govuk-table__cell--numeric{% endif %} datagovuk-table__cell govuk-body datagovuk-body">
+                {{- cell.html | safe if cell.html else cell.text -}}
+              </td>
+            {%- endfor %}
+          </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
