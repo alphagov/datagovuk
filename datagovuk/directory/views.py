@@ -7,7 +7,7 @@ from datagovuk.core.views import GETFormView
 
 from .forms import SearchForm
 from .preview_utils import build_table_data, fetch_csv
-from .solr import SolrDatafile, SolrDataset, get_solr_client, search
+from .solr import SolrDatafile, SolrDataset, get_organisations_by_title, get_solr_client, search
 
 
 class SearchView(GETFormView):
@@ -35,6 +35,13 @@ class SearchView(GETFormView):
     def get(self, request, *args, **kwargs):
         self._translate_legacy_params(request)
         return super().get(request, *args, **kwargs)
+
+    def get_form_kwargs(self, *args, **kwargs):
+        form_kwargs = super().get_form_kwargs(*args, **kwargs)
+        return {
+            "publisher_choices": [(title, title) for title in get_organisations_by_title()],
+            **form_kwargs,
+        }
 
     def form_valid(self, form):
         query = form.cleaned_data["query"]
