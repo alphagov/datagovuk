@@ -1,0 +1,33 @@
+{
+  "title": "Local authority capital expenditure by financial year in England (£, billions)" ,
+  "publisher": "Ministry of Housing, Communities and Local Government",
+  "source": "https://www.gov.uk/government/statistical-data-sets/live-tables-on-local-government-finance",
+  "download": "local_gov_expenditure_2010_to_2026_fy.csv",
+  "visualisation_type": "line",
+  "visualisation_suffix": "bn",
+  "series": [
+    {
+      "name": "Total capital expenditure (£, billions)",
+      "color": "#C27A9A",
+      "data": {
+        "2010-11": 23.1,
+        "2011-12": 20.0,
+        "2012-13": 18.9,
+        "2013-14": 19.7,
+        "2014-15": 21.5,
+        "2015-16": 22.6,
+        "2016-17": 23.3,
+        "2017-18": 25.2,
+        "2018-19": 25.9,
+        "2019-20": 26.3,
+        "2020-21": 24.6,
+        "2021-22": 26.0,
+        "2022-23": 27.6,
+        "2023-24": 29.7,
+        "2024-25": 31.6,
+        "2025-26": 32.1
+
+      }
+    }
+  ]
+}

@@ -7,8 +7,8 @@ api:
 dataset:
   url: https://www.gov.uk/government/collections/local-government-finance-statistics-england
   link-text: Local government finance statistics – England (compendium)
-page-last-updated: "2026-03-24"
-visualisation-data:
+page-last-updated: "2026-07-23"
+visualisation-data: local-government-finance/local-gov-finance.json
 contact:
 status: for-publication
 ---

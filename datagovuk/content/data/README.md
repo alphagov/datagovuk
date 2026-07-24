@@ -103,6 +103,18 @@ The resulting CSV contains metadata header rows and three time series (annual, q
 
 The file [inflation/inflation.json](inflation/inflation.json) uses the data from the csv file as its `series.data` object.
 
+
+### Local government finance
+
+Source: https://www.gov.uk/government/statistical-data-sets/live-tables-on-local-government-finance
+Table: Capital payments and receipts Q4 2025 to 2026, England
+Sheet: Year_&_Quarter_Series
+
+Extract the columns for 'Financial year ending (FYE)', and 'Total capital expenditure'.
+Replace Financial year ending with 'Financial year' and update the values manually; 2011 becomes 2010-11 for example.
+Divide total capital expenditure by 1000 to get the values in billions, and add (£, billions) to the column title.
+Round those values to the nearest 1 decimal point.
+
 ### MOT test results
 
 Source: https://www.gov.uk/government/statistical-data-sets/mot-testing-data-for-great-britain
@@ -113,6 +125,7 @@ Export columns 'Financial year', 'Tests', and 'Fails' to .csv.
 Invert financial year to be most recent at the bottom.
 Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
 Remove the second year in finanial year to make the axis labels neater.
+
 
 ### Road traffic mileage
 
