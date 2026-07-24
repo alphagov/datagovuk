@@ -47,72 +47,138 @@ def mock_get_solr_client(mock_solr_client):
         yield mock_solr_client
 
 
+@pytest.fixture
+def search_url():
+    return reverse("directory:search")
+
+
 class TestSearchView:
-    def test_view_no_query_returns_ok_without_results(self, client, mock_solr_client):
-        url = reverse("directory:search")
-        response = client.get(url)
+    def test_view_no_query_returns_ok_without_results(self, client, solr_doc_factory, search_url):
+        solr_doc_factory()
+
+        response = client.get(search_url)
 
         assert response.status_code == HTTPStatus.OK
-        mock_solr_client.search.assert_not_called()
         assert "results" not in response.context_data
 
-    def test_view_with_query_calls_solr(self, client, mock_solr_client, mock_solr_results_factory):
-        mock_results = mock_solr_results_factory(
-            docs=[
-                {
-                    "id": "test-uuid-1",
-                    "title": "Test Dataset",
-                    "name": "test-dataset",
-                },
-            ],
-            hits=1,
-        )
-        mock_solr_client.search.return_value = mock_results
+    def test_view_empty_query_returns_ok_all_results(self, client, solr_doc_factory, search_url):
+        solr_doc_factory()
 
-        url = reverse("directory:search")
-        response = client.get(url, {"q": "test"})
+        response = client.get(search_url, {"query": ""})
 
         assert response.status_code == HTTPStatus.OK
-        mock_solr_client.search.assert_called_once()
-        call_args = mock_solr_client.search.call_args
-        assert "title:(test)" in call_args[0][0]
-        assert "NOT organisation:dgu_organisations.*" in call_args[0][0]
-        assert response.context_data["results"] == mock_results
+        assert "results" in response.context_data
+        assert response.context_data["results"].hits == 1
 
-    def test_view_with_query_no_hits_returns_empty(self, client, mock_solr_client, mock_solr_results_factory):
-        mock_results = mock_solr_results_factory(docs=[], hits=0)
-        mock_solr_client.search.return_value = mock_results
+    def test_view_with_query_calls_solr(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(title="test")
+        solr_doc_factory()
 
-        url = reverse("directory:search")
-        response = client.get(url, {"q": "nomatch"})
+        response = client.get(search_url, {"q": "test"})
+
+        assert response.status_code == HTTPStatus.OK
+        results = response.context_data["results"]
+        assert results.hits == 1
+        returned_doc = results.docs[0]
+        assert returned_doc["id"] == matching_doc["id"]
+        assert returned_doc["title"] == matching_doc["title"]
+
+    def test_view_with_query_no_hits_returns_empty(self, client, solr_doc_factory, search_url):
+        solr_doc_factory()
+        solr_doc_factory()
+
+        response = client.get(search_url, {"q": "nomatch"})
 
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["results"].hits == 0
         assert response.context_data["results"].docs == []
 
-    def test_view_with_query_multiple_results(self, client, mock_solr_client, mock_solr_results_factory):
-        mock_results = mock_solr_results_factory(
-            docs=[
-                {"id": "uuid-1", "title": "First Result", "name": "first"},
-                {"id": "uuid-2", "title": "Second Result", "name": "second"},
-            ],
-            hits=2,
-        )
-        mock_solr_client.search.return_value = mock_results
+    def test_view_with_query_multiple_results(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(notes="multi")
+        matching_doc_2 = solr_doc_factory(title="multi")
+        solr_doc_factory()
 
-        url = reverse("directory:search")
-        response = client.get(url, {"q": "multi"})
+        response = client.get(search_url, {"q": "multi"})
 
         assert response.status_code == HTTPStatus.OK
-        assert mock_solr_client.search.call_count == 1
-        assert response.context_data["results"].hits == 2  # noqa: PLR2004
-        assert len(response.context_data["results"].docs) == 2  # noqa: PLR2004
+        expected_ids = [matching_doc["id"], matching_doc_2["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert set(actual_ids) == set(expected_ids)
 
-    def test_search_view_returns_404_if_feature_flag_not_enabled(self, client, settings):
+    def test_view_filter_publisher_documents_match(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(organization="regular-publisher")
+        solr_doc_factory(organization="regular-publisher-2")
+
+        response = client.get(search_url, {"q": "dataset", "publisher": "Regular publisher"})
+
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_doc["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
+    def test_view_filter_publisher_no_documents_match(self, client, solr_doc_factory, search_url):
+        solr_doc_factory()
+        solr_doc_factory()
+
+        response = client.get(search_url, {"q": "multi", "publisher": "Non-existent"})
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["results"].hits == 0
+
+    def test_view_filter_open_government_licence_only(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(license_id="ogl")
+        solr_doc_factory()
+
+        response = client.get(search_url, {"q": "dataset", "open_government_licence_only": "on"})
+
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_doc["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
+    def test_view_filter_topic(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(topic="some-topic")
+        solr_doc_factory()
+
+        response = client.get(search_url, {"q": "dataset", "topic": "Some topic"})
+
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_doc["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
+    def test_view_filter_format_matching_mapped_format(self, client, solr_doc_factory, search_url):
+        matching_document = solr_doc_factory(res_format=[".csv"])
+        solr_doc_factory(res_format=["XLSX"])
+
+        response = client.get(search_url, {"q": "dataset", "format": "CSV"})
+
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_document["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
+    def test_view_filter_format_matching_other_format(self, client, solr_doc_factory, search_url):
+        matching_document = solr_doc_factory(res_format=["woop"])
+        solr_doc_factory(res_format=["XLS"])
+
+        response = client.get(search_url, {"q": "dataset", "format": "OTHER"})
+
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_document["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
+    def test_search_view_returns_404_if_feature_flag_not_enabled(self, client, settings, search_url):
         settings.FEATURE_FLAGS_ENABLED = []
-        url = reverse("directory:search")
-        response = client.get(url, {"q": "multi"})
+        response = client.get(search_url, {"q": "multi"})
         assert response.status_code == HTTPStatus.NOT_FOUND
+
+    def test_search_view_returns_error_if_form_invalid(self, client, search_url):
+        response = client.get(search_url, {"q": "multi" * 200})
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["form"].errors["query"] == [
+            "Ensure this value has at most 256 characters (it has 1000).",
+        ]
 
 
 class TestDatasetView:

@@ -5,10 +5,8 @@
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
     <form method="get">
-      <label for="query">Search:</label>
-      <input type="text" id="query" name="q" placeholder="Type here..." />
-
-      <button type="submit">Submit</button>
+      {{ form }}
+      <input type="submit" value="Submit" />
     </form>
     {% if results %}
       Hits: {{ results.hits }}
@@ -16,6 +14,11 @@
         <p>
           <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"
              class="govuk-link datagovuk-link">{{ result.title }}</a>
+          <br />
+          Publisher: {{ result.organization }}
+          <br />
+          Topic: {{ result["extras_theme-primary"]|default("Not set") }}
+
         </p>
       {% endfor %}
     {% endif %}
