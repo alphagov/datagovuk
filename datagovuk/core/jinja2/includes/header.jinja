@@ -32,6 +32,9 @@
             aria-controls="datagovuk-menu-data-manual">Data manual</button>
 
     {% set search_url = "/search" %}
+    {% if is_feature_flag_enabled(FEATURE_FLAGS.SOLR_SEARCH) %}
+      {% set search_url = url("directory:search") %}
+    {% endif %}
 
     <div class="datagovuk-menu" id="datagovuk-menu-data-manual">
       <h2 class="datagovuk-menu__heading">Data manual</h2>
