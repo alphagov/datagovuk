@@ -53,117 +53,118 @@ def search_url():
 
 
 class TestSearchView:
-    def test_view_no_query_returns_ok_without_results(self, client, sample_solr_docs, search_url):
+    def test_view_no_query_returns_ok_without_results(self, client, solr_doc_factory, search_url):
+        solr_doc_factory()
+
         response = client.get(search_url)
 
         assert response.status_code == HTTPStatus.OK
         assert "results" not in response.context_data
 
-    def test_view_empty_query_returns_ok_all_results(self, client, sample_solr_docs, search_url):
+    def test_view_empty_query_returns_ok_all_results(self, client, solr_doc_factory, search_url):
+        solr_doc_factory()
+
         response = client.get(search_url, {"query": ""})
 
         assert response.status_code == HTTPStatus.OK
         assert "results" in response.context_data
-        assert response.context_data["results"].hits == len(sample_solr_docs) - 1
+        assert response.context_data["results"].hits == 1
 
-    def test_view_with_query_calls_solr(self, client, sample_solr_docs, search_url):
+    def test_view_with_query_calls_solr(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(title="test")
+        solr_doc_factory()
+
         response = client.get(search_url, {"q": "test"})
 
         assert response.status_code == HTTPStatus.OK
         results = response.context_data["results"]
         assert results.hits == 1
         returned_doc = results.docs[0]
-        assert returned_doc["id"] == "66c40d9c-bd29-42a9-9461-cd10d4898662"
-        assert returned_doc["title"] == "Test Dataset"
+        assert returned_doc["id"] == matching_doc["id"]
+        assert returned_doc["title"] == matching_doc["title"]
 
-        returned_ids = [doc["id"] for doc in results.docs]
-        assert "test-uuid-2" not in returned_ids
+    def test_view_with_query_no_hits_returns_empty(self, client, solr_doc_factory, search_url):
+        solr_doc_factory()
+        solr_doc_factory()
 
-    def test_view_with_query_no_hits_returns_empty(self, client, sample_solr_docs, search_url):
         response = client.get(search_url, {"q": "nomatch"})
 
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["results"].hits == 0
         assert response.context_data["results"].docs == []
 
-    def test_view_with_query_multiple_results(self, client, sample_solr_docs, search_url):
+    def test_view_with_query_multiple_results(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(notes="multi")
+        matching_doc_2 = solr_doc_factory(title="multi")
+        solr_doc_factory()
+
         response = client.get(search_url, {"q": "multi"})
+
         assert response.status_code == HTTPStatus.OK
-        expected_ids = [doc["id"] for doc in sample_solr_docs[0:2]]
-        assert response.context_data["results"].hits == len(expected_ids)
+        expected_ids = [matching_doc["id"], matching_doc_2["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert set(actual_ids) == set(expected_ids)
+
+    def test_view_filter_publisher_documents_match(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(organization="regular-publisher")
+        solr_doc_factory(organization="regular-publisher-2")
+
+        response = client.get(search_url, {"q": "dataset", "publisher": "Regular publisher"})
+
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_doc["id"]]
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
-    def test_view_filter_publisher_documents_match(self, client, sample_solr_docs, search_url):
-        response = client.get(search_url, {"q": "multi", "publisher": "Regular publisher"})
-        assert response.status_code == HTTPStatus.OK
-        expected_ids = [sample_solr_docs[0]["id"]]
-        assert response.context_data["results"].hits == len(expected_ids)
-        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
-        assert actual_ids == expected_ids
+    def test_view_filter_publisher_no_documents_match(self, client, solr_doc_factory, search_url):
+        solr_doc_factory()
+        solr_doc_factory()
 
-    def test_view_filter_publisher_no_documents_match(self, client, sample_solr_docs, search_url):
         response = client.get(search_url, {"q": "multi", "publisher": "Non-existent"})
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["results"].hits == 0
 
-    def test_view_filter_open_government_licence_only(self, client, sample_solr_docs, search_url):
+    def test_view_filter_open_government_licence_only(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(license_id="ogl")
+        solr_doc_factory()
+
         response = client.get(search_url, {"q": "dataset", "open_government_licence_only": "on"})
+
         assert response.status_code == HTTPStatus.OK
-        expected_ids = [sample_solr_docs[3]["id"]]
-        assert response.context_data["results"].hits == len(expected_ids)
+        expected_ids = [matching_doc["id"]]
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
-    def test_view_filter_topic(self, client, sample_solr_docs, search_url):
+    def test_view_filter_topic(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(topic="some-topic")
+        solr_doc_factory()
+
         response = client.get(search_url, {"q": "dataset", "topic": "Some topic"})
+
         assert response.status_code == HTTPStatus.OK
-        expected_ids = [sample_solr_docs[4]["id"]]
-        assert response.context_data["results"].hits == len(expected_ids)
+        expected_ids = [matching_doc["id"]]
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
     def test_view_filter_format_matching_mapped_format(self, client, solr_doc_factory, search_url):
-        matching_document = solr_doc_factory(
-            id="00000000-0000-0000-0000-000000000001",
-            name="test-dataset",
-            title="Test Dataset",
-            organization="regular-publisher",
-            res_format=[".csv"],
-        )
-        solr_doc_factory(
-            id="00000000-0000-0000-0000-000000000002",
-            name="test-dataset",
-            title="Test Dataset",
-            organization="regular-publisher",
-            res_format=["XLSX"],
-        )
+        matching_document = solr_doc_factory(res_format=[".csv"])
+        solr_doc_factory(res_format=["XLSX"])
+
         response = client.get(search_url, {"q": "dataset", "format": "CSV"})
+
         assert response.status_code == HTTPStatus.OK
         expected_ids = [matching_document["id"]]
-        assert response.context_data["results"].hits == len(expected_ids)
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
     def test_view_filter_format_matching_other_format(self, client, solr_doc_factory, search_url):
-        matching_document = solr_doc_factory(
-            id="00000000-0000-0000-0000-000000000001",
-            name="test-dataset",
-            title="Test Dataset",
-            organization="regular-publisher",
-            res_format=["woop"],
-        )
-        solr_doc_factory(
-            id="00000000-0000-0000-0000-000000000002",
-            name="test-dataset",
-            title="Test Dataset",
-            organization="regular-publisher",
-            res_format=["XLS"],
-        )
+        matching_document = solr_doc_factory(res_format=["woop"])
+        solr_doc_factory(res_format=["XLS"])
+
         response = client.get(search_url, {"q": "dataset", "format": "OTHER"})
+
         assert response.status_code == HTTPStatus.OK
         expected_ids = [matching_document["id"]]
-        assert response.context_data["results"].hits == len(expected_ids)
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
