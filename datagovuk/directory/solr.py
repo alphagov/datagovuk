@@ -27,7 +27,7 @@ def get_solr_client():
 # TODO: Ideally we would switch to a redis caching backend to cache this once across
 #   production app servers.  With in-memory caching, this would cache once per-process
 @cache_memoize(10 * 60)
-def _get_organisations_by_title():
+def get_organisations_by_title():
     solr_client = get_solr_client()
     results = solr_client.search(
         q="*:*",
@@ -57,7 +57,7 @@ def _get_filters(filters):
     ]
 
     if filters.get("publisher"):
-        all_organisations = _get_organisations_by_title()
+        all_organisations = get_organisations_by_title()
         organisation_slug = all_organisations.get(filters["publisher"])
         if organisation_slug:
             solr_filters.append(f"organization:{organisation_slug}")

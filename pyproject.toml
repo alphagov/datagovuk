@@ -22,6 +22,7 @@ dependencies = [
   "django-health-check==4.4.3",
   "django-libsass==0.9",
   "django-prometheus==2.5.0",
+  "govuk-frontend-jinja==4.1.0",
   "gunicorn==26.0.0",
   "jinja2==3.1.6",
   "mistune==3.3.2",

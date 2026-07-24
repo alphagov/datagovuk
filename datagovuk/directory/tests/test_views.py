@@ -122,7 +122,10 @@ class TestSearchView:
 
         response = client.get(search_url, {"q": "multi", "publisher": "Non-existent"})
         assert response.status_code == HTTPStatus.OK
-        assert response.context_data["results"].hits == 0
+        assert "results" not in response.context_data
+        assert response.context_data["form"].errors["publisher"] == [
+            "Select a valid choice. Non-existent is not one of the available choices.",
+        ]
 
     def test_view_filter_open_government_licence_only(self, client, solr_doc_factory, search_url):
         matching_doc = solr_doc_factory(license_id="ogl")
@@ -136,10 +139,10 @@ class TestSearchView:
         assert actual_ids == expected_ids
 
     def test_view_filter_topic(self, client, solr_doc_factory, search_url):
-        matching_doc = solr_doc_factory(topic="some-topic")
+        matching_doc = solr_doc_factory(topic="environment")
         solr_doc_factory()
 
-        response = client.get(search_url, {"q": "dataset", "topic": "Some topic"})
+        response = client.get(search_url, {"q": "dataset", "topic": "Environment"})
 
         assert response.status_code == HTTPStatus.OK
         expected_ids = [matching_doc["id"]]
