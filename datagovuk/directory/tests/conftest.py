@@ -4,6 +4,7 @@ from datetime import UTC, datetime
 import factory
 import pysolr
 import pytest
+from django.core.cache import cache
 
 
 @pytest.fixture
@@ -72,6 +73,8 @@ def solr_doc_factory(solr_client):
         organisation_slug = doc["organization"]
         organisation_name = organisation_slug.replace("-", " ").capitalize()
         organisation_doc = SolrOrganisationFactory(title=organisation_name, name=organisation_slug)
+        # Not ideal, but we must clear the cache here so that `get_organisations_by_title()` provides updated results
+        cache.clear()
 
         solr_client.add([doc, organisation_doc])
         return doc

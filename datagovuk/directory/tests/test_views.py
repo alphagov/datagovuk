@@ -122,7 +122,10 @@ class TestSearchView:
 
         response = client.get(search_url, {"q": "multi", "publisher": "Non-existent"})
         assert response.status_code == HTTPStatus.OK
-        assert response.context_data["results"].hits == 0
+        assert "results" not in response.context_data
+        assert response.context_data["form"].errors["publisher"] == [
+            "Select a valid choice. Non-existent is not one of the available choices.",
+        ]
 
     def test_view_filter_open_government_licence_only(self, client, solr_doc_factory, search_url):
         matching_doc = solr_doc_factory(license_id="ogl")
