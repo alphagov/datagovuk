@@ -83,14 +83,14 @@ class TestPreviewView:
         assert response.context_data["preview_rows"] == MAX_PREVIEW_ROWS
         assert response.context_data["preview_exists"] is True
         assert response.context_data["table_headings"] == [
-            {"text": "name", "format": False},
+            {"text": "name", "format": "text"},
             {"text": "age", "format": "numeric"},
         ]
         assert response.context_data["table_rows"] == [
-            [{"text": "John", "format": False}, {"text": "30", "format": "numeric"}],
-            [{"text": "Doe", "format": False}, {"text": "25", "format": "numeric"}],
-            [{"text": "Jane", "format": False}, {"text": "40", "format": "numeric"}],
-            [{"text": "Doe", "format": False}, {"text": "35", "format": "numeric"}],
+            [{"text": "John", "format": "text"}, {"text": "30", "format": "numeric"}],
+            [{"text": "Doe", "format": "text"}, {"text": "25", "format": "numeric"}],
+            [{"text": "Jane", "format": "text"}, {"text": "40", "format": "numeric"}],
+            [{"text": "Doe", "format": "text"}, {"text": "35", "format": "numeric"}],
         ]
         assert len(response.context_data["table_rows"]) == MAX_PREVIEW_ROWS
 
@@ -145,7 +145,6 @@ class TestPreviewView:
         mock_fetch_csv.return_value = [["name"], ["John"]]
 
         response = call_view(rf)
-        response.render()
 
         expected_url = reverse("directory:dataset", kwargs={"uuid": DATASET_UUID, "slug": "test-dataset"})
-        assert expected_url in response.content.decode()
+        assert response.context_data["back_link"] == expected_url
