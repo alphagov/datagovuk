@@ -18,6 +18,8 @@ def _get_bar_chart(chart_spec):
         colors=["#C27A9A"],
         height="600px",
         aspectRatio=2,
+        thousands=",",
+        prefix=chart_spec.get("visualisation_prefix", ""),
         library={
             "plugins": {
                 "datalabels": {
@@ -99,6 +101,8 @@ def _get_line_chart(chart_spec):
         }
     return LineChart(
         chart_spec["series"],
+        thousands=",",
+        prefix=chart_spec.get("visualisation_prefix", ""),
         suffix=chart_spec.get("visualisation_suffix", ""),
         round=2,
         points=True,
