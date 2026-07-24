@@ -20,7 +20,11 @@
           {% if preview_exists %}
             <p class="govuk-body datagovuk-body">You're previewing the first {{ preview_rows }} rows of this file.</p>
 
-            <a href="{{ datafile.url }}" class="govuk-button datagovuk-button">Download the CSV</a>
+            <a href="{{ datafile.url }}"
+               class="govuk-button datagovuk-button"
+               data-ga-event="preview-download"
+               data-ga-format="CSV"
+               data-ga-publisher="{{ dataset.organisation_name }}">Download the CSV</a>
           {% else %}
             <p class="govuk-body datagovuk-body">Currently there is no preview available for "{{ datafile.name }}".</p>
           {% endif %}
