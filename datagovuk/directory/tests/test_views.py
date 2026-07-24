@@ -123,6 +123,50 @@ class TestSearchView:
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
+    def test_view_filter_format_matching_mapped_format(self, client, solr_doc_factory, search_url):
+        matching_document = solr_doc_factory(
+            id="00000000-0000-0000-0000-000000000001",
+            name="test-dataset",
+            title="Test Dataset",
+            organization="regular-publisher",
+            res_format=[".csv"],
+        )
+        solr_doc_factory(
+            id="00000000-0000-0000-0000-000000000002",
+            name="test-dataset",
+            title="Test Dataset",
+            organization="regular-publisher",
+            res_format=["XLSX"],
+        )
+        response = client.get(search_url, {"q": "dataset", "format": "CSV"})
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_document["id"]]
+        assert response.context_data["results"].hits == len(expected_ids)
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
+    def test_view_filter_format_matching_other_format(self, client, solr_doc_factory, search_url):
+        matching_document = solr_doc_factory(
+            id="00000000-0000-0000-0000-000000000001",
+            name="test-dataset",
+            title="Test Dataset",
+            organization="regular-publisher",
+            res_format=["woop"],
+        )
+        solr_doc_factory(
+            id="00000000-0000-0000-0000-000000000002",
+            name="test-dataset",
+            title="Test Dataset",
+            organization="regular-publisher",
+            res_format=["XLS"],
+        )
+        response = client.get(search_url, {"q": "dataset", "format": "OTHER"})
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_document["id"]]
+        assert response.context_data["results"].hits == len(expected_ids)
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
     def test_search_view_returns_404_if_feature_flag_not_enabled(self, client, settings, search_url):
         settings.FEATURE_FLAGS_ENABLED = []
         response = client.get(search_url, {"q": "multi"})

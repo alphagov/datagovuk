@@ -16,7 +16,7 @@ class FormatChoices(models.TextChoices):
     XLS = "XLS", "XLS"
     XML = "XML", "XML"
     ZIP = "ZIP", "ZIP"
-    OTHER = "Other", "Other"
+    OTHER = "OTHER", "Other"
 
 
 FORMAT_MAPPINGS = {
