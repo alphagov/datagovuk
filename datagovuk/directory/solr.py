@@ -76,10 +76,8 @@ def _get_filters(filters):
             )
         elif file_format in FORMAT_MAPPINGS:
             solr_filters.append(
-                "OR".join(f'res_format:"{f}"' for f in FORMAT_MAPPINGS[file_format]),
+                " OR ".join(f'res_format:"{f}"' for f in FORMAT_MAPPINGS[file_format]),
             )
-        else:
-            solr_filters.append(f"res_format:{format}")
 
     if filters.get("open_government_licence_only") is True:
         ogl_ids = ("uk-ogl", re.compile(r"OGL-UK-.*").pattern, "ogl")
