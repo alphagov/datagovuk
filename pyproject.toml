@@ -173,7 +173,7 @@ format_js = false
 preserve_blank_lines = true
 # TODO: remove T002 when fixed https://github.com/djlint/djLint/issues/687
 # TODO: Remove J004, J018 when links fully moved over to this repo
-ignore = "H006,H030,H031,T002,J004,J018,H021"
+ignore = "H006,H025,H030,H031,T002,J004,J018,H021"
 include = "H017,H035"
 indent = 2
 profile = "jinja"

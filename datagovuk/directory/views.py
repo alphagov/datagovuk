@@ -1,10 +1,14 @@
 import json
 
 from django.http import Http404
+from django.urls import reverse
 from django.views.generic import TemplateView
 
-from .preview_utils import build_table_data, fetch_csv
+from datagovuk.core.utils import build_table_data
+
+from .preview_utils import fetch_csv
 from .solr import SolrDatafile, SolrDataset, get_solr_client
+from .utils import resource_table_row_data
 
 
 class SearchView(TemplateView):
@@ -35,8 +39,22 @@ class DatasetView(TemplateView):
             message = f"Active dataset {dataset_id} not found"
             raise Http404(message)
         document = results.docs[0]
-        context["document"] = document
-        context["document_data"] = json.loads(document["validated_data_dict"])
+        context["title"] = document["title"]
+        context["notes"] = document["notes"]
+        context["metadata_modified"] = document["metadata_modified"]
+
+        document_data = json.loads(document["validated_data_dict"])
+        context["organization_title"] = document_data["organization"]["title"]
+        context["table_headings"] = [
+            {"text": "Link"},
+            {"text": "Format"},
+            {"text": "Preview"},
+            {"text": "Last updated"},
+        ]
+        context["resources"] = [
+            resource_table_row_data(resource, document["id"], document["name"])
+            for resource in document_data["resources"]
+        ]
         return context
 
 
@@ -60,6 +78,7 @@ class PreviewView(TemplateView):
 
         context.update(
             {
+                "back_link": reverse("directory:dataset", kwargs={"uuid": dataset.uuid, "slug": dataset.name}),
                 "datafile": datafile,
                 "dataset": dataset,
                 "table_headings": table_headings,
