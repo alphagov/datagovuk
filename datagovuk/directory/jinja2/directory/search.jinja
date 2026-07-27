@@ -1,11 +1,25 @@
 {% extends "base.jinja" %}
 
 {% set page_title = "Search" %}
+{% from "macros/forms.jinja" import datagovukInput -%}
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
     <form method="get">
-      {{ form }}
+      {# djlint:off #}
+      {{ datagovukInput({
+        "label": {
+          "text": form.query.label,
+        },
+        "name": form.query.name,
+        "value": form.query.value() ,
+        "errorMessage": {"html": form.query.errors} if form.query.errors else None,
+      }) }}
+      {# djlint:on #}
+      {{ form.publisher }}
+      {{ form.topic }}
+      {{ form.format }}
+      {{ form.open_government_licence_only }}
       <input type="submit" value="Submit" />
     </form>
     {% if results %}
