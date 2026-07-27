@@ -2,6 +2,7 @@
 
 {% set page_title = "Search" %}
 {% from "macros/forms.jinja" import datagovukInput, datagovukSelect, datagovukCheckboxes -%}
+{% from "macros/common.jinja" import datagovukButton -%}
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
@@ -53,7 +54,7 @@
           ]
       }) }}
       {# djlint:on #}
-      <input type="submit" value="Submit" />
+      {{ datagovukButton({"text": "Search"}) }}
     </form>
     {% if results %}
       Hits: {{ results.hits }}
