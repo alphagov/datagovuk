@@ -45,6 +45,11 @@ up *args:
     @echo "Starting up containers..."
     GIT_SHA=$(git rev-parse HEAD) docker compose -f docker-compose.local.yml up -d --remove-orphans {{args}}
 
+# restart: Restart containers
+restart *args:
+    @echo "Restarting containers..."
+    GIT_SHA=$(git rev-parse HEAD) docker compose -f docker-compose.local.yml restart
+
 # down: Stop containers.
 down  *args:
     @echo "Stopping containers..."
