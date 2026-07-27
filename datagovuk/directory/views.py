@@ -4,12 +4,12 @@ from django.http import Http404
 from django.urls import reverse
 from django.views.generic import TemplateView
 
+from datagovuk.core.utils import build_table_data
 from datagovuk.core.views import GETFormView
 
 from .forms import SearchForm
-from .preview_utils import build_table_data, fetch_csv
+from .preview_utils import fetch_csv
 from .solr import SolrDatafile, SolrDataset, get_solr_client, search
-from datagovuk.core.utils import build_table_data
 from .utils import resource_table_row_data
 
 
