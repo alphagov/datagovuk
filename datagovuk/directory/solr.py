@@ -12,7 +12,7 @@ from django.utils.text import slugify
 
 from .constants import FORMAT_MAPPINGS, FormatChoices
 
-ORGANISATIONS_LIMIT = 3000
+ORGANISATIONS_LIMIT = 6000
 
 logger = logging.getLogger(__file__)
 
@@ -31,7 +31,7 @@ def _get_organisations_by_title():
     solr_client = get_solr_client()
     results = solr_client.search(
         q="*:*",
-        fq=["site_id:dgu_organisations"],
+        fq=["site_id:dgu_organisations*"],
         fl=["title", "name"],
         rows=ORGANISATIONS_LIMIT,
     )
