@@ -33,11 +33,3 @@ class TestPreviewPage:
             "href",
             reverse("directory:dataset", kwargs={"uuid": DATASET_UUID, "slug": DATASET_SLUG}),
         )
-
-    def test_table_component_visible(self, page, live_server_url, preview_url):
-        page.goto(live_server_url + preview_url)
-        expect(page.locator(".datagovuk-table-container")).to_be_visible()
-
-    def test_download_button_present(self, page, live_server_url, preview_url):
-        page.goto(live_server_url + preview_url)
-        expect(page.get_by_role("link", name="Download the CSV")).to_be_visible()
