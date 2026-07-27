@@ -1,7 +1,7 @@
 {% extends "base.jinja" %}
 
 {% set page_title = "Search" %}
-{% from "macros/forms.jinja" import datagovukInput -%}
+{% from "macros/forms.jinja" import datagovukInput, datagovukSelect -%}
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
@@ -14,6 +14,15 @@
         "name": form.query.name,
         "value": form.query.value() ,
         "errorMessage": {"html": form.query.errors} if form.query.errors else None,
+      }) }}
+      {{ datagovukSelect({
+        "label": {
+          "text": form.publisher.label,
+        },
+        "name": form.publisher.name,
+        "value": form.publisher.value() ,
+        "choices": form.publisher.field.choices,
+        "errorMessage": {"html": form.publisher.errors} if form.publisher.errors else None,
       }) }}
       {# djlint:on #}
       {{ form.publisher }}
