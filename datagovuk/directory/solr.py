@@ -60,8 +60,6 @@ def _get_filters(filters):
         organisation_slug = all_organisations.get(filters["publisher"])
         if organisation_slug:
             solr_filters.append(f"organization:{organisation_slug}")
-        else:
-            solr_filters.append(f"organization:{filters['publisher']}")
 
     if filters.get("topic"):
         topic_slug = slugify(filters["topic"])
