@@ -1,0 +1,58 @@
+.datagovuk-label {
+  font-family: 'Inter', sans-serif;
+}
+
+.datagovuk-input, .autocomplete__input.datagovuk-input {
+  padding: 20px 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.datagovuk-select {
+  border-radius: 10px;
+  font-size: 20px;
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+}
+
+.autocomplete__menu .autocomplete__option:first-of-type {
+  border-top-width: 100%;
+}
+
+.autocomplete__menu .autocomplete__option {
+  min-height: 25px;
+  font-family: 'Inter', sans-serif;
+  color: $datagovuk-black;
+}
+
+.autocomplete__menu .autocomplete__option:hover, .autocomplete__menu .autocomplete__option--focused {
+  background-color: $datagovuk-green;
+  border-color: $datagovuk-green;
+}
+
+.autocomplete__menu {
+  border: 2px solid $datagovuk-black !important;
+  border-top: 2px solid $datagovuk-black !important;
+  border-radius: 10px;
+  margin-top: 10px !important;
+}
+
+// Ensure the autocomplete scrollbar behaves with rounded border corners
+.autocomplete__menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.autocomplete__menu::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 8px 0;
+}
+
+.autocomplete__menu::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 4px;
+}
+
+.autocomplete__menu::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
