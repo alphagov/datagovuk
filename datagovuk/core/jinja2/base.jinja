@@ -15,6 +15,8 @@
     {% compress css %}
       <link href="{{ static('stylesheets/govuk-frontend-6.0.0.min.css') }}" rel="stylesheet" />
       <link type="text/x-scss" href="{{ static('stylesheets/application.scss') }}" rel="stylesheet" />
+      {% block extra_css %}
+      {% endblock extra_css %}
     {% endcompress %}
 
     <link rel="icon" href="{{ static('images/favicon.png') }}" />

@@ -5,6 +5,23 @@
 {% from "macros/common.jinja" import datagovukButton -%}
 
 {% block main %}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const selectsToEnhance = ["publisher", "topic", "format"];
+      selectsToEnhance.forEach(id => {
+        const element = document.querySelector(`#${id}`);
+        accessibleAutocomplete.enhanceSelectElement({
+          selectElement: element,
+          showAllValues: true,
+          autoselect: false,
+          defaultValue: '',
+          preserveNullOptions: true,
+          inputClasses: "datagovuk-input",
+          menuClasses: "datagovuk-autocomplete__menu",
+        });
+      });
+    });
+  </script>
   <div class="govuk-width-container datagovuk-width-container">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-third">
@@ -79,3 +96,11 @@
     </div>
   </div>
 {% endblock main %}
+
+{% block extra_js %}
+  <script type="text/javascript" src={{static("javascripts/accessible-autocomplete.min.js")}}></script>
+{% endblock extra_js %}
+
+{% block extra_css %}
+  <link href="{{ static('stylesheets/accessible-autocomplete.min.css') }}" rel="stylesheet" />
+{% endblock extra_css %}
