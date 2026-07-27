@@ -20,14 +20,29 @@
           "text": form.publisher.label,
         },
         "name": form.publisher.name,
-        "value": form.publisher.value() ,
+        "value": form.publisher.value(),
         "choices": form.publisher.field.choices,
         "errorMessage": {"html": form.publisher.errors} if form.publisher.errors else None,
       }) }}
+      {{ datagovukSelect({
+        "label": {
+          "text": form.topic.label,
+        },
+        "name": form.topic.name,
+        "value": form.topic.value(),
+        "choices": form.topic.field.choices,
+        "errorMessage": {"html": form.topic.errors} if form.topic.errors else None,
+      }) }}
+      {{ datagovukSelect({
+        "label": {
+          "text": form.format.label,
+        },
+        "name": form.format.name,
+        "value": form.format.value(),
+        "choices": form.format.field.choices,
+        "errorMessage": {"html": form.format.errors} if form.format.errors else None,
+      }) }}
       {# djlint:on #}
-      {{ form.publisher }}
-      {{ form.topic }}
-      {{ form.format }}
       {{ form.open_government_licence_only }}
       <input type="submit" value="Submit" />
     </form>
