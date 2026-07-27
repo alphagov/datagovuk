@@ -1,7 +1,7 @@
 {% extends "base.jinja" %}
 
 {% set page_title = "Search" %}
-{% from "macros/forms.jinja" import datagovukInput, datagovukSelect -%}
+{% from "macros/forms.jinja" import datagovukInput, datagovukSelect, datagovukCheckboxes -%}
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
@@ -42,8 +42,17 @@
         "choices": form.format.field.choices,
         "errorMessage": {"html": form.format.errors} if form.format.errors else None,
       }) }}
+      {{ datagovukCheckboxes({
+          "name": form.open_government_licence_only.name,
+          "items": [
+            {
+              "value": "on",
+              "checked": true if form.open_government_licence_only.value() else false,
+              "text": form.open_government_licence_only.label,
+            },
+          ]
+      }) }}
       {# djlint:on #}
-      {{ form.open_government_licence_only }}
       <input type="submit" value="Submit" />
     </form>
     {% if results %}
