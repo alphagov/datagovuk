@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 from datagovuk.core.utils import build_table_data
 from datagovuk.core.views import GETFormView
 
+from .constants import FORMATS_BY_FORMAT_VALUE, FormatChoices
 from .forms import SearchForm
 from .preview_utils import fetch_csv
 from .solr import SolrDatafile, SolrDataset, get_organisations_by_title, get_solr_client, search
@@ -41,8 +42,10 @@ class SearchView(GETFormView):
 
     def get_form_kwargs(self, *args, **kwargs):
         form_kwargs = super().get_form_kwargs(*args, **kwargs)
+        publisher_choices = [(title, title) for title in get_organisations_by_title()]
+        publisher_choices.insert(0, ["", ""])
         return {
-            "publisher_choices": [(title, title) for title in get_organisations_by_title()],
+            "publisher_choices": publisher_choices,
             **form_kwargs,
         }
 
@@ -53,6 +56,32 @@ class SearchView(GETFormView):
         context = self.get_context_data(query=query, filters=filters)
         return self.render_to_response(context)
 
+    def get_choices_from_facets(self, facets):
+        facets = {
+            facet_key: filter(lambda value: isinstance(value, str), facet_value)
+            for facet_key, facet_value in facets.items()
+        }
+        all_organisations_by_slug = {slug: title for title, slug in get_organisations_by_title().items()}
+        facet_titles = [
+            all_organisations_by_slug[slug] for slug in facets["organization"] if slug in all_organisations_by_slug
+        ]
+        publisher_choices = [(title, title) for title in facet_titles]
+        facet_topics = [topic.replace("-", " ").capitalize() for topic in facets["extras_theme-primary"]]
+        topic_choices = [(topic, topic) for topic in facet_topics]
+        facet_formats = set()
+        for facet_value in facets["res_format"]:
+            if facet_value not in FORMATS_BY_FORMAT_VALUE:
+                facet_formats.add("OTHER")
+                continue
+            facet_formats.add(FORMATS_BY_FORMAT_VALUE[facet_value])
+        format_choices = [(choice[0], choice[1]) for choice in FormatChoices.choices if choice[0] in facet_formats]
+
+        return {
+            "publisher_choices": publisher_choices,
+            "topic_choices": topic_choices,
+            "format_choices": format_choices,
+        }
+
     def get_context_data(self, query=None, filters=None, **kwargs):
         context = super().get_context_data(**kwargs)
         if query is not None:
@@ -62,6 +91,13 @@ class SearchView(GETFormView):
                 start=0,
                 rows=20,
             )
+            # Re-initialise the form now that we know what facets should be shown
+            form_kwargs = {
+                **self.get_form_kwargs(),
+                **self.get_choices_from_facets(results.facets["facet_fields"]),
+            }
+            form = self.form_class(**form_kwargs)
+            context["form"] = form
             context["results"] = results
         return context
 
