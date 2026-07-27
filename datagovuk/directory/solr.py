@@ -84,15 +84,27 @@ def _get_filters(filters):
     return solr_filters
 
 
+def _get_facets():
+    return {
+        "facet": "true",
+        "facet.field": ["organization", "extras_theme-primary", "res_format"],
+        "f.organization.facet.limit": ORGANISATIONS_LIMIT,
+        "facet.sort": "count",
+        "facet.mincount": 1,
+    }
+
+
 def search(query, filters, start=0, rows=20):
     solr_query = _get_query(query)
     solr_filters = _get_filters(filters)
+    solr_facets = _get_facets()
     solr_client = get_solr_client()
     return solr_client.search(
         q=solr_query,
         fq=solr_filters,
         start=start,
         rows=rows,
+        **solr_facets,
     )
 
 
