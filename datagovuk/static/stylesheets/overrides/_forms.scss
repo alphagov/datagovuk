@@ -24,6 +24,12 @@
   min-height: 25px;
   font-family: 'Inter', sans-serif;
   color: $datagovuk-black;
+  border-bottom: 2px solid $datagovuk-grey;
+}
+
+
+.autocomplete__menu .autocomplete__option:nth-child(even) {
+  background-color: $datagovuk-light-grey;
 }
 
 .autocomplete__menu .autocomplete__option:hover, .autocomplete__menu .autocomplete__option--focused {
