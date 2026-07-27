@@ -56,3 +56,14 @@
     </div>
   </nav>
 {% endmacro %}
+
+{% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
+{% macro datagovukButton(params) -%}
+  {%- set classes = ("datagovuk-button " ~ params.classes) if params.classes else "datagovuk-button" %}
+  {# djlint:off #}
+  {{ govukButton(
+      params
+      |combine({"classes": classes})
+  ) }}
+  {# djlint:on #}
+{% endmacro %}
