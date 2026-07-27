@@ -37,7 +37,7 @@ jobs:
           echo "image_sha=${SHA}" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS credentials (integration)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6.2.2
         with:
           role-to-assume: ${{ secrets.INTEGRATION_DEPLOYER_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
@@ -47,7 +47,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Install crane
-        uses: imjasonh/setup-crane@v0.4
+        uses: imjasonh/setup-crane@v0.7
 
       - name: Copy image from GHCR to integration ECR
         run: |
@@ -65,7 +65,7 @@ jobs:
       contents: read
     steps:
       - name: Configure AWS credentials (staging)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6.2.2
         with:
           role-to-assume: ${{ secrets.STAGING_DEPLOYER_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
@@ -75,7 +75,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Install crane
-        uses: imjasonh/setup-crane@v0.4
+        uses: imjasonh/setup-crane@v0.7
 
       - name: Copy image from GHCR to staging ECR
         run: |
@@ -93,7 +93,7 @@ jobs:
       contents: read
     steps:
       - name: Configure AWS credentials (production)
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6.2.2
         with:
           role-to-assume: ${{ secrets.PRODUCTION_DEPLOYER_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
@@ -103,7 +103,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Install crane
-        uses: imjasonh/setup-crane@v0.4
+        uses: imjasonh/setup-crane@v0.7
 
       - name: Copy image from GHCR to production ECR
         run: |
