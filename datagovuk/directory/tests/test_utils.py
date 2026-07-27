@@ -17,32 +17,32 @@ base_resource = {
 }
 
 
-def test_returns_kb():
+def test_format_file_size_returns_kb():
     assert format_file_size(1000) == "1 KB"
 
 
-def test_returns_mb():
+def test_format_file_size_returns_mb():
     assert format_file_size(1024 * 1024) == "1 MB"
 
 
-def test_returns_gb():
+def test_format_file_size_returns_gb():
     assert format_file_size(1024 * 1024 * 1024) == "1 GB"
 
 
-def test_large_size_falls_through_to_gb():
+def test_format_file_size_large_size_falls_through_to_gb():
     assert format_file_size(1024 * 1024 * 1024 * 1024) == "1024 GB"
 
 
-def test_format_date():
+def test_format_date_returns_formatted_date():
     assert format_date("2023-06-01T12:00:00") == "01/06/2023"
 
 
-def test_format_date_with_invalid_date():
+def test_format_date_with_invalid_date_raises_value_error():
     with pytest.raises(ValueError, match="Invalid isoformat string"):
         format_date("invalid-date")
 
 
-def test_resource_table_row_data():
+def test_resource_table_row_data_returns_expected_fields():
     row_data = resource_table_row_data(base_resource, document_id, document_name)
 
     assert row_data["url"] == base_resource["url"]
@@ -54,7 +54,7 @@ def test_resource_table_row_data():
     assert row_data["date"] == "01/06/2023"
 
 
-def test_resource_table_row_data_with_no_last_modified():
+def test_resource_table_row_data_with_no_last_modified_uses_created():
     resource = {**base_resource, "last_modified": None, "created": "1999-01-01T12:00:00"}
 
     row_data = resource_table_row_data(resource, document_id, document_name)
@@ -62,7 +62,7 @@ def test_resource_table_row_data_with_no_last_modified():
     assert row_data["date"] == "01/01/1999"
 
 
-def test_resource_table_row_data_with_no_size():
+def test_resource_table_row_data_with_no_size_returns_none():
     resource = {**base_resource, "size": None}
 
     row_data = resource_table_row_data(resource, document_id, document_name)
@@ -70,7 +70,7 @@ def test_resource_table_row_data_with_no_size():
     assert row_data["file_size"] is None
 
 
-def test_resource_table_format_with_non_csv():
+def test_resource_table_row_data_with_non_csv_format_has_no_preview():
     resource = {**base_resource, "format": "pdf"}
 
     row_data = resource_table_row_data(resource, document_id, document_name)
