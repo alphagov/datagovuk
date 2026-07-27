@@ -1,7 +1,6 @@
 import itertools
 import json
 import logging
-import re
 from dataclasses import dataclass, field
 
 import pysolr
@@ -80,7 +79,7 @@ def _get_filters(filters):
             )
 
     if filters.get("open_government_licence_only") is True:
-        ogl_ids = ("uk-ogl", re.compile(r"OGL-UK-.*").pattern, "ogl")
+        ogl_ids = ("uk-ogl", "OGL-UK-*", "ogl")
         ogl_filter_value = " ".join(ogl_ids)
         solr_filters.append(f"license_id:({ogl_filter_value})")
 
