@@ -15,3 +15,26 @@
   ) }}
   {# djlint:on #}
 {% endmacro %}
+
+{% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect -%}
+{% macro datagovukSelect(params) -%}
+  {%- set labelClasses = ("datagovuk-label " ~ params.label.classes) if params.label and params.label.classes else "datagovuk-label" %}
+  {%- set formGroupClasses = ("datagovuk-form-group " ~ params.formGroup.classes) if params.formGroup and params.formGroup.classes else "datagovuk-form-group" %}
+  {%- set errorMessageClasses = ("datagovuk-error-message " ~ params.errorMessage.classes) if params.errorMessage and params.errorMessage.classes else "datagovuk-error-message" %}
+  {%- set classes = ("datagovuk-input " ~ params.classes) if params.classes else "datagovuk-input" %}
+  {%- set items = [] %}
+  {% for value, label in params.choices %}
+    {% set _ = items.append({"text": label, "value": value}) %}
+  {% endfor %}
+
+  {# djlint:off #}
+  {{ govukSelect(
+      params
+      |combine({"label": {"classes": labelClasses }})
+      |combine({"formGroup": {"classes": formGroupClasses}})
+      |combine({"errorMessage": {"classes": errorMessageClasses}} if params.errorMessage else {})
+      |combine({"classes": classes})
+      |combine({"items": items})
+  ) }}
+  {# djlint:on #}
+{% endmacro %}
