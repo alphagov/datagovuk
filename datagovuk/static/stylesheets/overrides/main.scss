@@ -182,3 +182,31 @@
   }
 
 }
+
+/*
+  Forms..
+*/
+.datagovuk-label {
+  font-family: 'Inter', sans-serif;
+}
+
+.datagovuk-input {
+  padding: 20px 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.datagovuk-select {
+  padding: 20px 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+}
+
+.datagovuk-checkboxes .govuk-checkboxes__input {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 10px;
+}

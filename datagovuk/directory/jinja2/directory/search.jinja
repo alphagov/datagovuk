@@ -6,69 +6,76 @@
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
-    <form method="get">
-      {# djlint:off #}
-      {{ datagovukInput({
-        "label": {
-          "text": form.query.label,
-        },
-        "name": form.query.name,
-        "value": form.query.value() ,
-        "errorMessage": {"html": form.query.errors} if form.query.errors else None,
-      }) }}
-      {{ datagovukSelect({
-        "label": {
-          "text": form.publisher.label,
-        },
-        "name": form.publisher.name,
-        "value": form.publisher.value(),
-        "choices": form.publisher.field.choices,
-        "errorMessage": {"html": form.publisher.errors} if form.publisher.errors else None,
-      }) }}
-      {{ datagovukSelect({
-        "label": {
-          "text": form.topic.label,
-        },
-        "name": form.topic.name,
-        "value": form.topic.value(),
-        "choices": form.topic.field.choices,
-        "errorMessage": {"html": form.topic.errors} if form.topic.errors else None,
-      }) }}
-      {{ datagovukSelect({
-        "label": {
-          "text": form.format.label,
-        },
-        "name": form.format.name,
-        "value": form.format.value(),
-        "choices": form.format.field.choices,
-        "errorMessage": {"html": form.format.errors} if form.format.errors else None,
-      }) }}
-      {{ datagovukCheckboxes({
-          "name": form.open_government_licence_only.name,
-          "items": [
-            {
-              "value": "on",
-              "checked": true if form.open_government_licence_only.value() else false,
-              "text": form.open_government_licence_only.label,
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-third">
+        <form method="get">
+          {# djlint:off #}
+          {{ datagovukInput({
+            "label": {
+              "text": form.query.label,
             },
-          ]
-      }) }}
-      {# djlint:on #}
-      {{ datagovukButton({"text": "Search"}) }}
-    </form>
-    {% if results %}
-      Hits: {{ results.hits }}
-      {% for result in results %}
-        <p>
-          <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"
-             class="govuk-link datagovuk-link">{{ result.title }}</a>
-          <br />
-          Publisher: {{ result.organization }}
-          <br />
-          Topic: {{ result["extras_theme-primary"]|default("Not set") }}
+            "name": form.query.name,
+            "value": form.query.value() ,
+            "errorMessage": {"html": form.query.errors} if form.query.errors else None,
+          }) }}
+          <h2 class="govuk-heading-s datagovuk-heading-s">Filters</h2>
+          {{ datagovukSelect({
+            "label": {
+              "text": form.publisher.label,
+            },
+            "name": form.publisher.name,
+            "value": form.publisher.value(),
+            "choices": form.publisher.field.choices,
+            "errorMessage": {"html": form.publisher.errors} if form.publisher.errors else None,
+          }) }}
+          {{ datagovukSelect({
+            "label": {
+              "text": form.topic.label,
+            },
+            "name": form.topic.name,
+            "value": form.topic.value(),
+            "choices": form.topic.field.choices,
+            "errorMessage": {"html": form.topic.errors} if form.topic.errors else None,
+          }) }}
+          {{ datagovukSelect({
+            "label": {
+              "text": form.format.label,
+            },
+            "name": form.format.name,
+            "value": form.format.value(),
+            "choices": form.format.field.choices,
+            "errorMessage": {"html": form.format.errors} if form.format.errors else None,
+          }) }}
+          {{ datagovukCheckboxes({
+              "name": form.open_government_licence_only.name,
+              "items": [
+                {
+                  "value": "on",
+                  "checked": true if form.open_government_licence_only.value() else false,
+                  "text": form.open_government_licence_only.label,
+                },
+              ]
+          }) }}
+          {# djlint:on #}
+          {{ datagovukButton({"text": "Search"}) }}
+        </form>
+      </div>
+      <div class="govuk-grid-column-two-thirds">
+        {% if results %}
+          Hits: {{ results.hits }}
+          {% for result in results %}
+            <p>
+              <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"
+                 class="govuk-link datagovuk-link">{{ result.title }}</a>
+              <br />
+              Publisher: {{ result.organization }}
+              <br />
+              Topic: {{ result["extras_theme-primary"]|default("Not set") }}
 
-        </p>
-      {% endfor %}
-    {% endif %}
+            </p>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
   </div>
 {% endblock main %}
