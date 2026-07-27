@@ -218,6 +218,7 @@ TEMPLATES = [
             ],
             "extensions": [
                 "compressor.contrib.jinja2ext.CompressorExtension",
+                "jinja2.ext.do",
             ],
         },
     },

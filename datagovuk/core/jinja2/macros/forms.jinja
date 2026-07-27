@@ -46,8 +46,10 @@
   {%- set errorMessageClasses = ("datagovuk-error-message " ~ params.errorMessage.classes) if params.errorMessage and params.errorMessage.classes else "datagovuk-error-message" %}
   {%- set classes = ("datagovuk-checkboxes " ~ params.classes) if params.classes else "datagovuk-checkboxes" %}
   {%- set items = [] %}
-  {% for value, label in params.choices %}
-    {% set _ = items.append({"text": label, "value": value}) %}
+  {% for item in params["items"] %}
+    {% set updated_item = item.copy() %}
+    {% do updated_item.update({"label": {"classes": "datagovuk-label"}}) %}
+    {% do items.append(updated_item) %}
   {% endfor %}
 
   {# djlint:off #}
@@ -57,6 +59,7 @@
       |combine({"formGroup": {"classes": formGroupClasses}})
       |combine({"errorMessage": {"classes": errorMessageClasses}} if params.errorMessage else {})
       |combine({"classes": classes})
+      |combine({"items": items})
   ) }}
   {# djlint:on #}
 {% endmacro %}
