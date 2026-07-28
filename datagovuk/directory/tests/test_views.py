@@ -183,6 +183,109 @@ class TestSearchView:
             "Ensure this value has at most 256 characters (it has 1000).",
         ]
 
+    def test_search_view_facets_reduce_with_filtering(self, client, solr_doc_factory, search_url):
+        doc_1 = solr_doc_factory(
+            organization="some-other-publisher",
+        )
+        doc_2 = solr_doc_factory(
+            organization="my-publisher",
+        )
+        doc_3 = solr_doc_factory(
+            organization="my-publisher",
+            topic="Environment",
+        )
+        doc_4 = solr_doc_factory(
+            organization="my-publisher",
+            topic="Business and economy",
+            res_format=["JSON"],
+        )
+        doc_5 = solr_doc_factory(
+            organization="my-publisher",
+            topic="Environment",
+            res_format=["CSV", "JSON"],
+        )
+        doc_6 = solr_doc_factory(
+            organization="my-publisher",
+            topic="Environment",
+            res_format=["CSV", "JSON", "XLS"],
+        )
+
+        # Firstly search for all records...
+        response = client.get(search_url, {"q": ""})
+        assert [doc["id"] for doc in response.context_data["results"].docs] == [
+            doc_1["id"],
+            doc_2["id"],
+            doc_3["id"],
+            doc_4["id"],
+            doc_5["id"],
+            doc_6["id"],
+        ]
+        assert response.context_data["form"].fields["publisher"].choices == [
+            ("", ""),
+            ("My publisher", "My publisher"),
+            ("Some other publisher", "Some other publisher"),
+        ]
+        assert response.context_data["form"].fields["topic"].choices == [
+            ("", ""),
+            ("Environment", "Environment"),
+            ("Business and economy", "Business and economy"),
+        ]
+        assert response.context_data["form"].fields["format"].choices == [
+            ("", ""),
+            ("JSON", "JSON"),
+            ("CSV", "CSV"),
+            ("XLS", "XLS"),
+        ]
+
+        # Next filter by publisher...
+        response = client.get(search_url, {"q": "", "publisher": "My publisher"})
+        assert [doc["id"] for doc in response.context_data["results"].docs] == [
+            doc_2["id"],
+            doc_3["id"],
+            doc_4["id"],
+            doc_5["id"],
+            doc_6["id"],
+        ]
+        assert response.context_data["form"].fields["publisher"].choices == [("", ""), ("My publisher", "My publisher")]
+        assert response.context_data["form"].fields["topic"].choices == [
+            ("", ""),
+            ("Environment", "Environment"),
+            ("Business and economy", "Business and economy"),
+        ]
+        assert response.context_data["form"].fields["format"].choices == [
+            ("", ""),
+            ("JSON", "JSON"),
+            ("CSV", "CSV"),
+            ("XLS", "XLS"),
+        ]
+
+        # Next filter by publisher and topic...
+        response = client.get(search_url, {"q": "", "publisher": "My publisher", "topic": "Environment"})
+        assert [doc["id"] for doc in response.context_data["results"].docs] == [doc_3["id"], doc_5["id"], doc_6["id"]]
+        assert response.context_data["form"].fields["publisher"].choices == [("", ""), ("My publisher", "My publisher")]
+        assert response.context_data["form"].fields["topic"].choices == [("", ""), ("Environment", "Environment")]
+        assert response.context_data["form"].fields["format"].choices == [
+            ("", ""),
+            ("CSV", "CSV"),
+            ("JSON", "JSON"),
+            ("XLS", "XLS"),
+        ]
+
+        # Next filter by publisher, topic and format...
+        response = client.get(
+            search_url,
+            {"q": "", "publisher": "My publisher", "topic": "Environment", "format": "XLS"},
+        )
+        assert [doc["id"] for doc in response.context_data["results"].docs] == [doc_6["id"]]
+        assert response.context_data["form"].fields["publisher"].choices == [("", ""), ("My publisher", "My publisher")]
+        assert response.context_data["form"].fields["topic"].choices == [("", ""), ("Environment", "Environment")]
+        assert response.context_data["form"].fields["format"].choices == [
+            ("", ""),
+            ("CSV", "CSV"),
+            ("JSON", "JSON"),
+            ("XLS", "XLS"),
+        ]
+
 
 class TestDatasetView:
     def test_view_existing_dataset_returns_ok(self, client, mock_solr_client, mock_solr_results_factory):

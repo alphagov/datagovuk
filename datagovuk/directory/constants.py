@@ -25,6 +25,36 @@ class TopicChoices(models.TextChoices):
     TRANSPORT = "Transport", "Transport"
 
 
+TOPICS = {
+    TopicChoices.BUSINESS_AND_ECONOMY: ["busi", "businessandeconomi", "economi"],
+    TopicChoices.CRIME_AND_JUSTICE: ["crime", "crimeandjustic", "justic"],
+    TopicChoices.DEFENCE: ["defenc"],
+    TopicChoices.DIGITAL_SERVICES_PERFORMANCE: [
+        "digit",
+        "digitalservicesperform",
+        "perform",
+        "servic",
+    ],
+    TopicChoices.EDUCATION: ["educ"],
+    TopicChoices.ENVIRONMENT: ["environ"],
+    TopicChoices.GOVERNMENT: ["govern"],
+    TopicChoices.GOVERNMENT_REFERENCE_DATA: [
+        "data",
+        "governmentreferencedata",
+        "refer",
+    ],
+    TopicChoices.GOVERNMENT_SPENDING: ["governmentspend", "spend"],
+    TopicChoices.HEALTH: ["health"],
+    TopicChoices.MAPPING: ["map"],
+    TopicChoices.SOCIETY: ["societi"],
+    TopicChoices.TOWNS_AND_CITIES: ["city", "town", "townsandc"],
+    TopicChoices.TRANSPORT: ["transport"],
+}
+
+
+TOPICS_BY_SOLR_ALIAS = {alias: choice for choice, aliases in TOPICS.items() for alias in aliases}
+
+
 class FormatChoices(models.TextChoices):
     NONE = "", ""
     CSV = "CSV", "CSV"
