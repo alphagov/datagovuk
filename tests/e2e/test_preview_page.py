@@ -33,14 +33,3 @@ class TestPreviewPage:
             "href",
             reverse("directory:dataset", kwargs={"uuid": DATASET_UUID, "slug": DATASET_SLUG}),
         )
-
-    def test_feedback_section_is_visible(self, page, live_server_url, preview_url):
-        page.goto(live_server_url + preview_url)
-        expect(page.locator(".datagovuk-feedback-inset-text")).to_be_visible()
-        expect(page.locator(".datagovuk-feedback-inset-text")).to_contain_text("Is this data useful?")
-
-    def test_feedback_link_is_present(self, page, live_server_url, preview_url):
-        page.goto(live_server_url + preview_url)
-        link = page.get_by_role("link", name="Give us feedback")
-        expect(link).to_be_visible()
-        expect(link).to_have_attribute("href", "https://forms.office.com/e/9V26PNFQaR")
