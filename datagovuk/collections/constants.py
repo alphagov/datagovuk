@@ -44,9 +44,10 @@ BASE_COLLECTIONS = [
     {
         "title": "Government",
         "slug": "government",
-        "description": "Election results, local government finance, Council Tax",
+        "description": "Elections and legislation, finance and performance, Council Tax",
         "topics": [
             {"title": "Election results", "slug": "election-results"},
+            {"title": "Legislation", "slug": "legislation"},
             {"title": "Service assessment reports", "slug": "service-assessment-reports"},
             {"title": "Local government finance", "slug": "local-government-finance"},
             {"title": "Council tax statistics", "slug": "council-tax-statistics"},
