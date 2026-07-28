@@ -1,4 +1,5 @@
 import json
+import math
 
 from django.http import Http404
 from django.urls import reverse
@@ -6,7 +7,7 @@ from django.views.generic import TemplateView
 from ordered_set import OrderedSet
 
 from datagovuk.core.utils import build_table_data
-from datagovuk.core.views import GETFormView
+from datagovuk.core.views import GETFormView, PaginationMixin
 
 from .constants import FORMATS_BY_FORMAT_VALUE, TOPICS_BY_SOLR_ALIAS, FormatChoices, TopicChoices
 from .forms import SearchForm
@@ -15,7 +16,7 @@ from .solr import SolrDatafile, SolrDataset, get_organisations_by_title, get_sol
 from .utils import resource_table_row_data
 
 
-class SearchView(GETFormView):
+class SearchView(GETFormView, PaginationMixin):
     template_name = "directory/search.jinja"
     form_class = SearchForm
 
@@ -96,12 +97,14 @@ class SearchView(GETFormView):
 
     def get_context_data(self, query=None, filters=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        page = int(self.request.GET.get("page", 1))
+        rows_per_page = 20
         if query is not None:
             results = search(
                 query=query,
                 filters=filters,
-                start=0,
-                rows=20,
+                start=((page - 1) * rows_per_page),
+                rows=rows_per_page,
             )
             if results.hits > 0:
                 # If we have results, re-initialise the form now that we know what facets should be shown
@@ -112,6 +115,8 @@ class SearchView(GETFormView):
                 form = self.form_class(**form_kwargs)
                 context["form"] = form
             context["results"] = results
+            total_pages = math.ceil(results.hits / rows_per_page)
+            context["pages"] = self.get_govuk_pagination(page, total_pages)
         return context
 
 

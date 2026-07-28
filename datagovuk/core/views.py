@@ -39,6 +39,76 @@ class GETFormView(FormView):
         return super().get(request, *args, **kwargs)
 
 
+class PaginationMixin:
+    """
+    Helper mixin to generate GOV.UK Design System pagination dictionaries.
+    """
+
+    SHOW_ALL_PAGES_THRESHOLD = 7
+    FIRST_PAGES_THRESHOLD = 4
+    LAST_PAGES_THRESHOLD = 4
+    _ellipsis = "ellipsis"
+
+    def build_page_url(self, page_num: int) -> str:
+        query_params = self.request.GET.copy()
+        query_params["page"] = page_num
+        return f"{self.request.path}?{query_params.urlencode()}"
+
+    def get_page_sequence(self, page: int, total_pages: int) -> list:
+        show_all_pages = total_pages < self.SHOW_ALL_PAGES_THRESHOLD
+        if show_all_pages:
+            return list(range(1, total_pages + 1))
+
+        page_within_first_pages = page < self.FIRST_PAGES_THRESHOLD
+        if page_within_first_pages:
+            return [*range(1, (self.FIRST_PAGES_THRESHOLD + 1)), self._ellipsis, total_pages]
+
+        page_within_last_pages = page > (total_pages - self.LAST_PAGES_THRESHOLD)
+        if page_within_last_pages:
+            return [1, self._ellipsis, *range(total_pages - (self.LAST_PAGES_THRESHOLD - 1), total_pages + 1)]
+
+        # Otherwise the page is somewhere in the middle..
+        return [1, self._ellipsis, page - 1, page, page + 1, self._ellipsis, total_pages]
+
+    def get_govuk_pagination(
+        self,
+        page: int,
+        total_pages: int,
+    ) -> dict:
+        """
+        Builds a dict compatible with `govukPagination` macro.
+        """
+        if total_pages <= 1:
+            return {}
+
+        items = []
+        for item in self.get_page_sequence(page, total_pages):
+            if item is self._ellipsis:
+                items.append({"ellipsis": True})
+            else:
+                data = {
+                    "number": item,
+                    "href": self.build_page_url(item),
+                }
+                if item == page:
+                    data["current"] = True
+                items.append(data)
+
+        pagination = {"items": items}
+
+        # Navigation controls
+        show_previous = page > 1
+        if show_previous:
+            pagination["previous"] = {
+                "href": self.build_page_url(page - 1),
+            }
+        show_next = page < total_pages
+        if show_next:
+            pagination["next"] = {"href": self.build_page_url(page + 1)}
+
+        return pagination
+
+
 @requires_csrf_token
 def server_error(request, template_name="500.html"):
     """
