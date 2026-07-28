@@ -1,14 +1,12 @@
 ---
 title: Legislation
 websites:
-  - url: https://www.gov.uk/government/collections/legislation
-    link-text: Legislation
+  - url: https://www.legislation.gov.uk/
+    link-text: Search legislation
 api:
-  - url: https://legislation.github.io/data-documentation/api/overview.html
+    url: https://legislation.github.io/data-documentation/api/overview.html
     link-text: Legislation API documentation
 dataset:
- - url: https://www.legislation.gov.uk/
-   link-text: Search legislation
 page-last-updated: "2026-07-28"
 visualisation-data:
 contact:
