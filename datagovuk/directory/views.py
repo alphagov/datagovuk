@@ -43,7 +43,6 @@ class SearchView(GETFormView):
     def get_form_kwargs(self, *args, **kwargs):
         form_kwargs = super().get_form_kwargs(*args, **kwargs)
         publisher_choices = [(title, title) for title in get_organisations_by_title()]
-        publisher_choices.insert(0, ["", ""])
         return {
             "publisher_choices": publisher_choices,
             **form_kwargs,
@@ -61,13 +60,19 @@ class SearchView(GETFormView):
             facet_key: filter(lambda value: isinstance(value, str), facet_value)
             for facet_key, facet_value in facets.items()
         }
+
+        # organisations facet
         all_organisations_by_slug = {slug: title for title, slug in get_organisations_by_title().items()}
         facet_titles = [
             all_organisations_by_slug[slug] for slug in facets["organization"] if slug in all_organisations_by_slug
         ]
         publisher_choices = [(title, title) for title in facet_titles]
+
+        # topics facet
         facet_topics = [topic.replace("-", " ").capitalize() for topic in facets["extras_theme-primary"]]
         topic_choices = [(topic, topic) for topic in facet_topics]
+
+        # format facet
         facet_formats = set()
         for facet_value in facets["res_format"]:
             if facet_value not in FORMATS_BY_FORMAT_VALUE:
