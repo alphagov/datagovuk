@@ -43,7 +43,7 @@ class FormatChoices(models.TextChoices):
     OTHER = "OTHER", "Other"
 
 
-FORMAT_MAPPINGS = {
+FORMATS = {
     FormatChoices.CSV: [
         "CSV",
         ".csv",
@@ -78,4 +78,4 @@ FORMAT_MAPPINGS = {
     ],
 }
 
-FORMATS_BY_FORMAT_VALUE = {alias: choice for choice, aliases in FORMAT_MAPPINGS.items() for alias in aliases}
+FORMATS_BY_FORMAT_VALUE = {alias: choice for choice, aliases in FORMATS.items() for alias in aliases}

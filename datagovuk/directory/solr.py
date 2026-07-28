@@ -9,7 +9,7 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.text import slugify
 
-from .constants import FORMAT_MAPPINGS, FormatChoices
+from .constants import FORMATS, FormatChoices
 
 ORGANISATIONS_LIMIT = 6000
 
@@ -69,11 +69,11 @@ def _get_filters(filters):
         file_format = filters["format"]
         if file_format == FormatChoices.OTHER:
             solr_filters.extend(
-                [f'-res_format:"{f}"' for f in list(itertools.chain.from_iterable(FORMAT_MAPPINGS.values()))],
+                [f'-res_format:"{f}"' for f in list(itertools.chain.from_iterable(FORMATS.values()))],
             )
-        elif file_format in FORMAT_MAPPINGS:
+        elif file_format in FORMATS:
             solr_filters.append(
-                " OR ".join(f'res_format:"{f}"' for f in FORMAT_MAPPINGS[file_format]),
+                " OR ".join(f'res_format:"{f}"' for f in FORMATS[file_format]),
             )
 
     if filters.get("open_government_licence_only") is True:
