@@ -3,11 +3,12 @@ import json
 from django.http import Http404
 from django.urls import reverse
 from django.views.generic import TemplateView
+from ordered_set import OrderedSet
 
 from datagovuk.core.utils import build_table_data
 from datagovuk.core.views import GETFormView
 
-from .constants import FORMATS_BY_FORMAT_VALUE, FormatChoices
+from .constants import FORMATS_BY_FORMAT_VALUE, TOPICS_BY_SOLR_ALIAS, FormatChoices, TopicChoices
 from .forms import SearchForm
 from .preview_utils import fetch_csv
 from .solr import SolrDatafile, SolrDataset, get_organisations_by_title, get_solr_client, search
@@ -69,17 +70,23 @@ class SearchView(GETFormView):
         publisher_choices = [(title, title) for title in facet_titles]
 
         # topics facet
-        facet_topics = [topic.replace("-", " ").capitalize() for topic in facets["extras_theme-primary"]]
-        topic_choices = [(topic, topic) for topic in facet_topics]
+        facet_topics = OrderedSet()
+        for facet_value in facets["extras_theme-primary"]:
+            if facet_value not in TOPICS_BY_SOLR_ALIAS:
+                continue
+            facet_topics.add(TOPICS_BY_SOLR_ALIAS[facet_value])
+        topic_choices = [(topic, topic) for topic in facet_topics if topic in TopicChoices]
 
         # format facet
-        facet_formats = set()
+        facet_formats = OrderedSet()
         for facet_value in facets["res_format"]:
             if facet_value not in FORMATS_BY_FORMAT_VALUE:
                 facet_formats.add("OTHER")
                 continue
             facet_formats.add(FORMATS_BY_FORMAT_VALUE[facet_value])
-        format_choices = [(choice[0], choice[1]) for choice in FormatChoices.choices if choice[0] in facet_formats]
+        format_choices = [
+            (format_value, format_value) for format_value in facet_formats if format_value in FormatChoices
+        ]
 
         return {
             "publisher_choices": publisher_choices,
