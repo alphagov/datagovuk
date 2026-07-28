@@ -10,21 +10,24 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
 
-          <a href="{{ back_link }}" class="govuk-back-link govuk-link datagovuk-link">Back to dataset</a>
+          <a href="{{ back_link }}" class="govuk-back-link govuk-link datagovuk-link govuk-!-margin-bottom-4">Back to dataset</a>
 
-          <h1 class="datagovuk-heading-xl govuk-heading-xl govuk-!-margin-bottom-8">
-            {{ dataset.title }}
-            <span class="datagovuk-body">{{ datafile.name }}</span>
-          </h1>
+          <h1 class="datagovuk-heading-xl govuk-heading-xl govuk-!-margin-bottom-4">{{ dataset.title }}</h1>
+
+          <p class="govuk-body datagovuk-body govuk-!-margin-bottom-8">{{ datafile.name }}</p>
 
           {% if preview_exists %}
-            <p class="govuk-body datagovuk-body">You're previewing the first {{ preview_rows }} rows of this file.</p>
+            <p class="govuk-body datagovuk-body govuk-!-margin-bottom-8">
+              You're previewing the first {{ preview_rows }} rows of this file.
+            </p>
 
             <a href="{{ datafile.url }}"
-               class="govuk-button datagovuk-button"
+               class="govuk-button datagovuk-button govuk-!-margin-bottom-8"
                data-ga-event="preview-download"
                data-ga-format="CSV"
-               data-ga-publisher="{{ dataset.organisation_name }}">Download the CSV</a>
+               data-ga-publisher="{{ dataset.organisation_name }}">Download the CSV
+              <img src="{{ static('images/download.svg') }}" alt="Download" />
+            </a>
           {% else %}
             <p class="govuk-body datagovuk-body">Currently there is no preview available for "{{ datafile.name }}".</p>
           {% endif %}
