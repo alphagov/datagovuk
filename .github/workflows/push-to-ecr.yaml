@@ -18,6 +18,7 @@ env:
   APP_NAME: datagovuk
   AWS_REGION: eu-west-2
   GHCR_IMAGE: ghcr.io/alphagov/datagovuk
+  ECS_CLUSTER_INTEGRATION: integration
 
 jobs:
   push_to_integration:
@@ -54,6 +55,38 @@ jobs:
           crane copy \
             ${{ env.GHCR_IMAGE }}:${{ steps.resolve-sha.outputs.image_sha }} \
             ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ steps.resolve-sha.outputs.image_sha }}
+
+      - name: Download current task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition ${{ env.APP_NAME }} \
+            --region ${{ env.AWS_REGION }} \
+            --query 'taskDefinition' \
+            --output json | \
+          python3 -c "
+import sys, json
+td = json.load(sys.stdin)
+for k in ['taskDefinitionArn','revision','status','requiresAttributes',
+          'compatibilities','registeredAt','registeredBy','deregisteredAt']:
+    td.pop(k, None)
+print(json.dumps(td))
+" > task-definition.json
+
+      - name: Update task definition with new image
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: app
+          image: ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ steps.resolve-sha.outputs.image_sha }}
+
+      - name: Deploy to integration ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
+          service: ${{ env.APP_NAME }}
+          cluster: ${{ env.ECS_CLUSTER_INTEGRATION }}
+          wait-for-service-stability: false
 
   promote_to_staging:
     name: Promote to staging ECR
