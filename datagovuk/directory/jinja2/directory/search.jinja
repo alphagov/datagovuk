@@ -5,6 +5,7 @@
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput -%}
 {% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect -%}
 {% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes -%}
+{% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination -%}
 
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
@@ -82,9 +83,8 @@
 
             </p>
           {% endfor %}
-          {% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination %}
 
-          {% if pages %}{{ govukPagination(pages) }}{% endif %}
+          {% if pages %}{{ govukPagination(dict(pages, classes="datagovuk-pagination")) }}{% endif %}
 
         {% endif %}
       </div>
