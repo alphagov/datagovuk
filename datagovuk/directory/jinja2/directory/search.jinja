@@ -70,6 +70,7 @@
       <div class="govuk-grid-column-two-thirds">
         {% if results %}
           Hits: {{ results.hits }}
+          <br />
           {% for result in results %}
             <p>
               <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"
@@ -81,6 +82,10 @@
 
             </p>
           {% endfor %}
+          {% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination %}
+
+          {% if pages %}{{ govukPagination(pages) }}{% endif %}
+
         {% endif %}
       </div>
     </div>
