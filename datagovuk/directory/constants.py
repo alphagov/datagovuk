@@ -25,6 +25,10 @@ class TopicChoices(models.TextChoices):
     TRANSPORT = "Transport", "Transport"
 
 
+# Unfortunately this odd looking mapping is necessary because of the way our
+# solr instance returns facets for topics.  This is probably because the topic field
+# (extras_theme-primary) does not have a solr schema - so solr is doing some term
+# stemming
 TOPICS = {
     TopicChoices.BUSINESS_AND_ECONOMY: ["busi", "businessandeconomi", "economi"],
     TopicChoices.CRIME_AND_JUSTICE: ["crime", "crimeandjustic", "justic"],
