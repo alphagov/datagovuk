@@ -1,94 +1,92 @@
-{% extends "base.jinja" %}
+{% extends "directory/base.jinja" %}
 
 {% set page_title = "Dataset" %}
 
-{% block main %}
-  <div class="govuk-width-container datagovuk-width-container">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl datagovuk-heading-xl">{{ title }}</h1>
-        <dl class="govuk-summary-list">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Published by</dt>
-            <dd class="govuk-summary-list__value">
-              {{ organization_title }}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Last updated</dt>
-            <dd class="govuk-summary-list__value">
-              {{ metadata_modified }}
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Topic</dt>
-            <dd class="govuk-summary-list__value">
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Licence</dt>
-            <dd class="govuk-summary-list__value">
-            </dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Summary</dt>
-            <dd class="govuk-summary-list__value">
-              {{ notes }}
-            </dd>
-          </div>
-        </dl>
-        <h2 class="govuk-heading-l datagovuk-heading-l">Data links</h2>
-        {% if resources %}
-          <div class="govuk-!-margin-bottom-8">
-            <div class="datagovuk-table-container" tabindex="0" role="region">
-              <table class="govuk-table datagovuk-table">
-                <thead class="govuk-table__head datagovuk-table__head">
+{% block search_main %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl datagovuk-heading-xl">{{ title }}</h1>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Published by</dt>
+          <dd class="govuk-summary-list__value">
+            {{ organization_title }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Last updated</dt>
+          <dd class="govuk-summary-list__value">
+            {{ metadata_modified }}
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Topic</dt>
+          <dd class="govuk-summary-list__value">
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Licence</dt>
+          <dd class="govuk-summary-list__value">
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">Summary</dt>
+          <dd class="govuk-summary-list__value">
+            {{ notes }}
+          </dd>
+        </div>
+      </dl>
+      <h2 class="govuk-heading-l datagovuk-heading-l">Data links</h2>
+      {% if resources %}
+        <div class="govuk-!-margin-bottom-8">
+          <div class="datagovuk-table-container" tabindex="0" role="region">
+            <table class="govuk-table datagovuk-table">
+              <thead class="govuk-table__head datagovuk-table__head">
+                <tr class="govuk-table__row">
+                  <th scope="col" class="govuk-table__header datagovuk-table__header govuk-body datagovuk-body">Link</th>
+                  <th scope="col"
+                      class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
+                    Format
+                  </th>
+                  <th scope="col"
+                      class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
+                    Preview
+                  </th>
+                  <th scope="col"
+                      class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
+                    Last updated
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="govuk-table__body">
+                {% for resource in resources %}
                   <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header datagovuk-table__header govuk-body datagovuk-body">Link</th>
-                    <th scope="col"
-                        class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
-                      Format
-                    </th>
-                    <th scope="col"
-                        class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
-                      Preview
-                    </th>
-                    <th scope="col"
-                        class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
-                      Last updated
-                    </th>
+                    <td class="govuk-table__cell datagovuk-table__cell govuk-body datagovuk-body">
+                      <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name }}</a>
+                      {% if resource.file_size %}({{ resource.file_size }}){% endif %}
+                    </td>
+                    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
+                      {{ resource.format }}
+                    </td>
+                    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
+                      {% if resource.is_csv %}
+                        <a href="{{ resource.preview_url }}" class="govuk-link datagovuk-link">Preview</a>
+                      {% else %}
+                        Not available
+                      {% endif %}
+                    </td>
+                    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
+                      {{ resource.date }}
+                    </td>
                   </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                  {% for resource in resources %}
-                    <tr class="govuk-table__row">
-                      <td class="govuk-table__cell datagovuk-table__cell govuk-body datagovuk-body">
-                        <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name }}</a>
-                        {% if resource.file_size %}({{ resource.file_size }}){% endif %}
-                      </td>
-                      <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-                        {{ resource.format }}
-                      </td>
-                      <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-                        {% if resource.is_csv %}
-                          <a href="{{ resource.preview_url }}" class="govuk-link datagovuk-link">Preview</a>
-                        {% else %}
-                          Not available
-                        {% endif %}
-                      </td>
-                      <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-                        {{ resource.date }}
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
-        {% else %}
-          <p class="govuk-body datagovuk-body">This data hasn’t been released by the publisher.</p>
-        {% endif %}
-      </div>
+        </div>
+      {% else %}
+        <p class="govuk-body datagovuk-body">This data hasn’t been released by the publisher.</p>
+      {% endif %}
     </div>
   </div>
-{% endblock main %}
+{% endblock search_main %}
