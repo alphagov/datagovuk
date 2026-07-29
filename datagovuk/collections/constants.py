@@ -111,6 +111,7 @@ BASE_COLLECTIONS = [
             {"title": "Road traffic", "slug": "road-traffic"},
             {"title": "Road safety", "slug": "road-safety"},
             {"title": "Road conditions", "slug": "road-conditions"},
+            {"title": "Public transport stations and stops", "slug": "public-transport-stations-and-stops"},
             {"title": "Real-time and historic train information", "slug": "real-time-and-historic-train-information"},
             {"title": "Bus statistics", "slug": "bus-statistics"},
             {"title": "MOT test results", "slug": "mot-results"},
