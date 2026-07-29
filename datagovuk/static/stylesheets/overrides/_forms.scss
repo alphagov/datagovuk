@@ -35,6 +35,7 @@
 }
 
 .autocomplete__menu .autocomplete__option:hover, .autocomplete__menu .autocomplete__option--focused {
+  color: #FFF;
   background-color: $datagovuk-green;
   border-color: $datagovuk-green;
 }
