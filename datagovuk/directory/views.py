@@ -8,7 +8,7 @@ from datagovuk.core.utils import build_table_data
 from datagovuk.core.views import GETFormView
 
 from .forms import SearchForm
-from .preview_utils import build_table_data, fetch_csv
+from .preview_utils import fetch_csv
 from .solr import SolrDatafile, SolrDataset, get_organisations_by_title, get_solr_client, search
 from .utils import resource_table_row_data
 
