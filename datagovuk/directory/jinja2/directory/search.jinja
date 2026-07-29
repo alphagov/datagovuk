@@ -1,8 +1,10 @@
 {% extends "base.jinja" %}
 
 {% set page_title = "Search" %}
-{% from "macros/forms.jinja" import datagovukInput, datagovukSelect, datagovukCheckboxes -%}
-{% from "macros/common.jinja" import datagovukButton -%}
+{% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
+{% from "govuk_frontend_jinja/components/input/macro.html" import govukInput -%}
+{% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect -%}
+{% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes -%}
 
 {% block main %}
   <script>
@@ -27,43 +29,47 @@
       <div class="govuk-grid-column-one-third">
         <form method="get">
           {# djlint:off #}
-          {{ datagovukInput({
+          {{ govukInput({
             "label": {
               "text": form.query.label,
             },
             "name": form.query.name,
             "value": form.query.value() ,
             "errorMessage": {"html": form.query.errors} if form.query.errors else None,
+            "formGroup": {"classes": "datagovuk-form-group"},
           }) }}
           <h2 class="govuk-heading-s datagovuk-heading-s">Filters</h2>
-          {{ datagovukSelect({
+          {{ govukSelect({
             "label": {
               "text": form.publisher.label,
             },
             "name": form.publisher.name,
             "value": form.publisher.value(),
-            "choices": form.publisher.field.choices,
+            "items": form.publisher.field.choices|to_govuk_items,
             "errorMessage": {"html": form.publisher.errors} if form.publisher.errors else None,
+            "formGroup": {"classes": "datagovuk-form-group"},
           }) }}
-          {{ datagovukSelect({
+          {{ govukSelect({
             "label": {
               "text": form.topic.label,
             },
             "name": form.topic.name,
             "value": form.topic.value(),
-            "choices": form.topic.field.choices,
+            "items": form.topic.field.choices|to_govuk_items,
             "errorMessage": {"html": form.topic.errors} if form.topic.errors else None,
+            "formGroup": {"classes": "datagovuk-form-group"},
           }) }}
-          {{ datagovukSelect({
+          {{ govukSelect({
             "label": {
               "text": form.format.label,
             },
             "name": form.format.name,
             "value": form.format.value(),
-            "choices": form.format.field.choices,
+            "items": form.format.field.choices|to_govuk_items,
             "errorMessage": {"html": form.format.errors} if form.format.errors else None,
+            "formGroup": {"classes": "datagovuk-form-group"},
           }) }}
-          {{ datagovukCheckboxes({
+          {{ govukCheckboxes({
               "name": form.open_government_licence_only.name,
               "items": [
                 {
@@ -71,10 +77,11 @@
                   "checked": true if form.open_government_licence_only.value() else false,
                   "text": form.open_government_licence_only.label,
                 },
-              ]
+              ],
+              "formGroup": {"classes": "datagovuk-form-group"},
           }) }}
           {# djlint:on #}
-          {{ datagovukButton({"text": "Apply filters"}) }}
+          {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button"}) }}
         </form>
       </div>
       <div class="govuk-grid-column-two-thirds">
