@@ -1,19 +1,21 @@
-.datagovuk-label {
-  font-family: 'Inter', sans-serif;
-}
+.datagovuk-form-group {
+  .govuk-label {
+    font-family: 'Inter', sans-serif;
+  }
 
-.datagovuk-input, .autocomplete__input.datagovuk-input {
-  padding: 20px 20px;
-  border-radius: 10px;
-  font-size: 20px;
-  font-family: 'Inter', sans-serif;
-}
+  .govuk-input, .autocomplete__input.datagovuk-input  {
+    padding: 20px 20px;
+    border-radius: 10px;
+    font-size: 20px;
+    font-family: 'Inter', sans-serif;
+  }
 
-.datagovuk-select {
-  border-radius: 10px;
-  font-size: 20px;
-  font-family: 'Inter', sans-serif;
-  width: 100%;
+  .govuk-select {
+    border-radius: 10px;
+    font-size: 20px;
+    font-family: 'Inter', sans-serif;
+    width: 100%;
+  }
 }
 
 .autocomplete__menu .autocomplete__option:first-of-type {
