@@ -1,101 +1,87 @@
-{% extends "base.jinja" %}
+{% extends "directory/base.jinja" %}
 
 {% set page_title = "Search" %}
 {% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
-{% from "govuk_frontend_jinja/components/input/macro.html" import govukInput -%}
 {% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect -%}
 {% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes -%}
 {% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination -%}
 
-{% block main %}
-  <div class="govuk-width-container datagovuk-width-container">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-one-third">
-        <form method="get">
-          {# djlint:off #}
-          {{ govukInput({
-            "label": {
-              "text": form.query.label,
+{% block search_main %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      {# djlint:off #}
+      <h2 class="govuk-heading-s datagovuk-heading-s">Filters</h2>
+      {{ govukSelect({
+        "label": {
+          "text": form.publisher.label,
+        },
+        "name": form.publisher.name,
+        "value": form.publisher.value(),
+        "items": form.publisher.field.choices|to_govuk_items,
+        "errorMessage": {"html": form.publisher.errors} if form.publisher.errors else None,
+        "formGroup": {"classes": "datagovuk-form-group"},
+      }) }}
+      {{ govukSelect({
+        "label": {
+          "text": form.topic.label,
+        },
+        "name": form.topic.name,
+        "value": form.topic.value(),
+        "items": form.topic.field.choices|to_govuk_items,
+        "errorMessage": {"html": form.topic.errors} if form.topic.errors else None,
+        "formGroup": {"classes": "datagovuk-form-group"},
+      }) }}
+      {{ govukSelect({
+        "label": {
+          "text": form.format.label,
+        },
+        "name": form.format.name,
+        "value": form.format.value(),
+        "items": form.format.field.choices|to_govuk_items,
+        "errorMessage": {"html": form.format.errors} if form.format.errors else None,
+        "formGroup": {"classes": "datagovuk-form-group"},
+      }) }}
+      {{ govukCheckboxes({
+          "name": form.open_government_licence_only.name,
+          "items": [
+            {
+              "value": "on",
+              "checked": true if form.open_government_licence_only.value() else false,
+              "text": form.open_government_licence_only.label,
             },
-            "name": form.query.name,
-            "value": form.query.value() ,
-            "errorMessage": {"html": form.query.errors} if form.query.errors else None,
-            "formGroup": {"classes": "datagovuk-form-group"},
-          }) }}
-          <h2 class="govuk-heading-s datagovuk-heading-s">Filters</h2>
-          {{ govukSelect({
-            "label": {
-              "text": form.publisher.label,
-            },
-            "name": form.publisher.name,
-            "value": form.publisher.value(),
-            "items": form.publisher.field.choices|to_govuk_items,
-            "errorMessage": {"html": form.publisher.errors} if form.publisher.errors else None,
-            "formGroup": {"classes": "datagovuk-form-group"},
-          }) }}
-          {{ govukSelect({
-            "label": {
-              "text": form.topic.label,
-            },
-            "name": form.topic.name,
-            "value": form.topic.value(),
-            "items": form.topic.field.choices|to_govuk_items,
-            "errorMessage": {"html": form.topic.errors} if form.topic.errors else None,
-            "formGroup": {"classes": "datagovuk-form-group"},
-          }) }}
-          {{ govukSelect({
-            "label": {
-              "text": form.format.label,
-            },
-            "name": form.format.name,
-            "value": form.format.value(),
-            "items": form.format.field.choices|to_govuk_items,
-            "errorMessage": {"html": form.format.errors} if form.format.errors else None,
-            "formGroup": {"classes": "datagovuk-form-group"},
-          }) }}
-          {{ govukCheckboxes({
-              "name": form.open_government_licence_only.name,
-              "items": [
-                {
-                  "value": "on",
-                  "checked": true if form.open_government_licence_only.value() else false,
-                  "text": form.open_government_licence_only.label,
-                },
-              ],
-              "formGroup": {"classes": "datagovuk-form-group"},
-          }) }}
-          {# djlint:on #}
-          {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button"}) }}
-        </form>
-      </div>
-      <div class="govuk-grid-column-two-thirds">
-        {% if results %}
-          {% set page_start = ((page - 1) * rows_per_page) + 1 %}
-          {% set page_end = page * rows_per_page %}
-          {% if page == total_pages %}
-            {% set page_end = results.hits %}
-          {% endif %}
-          <p class="govuk-body datagovuk-body">{{ page_start }} to {{ page_end }} of {{ results.hits }} results</p>
-          <br />
-          {% for result in results %}
-            <p>
-              <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"
-                 class="govuk-link datagovuk-link">{{ result.title }}</a>
-              <br />
-              Publisher: {{ result.organization }}
-              <br />
-              Topic: {{ result["extras_theme-primary"]|default("Not set") }}
-
-            </p>
-          {% endfor %}
-
-          {% if pages %}{{ govukPagination(dict(pages, classes="datagovuk-pagination")) }}{% endif %}
-
+          ],
+          "formGroup": {"classes": "datagovuk-form-group"},
+      }) }}
+      {# djlint:on #}
+      {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button"}) }}
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+      {% if results %}
+        {% set page_start = ((page - 1) * rows_per_page) + 1 %}
+        {% set page_end = page * rows_per_page %}
+        {% if page == total_pages %}
+          {% set page_end = results.hits %}
         {% endif %}
-      </div>
+        <p class="govuk-body datagovuk-body">{{ page_start }} to {{ page_end }} of {{ results.hits }} results</p>
+        <br />
+        {% for result in results %}
+          <p>
+            <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"
+               class="govuk-link datagovuk-link">{{ result.title }}</a>
+            <br />
+            Publisher: {{ result.organization }}
+            <br />
+            Topic: {{ result["extras_theme-primary"]|default("Not set") }}
+
+          </p>
+        {% endfor %}
+
+        {% if pages %}{{ govukPagination(dict(pages, classes="datagovuk-pagination") ) }}{% endif %}
+
+      {% endif %}
     </div>
   </div>
-{% endblock main %}
+{% endblock search_main %}
 
 {% block extra_js %}
   {% compress js %}
