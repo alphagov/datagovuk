@@ -15,9 +15,9 @@
     {% compress css %}
       <link href="{{ static('stylesheets/govuk-frontend-6.0.0.min.css') }}" rel="stylesheet" />
       <link type="text/x-scss" href="{{ static('stylesheets/application.scss') }}" rel="stylesheet" />
-      {% block extra_css %}
-      {% endblock extra_css %}
     {% endcompress %}
+    {% block extra_css %}
+    {% endblock extra_css %}
 
     <link rel="icon" href="{{ static('images/favicon.png') }}" />
 
@@ -118,9 +118,9 @@
       <script src="{{ static('javascripts/header.js') }}"></script>
       <script src="{{ static('javascripts/section-navigation.js') }}"></script>
       <script src="{{ static('javascripts/survey-banner.js') }}"></script>
-      {% block extra_js %}
-      {% endblock extra_js %}
     {% endcompress %}
+    {% block extra_js %}
+    {% endblock extra_js %}
     <script type="module" nonce="{{ csp_nonce }}">
       import { initAll } from "{{ static("javascripts/govuk-frontend-6.0.0.min.js") }}"
       initAll()
