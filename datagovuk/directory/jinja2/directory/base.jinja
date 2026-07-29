@@ -1,5 +1,6 @@
 {% extends "base.jinja" %}
 
+{% set directory_heading_level = directory_heading_level|default("h1") %}
 {% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput -%}
 
@@ -7,7 +8,7 @@
   <div class="govuk-width-container datagovuk-width-container datagovuk-directory-header__inner">
     <div class="datagovuk-directory-header__logo">
       <a class="datagovuk-header__link" href="{{ url('directory:search') }}">
-        <h1 class="govuk-!-margin-bottom-0 govuk-heading-m datagovuk-heading-m datagovuk-!-colour-white">Directory</h1>
+        <{{ directory_heading_level }} class="govuk-!-margin-bottom-0 govuk-heading-m datagovuk-heading-m datagovuk-!-colour-white">Directory</{{ directory_heading_level }}>
       </a>
     </div>
     <a class="datagovuk-directory-header__link" href="#">Publish your data</a>
