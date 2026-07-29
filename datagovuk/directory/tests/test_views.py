@@ -183,6 +183,21 @@ class TestSearchView:
             "Ensure this value has at most 256 characters (it has 1000).",
         ]
 
+    def test_search_view_facets_not_applied_when_empty_results(self, client, solr_doc_factory, search_url):
+        solr_doc_factory(
+            organization="my-publisher",
+            topic="Environment",
+            res_format=["CSV", "JSON"],
+        )
+        solr_doc_factory(
+            organization="my-publisher",
+            topic="Environment",
+            res_format=["CSV", "JSON", "XLS"],
+        )
+        response = client.get(search_url, {"q": "nomatch", "format": "CSV"})
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["form"].errors == {}
+
     def test_search_view_facets_reduce_with_filtering(self, client, solr_doc_factory, search_url):
         doc_1 = solr_doc_factory(
             organization="some-other-publisher",
