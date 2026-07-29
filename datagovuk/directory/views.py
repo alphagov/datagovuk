@@ -122,6 +122,7 @@ class SearchView(GETFormView, PaginationMixin):
             total_pages = math.ceil(results.hits / rows_per_page)
             context["total_pages"] = total_pages
             context["pages"] = self.get_govuk_pagination(page, total_pages)
+            context["sort"] = sort
         return context
 
 

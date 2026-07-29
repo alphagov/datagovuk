@@ -64,6 +64,16 @@
         {% endif %}
         <p class="govuk-body datagovuk-body">{{ page_start }} to {{ page_end }} of {{ results.hits }} results</p>
         <br />
+        {{ govukSelect({
+                "label": {
+                "text": "Sort by",
+                },
+                "name": "sort",
+                "value": sort,
+                "items": [{"text": "Most relevant", "value": "best"}, {"text": "Most recent", "value": "recent"}],
+                "formGroup": {"classes": "datagovuk-form-group"},
+                "attributes": {"onchange": "this.form.submit()"},
+                }) }}
         {% for result in results %}
           <p>
             <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"
