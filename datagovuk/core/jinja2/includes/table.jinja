@@ -5,7 +5,7 @@
         <tr class="govuk-table__row">
           {%- for cell in table_headings %}
             <th scope="col"
-                class="govuk-table__header{% if cell.format == 'numeric' %} govuk-table__header--numeric{% endif %} datagovuk-table__header govuk-body datagovuk-body">
+                class="govuk-table__header{% if cell.format == 'numeric' %} govuk-table__header--numeric{% endif %} datagovuk-table__header {{ table_header_classes }} govuk-body datagovuk-body">
               {{- cell.text -}}
             </th>
           {%- endfor %}
@@ -18,7 +18,7 @@
           {%- for cell in row %}
             {%- if loop.first and first_cell_is_header %}
               <th scope="row"
-                  class="govuk-table__header{% if cell.format == 'numeric' %} govuk-table__header--numeric{% endif %} datagovuk-table__header govuk-body datagovuk-body">
+                  class="govuk-table__header{% if cell.format == 'numeric' %} govuk-table__header--numeric{% endif %} datagovuk-table__header {{ table_header_classes }} govuk-body datagovuk-body">
                 {{- cell.text -}}
               </th>
             {%- else %}

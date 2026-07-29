@@ -20,6 +20,15 @@
       <a href="#" class="govuk-button datagovuk-button">Test link button</a>
     </div>
 
+    <div class="govuk-!-margin-top-5">
+      <a href="#" class="govuk-button datagovuk-button">
+        <div class="datagovuk-button__content">
+          Test link button
+          <img src="{{ static('images/download.svg') }}" alt="Download" />
+        </div>
+      </a>
+    </div>
+
     {% include "includes/feedback.jinja" %}
 
     {% set table_headings = [

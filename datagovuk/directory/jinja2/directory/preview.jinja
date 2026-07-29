@@ -25,8 +25,11 @@
                class="govuk-button datagovuk-button govuk-!-margin-bottom-8"
                data-ga-event="preview-download"
                data-ga-format="CSV"
-               data-ga-publisher="{{ dataset.organisation_name }}">Download CSV
-              <img src="{{ static('images/download.svg') }}" alt="Download" />
+               data-ga-publisher="{{ dataset.organisation_name }}">
+              <div class="datagovuk-button__content">
+                Download CSV
+                <img src="{{ static('images/download.svg') }}" alt="Download" />
+              </div>
             </a>
           {% else %}
             <p class="govuk-body datagovuk-body govuk-!-margin-bottom-8">
@@ -36,7 +39,11 @@
         </div>
 
         {% if preview_exists %}
-          <div class="govuk-grid-column-full govuk-!-margin-bottom-8">{% include "includes/table.jinja" %}</div>
+          <div class="govuk-grid-column-full govuk-!-margin-bottom-8 datagovuk-preview">
+            {% with table_header_classes="datagovuk-preview-table__header" %}
+              {% include "includes/table.jinja" %}
+            {% endwith %}
+          </div>
 
           <div class="govuk-grid-column-two-thirds">{% include "includes/feedback.jinja" %}</div>
         {% endif %}

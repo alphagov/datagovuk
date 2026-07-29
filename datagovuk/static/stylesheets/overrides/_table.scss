@@ -23,6 +23,18 @@
     padding-left: 10px;
     color: $datagovuk-black;
     font-weight: normal;
+    vertical-align: middle;
+}
+
+.datagovuk-table__header--compact,
+.datagovuk-table__cell--compact {
+    min-width: 0;
+    white-space: nowrap;
+}
+
+.datagovuk-table th:last-child,
+.datagovuk-table td:last-child {
+    padding-right: 20px;
 }
 
 .datagovuk-table__cell {
