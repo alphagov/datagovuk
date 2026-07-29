@@ -121,6 +121,7 @@ class SearchView(GETFormView, PaginationMixin):
                 rows_per_page=rows_per_page,
                 total_results=results.hits,
             )
+            context["sort"] = sort
         return context
 
 
