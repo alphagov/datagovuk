@@ -11,6 +11,10 @@ $datagovuk-light-pink: #FBF4F7;
 // TODO: This is a temporary colour until we have a datagovuk focus colour
 $datagovuk-focus: #fd0;
 
+.datagovuk-\!-colour-white {
+  color: #FFF !important;
+}
+
 .datagovuk-\!-colour-grey {
   color: $datagovuk-grey !important;
 }

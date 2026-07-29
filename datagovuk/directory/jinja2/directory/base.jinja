@@ -3,6 +3,26 @@
 {% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput -%}
 
+{% block after_header %}
+  <div class="govuk-width-container datagovuk-width-container datagovuk-directory-header__inner">
+    <div class="datagovuk-directory-header__logo">
+      <a class="datagovuk-header__link" href="{{ url('directory:search') }}">
+        <h1 class="govuk-!-margin-bottom-0 govuk-heading-m datagovuk-heading-m datagovuk-!-colour-white">Directory</h1>
+      </a>
+    </div>
+    <a class="datagovuk-directory-header__link" href="#">Publish your data</a>
+    <a class="datagovuk-directory-header__link" href="#">Documentation</a>
+    <a class="datagovuk-directory-header__link" href="{{ url('pages:support') }}">Support</a>
+    <div class="datagovuk-menu" style="display: none;">
+      <div class="datagovuk-menu__items">
+        <a href="#" class="govuk-link datagovuk-link datagovuk-menu__item-link">Publish your data</a>
+        <a href="#" class="govuk-link datagovuk-link datagovuk-menu__item-link">Documentation</a>
+        <a href="{{ url('pages:support') }}" class="govuk-link datagovuk-link datagovuk-menu__item-link">Support</a>
+      </div>
+    </div>
+  </div>
+{% endblock after_header %}
+
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
     <form method="get" action="{{ url('directory:search') }}">
