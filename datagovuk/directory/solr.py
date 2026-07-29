@@ -84,6 +84,12 @@ def _get_filters(filters):
     return solr_filters
 
 
+def _get_sort(sort):
+    if sort == "recent":
+        return "metadata_modified desc"
+    return None
+
+
 def _get_facets():
     return {
         "facet": "true",
@@ -94,17 +100,23 @@ def _get_facets():
     }
 
 
-def search(query, filters, start=0, rows=20):
+def search(query, filters, sort="best", start=0, rows=20):
     solr_query = _get_query(query)
     solr_filters = _get_filters(filters)
-    solr_facets = _get_facets()
     solr_client = get_solr_client()
+    solr_facets = _get_facets()
+    solr_sort = _get_sort(sort)
+    search_options = {
+        **solr_facets,
+    }
+    if solr_sort:
+        search_options["sort"] = solr_sort
     return solr_client.search(
         q=solr_query,
         fq=solr_filters,
         start=start,
         rows=rows,
-        **solr_facets,
+        **search_options,
     )
 
 
