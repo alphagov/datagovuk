@@ -88,25 +88,29 @@
 {% endblock main %}
 
 {% block extra_js %}
-  <script type="text/javascript" src={{static("javascripts/accessible-autocomplete-3.0.1.min.js")}}></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const selectsToEnhance = ["publisher", "topic", "format"];
-      selectsToEnhance.forEach(id => {
-        const element = document.querySelector(`#${id}`);
-        accessibleAutocomplete.enhanceSelectElement({
-          selectElement: element,
-          showAllValues: true,
-          defaultValue: '',
-          preserveNullOptions: true,
-          inputClasses: "datagovuk-input",
-          menuClasses: "datagovuk-autocomplete__menu",
+  {% compress js %}
+    <script type="text/javascript" src={{static("javascripts/accessible-autocomplete-3.0.1.min.js")}}></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const selectsToEnhance = ["publisher", "topic", "format"];
+        selectsToEnhance.forEach(id => {
+          const element = document.querySelector(`#${id}`);
+          accessibleAutocomplete.enhanceSelectElement({
+            selectElement: element,
+            showAllValues: true,
+            defaultValue: '',
+            preserveNullOptions: true,
+            inputClasses: "datagovuk-input",
+            menuClasses: "datagovuk-autocomplete__menu",
+          });
         });
       });
-    });
-  </script>
+    </script>
+  {% endcompress %}
 {% endblock extra_js %}
 
 {% block extra_css %}
-  <link href="{{ static('stylesheets/accessible-autocomplete-3.0.1.min.css') }}" rel="stylesheet" />
+  {% compress css %}
+    <link href="{{ static('stylesheets/accessible-autocomplete-3.0.1.min.css') }}" rel="stylesheet" />
+  {% endcompress %}
 {% endblock extra_css %}
