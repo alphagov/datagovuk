@@ -2,9 +2,9 @@ import pytest
 from django.urls import reverse
 from playwright.sync_api import expect
 
-DATASET_UUID = "e3c7ffd4-4187-46fd-a590-99e2af539058"
-DATASET_SLUG = "household-waste-recycling-centres"
-DATAFILE_UUID = "1b582059-39b8-4b16-b37c-3f2d24610e9f"
+DATASET_UUID = "055e9bd9-756b-46e5-a8d6-9369184273ba"
+DATASET_SLUG = "nhs-england-clinical-commissiong-group-and-local-authority-information-packs"
+DATAFILE_UUID = "160e549b-6016-4036-873a-1d8ef951eb8e"
 
 
 @pytest.fixture(autouse=True)
@@ -23,7 +23,7 @@ def preview_url():
 class TestPreviewPage:
     def test_heading_is_visible(self, page, live_server_url, preview_url):
         page.goto(live_server_url + preview_url)
-        expect(page.get_by_role("heading", level=1)).to_contain_text("Household Waste Recycling Centres")
+        expect(page.get_by_role("heading", level=1)).to_contain_text("CCG Data file")
 
     def test_back_link_goes_to_dataset(self, page, live_server_url, preview_url):
         page.goto(live_server_url + preview_url)

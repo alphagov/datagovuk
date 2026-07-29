@@ -78,12 +78,6 @@ class DatasetView(TemplateView):
 
         document_data = json.loads(document["validated_data_dict"])
         context["organization_title"] = document_data["organization"]["title"]
-        context["table_headings"] = [
-            {"text": "Link"},
-            {"text": "Format"},
-            {"text": "Preview"},
-            {"text": "Last updated"},
-        ]
         context["resources"] = [
             resource_table_row_data(resource, document["id"], document["name"])
             for resource in document_data["resources"]

@@ -118,6 +118,13 @@
     .datagovuk-button__arrow { display: none; }
     .datagovuk-button__arrow--focus { display: inline-block; }
   }
+
+  .datagovuk-button__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
 }
 
 
