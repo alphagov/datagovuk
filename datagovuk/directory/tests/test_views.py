@@ -53,6 +53,21 @@ def search_url():
 
 
 class TestSearchView:
+    def test_search_view_sort_recent_orders_by_metadata_modified_descending(
+        self,
+        client,
+        solr_doc_factory,
+        search_url,
+    ):
+        doc_recent = solr_doc_factory(title="recent-dataset", metadata_modified="2026-07-30T00:00:00Z")
+        doc_older = solr_doc_factory(title="older-dataset", metadata_modified="2025-01-01T00:00:00Z")
+
+        response = client.get(search_url, {"q": "dataset", "sort": "recent"})
+
+        assert response.status_code == HTTPStatus.OK
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == [doc_recent["id"], doc_older["id"]]
+
     def test_view_no_query_returns_ok_without_results(self, client, solr_doc_factory, search_url):
         solr_doc_factory()
 
