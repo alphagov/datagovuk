@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from django.core.exceptions import ImproperlyConfigured
 
-from datagovuk.directory.solr import Preview, SolrDatafile, SolrDataset, get_solr_client
+from datagovuk.directory.solr import Preview, SolrDatafile, SolrDataset, get_solr_client, process_query
 
 
 def test_get_solr_client_no_solr_url(settings):
@@ -18,6 +18,18 @@ def test_get_solr_client_solr_url_set(pysolr_mock, settings):
     settings.SOLR_URL = "http://solr.example.net"
     client = get_solr_client()
     assert client == pysolr_mock.Solr.return_value
+
+
+@pytest.mark.parametrize(
+    ("query", "expected_processed_query"),
+    [
+        ("of mice and men", "mice men"),
+        ('"of mice and men"', '"of mice and men"'),
+    ],
+)
+def test_process_query_removes_stop_words(query, expected_processed_query):
+    processed_query = process_query(query)
+    assert processed_query == expected_processed_query
 
 
 class TestSolrDatafileModel:
