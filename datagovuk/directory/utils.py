@@ -8,17 +8,17 @@ def format_date(date_string):
 
 
 def resource_table_row_data(resource, document_id, document_name):
-    resource_format = resource["format"].strip().strip(".").upper() if resource["format"] else ""
-    date = resource["last_modified"] or resource["created"]
+    resource_format = resource.format.strip().strip(".").upper() if resource.format else ""
+    date = resource.last_modified or resource.created
     return {
-        "url": resource["url"],
-        "name": resource["name"],
-        "file_size": format_file_size(resource["size"]) if resource["size"] else None,
+        "url": resource.url,
+        "name": resource.name,
+        "file_size": format_file_size(resource.size) if resource.size else None,
         "format": resource_format,
-        "is_csv": resource_format == "CSV",
+        "is_csv": resource.is_csv,
         "preview_url": reverse(
             "directory:preview",
-            kwargs={"dataset_uuid": document_id, "name": document_name, "datafile_uuid": resource["id"]},
+            kwargs={"dataset_uuid": document_id, "name": document_name, "datafile_uuid": resource.uuid},
         )
         if resource_format == "CSV"
         else None,
