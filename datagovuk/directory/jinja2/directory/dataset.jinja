@@ -2,41 +2,35 @@
 
 {% set page_title = "Dataset" %}
 {% set directory_heading_level = "h2" %}
+{% from "govuk_frontend_jinja/components/summary-list/macro.html" import govukSummaryList -%}
 
 {% block search_main %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl datagovuk-heading-xl">{{ title }}</h1>
-      <dl class="govuk-summary-list">
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Published by</dt>
-          <dd class="govuk-summary-list__value">
-            {{ organization_title }}
-          </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Last updated</dt>
-          <dd class="govuk-summary-list__value">
-            {{ metadata_modified }}
-          </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Topic</dt>
-          <dd class="govuk-summary-list__value">
-          </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Licence</dt>
-          <dd class="govuk-summary-list__value">
-          </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Summary</dt>
-          <dd class="govuk-summary-list__value">
-            {{ notes }}
-          </dd>
-        </div>
-      </dl>
+      <h1 class="govuk-heading-xl datagovuk-heading-xl govuk-!-margin-bottom-4">{{ title }}</h1>
+      {# djlint:off #}
+      {{ govukSummaryList({
+        "rows": [
+          {
+            "key": {"text": "Published By:"},
+            "value": {"text": doc.organisation.title},
+          },
+          {
+            "key": {"text": "Last updated:"},
+            "value": {"text": doc.public_updated_at|date("d F Y")},
+          },
+          {
+            "key": {"text": "Topic:"},
+            "value": {"text": doc.topic or "Not set"},
+          },
+          {
+            "key": {"text": "Licence:"},
+            "value": {"text": doc.licence_code or "Not set"},
+          },
+        ],
+        "classes": "datagovuk-summary-list govuk-summary-list--no-border",
+      }) }}
+      {# djlint:on #}
       <h2 class="govuk-heading-l datagovuk-heading-l">Data links</h2>
       {% if resources %}
         <div class="govuk-!-margin-bottom-8">
