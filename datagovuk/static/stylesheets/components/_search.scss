@@ -1,0 +1,20 @@
+.datagovuk-search-results {
+  padding-left: 0;
+  list-style: none;
+}
+
+.datagovuk-search-results__item {
+  padding-bottom: 20px;
+}
+
+.datagovuk-truncated-summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.datagovuk-search-results__publisher::before {
+  -webkit-mask: url(static('images/icons/publisher.svg')) no-repeat center;
+  mask: url(static('images/icons/publisher.svg')) no-repeat center;
+}
