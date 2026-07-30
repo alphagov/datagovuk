@@ -70,12 +70,9 @@
       </div>
       <div class="govuk-grid-column-two-thirds">
         {% if results %}
-          {% set page_start = ((page - 1) * rows_per_page) + 1 %}
-          {% set page_end = page * rows_per_page %}
-          {% if page == total_pages %}
-            {% set page_end = results.hits %}
-          {% endif %}
-          <p class="govuk-body datagovuk-body">{{ page_start }} to {{ page_end }} of {{ results.hits }} results</p>
+          <p class="govuk-body datagovuk-body">
+            {{ pagination.first_result_in_page }} to {{ pagination.last_result_in_page }} of {{ pagination.total_results }} results
+          </p>
           <br />
           {% for result in results %}
             <p>
@@ -89,7 +86,7 @@
             </p>
           {% endfor %}
 
-          {% if pages %}{{ govukPagination(dict(pages, classes="datagovuk-pagination") ) }}{% endif %}
+          {% if pagination.pages %}{{ govukPagination(dict(pagination.pages, classes="datagovuk-pagination") ) }}{% endif %}
 
         {% endif %}
       </div>
