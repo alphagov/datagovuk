@@ -115,6 +115,9 @@ Divide tests and fails by 1 million, round to 2 decimal places, and rename colum
 Remove the second year in finanial year to make the axis labels neater.
 
 ### Rents
+Source: https://www.data.gov.uk/collections/land-and-property/rents-lettings-and-tenancies
+Table: 602
+Sheet: England data
 
 ### Road traffic mileage
 
