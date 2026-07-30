@@ -94,6 +94,15 @@
         </ul>
 
         {% if pagination.pages %}{{ govukPagination(dict(pagination.pages, classes="datagovuk-pagination") ) }}{% endif %}
+      {% else %}
+        <p class="govuk-body datagovuk-body">0 results found</p>
+        <p class="govuk-body datagovuk-body">Improve your search results by:</p>
+        <ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body">
+          <li>removing filters</li>
+          <li>double-checking your spelling</li>
+          <li>using fewer keywords</li>
+          <li>searching for something less specific</li>
+        </ul>
       {% endif %}
     </div>
   </div>
