@@ -2,6 +2,7 @@ import itertools
 import json
 import logging
 from dataclasses import dataclass, field
+from datetime import datetime
 
 import pysolr
 from cache_memoize import cache_memoize
@@ -111,13 +112,18 @@ def search(query, filters, sort="best", start=0, rows=20):
     }
     if solr_sort:
         search_options["sort"] = solr_sort
-    return solr_client.search(
+    solr_results = solr_client.search(
         q=solr_query,
         fq=solr_filters,
         start=start,
         rows=rows,
         **search_options,
     )
+    docs = [SolrDataset.from_solr_doc(result) for result in solr_results]
+    return {
+        "results": solr_results,
+        "docs": docs,
+    }
 
 
 @dataclass
@@ -169,7 +175,7 @@ class SolrDataset:
     name: str
     title: str
     summary: str
-    public_updated_at: str
+    public_updated_at: datetime
     topic: str
     licence_title: str
     licence_url: str
@@ -208,13 +214,19 @@ class SolrDataset:
         licence_custom = doc.get("extras_licence", "") or ""
         if licence_custom:
             licence_custom = licence_custom.replace('"', "").replace("[", "").replace("]", "")
+        public_updated_at = None
+        metadata_modified = doc.get("metadata_modified")
+        if metadata_modified:
+            public_updated_at = datetime.fromisoformat(metadata_modified)
 
         return SolrDataset(
             uuid=doc.get("id", ""),
             name=doc.get("name", ""),
             title=doc.get("title", ""),
             summary=doc.get("notes", ""),
-            public_updated_at=doc.get("metadata_modified", ""),
+            organisation_name=doc.get("organization", ""),
+            organisation=dataset_dict.get("organization", ""),
+            public_updated_at=public_updated_at,
             topic=topic,
             licence_title=dataset_dict.get("license_title", ""),
             licence_url=dataset_dict.get("license_url", ""),

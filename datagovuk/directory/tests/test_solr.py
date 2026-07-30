@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -158,7 +159,7 @@ class TestSolrDatasetModel:
         assert solr_dataset.name == "a-very-interesting-dataset"
         assert solr_dataset.title == "A very interesting dataset"
         assert solr_dataset.summary == "Lorem ipsum dolor sit amet."
-        assert solr_dataset.public_updated_at == "2017-06-30T09:08:37.040Z"
+        assert solr_dataset.public_updated_at == datetime.fromisoformat("2017-06-30T09:08:37.040Z")
 
     def test_from_solr_doc_datafile_parsed(self):
         resources = [

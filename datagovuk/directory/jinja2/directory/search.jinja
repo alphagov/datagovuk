@@ -72,16 +72,26 @@
                 "formGroup": {"classes": "datagovuk-form-group"},
                 "attributes": {"onchange": "this.form.submit()"},
                 }) }}
-        {% for result in results %}
-          <p>
-            <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"
-               class="govuk-link datagovuk-link">{{ result.title }}</a>
-            <br />
-            Publisher: {{ result.organization }}
-            <br />
-            Topic: {{ result["extras_theme-primary"]|default("Not set") }}
-          </p>
-        {% endfor %}
+        <ul class="datagovuk-search-results">
+          {% for doc in docs %}
+            <li class="datagovuk-search-results__item">
+              <p class="govuk-body datagovuk-body">
+                <a href="{{ url('directory:dataset', kwargs={'uuid': doc.uuid, 'slug': doc.name}) }}"
+                   class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.title }}</a>
+              </p>
+              <p class="govuk-body datagovuk-body">
+                <img src="{{ static('images/icons/publisher.svg') }}" alt="" />
+                Published by: {{ doc.organisation.title }}
+              </p>
+              <p class="govuk-body datagovuk-body">
+                <img src="{{ static('images/icons/calendar.svg') }}" alt="" />
+                Last updated: {{ doc.public_updated_at|date("d F Y") }}
+              </p>
+              <p class="govuk-body datagovuk-body datagovuk-truncated-summary">{{ doc.summary }}</p>
+
+            </li>
+          {% endfor %}
+        </ul>
 
         {% if pagination.pages %}{{ govukPagination(dict(pagination.pages, classes="datagovuk-pagination") ) }}{% endif %}
       {% endif %}
