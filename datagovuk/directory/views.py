@@ -138,11 +138,6 @@ class DatasetView(TemplateView):
             message = f"Active dataset {dataset_id} not found"
             raise Http404(message)
         context["doc"] = solr_document
-        context["title"] = solr_document.title
-        context["notes"] = solr_document.summary
-        context["metadata_modified"] = solr_document.public_updated_at
-
-        context["organization_title"] = solr_document.organisation["title"]
         context["resources"] = [
             resource_table_row_data(resource, solr_document.uuid, solr_document.name)
             for resource in solr_document.datafiles
