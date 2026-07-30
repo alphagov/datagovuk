@@ -100,13 +100,15 @@ class SearchView(GETFormView, PaginationMixin):
         sort = self.request.GET.get("sort", "best")
         rows_per_page = 20
         if query is not None:
-            results = search(
+            search_result = search(
                 query=query,
                 filters=filters,
                 start=((page - 1) * rows_per_page),
                 rows=rows_per_page,
                 sort=sort,
             )
+            results = search_result["results"]
+            docs = search_result["docs"]
             if results.hits > 0:
                 # If we have results, re-initialise the form now that we know what facets should be shown
                 form_kwargs = {
@@ -121,6 +123,7 @@ class SearchView(GETFormView, PaginationMixin):
                 rows_per_page=rows_per_page,
                 total_results=results.hits,
             )
+            context["docs"] = docs
             context["sort"] = sort
         return context
 
