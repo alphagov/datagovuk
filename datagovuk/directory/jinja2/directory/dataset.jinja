@@ -7,7 +7,7 @@
 {% block search_main %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl datagovuk-heading-xl govuk-!-margin-bottom-4">{{ title }}</h1>
+      <h1 class="govuk-heading-xl datagovuk-heading-xl govuk-!-margin-bottom-4">{{ doc.title }}</h1>
       {# djlint:off #}
       {{ govukSummaryList({
         "rows": [
@@ -31,6 +31,8 @@
         "classes": "datagovuk-summary-list govuk-summary-list--no-border",
       }) }}
       {# djlint:on #}
+      <h2 class="govuk-heading-l datagovuk-heading-l">Summary</h2>
+      <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">{{ doc.summary }}</div>
       <h2 class="govuk-heading-l datagovuk-heading-l">Data links</h2>
       {% if resources %}
         <div class="govuk-!-margin-bottom-8">
