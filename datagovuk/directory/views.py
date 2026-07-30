@@ -1,5 +1,3 @@
-import json
-
 from django.http import Http404
 from django.urls import reverse
 from django.views.generic import TemplateView
@@ -11,7 +9,7 @@ from datagovuk.core.views import GETFormView, PaginationMixin
 from .constants import FORMATS_BY_FORMAT_VALUE, TOPICS_BY_SOLR_ALIAS, FormatChoices, TopicChoices
 from .forms import SearchForm
 from .preview_utils import fetch_csv
-from .solr import SolrDatafile, SolrDataset, get_organisations_by_title, get_solr_client, search
+from .solr import SolrDatafile, SolrDataset, get_document, get_organisations_by_title, get_solr_client, search
 from .utils import resource_table_row_data
 
 
@@ -135,22 +133,19 @@ class DatasetView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         dataset_id = self.kwargs["uuid"]
-        client = get_solr_client()
-        solr_query = f"id:{dataset_id} AND state:active"
-        results = client.search(solr_query, start=0, rows=1)
-        if not results.hits > 0:
+        solr_document = get_document(dataset_id)
+        if not solr_document:
             message = f"Active dataset {dataset_id} not found"
             raise Http404(message)
-        document = results.docs[0]
-        context["title"] = document["title"]
-        context["notes"] = document["notes"]
-        context["metadata_modified"] = document["metadata_modified"]
+        context["doc"] = solr_document
+        context["title"] = solr_document.title
+        context["notes"] = solr_document.summary
+        context["metadata_modified"] = solr_document.public_updated_at
 
-        document_data = json.loads(document["validated_data_dict"])
-        context["organization_title"] = document_data["organization"]["title"]
+        context["organization_title"] = solr_document.organisation["title"]
         context["resources"] = [
-            resource_table_row_data(resource, document["id"], document["name"])
-            for resource in document_data["resources"]
+            resource_table_row_data(resource, solr_document.uuid, solr_document.name)
+            for resource in solr_document.datafiles
         ]
         return context
 
