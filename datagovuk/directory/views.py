@@ -125,6 +125,7 @@ class SearchView(GETFormView, PaginationMixin):
             )
             context["docs"] = docs
             context["sort"] = sort
+            context["search_made"] = True
         return context
 
 
