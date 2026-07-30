@@ -83,20 +83,23 @@
         <ul class="datagovuk-search-results">
           {% for doc in docs %}
             <li class="datagovuk-search-results__item">
-              <p class="govuk-body datagovuk-body">
+              <h2 class="govuk-body datagovuk-body">
                 <a href="{{ url('directory:dataset', kwargs={'uuid': doc.uuid, 'slug': doc.name}) }}"
                    class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.title }}</a>
-              </p>
-              <p class="govuk-body datagovuk-body">
-                <img src="{{ static('images/icons/publisher.svg') }}" alt="" />
-                Published by: {{ doc.organisation.title }}
-              </p>
-              <p class="govuk-body datagovuk-body">
-                <img src="{{ static('images/icons/calendar.svg') }}" alt="" />
-                Last updated: {{ doc.public_updated_at|date("d F Y") }}
-              </p>
-              <p class="govuk-body datagovuk-body datagovuk-truncated-summary">{{ doc.summary }}</p>
-
+              </h2>
+              <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
+                <div class="datagovuk-search-results__item-label datagovuk-search-results__item--icon datagovuk-search-results__item--icon-publisher">
+                  Publisher
+                </div>
+                <div class="datagovuk-search-results__item-value">{{ doc.organisation.title }}</div>
+              </div>
+              <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
+                <div class="datagovuk-search-results__item-label datagovuk-search-results__item--icon datagovuk-search-results__item--icon-updated">
+                  Updated
+                </div>
+                <div class="datagovuk-search-results__item-value">{{ doc.public_updated_at|date("d F Y") }}</div>
+              </div>
+              <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.summary | truncate(200) }}</div>
             </li>
           {% endfor %}
         </ul>
