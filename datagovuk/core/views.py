@@ -1,3 +1,5 @@
+import math
+
 from django.conf import settings
 from django.core.exceptions import PermissionDenied, SuspiciousOperation
 from django.http import HttpResponse, HttpResponseServerError
@@ -73,13 +75,22 @@ class PaginationMixin:
     def get_govuk_pagination(
         self,
         page: int,
-        total_pages: int,
+        rows_per_page: int,
+        total_results: int,
     ) -> dict:
         """
         Builds a dict compatible with `govukPagination` macro.
         """
+        total_pages = math.ceil(total_results / rows_per_page)
+        last_result_in_page = page * rows_per_page if page < total_pages else total_results
+        pagination = {
+            "page": page,
+            "first_result_in_page": ((page - 1) * rows_per_page) + 1 if total_results else None,
+            "last_result_in_page": last_result_in_page if total_results else None,
+            "total_results": total_results,
+        }
         if total_pages <= 1:
-            return {}
+            return pagination
 
         items = []
         for item in self.get_page_sequence(page, total_pages):
@@ -94,17 +105,18 @@ class PaginationMixin:
                     data["current"] = True
                 items.append(data)
 
-        pagination = {"items": items}
+        pages = {"items": items}
 
         # Navigation controls
         show_previous = page > 1
         if show_previous:
-            pagination["previous"] = {
+            pages["previous"] = {
                 "href": self.build_page_url(page - 1),
             }
         show_next = page < total_pages
         if show_next:
-            pagination["next"] = {"href": self.build_page_url(page + 1)}
+            pages["next"] = {"href": self.build_page_url(page + 1)}
+        pagination["pages"] = pages
 
         return pagination
 

@@ -1,5 +1,4 @@
 import json
-import math
 
 from django.http import Http404
 from django.urls import reverse
@@ -115,11 +114,11 @@ class SearchView(GETFormView, PaginationMixin):
                 form = self.form_class(**form_kwargs)
                 context["form"] = form
             context["results"] = results
-            context["page"] = page
-            context["rows_per_page"] = rows_per_page
-            total_pages = math.ceil(results.hits / rows_per_page)
-            context["total_pages"] = total_pages
-            context["pages"] = self.get_govuk_pagination(page, total_pages)
+            context["pagination"] = self.get_govuk_pagination(
+                page=page,
+                rows_per_page=rows_per_page,
+                total_results=results.hits,
+            )
         return context
 
 
