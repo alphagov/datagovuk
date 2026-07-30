@@ -49,12 +49,14 @@ def _get_query(query):
     return solr_query
 
 
-def _get_filters(filters):
+def _get_filters(filters=None):
     solr_filters = [
         "state:active",
         "type:dataset",
         "-site_id:dgu_organisations*",
     ]
+    if not filters:
+        filters = {}
 
     if filters.get("publisher"):
         all_organisations = get_organisations_by_title()
@@ -126,6 +128,18 @@ def search(query, filters, sort="best", start=0, rows=20):
     }
 
 
+def get_document(document_id):
+    solr_client = get_solr_client()
+    solr_results = solr_client.search(
+        q=f"id:{document_id}",
+        fq=_get_filters(),
+    )
+    if solr_results.hits == 0:
+        return None
+    docs = [SolrDataset.from_solr_doc(result) for result in solr_results]
+    return docs[0]
+
+
 @dataclass
 class Preview:
     url: str
@@ -140,6 +154,9 @@ class SolrDatafile:
     created_at: str
     format: str
     uuid: str
+    last_modified: str
+    created: str
+    size: str
     is_csv: bool = False
     _preview: Preview | None = field(default=None, repr=False)
 
@@ -154,6 +171,9 @@ class SolrDatafile:
             format=resource_format,
             uuid=resource.get("id", ""),
             is_csv=resource_format == "CSV",
+            last_modified=resource.get("last_modified", ""),
+            created=resource.get("created", ""),
+            size=resource.get("size", ""),
         )
 
     def get_preview(self):
