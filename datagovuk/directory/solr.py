@@ -1,6 +1,7 @@
 import itertools
 import json
 import logging
+import re
 from dataclasses import dataclass, field
 
 import pysolr
@@ -9,7 +10,7 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.text import slugify
 
-from .constants import FORMATS, FormatChoices
+from .constants import FORMATS, STOP_WORDS, FormatChoices
 
 ORGANISATIONS_LIMIT = 6000
 
@@ -34,18 +35,37 @@ def get_organisations_by_title():
         fl=["title", "name"],
         rows=ORGANISATIONS_LIMIT,
     )
-
     organisations = {doc["title"]: doc["name"] for doc in results}
-
     return organisations
+
+
+def process_query(query_string):
+    # Matches either a quoted phrase (Group 1) or an individual word (Group 2)
+    phrase_regex = r'"(.*?)"|\b(\w+)\b'
+    matches = re.findall(phrase_regex, query_string)
+
+    processed_terms = []
+    for phrase, term in matches:
+        if phrase:
+            # Keep quoted phrases intact
+            processed_terms.append(f'"{phrase}"')
+        elif term and term.lower() not in STOP_WORDS:
+            # Keep individual words if they are not stop words
+            processed_terms.append(term)
+
+    # Join the remaining terms back into a single search string
+    return " ".join(processed_terms)
 
 
 def _get_query(query):
     # TODO: We should do some escaping to avoid any injection in to our SOLR query
-    solr_query = f"(title:({query})^2 OR notes:({query}))"
     if not query:
-        solr_query = "*:*"
-    return solr_query
+        return "*:*"
+    processed_query = process_query(query)
+    if not processed_query:
+        # Return a logically impossible query, to trigger empty results..
+        return "id:[* TO *] AND -id:[* TO *]"
+    return f"(title:({processed_query})^2 OR notes:({processed_query}))"
 
 
 def _get_filters(filters):
