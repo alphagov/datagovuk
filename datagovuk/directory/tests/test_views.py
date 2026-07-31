@@ -482,3 +482,288 @@ class TestDatasetView:
         response = client.get(url)
 
         assert response.context_data["doc"].datafiles[0].is_csv is False
+        assert response.context_data["resources"][0]["preview_url"] is None
+
+    def test_dataset_with_additional_information_extras(self, client, mock_solr_client, mock_solr_results_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440005"
+        mock_solr_client.search.return_value = mock_solr_results_factory(
+            docs=[
+                {
+                    "id": test_uuid,
+                    "name": "extras-dataset",
+                    "title": "Extras Dataset",
+                    "notes": "Has extras",
+                    "metadata_modified": "2026-01-01T00:00:00Z",
+                    "validated_data_dict": json.dumps(
+                        {
+                            "organization": {"title": "Test Org"},
+                            "resources": [],
+                            "extras": [
+                                {"key": "metadata-date", "value": "2024-06-01T00:00:00"},
+                                {"key": "guid", "value": "abc-123"},
+                                {"key": "frequency-of-update", "value": "annual"},
+                                {"key": "metadata-language", "value": "eng"},
+                            ],
+                        },
+                    ),
+                },
+            ],
+            hits=1,
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "extras-dataset"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        additional = response.context_data["additional_information"]
+        assert additional["metadata-date"] == "2024-06-01T00:00:00"
+        assert additional["guid"] == "abc-123"
+        assert additional["frequency-of-update"] == "annual"
+        assert additional["metadata-language"] == "eng"
+
+    def test_dataset_without_extras_has_no_additional_information(
+        self,
+        client,
+        mock_solr_client,
+        mock_solr_results_factory,
+    ):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440006"
+        mock_solr_client.search.return_value = mock_solr_results_factory(
+            docs=[
+                {
+                    "id": test_uuid,
+                    "name": "no-extras-dataset",
+                    "title": "No Extras Dataset",
+                    "notes": "No extras",
+                    "metadata_modified": "2026-01-01T00:00:00Z",
+                    "validated_data_dict": json.dumps(
+                        {
+                            "organization": {"title": "Test Org"},
+                            "resources": [],
+                        },
+                    ),
+                },
+            ],
+            hits=1,
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "no-extras-dataset"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["additional_information"] is None
+
+    def test_dataset_with_json_valued_extras(self, client, mock_solr_client, mock_solr_results_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440007"
+        mock_solr_client.search.return_value = mock_solr_results_factory(
+            docs=[
+                {
+                    "id": test_uuid,
+                    "name": "json-extras-dataset",
+                    "title": "JSON Extras Dataset",
+                    "notes": "Has JSON extras",
+                    "metadata_modified": "2026-01-01T00:00:00Z",
+                    "validated_data_dict": json.dumps(
+                        {
+                            "organization": {"title": "Test Org"},
+                            "resources": [],
+                            "extras": [
+                                {"key": "access_constraints", "value": '["OGL v3.0"]'},
+                                {
+                                    "key": "dataset-reference-date",
+                                    "value": '[{"type": "publication", "value": "2024-01-01"}]',
+                                },
+                            ],
+                        },
+                    ),
+                },
+            ],
+            hits=1,
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "json-extras-dataset"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        additional = response.context_data["additional_information"]
+        assert additional["access_constraints"] == ["OGL v3.0"]
+        assert additional["dataset-reference-date"] == [{"type": "publication", "value": "2024-01-01"}]
+
+    def test_dataset_extras_with_irrelevant_keys_are_excluded(
+        self,
+        client,
+        mock_solr_client,
+        mock_solr_results_factory,
+    ):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440008"
+        mock_solr_client.search.return_value = mock_solr_results_factory(
+            docs=[
+                {
+                    "id": test_uuid,
+                    "name": "mixed-extras-dataset",
+                    "title": "Mixed Extras Dataset",
+                    "notes": "Has mixed extras",
+                    "metadata_modified": "2026-01-01T00:00:00Z",
+                    "validated_data_dict": json.dumps(
+                        {
+                            "organization": {"title": "Test Org"},
+                            "resources": [],
+                            "extras": [
+                                {"key": "metadata-date", "value": "2024-06-01T00:00:00"},
+                                {"key": "some-unknown-key", "value": "should be ignored"},
+                            ],
+                        },
+                    ),
+                },
+            ],
+            hits=1,
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "mixed-extras-dataset"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        additional = response.context_data["additional_information"]
+        assert "metadata-date" in additional
+        assert "some-unknown-key" not in additional
+
+    def test_dataset_with_supporting_documents(self, client, mock_solr_client, mock_solr_results_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440009"
+        mock_solr_client.search.return_value = mock_solr_results_factory(
+            docs=[
+                {
+                    "id": test_uuid,
+                    "name": "supporting-docs-dataset",
+                    "title": "Supporting Docs Dataset",
+                    "notes": "Has supporting docs",
+                    "metadata_modified": "2026-01-01T00:00:00Z",
+                    "validated_data_dict": json.dumps(
+                        {
+                            "organization": {"title": "Test Org"},
+                            "resources": [
+                                {
+                                    "id": "aaaaaaaa-0000-0000-0000-000000000001",
+                                    "name": "Methodology Notes",
+                                    "url": "https://example.com/methodology.pdf",
+                                    "format": "PDF",
+                                    "created": "2026-01-01",
+                                    "last_modified": None,
+                                    "size": None,
+                                    "resource-type": "supporting-document",
+                                },
+                                {
+                                    "id": "aaaaaaaa-0000-0000-0000-000000000002",
+                                    "name": "Data File",
+                                    "url": "https://example.com/data.csv",
+                                    "format": "CSV",
+                                    "created": "2026-01-01",
+                                    "last_modified": None,
+                                    "size": None,
+                                },
+                            ],
+                        },
+                    ),
+                },
+            ],
+            hits=1,
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "supporting-docs-dataset"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        supporting = response.context_data["supporting_documents"]
+        assert len(supporting) == 1
+        assert supporting[0]["name"] == "Methodology Notes"
+
+    def test_dataset_without_supporting_documents_returns_empty_list(
+        self,
+        client,
+        mock_solr_client,
+        mock_solr_results_factory,
+    ):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440010"
+        mock_solr_client.search.return_value = mock_solr_results_factory(
+            docs=[
+                {
+                    "id": test_uuid,
+                    "name": "no-supporting-docs",
+                    "title": "No Supporting Docs",
+                    "notes": "No supporting docs",
+                    "metadata_modified": "2026-01-01T00:00:00Z",
+                    "validated_data_dict": json.dumps(
+                        {
+                            "organization": {"title": "Test Org"},
+                            "resources": [
+                                {
+                                    "id": "bbbbbbbb-0000-0000-0000-000000000001",
+                                    "name": "Data File",
+                                    "url": "https://example.com/data.csv",
+                                    "format": "CSV",
+                                    "created": "2026-01-01",
+                                    "last_modified": None,
+                                    "size": None,
+                                },
+                            ],
+                        },
+                    ),
+                },
+            ],
+            hits=1,
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "no-supporting-docs"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["supporting_documents"] == []
+
+    def test_supporting_documents_excluded_from_resources(self, client, mock_solr_client, mock_solr_results_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440011"
+        mock_solr_client.search.return_value = mock_solr_results_factory(
+            docs=[
+                {
+                    "id": test_uuid,
+                    "name": "mixed-resources-dataset",
+                    "title": "Mixed Resources",
+                    "notes": "Mix of resource types",
+                    "metadata_modified": "2026-01-01T00:00:00Z",
+                    "validated_data_dict": json.dumps(
+                        {
+                            "organization": {"title": "Test Org"},
+                            "resources": [
+                                {
+                                    "id": "cccccccc-0000-0000-0000-000000000001",
+                                    "name": "Supporting Doc",
+                                    "url": "https://example.com/doc.pdf",
+                                    "format": "PDF",
+                                    "created": "2026-01-01",
+                                    "last_modified": None,
+                                    "size": None,
+                                    "resource-type": "supporting-document",
+                                },
+                                {
+                                    "id": "cccccccc-0000-0000-0000-000000000002",
+                                    "name": "Data File",
+                                    "url": "https://example.com/data.csv",
+                                    "format": "CSV",
+                                    "created": "2026-01-01",
+                                    "last_modified": None,
+                                    "size": None,
+                                },
+                            ],
+                        },
+                    ),
+                },
+            ],
+            hits=1,
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "mixed-resources-dataset"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        resource_names = [resource["name"] for resource in response.context_data["resources"]]
+        supporting_names = [resource["name"] for resource in response.context_data["supporting_documents"]]
+        assert "Data File" in resource_names
+        assert "Supporting Doc" in supporting_names
