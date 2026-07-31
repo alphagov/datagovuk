@@ -62,6 +62,15 @@ def test_cookies(client):
     assert "Cookies - National Data Library" in response_content
 
 
+def test_publishers(client):
+    url = reverse("pages:publishers")
+    response = client.get(url)
+    response_content = response.content.decode()
+
+    assert response.status_code == HTTPStatus.OK
+    assert "Publishers - National Data Library" in response_content
+
+
 def test_accessibility(client):
     url = reverse("pages:accessibility")
     response = client.get(url)
