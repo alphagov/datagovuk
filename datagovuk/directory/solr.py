@@ -155,7 +155,6 @@ class SolrDatafile:
     format: str
     uuid: str
     last_modified: datetime
-    created: str
     size: str
     is_csv: bool = False
     _preview: Preview | None = field(default=None, repr=False)
@@ -177,7 +176,6 @@ class SolrDatafile:
             uuid=resource.get("id", ""),
             is_csv=resource_format == "CSV",
             last_modified=last_modified,
-            created=resource.get("created", ""),
             size=resource.get("size", ""),
         )
 
