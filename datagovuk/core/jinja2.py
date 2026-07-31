@@ -14,6 +14,15 @@ def to_govuk_items(field_choices):
     return items
 
 
+def format_file_size(file_size):
+    binary_multiplier = 1024
+    for unit in ("KB", "MB", "GB"):
+        file_size /= binary_multiplier
+        if file_size < binary_multiplier:
+            return f"{file_size:.0f} {unit}"
+    return f"{file_size:.0f} GB"
+
+
 def environment(**options):
     django_loader = options.pop("loader")
     loaders = [
@@ -34,6 +43,7 @@ def environment(**options):
     }
     env.filters.update(django_filters)
     env.filters["to_govuk_items"] = to_govuk_items
+    env.filters["format_file_size"] = format_file_size
     env.globals.update(
         {
             "static": static,
