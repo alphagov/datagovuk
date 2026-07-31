@@ -10,7 +10,6 @@ from .constants import FORMATS_BY_FORMAT_VALUE, TOPICS_BY_SOLR_ALIAS, FormatChoi
 from .forms import SearchForm
 from .preview_utils import fetch_csv
 from .solr import SolrDatafile, SolrDataset, get_document, get_organisations_by_title, get_solr_client, search
-from .utils import resource_table_row_data
 
 
 class SearchView(GETFormView, PaginationMixin):
@@ -138,10 +137,6 @@ class DatasetView(TemplateView):
             message = f"Active dataset {dataset_id} not found"
             raise Http404(message)
         context["doc"] = solr_document
-        context["resources"] = [
-            resource_table_row_data(resource, solr_document.uuid, solr_document.name)
-            for resource in solr_document.datafiles
-        ]
         return context
 
 
