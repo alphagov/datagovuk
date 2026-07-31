@@ -93,6 +93,15 @@ class TestSearchView:
         assert response.context_data["results"].hits == 0
         assert response.context_data["results"].docs == []
 
+    def test_view_with_query_only_stop_words_returns_empty(self, client, solr_doc_factory, search_url):
+        solr_doc_factory()
+
+        response = client.get(search_url, {"q": "of the and a is"})
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["results"].hits == 0
+        assert response.context_data["results"].docs == []
+
     def test_view_with_query_multiple_results(self, client, solr_doc_factory, search_url):
         matching_doc = solr_doc_factory(notes="multi")
         matching_doc_2 = solr_doc_factory(title="multi")
