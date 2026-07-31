@@ -3,6 +3,7 @@
 {% set page_title = "Dataset" %}
 {% set directory_heading_level = "h2" %}
 {% from "govuk_frontend_jinja/components/summary-list/macro.html" import govukSummaryList -%}
+{% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
 
 {% block search_main %}
   <div class="govuk-grid-row">
@@ -131,6 +132,25 @@
           {% endif %}
         </section>
       {% endif %}
+      <section class="edit">
+        <h2 class="govuk-heading-l datagovuk-heading-l">Edit this dataset</h2>
+        <p class="govuk-body datagovuk-body">
+          You must have an account for this publisher on data.gov.uk to make any changes to a dataset.
+        </p>
+        {% set ckan_base_url = "https://ckan.publishing.service.gov.uk/dataset/edit/" %}
+        {# djlint:off #}
+        {{govukButton({
+          "html": '''
+            Sign in <span class="datagovuk-right-arrow">
+            <img class="datagovuk-button__arrow" src="/assets/images/icons/arrow-white-right.svg" width="20" height="20" alt="">
+            <img class="datagovuk-button__arrow--focus" src="/assets/images/icons/arrow-black-right.svg" width="20" height="20" alt="">
+            </span>
+          ''',
+          "href": ckan_base_url ~ doc.name,
+          "classes": "datagovuk-button",
+        })}}
+        {# djlint:on #}
+      </section>
     </div>
   </div>
 {% endblock search_main %}
