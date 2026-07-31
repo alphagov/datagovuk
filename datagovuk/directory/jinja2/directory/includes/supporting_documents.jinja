@@ -1,0 +1,38 @@
+<div class="govuk-!-margin-bottom-8 support-documents">
+  <h2 class="govuk-heading-l datagovuk-heading-l">Supporting documents</h2>
+  <div class="datagovuk-table-container" tabindex="0" role="region">
+    <table class="govuk-table datagovuk-table">
+      <thead class="govuk-table__head datagovuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header datagovuk-table__header datagovuk-table__header--wrap govuk-body datagovuk-body">
+            Link
+          </th>
+          <th scope="col"
+              class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
+            Format
+          </th>
+          <th scope="col"
+              class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
+            Last updated
+          </th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        {% for document in supporting_documents %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--wrap govuk-body datagovuk-body">
+              <a href="{{ document.url }}" class="govuk-link datagovuk-link">{{ document.name }}</a>
+              {% if document.file_size %}({{ document.file_size }}){% endif %}
+            </td>
+            <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
+              {{ document.format }}
+            </td>
+            <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
+              {{ document.date }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

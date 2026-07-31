@@ -56,3 +56,14 @@
     </div>
   </nav>
 {% endmacro %}
+
+{% macro dataset_additional_information(name, description_detail) -%}
+  {% if description_detail %}
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-body datagovuk-body govuk-summary-list__key">{{ name }}</dt>
+      <dd class="govuk-body datagovuk-body govuk-summary-list__value">
+        {{ description_detail }}
+      </dd>
+    </div>
+  {% endif %}
+{% endmacro %}

@@ -137,7 +137,56 @@ class DatasetView(TemplateView):
             message = f"Active dataset {dataset_id} not found"
             raise Http404(message)
         context["doc"] = solr_document
+        context["additional_information"] = (
+            self.additional_information(solr_document["extras"]) if solr_document.get("extras") else None
+        )
+
+        supporting_documents = []
+        resources = []
+
+        for resource in solr_document["resources"]:
+            row_data = resource_table_row_data(resource, solr_document["id"], solr_document["name"])
+            resources.append(row_data)
+            if resource.get("resource-type") == "supporting-document":
+                supporting_documents.append(row_data)
+
+        context["supporting_documents"] = supporting_documents
+        context["resources"] = resources
         return context
+
+    def additional_information(self, data):
+        relevant_keys = {
+            "licence",
+            "metadata-date",
+            "access_constraints",
+            "guid",
+            "bbox-east-long",
+            "bbox-west-long",
+            "bbox-north-lat",
+            "bbox-south-lat",
+            "spatial-reference-system",
+            "dataset-reference-date",
+            "frequency-of-update",
+            "responsible-party",
+            "resource-type",
+            "metadata-language",
+            "harvest_object_id",
+        }
+
+        json_value_keys = {"access_constraints", "dataset-reference-date"}
+
+        additional_info = {}
+
+        for item in data:
+            key = item.get("key")
+            value = item.get("value")
+
+            if key in json_value_keys:
+                additional_info[key] = json.loads(value)
+            elif key in relevant_keys:
+                additional_info[key] = value
+
+        return additional_info if additional_info else None
 
 
 class PreviewView(TemplateView):
