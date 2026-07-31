@@ -1,7 +1,3 @@
-.datagovuk-directory-header .datagovuk-width-container {
-    max-width: 960px;
-}
-
 .datagovuk-header__inner, .datagovuk-directory-header__inner {
     display: flex;
     flex-wrap: wrap;
@@ -26,7 +22,8 @@
 
 .datagovuk-header__link,
 .datagovuk-header__button,
-.datagovuk-directory-header__link {
+.datagovuk-directory-header__link,
+.datagovuk-directory-header__button {
     display: none;
     color: $datagovuk-black;
     font-family: Inter, sans-serif;
@@ -37,12 +34,8 @@
     padding: 22px 0;
 }
 
-.datagovuk-header__link,
-.datagovuk-directory-header__link {
-    text-decoration: none;
-}
-
-.datagovuk-header__button:after {
+.datagovuk-header__button:after,
+.datagovuk-directory-header__button:after {
     transform: translateY(-35%) rotate(45deg) scale(1);
     content: "";
     display: inline-block;
@@ -54,19 +47,26 @@
     margin: 0px 10px 0px 10px;
 }
 
+.datagovuk-directory-header__button:after {
+  border-color: #FFF;
+}
+
 .datagovuk-header__button[aria-expanded="true"]:after {
     transform: translateY(1px) rotate(225deg) scale(1);
 }
 
-#datagovuk-header-button-all {
+#datagovuk-header-button-all,
+#datagovuk-directory-header-button-all {
     display: block;
 }
 
-.js-enabled .datagovuk-menu {
+.js-enabled .datagovuk-menu,
+.js-enabled .datagovuk-directory-menu {
   display: none;
 }
 
-.datagovuk-menu {
+.datagovuk-menu,
+.datagovuk-directory-menu {
     order: 1;
     width: 100%;
     padding-bottom: 40px;
@@ -88,7 +88,15 @@
     padding: 10px 0;
 }
 
-.datagovuk-menu__item-link:hover{
+.datagovuk-directory-menu .datagovuk-menu__item-link {
+  color: #FFF;
+}
+
+.datagovuk-directory-menu .datagovuk-menu__item-link:focus {
+  color: $datagovuk-black;
+}
+
+.datagovuk-menu__item-link:hover {
     text-decoration: underline;
 }
 
@@ -111,6 +119,33 @@
     text-decoration: none;
 }
 
+.datagovuk-directory-header__inner {
+    padding: 0px 20px;
+    background-color: $datagovuk-black;
+}
+
+.datagovuk-directory-header__logo {
+    flex-grow: 1;
+}
+
+.datagovuk-directory-header__logo-link {
+  color: #FFF;
+  text-decoration: none;
+}
+
+.datagovuk-directory-header__logo-link:hover {
+  text-decoration: underline;
+}
+
+.datagovuk-directory-header__link,
+.datagovuk-directory-header__button {
+  color: #FFF;
+}
+
+.datagovuk-directory-header__link:hover {
+  text-decoration: underline;
+}
+
 /* Desktop styling overrides */
 @media (min-width: $desktop-header-breakpoint) {
     .datagovuk-menu__item-spotlight-link {
@@ -131,7 +166,8 @@
         display: block;
     }
 
-    #datagovuk-header-button-all {
+    #datagovuk-header-button-all,
+    #datagovuk-directory-header-button-all {
         display: none;
     }
 
@@ -141,17 +177,4 @@
         gap: 10px 30px;
     }
 
-}
-
-.datagovuk-directory-header__inner {
-    padding: 0px 20px;
-    background-color: $datagovuk-black;
-}
-
-.datagovuk-directory-header__logo {
-    flex-grow: 1;
-}
-
-.datagovuk-directory-header__link {
-  color: #FFF;
 }
