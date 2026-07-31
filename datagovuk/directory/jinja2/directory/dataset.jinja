@@ -94,6 +94,43 @@
       {% else %}
         <p class="govuk-body datagovuk-body">This data hasn’t been released by the publisher.</p>
       {% endif %}
+
+      {% if doc.contact_email or doc.foi_email or doc.foi_web %}
+        {% set pub = doc.organisation.name %}
+        <section class="contact">
+          <h2 class="govuk-heading-l datagovuk-heading-l">Contact</h2>
+
+          {% if doc.contact_email %}
+            <h3 class="govuk-heading-m datagovuk-heading-m">Enquiries</h3>
+            <p class="govuk-body datagovuk-body">
+              <a href="{{ 'mailto:' ~ doc.contact_email }}"
+                 class="govuk-link datagovuk-link datagovuk-link--secondary"
+                 data-ga-event="contact"
+                 data-ga-publisher="{{ pub }}">{{ doc.contact_email }}</a>
+            </p>
+          {% endif %}
+
+          {% if doc.foi_email or doc.foi_web %}
+            <h3 class="govuk-heading-m datagovuk-heading-m">FOI requests</h3>
+            {% if doc.foi_email %}
+              <p class="govuk-body datagovuk-body govuk-!-margin-bottom-1">
+                <a href="{{ 'mailto:' ~ doc.foi_email }}"
+                   class="govuk-link datagovuk-link datagovuk-link--secondary"
+                   data-ga-event="contact"
+                   data-ga-publisher="{{ pub }}">{{ doc.foi_email }}</a>
+              </p>
+            {% endif %}
+            {% if doc.foi_web %}
+              <p class="govuk-body datagovuk-body">
+                <a href="{{ foi_web }}"
+                   class="govuk-link datagovuk-link datagovuk-link--secondary"
+                   data-ga-event="contact"
+                   data-ga-publisher="{{ pub }}">Make a Freedom of Information request online</a>
+              </p>
+            {% endif %}
+          {% endif %}
+        </section>
+      {% endif %}
     </div>
   </div>
 {% endblock search_main %}
