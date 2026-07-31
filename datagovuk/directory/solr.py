@@ -174,7 +174,7 @@ class SolrDatafile:
     created_at: str
     format: str
     uuid: str
-    last_modified: str
+    last_modified: datetime
     created: str
     size: str
     is_csv: bool = False
@@ -184,6 +184,11 @@ class SolrDatafile:
     def from_resource(resource: dict, dataset_created_at: str):
         resource_format = resource.get("format") or ""
         resource_format = resource_format.strip().removeprefix(".").removesuffix(".").upper()
+
+        last_modified = resource.get("last_modified")
+        if last_modified:
+            last_modified = datetime.fromisoformat(last_modified)
+
         return SolrDatafile(
             name=resource.get("name") or resource.get("description") or "",
             url=resource.get("url", ""),
@@ -191,7 +196,7 @@ class SolrDatafile:
             format=resource_format,
             uuid=resource.get("id", ""),
             is_csv=resource_format == "CSV",
-            last_modified=resource.get("last_modified", ""),
+            last_modified=last_modified,
             created=resource.get("created", ""),
             size=resource.get("size", ""),
         )

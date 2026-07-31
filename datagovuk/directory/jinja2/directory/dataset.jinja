@@ -34,7 +34,7 @@
       <h2 class="govuk-heading-l datagovuk-heading-l">Summary</h2>
       <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">{{ doc.summary }}</div>
       <h2 class="govuk-heading-l datagovuk-heading-l">Data links</h2>
-      {% if resources %}
+      {% if doc.datafiles %}
         <div class="govuk-!-margin-bottom-8">
           <div class="datagovuk-table-container" tabindex="0" role="region">
             <table class="govuk-table datagovuk-table">
@@ -56,24 +56,25 @@
                 </tr>
               </thead>
               <tbody class="govuk-table__body">
-                {% for resource in resources %}
+                {% for resource in doc.datafiles %}
                   <tr class="govuk-table__row">
                     <td class="govuk-table__cell datagovuk-table__cell govuk-body datagovuk-body">
                       <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name }}</a>
-                      {% if resource.file_size %}({{ resource.file_size }}){% endif %}
+                      {% if resource.size %}({{ resource.size|format_file_size }}){% endif %}
                     </td>
                     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
                       {{ resource.format }}
                     </td>
                     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
                       {% if resource.is_csv %}
-                        <a href="{{ resource.preview_url }}" class="govuk-link datagovuk-link">Preview</a>
+                        <a href="{{ url('directory:preview', kwargs={'dataset_uuid': doc.uuid, 'name': doc.name, 'datafile_uuid': resource.uuid}) }}"
+                           class="govuk-link datagovuk-link">Preview</a>
                       {% else %}
                         Not available
                       {% endif %}
                     </td>
                     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-                      {{ resource.date }}
+                      {{ resource.last_modified|date("d/m/Y") }}
                     </td>
                   </tr>
                 {% endfor %}
