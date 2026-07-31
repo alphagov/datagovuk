@@ -262,6 +262,7 @@ class SolrDataset:
         metadata_modified = doc.get("metadata_modified")
         if metadata_modified:
             public_updated_at = datetime.fromisoformat(metadata_modified)
+        organisation_details = dataset_dict.get("organization", {})
 
         return SolrDataset(
             uuid=doc.get("id", ""),
@@ -269,18 +270,18 @@ class SolrDataset:
             title=doc.get("title", ""),
             summary=doc.get("notes", ""),
             organisation_name=doc.get("organization", ""),
-            organisation=dataset_dict.get("organization", ""),
+            organisation=organisation_details,
             public_updated_at=public_updated_at,
             topic=topic,
             licence_title=dataset_dict.get("license_title", ""),
             licence_url=dataset_dict.get("license_url", ""),
             licence_code=dataset_dict.get("license_id", ""),
             licence_custom=licence_custom,
-            contact_email=dataset_dict.get("contact-email", ""),
-            contact_name=dataset_dict.get("contact-name", ""),
-            foi_name=dataset_dict.get("foi-name", ""),
-            foi_email=dataset_dict.get("foi-email", ""),
-            foi_web=dataset_dict.get("foi-web", ""),
+            contact_email=dataset_dict.get("contact-email", organisation_details.get("contact-email", "")),
+            contact_name=dataset_dict.get("contact-name", organisation_details.get("contact-name", "")),
+            foi_name=dataset_dict.get("foi-name", organisation_details.get("foi-name", "")),
+            foi_email=dataset_dict.get("foi-email", organisation_details.get("foi-email", "")),
+            foi_web=dataset_dict.get("foi-web", organisation_details.get("foi-web", "")),
             datafiles=datafiles,
             docs=docs,
             raw_doc=doc,
