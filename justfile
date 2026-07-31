@@ -83,6 +83,9 @@ run +args:
 test *args:
     @docker compose exec django pytest {{args}}
 
+test-unit *args:
+    @docker compose exec django pytest datagovuk/ {{args}}
+
 coverage:
     @docker compose exec django coverage run -m pytest datagovuk/
     @docker compose exec django coverage html
