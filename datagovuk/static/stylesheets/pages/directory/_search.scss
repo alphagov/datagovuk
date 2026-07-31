@@ -1,0 +1,21 @@
+.datagovuk-search__results-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 15px;
+}
+
+.datagovuk-search__results-count {
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.datagovuk-search__sort-by {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+}
+
+.datagovuk-search__sort-by label {
+  flex-shrink: 0;
+}
