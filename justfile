@@ -86,6 +86,9 @@ test *args:
 test-unit *args:
     @docker compose exec django pytest datagovuk/ {{args}}
 
+test-e2e *args:
+    @docker compose exec django pytest tests/e2e/ {{args}}
+
 coverage:
     @docker compose exec django coverage run -m pytest datagovuk/
     @docker compose exec django coverage html
