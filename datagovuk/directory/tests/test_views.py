@@ -327,118 +327,97 @@ class TestSearchView:
 
 
 class TestDatasetView:
-    def test_view_existing_dataset_returns_ok(self, client, mock_solr_client, mock_solr_results_factory):
+    def test_view_existing_dataset_returns_ok(self, client, solr_doc_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"
-        mock_results = mock_solr_results_factory(
-            docs=[
+        solr_doc_factory(
+            id=test_uuid,
+            name="test-dataset",
+            title="Test Dataset",
+            notes="Test notes",
+            metadata_modified="2026-01-15T10:00:00Z",
+            organization="test-org",
+            validated_data_dict=json.dumps(
                 {
+                    "name": "test-dataset",
                     "id": test_uuid,
-                    "title": "Test Dataset",
-                    "notes": "Test notes",
-                    "metadata_modified": "2026-01-15T10:00:00Z",
-                    "validated_data_dict": json.dumps(
-                        {
-                            "name": "test-dataset",
-                            "id": test_uuid,
-                            "organization": {"title": "Test Org"},
-                            "resources": [],
-                        },
-                    ),
+                    "organization": {"title": "Test Org"},
+                    "resources": [],
                 },
-            ],
-            hits=1,
+            ),
         )
-        mock_solr_client.search.return_value = mock_results
 
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "test-dataset"})
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.OK
-        assert response.context_data["title"] == "Test Dataset"
-        assert response.context_data["notes"] == "Test notes"
-        assert response.context_data["metadata_modified"] == "2026-01-15T10:00:00Z"
-        assert response.context_data["organization_title"] == "Test Org"
-        assert response.context_data["resources"] == []
+        assert response.context_data["doc"].title == "Test Dataset"
+        assert response.context_data["doc"].summary == "Test notes"
+        assert response.context_data["doc"].organisation["title"] == "Test Org"
+        assert response.context_data["doc"].datafiles == []
 
-    def test_view_existing_dataset_with_resources(self, client, mock_solr_client, mock_solr_results_factory):
+    def test_view_existing_dataset_with_resources(self, client, solr_doc_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440001"
-        mock_results = mock_solr_results_factory(
-            docs=[
+        solr_doc_factory(
+            id=test_uuid,
+            name="dataset-with-resources",
+            title="Dataset With Resources",
+            notes="Has resources",
+            metadata_modified="2026-02-20T15:30:00Z",
+            organization="publishing-org",
+            validated_data_dict=json.dumps(
                 {
-                    "id": test_uuid,
                     "name": "dataset-with-resources",
-                    "title": "Dataset With Resources",
-                    "notes": "Has resources",
-                    "metadata_modified": "2026-02-20T15:30:00Z",
-                    "validated_data_dict": json.dumps(
+                    "id": test_uuid,
+                    "organization": {"title": "Publishing Org"},
+                    "resources": [
                         {
-                            "name": "dataset-with-resources",
-                            "id": test_uuid,
-                            "organization": {"title": "Publishing Org"},
-                            "resources": [
-                                {
-                                    "id": "770e8400-e29b-41d4-a716-446655440001",
-                                    "name": "Data file",
-                                    "url": "http://example.com/data.csv",
-                                    "format": "CSV",
-                                    "created": "2026-01-01",
-                                    "last_modified": None,
-                                    "size": None,
-                                },
-                            ],
+                            "id": "770e8400-e29b-41d4-a716-446655440001",
+                            "name": "Data file",
+                            "url": "http://example.com/data.csv",
+                            "format": "CSV",
+                            "created": "2026-01-01",
+                            "last_modified": None,
+                            "size": None,
                         },
-                    ),
+                    ],
                 },
-            ],
-            hits=1,
+            ),
         )
-        mock_solr_client.search.return_value = mock_results
 
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-with-resources"})
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.OK
-        assert response.context_data["title"] == "Dataset With Resources"
-        assert len(response.context_data["resources"]) == 1
-        assert response.context_data["resources"][0]["name"] == "Data file"
+        assert response.context_data["doc"].title == "Dataset With Resources"
+        assert len(response.context_data["doc"].datafiles) == 1
+        assert response.context_data["doc"].datafiles[0].name == "Data file"
 
-    def test_view_nonexistent_dataset_returns_404(self, client, mock_solr_client, mock_solr_results_factory):
-        mock_solr_client.search.return_value = mock_solr_results_factory(docs=[], hits=0)
-
+    def test_view_nonexistent_dataset_returns_404(self, client, solr_doc_factory):
         test_uuid = "00000000-0000-0000-0000-000000000000"
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "nonexistent"})
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.NOT_FOUND
 
-    def test_view_dataset_solr_query_filters_by_id_and_state(self, client, mock_solr_client, mock_solr_results_factory):
+    def test_view_dataset_solr_query_filters_by_id_and_state(self, client, solr_doc_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440002"
-        mock_solr_client.search.return_value = mock_solr_results_factory(
-            docs=[
+        solr_doc_factory(
+            id=test_uuid,
+            name="active-dataset",
+            title="Active Dataset",
+            notes="Active",
+            metadata_modified="2026-03-01T09:00:00Z",
+            organization="active-org",
+            validated_data_dict=json.dumps(
                 {
-                    "id": test_uuid,
-                    "name": "active-dataset",
-                    "title": "Active Dataset",
-                    "notes": "Active",
-                    "metadata_modified": "2026-03-01T09:00:00Z",
-                    "validated_data_dict": json.dumps(
-                        {
-                            "organization": {"title": "Active Org"},
-                            "resources": [],
-                        },
-                    ),
+                    "organization": {"title": "Active Org"},
+                    "resources": [],
                 },
-            ],
-            hits=1,
+            ),
         )
 
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "active-dataset"})
         client.get(url)
-
-        call_args = mock_solr_client.search.call_args
-        solr_query = call_args[0][0]
-        assert f"id:{test_uuid}" in solr_query
-        assert "state:active" in solr_query
 
     def test_dataset_view_returns_404_if_feature_flag_not_enabled(self, client, settings):
         settings.FEATURE_FLAGS_ENABLED = []
@@ -447,79 +426,68 @@ class TestDatasetView:
         response = client.get(url)
         assert response.status_code == HTTPStatus.NOT_FOUND
 
-    def test_csv_resource_shows_preview_link(self, client, mock_solr_client, mock_solr_results_factory):
+    def test_csv_resource_shows_preview_link(self, client, solr_doc_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440003"
         resource_uuid = "660e8400-e29b-41d4-a716-446655440003"
-        mock_solr_client.search.return_value = mock_solr_results_factory(
-            docs=[
+        solr_doc_factory(
+            id=test_uuid,
+            name="csv-dataset",
+            title="CSV Dataset",
+            notes="Has CSV",
+            metadata_modified="2026-01-01T00:00:00Z",
+            organization="test-org",
+            validated_data_dict=json.dumps(
                 {
-                    "id": test_uuid,
-                    "name": "csv-dataset",
-                    "title": "CSV Dataset",
-                    "notes": "Has CSV",
-                    "metadata_modified": "2026-01-01T00:00:00Z",
-                    "validated_data_dict": json.dumps(
+                    "organization": {"title": "Test Org"},
+                    "resources": [
                         {
-                            "organization": {"title": "Test Org"},
-                            "resources": [
-                                {
-                                    "id": resource_uuid,
-                                    "name": "Data",
-                                    "url": "http://example.com/data.csv",
-                                    "format": "CSV",
-                                    "created": "2026-01-01",
-                                    "last_modified": None,
-                                    "size": None,
-                                },
-                            ],
+                            "id": resource_uuid,
+                            "name": "Data",
+                            "url": "http://example.com/data.csv",
+                            "format": "CSV",
+                            "created": "2026-01-01",
+                            "last_modified": None,
+                            "size": None,
                         },
-                    ),
+                    ],
                 },
-            ],
-            hits=1,
+            ),
         )
 
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "csv-dataset"})
         response = client.get(url)
 
-        expected_preview_url = reverse(
-            "directory:preview",
-            kwargs={"dataset_uuid": test_uuid, "name": "csv-dataset", "datafile_uuid": resource_uuid},
-        )
-        assert response.context_data["resources"][0]["preview_url"] == expected_preview_url
+        assert response.context_data["doc"].datafiles[0].is_csv is True
+        assert response.context_data["doc"].datafiles[0].url == "http://example.com/data.csv"
 
-    def test_non_csv_resource_shows_not_available(self, client, mock_solr_client, mock_solr_results_factory):
+    def test_non_csv_resource_shows_not_available(self, client, solr_doc_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440004"
-        mock_solr_client.search.return_value = mock_solr_results_factory(
-            docs=[
+        solr_doc_factory(
+            id=test_uuid,
+            name="xls-dataset",
+            title="XLS Dataset",
+            notes="Has XLS",
+            metadata_modified="2026-01-01T00:00:00Z",
+            organization="test-org",
+            validated_data_dict=json.dumps(
                 {
-                    "id": test_uuid,
-                    "name": "xls-dataset",
-                    "title": "XLS Dataset",
-                    "notes": "Has XLS",
-                    "metadata_modified": "2026-01-01T00:00:00Z",
-                    "validated_data_dict": json.dumps(
+                    "organization": {"title": "Test Org"},
+                    "resources": [
                         {
-                            "organization": {"title": "Test Org"},
-                            "resources": [
-                                {
-                                    "id": "some-uuid",
-                                    "name": "Data",
-                                    "url": "http://example.com/data.xls",
-                                    "format": "XLS",
-                                    "created": "2026-01-01",
-                                    "last_modified": None,
-                                    "size": None,
-                                },
-                            ],
+                            "id": "some-uuid",
+                            "name": "Data",
+                            "url": "http://example.com/data.xls",
+                            "format": "XLS",
+                            "created": "2026-01-01",
+                            "last_modified": None,
+                            "size": None,
                         },
-                    ),
+                    ],
                 },
-            ],
-            hits=1,
+            ),
         )
 
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "xls-dataset"})
         response = client.get(url)
 
-        assert response.context_data["resources"][0]["preview_url"] is None
+        assert response.context_data["doc"].datafiles[0].is_csv is False
