@@ -152,5 +152,20 @@
         {# djlint:on #}
       </section>
     </div>
+    <div class="govuk-grid-column-one-third">
+      <section class="more-from-publisher">
+        <div class="datagovuk-card">
+          <h2 class="govuk-heading-m datagovuk-heading-m">More from this publisher</h2>
+          <p class="govuk-body datagovuk-body">
+            {# djlint:off #}
+            <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.title }}"
+               class="govuk-link datagovuk-link datagovuk-link--secondary">
+              All datasets from {{ doc.organisation.title }}
+            </a>
+            {# djlint:on #}
+          </p>
+        </div>
+      </section>
+    </div>
   </div>
 {% endblock search_main %}
