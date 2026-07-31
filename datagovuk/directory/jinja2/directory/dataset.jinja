@@ -8,6 +8,15 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl datagovuk-heading-xl govuk-!-margin-bottom-4">{{ doc.title }}</h1>
+      {% set licence_html %}
+        {% if doc.licence_title and doc.licence_url %}
+          <a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link">{{ doc.licence_title }}</a>
+        {% elif doc.licence_title %}
+          {{ doc.licence_title }}
+        {% else %}
+          Not set
+        {% endif %}
+      {% endset %}
       {# djlint:off #}
       {{ govukSummaryList({
         "rows": [
@@ -25,7 +34,7 @@
           },
           {
             "key": {"text": "Licence:"},
-            "value": {"text": doc.licence_code or "Not set"},
+            "value": {"html": licence_html},
           },
         ],
         "classes": "datagovuk-summary-list govuk-summary-list--no-border",
