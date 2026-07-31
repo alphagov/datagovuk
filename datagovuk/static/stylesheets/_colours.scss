@@ -1,6 +1,7 @@
 $datagovuk-black: #333333;
 $datagovuk-grey: #5D5D5D;
 $datagovuk-light-grey: #FAFAFA;
+$datagovuk-white: #FFFFFF;
 
 $datagovuk-dark-green: #00381E;
 $datagovuk-green: #00890B;
@@ -12,7 +13,7 @@ $datagovuk-light-pink: #FBF4F7;
 $datagovuk-focus: #fd0;
 
 .datagovuk-\!-colour-white {
-  color: #FFF !important;
+  color: $datagovuk-white !important;
 }
 
 .datagovuk-\!-colour-grey {
