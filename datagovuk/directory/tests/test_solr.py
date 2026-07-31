@@ -109,6 +109,8 @@ class TestSolrDatafileModel:
             created_at="2023-01-01T00:00:00Z",
             format="CSV",
             uuid="550e8400-e29b-41d4-a716-446655440003",
+            last_modified="2023-01-01T00:00:00Z",
+            size=1024,
             _preview=mock_preview,
         )
 
@@ -125,6 +127,8 @@ class TestSolrDatafileModel:
             created_at="2023-01-01T00:00:00Z",
             format="CSV",
             uuid="550e8400-e29b-41d4-a716-446655440003",
+            last_modified="2023-01-01T00:00:00Z",
+            size=1024,
             _preview=None,
         )
 
@@ -141,6 +145,8 @@ class TestSolrDatafileModel:
             created_at="2023-01-01T00:00:00Z",
             format="CSV",
             uuid="550e8400-e29b-41d4-a716-446655440003",
+            last_modified="2023-01-01T00:00:00Z",
+            size=1024,
             _preview=None,
         )
 
