@@ -58,20 +58,28 @@
 
     <div class="govuk-grid-column-two-thirds">
       {% if results %}
-        <p class="govuk-body datagovuk-body">
-          {{ pagination.first_result_in_page }} to {{ pagination.last_result_in_page }} of {{ pagination.total_results }} results
-        </p>
-        <br />
-        {{ govukSelect({
-                "label": {
-                "text": "Sort by",
-                },
-                "name": "sort",
-                "value": sort,
-                "items": [{"text": "Most relevant", "value": "best"}, {"text": "Most recent", "value": "recent"}],
-                "formGroup": {"classes": "datagovuk-form-group"},
-                "attributes": {"onchange": "this.form.submit()"},
-                }) }}
+        <div class="datagovuk-search__results-header">
+          <div class="govuk-body datagovuk-body datagovuk-search__results-count">
+            {{ pagination.first_result_in_page }} to {{ pagination.last_result_in_page }} of {{ pagination.total_results }} results
+          </div>
+          {{ govukSelect({
+                    "label": {
+                    "text": "Sort by"
+                    },
+                    "name": "sort",
+                    "value": sort,
+                    "items": [
+                    {"text": "Most relevant", "value": "best"},
+                    {"text": "Most recent", "value": "recent"}
+                    ],
+                    "formGroup": {
+                    "classes": "datagovuk-form-group datagovuk-search__sort-by"
+                    },
+                    "attributes": {
+                    "onchange": "this.form.submit()"
+                    }
+                    }) }}
+        </div>
         {% for result in results %}
           <p>
             <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"

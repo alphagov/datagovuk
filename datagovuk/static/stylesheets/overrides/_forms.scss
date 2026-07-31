@@ -14,7 +14,7 @@
     border-radius: 10px;
     font-size: 20px;
     font-family: 'Inter', sans-serif;
-    width: 100%;
+    min-width: auto;
   }
 
   .autocomplete__menu .autocomplete__option:first-of-type {
