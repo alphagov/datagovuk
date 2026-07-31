@@ -202,6 +202,7 @@ class SolrDataset:
     topic: str
     licence_title: str
     licence_url: str
+    raw_doc: dict
     datafiles: list = field(default_factory=list)
     contact_email: str = ""
     contact_name: str = ""
@@ -262,4 +263,5 @@ class SolrDataset:
             foi_web=dataset_dict.get("foi-web", ""),
             datafiles=datafiles,
             docs=docs,
+            raw_doc=doc,
         )
