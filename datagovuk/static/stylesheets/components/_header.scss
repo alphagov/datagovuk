@@ -48,7 +48,7 @@
 }
 
 .datagovuk-directory-header__button:after {
-  border-color: #FFF;
+  border-color: $datagovuk-white;
 }
 
 .datagovuk-header__button[aria-expanded="true"]:after {
@@ -89,7 +89,7 @@
 }
 
 .datagovuk-directory-menu .datagovuk-menu__item-link {
-  color: #FFF;
+  color: $datagovuk-white;
 }
 
 .datagovuk-directory-menu .datagovuk-menu__item-link:focus {
@@ -129,7 +129,7 @@
 }
 
 .datagovuk-directory-header__logo-link {
-  color: #FFF;
+  color: $datagovuk-white;
   text-decoration: none;
 }
 
@@ -139,7 +139,7 @@
 
 .datagovuk-directory-header__link,
 .datagovuk-directory-header__button {
-  color: #FFF;
+  color: $datagovuk-white;
 }
 
 .datagovuk-directory-header__link:hover {
