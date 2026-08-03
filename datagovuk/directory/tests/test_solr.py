@@ -70,6 +70,26 @@ class TestSolrDatafileModel:
         assert solr_datafile.uuid == "e5523c1b-2133-4431-9bca-ea19c939b0a8"
         assert solr_datafile.is_csv is True
 
+    def test_solr_datafile_model_from_resource_with_last_modified(self):
+        resource = {
+            "id": "e5523c1b-2133-4431-9bca-ea19c939b0a8",
+            "name": "Population projections (2014-based) persons by single year of age",
+            "url": "https://example.com/test.csv",
+            "created": "2016-06-06T15:14:20.764117",
+            "last_modified": "2016-06-06T15:14:20.764117",
+            "description": "ONS single year of age population projections for districts within North Yorkshire",
+            "format": "CSV",
+        }
+
+        solr_datafile = SolrDatafile.from_resource(resource, "2023-01-01T00:00:00Z")
+        assert solr_datafile.name == "Population projections (2014-based) persons by single year of age"
+        assert solr_datafile.format == "CSV"
+        assert solr_datafile.url == "https://example.com/test.csv"
+        assert solr_datafile.created_at == "2016-06-06T15:14:20.764117"
+        assert solr_datafile.last_modified == datetime.fromisoformat("2016-06-06T15:14:20.764117")
+        assert solr_datafile.uuid == "e5523c1b-2133-4431-9bca-ea19c939b0a8"
+        assert solr_datafile.is_csv is True
+
     def test_solr_datafile_model_from_resource_with_missing_fields(self):
         resource = {
             "id": "550e8400-e29b-41d4-a716-446655440003",
