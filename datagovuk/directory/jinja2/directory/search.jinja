@@ -64,22 +64,22 @@
               {{ pagination.first_result_in_page }} to {{ pagination.last_result_in_page }} of {{ pagination.total_results }} results
             </div>
             {{ govukSelect({
-                      "label": {
-                      "text": "Sort by"
-                      },
-                      "name": "sort",
-                      "value": sort,
-                      "items": [
-                      {"text": "Most relevant", "value": "best"},
-                      {"text": "Most recent", "value": "recent"}
-                      ],
-                      "formGroup": {
-                      "classes": "datagovuk-form-group datagovuk-search__sort-by"
-                      },
-                      "attributes": {
-                      "onchange": "this.form.submit()"
-                      }
-                      }) }}
+                        "label": {
+                        "text": "Sort by"
+                        },
+                        "name": "sort",
+                        "value": sort,
+                        "items": [
+                        {"text": "Most relevant", "value": "best"},
+                        {"text": "Most recent", "value": "recent"}
+                        ],
+                        "formGroup": {
+                        "classes": "datagovuk-form-group datagovuk-search__sort-by"
+                        },
+                        "attributes": {
+                        "onchange": "this.form.submit()"
+                        }
+                        }) }}
           </div>
           <ul class="datagovuk-search-results">
             {% for doc in docs %}
