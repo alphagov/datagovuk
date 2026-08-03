@@ -25,21 +25,20 @@ def format_file_size(file_size):
 
 
 @pass_environment
-def split_truncate(environment, s, length=255, killwords=False, end="..."):
+def split_truncate(environment, string, length=255, killwords=False, end=""):
     """
     Uses Jinja2's built-in do_truncate under the hood and returns a tuple:
     (truncated_prefix, remainder)
     """
-    if s is None or len(s) <= length:
-        return s, ""
+    if string is None or len(string) <= length:
+        return string, ""
 
-    truncated = do_truncate(environment, s, length=length, killwords=killwords, end=end)
+    truncated = do_truncate(environment, string, length=length, killwords=killwords, end=end)
 
     truncate_end = len(truncated)
-    if end and truncated.endswith(end):
-        truncate_end = truncate_end - len(end)
-
-    remainder = s[truncate_end:]
+    if end:
+        truncate_end -= len(end)
+    remainder = string[truncate_end:]
 
     return truncated, remainder
 

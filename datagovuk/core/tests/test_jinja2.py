@@ -51,7 +51,7 @@ def test_split_truncate_returns_input_and_empty_string_for_exact_length():
 
 def test_split_truncate_returns_truncated_and_remainder_for_long_string():
     env = Environment()  # noqa: S701
-    truncated, remainder = split_truncate(env, "hello world this is a long string", length=10)
+    truncated, remainder = split_truncate(env, "hello world this is a long string", length=10, end="...")
     assert truncated == "hello..."
     assert remainder == " world this is a long string"
 

@@ -45,17 +45,23 @@
       {% set summary_start, summary_rest = doc.summary|split_truncate(200) %}
       <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">
         {{ summary_start }}
-        <div id="truncated-summary-rest">{{ summary_rest }}</div>
+        {% if summary_rest %}
+          <span id="truncated-summary-end">...</span>
+          <div id="truncated-summary-rest">{{ summary_rest }}</div>
+        {% endif %}
       </div>
-      {{ govukButton({
-        "text": "Show more",
-        "type": "button",
-        "classes": "datagovuk-button datagovuk-show-more",
-        "attributes": {
-          "aria-controls": "truncated-summary-rest",
-          "data-show-display": "inline"
-        }
-      }) }}
+      {% if summary_rest %}
+        {{ govukButton({
+          "text": "Show more",
+          "type": "button",
+          "classes": "datagovuk-button datagovuk-show-more",
+          "attributes": {
+            "aria-controls": "truncated-summary-rest",
+            "data-show-display": "inline",
+            "data-truncated-end": "truncated-summary-end"
+          }
+        }) }}
+      {% endif %}
       <h2 class="govuk-heading-l datagovuk-heading-l">Data links</h2>
       {% if doc.datafiles %}
         <div class="govuk-!-margin-bottom-8">
