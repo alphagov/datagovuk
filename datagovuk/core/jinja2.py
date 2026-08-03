@@ -2,7 +2,8 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from django.template import defaultfilters
 from django.templatetags.static import static
 from django.urls import reverse
-from jinja2 import ChoiceLoader, Environment, PackageLoader, PrefixLoader
+from jinja2 import ChoiceLoader, Environment, PackageLoader, PrefixLoader, pass_environment
+from jinja2.filters import do_truncate
 
 from .feature_flags import is_feature_flag_enabled
 
@@ -21,6 +22,26 @@ def format_file_size(file_size):
         if file_size < binary_multiplier:
             return f"{file_size:.0f} {unit}"
     return f"{file_size:.0f} GB"
+
+
+@pass_environment
+def split_truncate(environment, s, length=255, killwords=False, end="..."):
+    """
+    Uses Jinja2's built-in do_truncate under the hood and returns a tuple:
+    (truncated_prefix, remainder)
+    """
+    if s is None or len(s) <= length:
+        return s, ""
+
+    truncated = do_truncate(environment, s, length=length, killwords=killwords, end=end)
+
+    truncate_end = len(truncated)
+    if end and truncated.endswith(end):
+        truncate_end = truncate_end - len(end)
+
+    remainder = s[truncate_end:]
+
+    return truncated, remainder
 
 
 def environment(**options):
@@ -44,6 +65,7 @@ def environment(**options):
     env.filters.update(django_filters)
     env.filters["to_govuk_items"] = to_govuk_items
     env.filters["format_file_size"] = format_file_size
+    env.filters["split_truncate"] = split_truncate
     env.globals.update(
         {
             "static": static,

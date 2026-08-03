@@ -42,7 +42,19 @@
       }) }}
       {# djlint:on #}
       <h2 class="govuk-heading-l datagovuk-heading-l">Summary</h2>
-      <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">{{ doc.summary }}</div>
+      {% set summary_start, summary_rest = doc.summary|split_truncate(200) %}
+      <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">
+        {{ summary_start }}
+        <div id="truncated-summary-rest">{{ summary_rest }}</div>
+      </div>
+      {{ govukButton({
+        "text": "Show more",
+        "type": "button",
+        "classes": "datagovuk-button datagovuk-show-more",
+        "attributes": {
+          "aria-controls": "truncated-summary-rest"
+        }
+      }) }}
       <h2 class="govuk-heading-l datagovuk-heading-l">Data links</h2>
       {% if doc.datafiles %}
         <div class="govuk-!-margin-bottom-8">
