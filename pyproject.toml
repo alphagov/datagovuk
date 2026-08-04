@@ -27,6 +27,7 @@ dependencies = [
   "jinja2==3.1.6",
   "markdownify==1.2.3",
   "mistune==3.3.4",
+  "nh3==0.3.6",
   "ordered-set==4.1.0",
   "pillow==12.3.0",
   "pysolr==3.11.0",

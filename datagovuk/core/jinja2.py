@@ -1,9 +1,11 @@
+import nh3
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.template import defaultfilters
 from django.templatetags.static import static
 from django.urls import reverse
 from jinja2 import ChoiceLoader, Environment, PackageLoader, PrefixLoader
 from markdownify import markdownify
+from markupsafe import Markup
 
 from .feature_flags import is_feature_flag_enabled
 from .markdown import render_markdown
@@ -24,6 +26,29 @@ def format_file_size(file_size):
         if file_size < binary_multiplier:
             return f"{file_size:.0f} {unit}"
     return f"{file_size:.0f} GB"
+
+
+def sanitize_html(value):
+    """
+    Sanitizes HTML string to allow only specific tags and attributes.
+    Returns a Markup object so Jinja treats the result as safe HTML.
+    """
+    if not value:
+        return ""
+
+    allowed_tags = {"p", "b", "i", "strong", "em", "a", "ul", "ol", "li", "br"}
+    allowed_attributes = {
+        "a": {"href", "title", "target"},
+    }
+
+    cleaned_html = nh3.clean(
+        value,
+        tags=allowed_tags,
+        attributes=allowed_attributes,
+        link_rel=None,
+    )
+
+    return Markup(cleaned_html)  # noqa: S704
 
 
 def environment(**options):
@@ -49,6 +74,7 @@ def environment(**options):
     env.filters["format_file_size"] = format_file_size
     env.filters["html_to_md"] = markdownify
     env.filters["markdown_to_html"] = render_markdown
+    env.filters["sanitize"] = sanitize_html
     env.globals.update(
         {
             "static": static,
