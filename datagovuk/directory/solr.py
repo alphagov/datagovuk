@@ -40,6 +40,20 @@ def get_organisations_by_title():
     return organisations
 
 
+@cache_memoize(10 * 60)
+def get_organisation_by_name(name):
+    solr_client = get_solr_client()
+    results = solr_client.search(
+        q="*:*",
+        fq=["site_id:dgu_organisations*", f"name:{name}"],
+        fl=["title", "name", "extras_contact-email", "extras_foi-email", "extras_foi-web", "extras_foi-name"],
+        rows=1,
+    )
+    if not results:
+        return None
+    return results.docs[0]
+
+
 def process_query(query_string):
     # Matches either a quoted phrase (Group 1) or an individual word (Group 2)
     phrase_regex = r'"(.*?)"|\b(\w+)\b'
@@ -157,7 +171,9 @@ def get_document(document_id):
     if solr_results.hits == 0:
         return None
     docs = [SolrDataset.from_solr_doc(result) for result in solr_results]
-    return docs[0]
+    doc = docs[0]
+    doc.load_organisation()
+    return doc
 
 
 @dataclass
@@ -238,6 +254,22 @@ class SolrDataset:
     organisation_name: str = ""
     is_organogram: bool = False
 
+    def load_organisation(self):
+        organisation = get_organisation_by_name(self.organisation_name)
+        if not organisation:
+            return
+        # Some values on the dataset should have default values taken from the
+        # associated organisation record.  Go through those default values
+        # and set the values on this dataset to them if the dataset does not have
+        # a value set already
+        default_fields = ["extras_contact-email", "extras_foi-email", "extras_foi-web", "extras_foi-name"]
+        for organisation_field in default_fields:
+            default_value = organisation.get(organisation_field)
+            dataset_field = organisation_field.split("_")[1].replace("-", "_")
+            dataset_value_missing = getattr(self, dataset_field) == ""
+            if dataset_value_missing and default_value:
+                setattr(self, dataset_field, default_value)
+
     @staticmethod
     def from_solr_doc(doc: dict):
         dataset_dict = json.loads(doc.get("validated_data_dict", "{}"))
@@ -277,11 +309,11 @@ class SolrDataset:
             licence_url=dataset_dict.get("license_url", ""),
             licence_code=dataset_dict.get("license_id", ""),
             licence_custom=licence_custom,
-            contact_email=dataset_dict.get("contact-email", organisation_details.get("contact-email", "")),
-            contact_name=dataset_dict.get("contact-name", organisation_details.get("contact-name", "")),
-            foi_name=dataset_dict.get("foi-name", organisation_details.get("foi-name", "")),
-            foi_email=dataset_dict.get("foi-email", organisation_details.get("foi-email", "")),
-            foi_web=dataset_dict.get("foi-web", organisation_details.get("foi-web", "")),
+            contact_email=dataset_dict.get("contact-email", ""),
+            contact_name=dataset_dict.get("contact-name", ""),
+            foi_name=dataset_dict.get("foi-name", ""),
+            foi_email=dataset_dict.get("foi-email", ""),
+            foi_web=dataset_dict.get("foi-web", ""),
             datafiles=datafiles,
             docs=docs,
             raw_doc=doc,

@@ -355,6 +355,61 @@ class TestDatasetView:
         assert response.context_data["doc"].organisation["title"] == "Test Org"
         assert response.context_data["doc"].datafiles == []
 
+    def test_view_existing_dataset_organisation_missing_returns_ok(self, client, solr_doc_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440000"
+        solr_doc_factory(
+            id=test_uuid,
+            name="test-dataset",
+            title="Test Dataset",
+            notes="Test notes",
+            metadata_modified="2026-01-15T10:00:00Z",
+            organization="test-org",
+            validated_data_dict=json.dumps(
+                {
+                    "name": "test-dataset",
+                    "id": test_uuid,
+                    "organization": {"title": "Test Org"},
+                    "resources": [],
+                },
+            ),
+            organisation={"create": False},
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "test-dataset"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["doc"].title == "Test Dataset"
+        assert response.context_data["doc"].summary == "Test notes"
+        assert response.context_data["doc"].organisation["title"] == "Test Org"
+        assert response.context_data["doc"].datafiles == []
+
+    def test_view_existing_dataset_with_organisation_defaults_returns_ok(self, client, solr_doc_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440000"
+        solr_doc_factory(
+            id=test_uuid,
+            name="test-dataset",
+            title="Test Dataset",
+            notes="Test notes",
+            metadata_modified="2026-01-15T10:00:00Z",
+            organization="test-org",
+            validated_data_dict=json.dumps(
+                {
+                    "name": "test-dataset",
+                    "id": test_uuid,
+                    "organization": {"title": "Test Org"},
+                    "resources": [],
+                },
+            ),
+            organisation={"extras_foi_web": "https://www.example.net"},
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "test-dataset"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["doc"].foi_web == "https://www.example.net"
+
     def test_view_existing_dataset_with_resources(self, client, solr_doc_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440001"
         solr_doc_factory(

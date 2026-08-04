@@ -61,23 +61,41 @@ class SolrDocumentFactory(factory.DictFactory):
         }
 
 
-class SolrOrganisationFactory(SolrDocumentFactory):
+class SolrOrganisationFactory(factory.DictFactory):
+    id = factory.LazyFunction(lambda: str(uuid.uuid4()))
     site_id = "dgu_organisations"
+    name = factory.Sequence(lambda n: f"dataset-{n}")
+    title = factory.LazyAttribute(lambda o: o.name.replace("-", " ").title())
+    extras_foi_web = ""
+
+    class Meta:
+        rename = {
+            "extras_foi_web": "extras_foi-web",
+        }
 
 
 @pytest.fixture
 def solr_doc_factory(solr_client):
 
     def _create(**kwargs):
+        organisation_kwargs = kwargs.pop("organisation", {})
+        docs = []
         doc = SolrDocumentFactory(**kwargs)
+        docs.append(doc)
 
-        organisation_slug = doc["organization"]
-        organisation_name = organisation_slug.replace("-", " ").capitalize()
-        organisation_doc = SolrOrganisationFactory(title=organisation_name, name=organisation_slug)
+        if organisation_kwargs.get("create", True):
+            organisation_slug = doc["organization"]
+            organisation_name = organisation_slug.replace("-", " ").capitalize()
+            organisation_doc = SolrOrganisationFactory(
+                title=organisation_name,
+                name=organisation_slug,
+                **organisation_kwargs,
+            )
+            docs.append(organisation_doc)
         # Not ideal, but we must clear the cache here so that `get_organisations_by_title()` provides updated results
         cache.clear()
 
-        solr_client.add([doc, organisation_doc])
+        solr_client.add(docs)
         return doc
 
     return _create
