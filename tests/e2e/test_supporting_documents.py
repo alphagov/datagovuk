@@ -74,7 +74,7 @@ class TestSupportingDocumentsTemplate:
         dataset_with_supporting_docs,
     ):
         page.goto(live_server_url + dataset_url)
-        supporting_table = page.locator(".support-documents .datagovuk-table-container")
+        supporting_table = page.locator(".supporting-documents .datagovuk-table-container")
         headers = supporting_table.locator("thead th")
         expect(headers.nth(0)).to_have_text("Link")
         expect(headers.nth(1)).to_have_text("Format")
@@ -88,7 +88,7 @@ class TestSupportingDocumentsTemplate:
         dataset_with_supporting_docs,
     ):
         page.goto(live_server_url + dataset_url)
-        supporting_table = page.locator(".support-documents .datagovuk-table-container")
+        supporting_table = page.locator(".supporting-documents .datagovuk-table-container")
         expect(supporting_table.locator(".datagovuk-link", has_text="Annual Report 2023")).to_have_attribute(
             "href",
             "https://example.com/annual-report-2023.pdf",
@@ -106,7 +106,7 @@ class TestSupportingDocumentsTemplate:
         dataset_with_supporting_docs,
     ):
         page.goto(live_server_url + dataset_url)
-        supporting_table = page.locator(".support-documents .datagovuk-table-container")
+        supporting_table = page.locator(".supporting-documents .datagovuk-table-container")
         rows = supporting_table.locator("tbody tr.govuk-table__row")
         expect(rows.first.locator("td").nth(1)).to_contain_text("PDF")
 
@@ -118,6 +118,6 @@ class TestSupportingDocumentsTemplate:
         dataset_with_supporting_docs,
     ):
         page.goto(live_server_url + dataset_url)
-        supporting_table = page.locator(".support-documents .datagovuk-table-container")
+        supporting_table = page.locator(".supporting-documents .datagovuk-table-container")
         expect(supporting_table.get_by_text("15/01/2024")).to_be_visible()
         expect(supporting_table.get_by_text("01/11/2023")).to_be_visible()
