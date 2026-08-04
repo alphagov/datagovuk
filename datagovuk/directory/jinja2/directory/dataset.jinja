@@ -96,6 +96,12 @@
         <p class="govuk-body datagovuk-body">This data hasn’t been released by the publisher.</p>
       {% endif %}
 
+      {% if doc.docs %}
+        {% with supporting_documents=doc.docs %}
+          {% include "directory/includes/supporting_documents.jinja" %}
+        {% endwith %}
+      {% endif %}
+
       {% if doc.contact_email or doc.foi_email or doc.foi_web %}
         {% set pub = doc.organisation.name %}
         <section class="contact">
