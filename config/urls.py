@@ -24,6 +24,7 @@ urlpatterns = [
         never_cache(prometheus_views.ExportToDjangoView),
         name="prometheus-django-metrics",
     ),
+    path("", include("datagovuk.ckan_redirect.urls", namespace="ckan_redirect")),
 ]
 
 handler500 = "datagovuk.core.views.server_error"
