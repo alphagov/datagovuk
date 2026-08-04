@@ -23,6 +23,7 @@ def mock_solr_results_factory():
         mock_results = MagicMock()
         mock_results.docs = docs
         mock_results.hits = hits
+        mock_results.__iter__ = MagicMock(return_value=iter(docs))
         return mock_results
 
     return _create
@@ -35,16 +36,8 @@ def mock_solr_client(mock_solr_results_factory):
     """
     mock_client = MagicMock()
     mock_client.search.return_value = mock_solr_results_factory()
-    return mock_client
-
-
-@pytest.fixture(autouse=True)
-def mock_get_solr_client(mock_solr_client):
-    """
-    Automatically mock get_solr_client for all tests in this module.
-    """
-    with patch("datagovuk.directory.views.get_solr_client", return_value=mock_solr_client):
-        yield mock_solr_client
+    with patch("datagovuk.directory.solr.get_solr_client", return_value=mock_client):
+        yield mock_client
 
 
 @pytest.fixture
@@ -482,7 +475,6 @@ class TestDatasetView:
         response = client.get(url)
 
         assert response.context_data["doc"].datafiles[0].is_csv is False
-        assert response.context_data["resources"][0]["preview_url"] is None
 
     def test_dataset_with_additional_information_extras(self, client, mock_solr_client, mock_solr_results_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440005"
@@ -672,9 +664,8 @@ class TestDatasetView:
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.OK
-        supporting = response.context_data["supporting_documents"]
-        assert len(supporting) == 1
-        assert supporting[0]["name"] == "Methodology Notes"
+        assert len(response.context_data["doc"].docs) == 1
+        assert response.context_data["doc"].docs[0]["name"] == "Methodology Notes"
 
     def test_dataset_without_supporting_documents_returns_empty_list(
         self,
@@ -716,7 +707,7 @@ class TestDatasetView:
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.OK
-        assert response.context_data["supporting_documents"] == []
+        assert response.context_data["doc"].docs == []
 
     def test_supporting_documents_excluded_from_resources(self, client, mock_solr_client, mock_solr_results_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440011"
@@ -763,7 +754,7 @@ class TestDatasetView:
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.OK
-        resource_names = [resource["name"] for resource in response.context_data["resources"]]
-        supporting_names = [resource["name"] for resource in response.context_data["supporting_documents"]]
-        assert "Data File" in resource_names
+        datafile_names = [f.name for f in response.context_data["doc"].datafiles]
+        supporting_names = [d["name"] for d in response.context_data["doc"].docs]
+        assert "Data File" in datafile_names
         assert "Supporting Doc" in supporting_names

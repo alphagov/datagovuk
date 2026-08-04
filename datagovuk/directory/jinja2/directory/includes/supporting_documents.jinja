@@ -25,10 +25,10 @@
               {% if document.file_size %}({{ document.file_size }}){% endif %}
             </td>
             <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-              {{ document.format }}
+              {{ (document.get("format") or "").strip().upper() }}
             </td>
             <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-              {{ document.date }}
+              {{ (document.get("last_modified") or document.get("created")) | parse_isodate | date("d/m/Y") }}
             </td>
           </tr>
         {% endfor %}

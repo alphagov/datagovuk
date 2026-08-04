@@ -102,8 +102,8 @@
         {% endwith %}
       {% endif %}
 
-      {% if supporting_documents %}
-        {% with supporting_documents=supporting_documents %}
+      {% if doc.docs %}
+        {% with supporting_documents=doc.docs %}
           {% include "directory/includes/supporting_documents.jinja" %}
         {% endwith %}
       {% endif %}

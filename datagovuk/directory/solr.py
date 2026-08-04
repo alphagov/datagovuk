@@ -192,6 +192,38 @@ class SolrDatafile:
         pass
 
 
+def extract_additional_information(extras: list) -> dict | None:
+    relevant_keys = {
+        "licence",
+        "metadata-date",
+        "access_constraints",
+        "guid",
+        "bbox-east-long",
+        "bbox-west-long",
+        "bbox-north-lat",
+        "bbox-south-lat",
+        "spatial-reference-system",
+        "dataset-reference-date",
+        "frequency-of-update",
+        "responsible-party",
+        "resource-type",
+        "metadata-language",
+        "harvest_object_id",
+    }
+    json_value_keys = {"access_constraints", "dataset-reference-date"}
+
+    additional_info = {}
+    for item in extras:
+        key = item.get("key")
+        value = item.get("value")
+        if key in json_value_keys:
+            additional_info[key] = json.loads(value)
+        elif key in relevant_keys:
+            additional_info[key] = value
+
+    return additional_info if additional_info else None
+
+
 @dataclass
 class SolrDataset:
     uuid: str
@@ -217,6 +249,7 @@ class SolrDataset:
     organisation: dict = field(default_factory=dict)
     organisation_name: str = ""
     is_organogram: bool = False
+    additional_information: dict | None = None
 
     @staticmethod
     def from_solr_doc(doc: dict):
@@ -225,6 +258,8 @@ class SolrDataset:
 
         datafiles = []
         docs = []
+        extras = dataset_dict.get("extras")
+
         for resource in dataset_dict.get("resources", []):
             if resource.get("resource-type") == "supporting-document":
                 docs.append(resource)
@@ -249,6 +284,7 @@ class SolrDataset:
             name=doc.get("name", ""),
             title=doc.get("title", ""),
             summary=doc.get("notes", ""),
+            additional_information=extract_additional_information(extras) if extras else None,
             organisation_name=doc.get("organization", ""),
             organisation=organisation_details,
             public_updated_at=public_updated_at,

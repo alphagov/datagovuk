@@ -78,11 +78,7 @@ class SolrDocumentFactory(factory.DictFactory):
     license_id = ""
     topic = ""
     res_format = []
-<<<<<<< HEAD
-    validated_data_dict = "{}"
-=======
     validated_data_dict = factory.LazyFunction(make_validated_data_dict)
->>>>>>> d7b8245 (Add tests)
 
     class Meta:
         rename = {

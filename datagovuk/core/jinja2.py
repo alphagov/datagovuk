@@ -27,6 +27,7 @@ def to_govuk_items(field_choices):
 
 def format_file_size(file_size):
     binary_multiplier = 1024
+    file_size = int(file_size)
     for unit in ("KB", "MB", "GB"):
         file_size /= binary_multiplier
         if file_size < binary_multiplier:
