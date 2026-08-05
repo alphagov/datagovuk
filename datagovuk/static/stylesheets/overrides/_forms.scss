@@ -72,6 +72,10 @@
   .autocomplete__menu::-webkit-scrollbar-thumb:hover {
     background: #888;
   }
+
+  .govuk-checkboxes__label:before {
+    border-radius: 8px;
+  }
 }
 
 /* Desktop styling overrides */
