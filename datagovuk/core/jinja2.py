@@ -38,7 +38,29 @@ def sanitize_html(value):
     if not value:
         return ""
 
-    allowed_tags = {"p", "b", "i", "strong", "em", "a", "ul", "ol", "li", "br", "h1", "h2", "h3", "h4", "h5", "h6"}
+    allowed_tags = {
+        "p",
+        "b",
+        "i",
+        "strong",
+        "em",
+        "a",
+        "ul",
+        "ol",
+        "li",
+        "br",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "table",
+        "thead",
+        "tbody",
+        "tr",
+        "td",
+    }
     allowed_attributes = {
         "a": {"href", "title", "target"},
     }
