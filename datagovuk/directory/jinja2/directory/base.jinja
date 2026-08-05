@@ -36,18 +36,20 @@
   <div class="govuk-width-container datagovuk-width-container">
     <form method="get" action="{{ url('directory:search') }}">
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          {# djlint:off #}
-          {{ govukInput({
-            "label": {
-              "text": "Search directory",
-            },
-            "name": "query",
-            "value": form.query.value() if form else "",
-            "errorMessage": {"html": form.query.errors} if form and form.query.errors else None,
-            "formGroup": {"classes": "datagovuk-form-group"},
-          }) }}
-          {{ govukButton({"text": "Search", "classes": "datagovuk-button"}) }}
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+          <div class="datagovuk-search-bar">
+            {# djlint:off #}
+            {{ govukInput({
+                "label": {
+                "text": "Search directory",
+                },
+                "name": "query",
+                "value": form.query.value() if form else "",
+                "errorMessage": {"html": form.query.errors} if form and form.query.errors else None,
+                "formGroup": {"classes": "datagovuk-form-group"},
+            }) }}
+            {{ govukButton({"text": "Search", "classes": "datagovuk-button"}) }}
+            </div>
         </div>
       </div>
       {% block search_main %}
