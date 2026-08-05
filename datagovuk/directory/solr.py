@@ -168,6 +168,26 @@ class Preview:
 
 
 @dataclass
+class SolrSupportingDocument:
+    name: str
+    url: str
+    format: str
+    file_size: str
+    last_modified: datetime | None
+
+    @staticmethod
+    def from_resource(resource: dict):
+        raw_date = resource.get("metadata_modified") or resource.get("created")
+        return SolrSupportingDocument(
+            name=resource.get("name") or "No name specified",
+            url=resource.get("url", ""),
+            format=(resource.get("format") or "").strip().upper(),
+            file_size=resource.get("size", ""),
+            last_modified=datetime.fromisoformat(raw_date) if raw_date else None,
+        )
+
+
+@dataclass
 class SolrDatafile:
     name: str
     url: str
@@ -247,7 +267,7 @@ class SolrDataset:
         docs = []
         for resource in dataset_dict.get("resources", []):
             if resource.get("resource-type") == "supporting-document":
-                docs.append(resource)
+                docs.append(SolrSupportingDocument.from_resource(resource))
             else:
                 datafiles.append(SolrDatafile.from_resource(resource, dataset_created_at))
 

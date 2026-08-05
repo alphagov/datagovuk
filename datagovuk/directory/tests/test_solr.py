@@ -5,7 +5,14 @@ from unittest.mock import MagicMock, patch
 import pytest
 from django.core.exceptions import ImproperlyConfigured
 
-from datagovuk.directory.solr import Preview, SolrDatafile, SolrDataset, get_solr_client, process_query
+from datagovuk.directory.solr import (
+    Preview,
+    SolrDatafile,
+    SolrDataset,
+    SolrSupportingDocument,
+    get_solr_client,
+    process_query,
+)
 
 
 def test_get_solr_client_no_solr_url(settings):
@@ -177,6 +184,50 @@ class TestSolrDatafileModel:
         assert preview.exists is False
 
 
+class TestSolrSupportingDocumentModel:
+    def test_from_resource(self):
+        resource = {
+            "name": "My report",
+            "url": "https://example.com/report.pdf",
+            "format": " pdf ",
+            "size": "1024",
+            "metadata_modified": "2023-06-01T12:00:00",
+        }
+
+        doc = SolrSupportingDocument.from_resource(resource)
+
+        assert doc.name == "My report"
+        assert doc.url == "https://example.com/report.pdf"
+        assert doc.format == "PDF"
+        assert doc.file_size == "1024"
+        assert doc.last_modified == datetime.fromisoformat("2023-06-01T12:00:00")
+
+    def test_from_resource_falls_back_to_created_when_metadata_modified_absent(self):
+        resource = {
+            "name": "My report",
+            "url": "https://example.com/report.pdf",
+            "format": "PDF",
+            "size": None,
+            "created": "2022-01-01T00:00:00",
+        }
+
+        doc = SolrSupportingDocument.from_resource(resource)
+
+        assert doc.last_modified == datetime.fromisoformat("2022-01-01T00:00:00")
+
+    def test_from_resource_last_updated_none_when_both_absent(self):
+        resource = {
+            "name": "My report",
+            "url": "https://example.com/report.pdf",
+            "format": "PDF",
+            "size": None,
+        }
+
+        doc = SolrSupportingDocument.from_resource(resource)
+
+        assert doc.last_modified is None
+
+
 class TestSolrDatasetModel:
     def solr_doc(self, **overrides):
         doc = {
@@ -317,7 +368,7 @@ class TestSolrDatasetModel:
         assert len(solr_dataset.datafiles) == 1
         assert solr_dataset.datafiles[0].name == "Data file"
         assert len(solr_dataset.docs) == 1
-        assert solr_dataset.docs[0]["name"] == "Supporting doc"
+        assert solr_dataset.docs[0].name == "Supporting doc"
 
 
 class TestPreviewModel:
