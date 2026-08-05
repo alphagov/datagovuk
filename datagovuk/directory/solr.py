@@ -36,7 +36,7 @@ def get_organisations_by_title():
         fl=["title", "name"],
         rows=ORGANISATIONS_LIMIT,
     )
-    organisations = {doc["title"]: doc["name"] for doc in results}
+    organisations = {doc["title"]: doc["name"] for doc in results if "title" in doc and "name" in doc}
     return organisations
 
 
@@ -259,6 +259,7 @@ class SolrDataset:
     licence_title: str
     licence_url: str
     raw_doc: dict
+    additional_information: dict = field(default_factory=dict)
     datafiles: list = field(default_factory=list)
     contact_email: str = ""
     contact_name: str = ""
@@ -291,6 +292,49 @@ class SolrDataset:
                 setattr(self, dataset_field, default_value)
 
     @staticmethod
+    def extract_additional_information(data):
+        relevant_keys = {
+            "licence",
+            "metadata-date",
+            "access_constraints",
+            "guid",
+            "bbox-east-long",
+            "bbox-west-long",
+            "bbox-north-lat",
+            "bbox-south-lat",
+            "spatial-reference-system",
+            "dataset-reference-date",
+            "frequency-of-update",
+            "responsible-party",
+            "resource-type",
+            "metadata-language",
+            "harvest_object_id",
+        }
+
+        json_value_keys = {"access_constraints", "dataset-reference-date"}
+
+        additional_info = {}
+
+        for item in data:
+            key = item.get("key")
+            value = item.get("value")
+
+            if key in json_value_keys:
+                try:
+                    additional_info[key] = json.loads(value)
+                except json.JSONDecodeError, TypeError:
+                    additional_info[key] = value
+            elif key == "metadata-date":
+                try:
+                    additional_info[key] = datetime.fromisoformat(value) if value else None
+                except ValueError:
+                    additional_info[key] = None
+            elif key in relevant_keys:
+                additional_info[key] = value
+
+        return additional_info if additional_info else None
+
+    @staticmethod
     def from_solr_doc(doc: dict):
         dataset_dict = json.loads(doc.get("validated_data_dict", "{}"))
         dataset_created_at = doc.get("metadata_created", "")
@@ -316,6 +360,8 @@ class SolrDataset:
             public_updated_at = datetime.fromisoformat(metadata_modified)
         organisation_details = dataset_dict.get("organization", {})
 
+        additional_information = SolrDataset.extract_additional_information(dataset_dict.get("extras", []))
+
         return SolrDataset(
             uuid=doc.get("id", ""),
             name=doc.get("name", ""),
@@ -323,6 +369,7 @@ class SolrDataset:
             summary=doc.get("notes", ""),
             organisation_name=doc.get("organization", ""),
             organisation=organisation_details,
+            additional_information=additional_information,
             public_updated_at=public_updated_at,
             topic=topic,
             licence_title=dataset_dict.get("license_title", ""),

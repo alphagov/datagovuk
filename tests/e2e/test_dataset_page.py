@@ -1,6 +1,11 @@
+from datetime import UTC, datetime
+from unittest.mock import patch
+
 import pytest
 from django.urls import reverse
 from playwright.sync_api import expect
+
+from datagovuk.directory.solr import SolrDatafile, SolrDataset
 
 DATASET_UUID = "e3c7ffd4-4187-46fd-a590-99e2af539058"
 DATASET_SLUG = "household-waste-recycling-centres"
@@ -14,6 +19,40 @@ def enable_solr_feature_flag(settings):
 @pytest.fixture
 def dataset_url():
     return reverse("directory:dataset", kwargs={"uuid": DATASET_UUID, "slug": DATASET_SLUG})
+
+
+@pytest.fixture
+def mock_dataset():
+    return SolrDataset(
+        uuid=DATASET_UUID,
+        name=DATASET_SLUG,
+        title="Household Waste Recycling Centres",
+        summary="A dataset about household waste recycling centres.",
+        public_updated_at=datetime(2026, 1, 15, 10, 0, 0, tzinfo=UTC),
+        topic="Environment",
+        licence_title="Open Government Licence",
+        licence_url="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+        raw_doc={},
+        organisation={"title": "Example Council", "name": "example-council"},
+        datafiles=[
+            SolrDatafile(
+                name="Recycling Centre Locations",
+                url="https://example.com/data.csv",
+                created_at="2026-01-01",
+                format="CSV",
+                uuid="aaaaaaaa-0000-0000-0000-000000000001",
+                last_modified=datetime(2026, 1, 10, 0, 0, 0, tzinfo=UTC),
+                size="1024",
+                is_csv=True,
+            ),
+        ],
+    )
+
+
+@pytest.fixture(autouse=True)
+def mock_get_document(mock_dataset):
+    with patch("datagovuk.directory.views.get_document", return_value=mock_dataset):
+        yield
 
 
 class TestDatasetPage:

@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.template import defaultfilters
 from django.templatetags.static import static
@@ -7,15 +5,6 @@ from django.urls import reverse
 from jinja2 import ChoiceLoader, Environment, PackageLoader, PrefixLoader
 
 from .feature_flags import is_feature_flag_enabled
-
-
-def parse_isodate(value):
-    if not value:
-        return None
-    try:
-        return datetime.fromisoformat(value)
-    except ValueError, TypeError:
-        return None
 
 
 def to_govuk_items(field_choices):
@@ -56,7 +45,6 @@ def environment(**options):
     env.filters.update(django_filters)
     env.filters["to_govuk_items"] = to_govuk_items
     env.filters["format_file_size"] = format_file_size
-    env.filters["parse_isodate"] = parse_isodate
     env.globals.update(
         {
             "static": static,
