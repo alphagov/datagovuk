@@ -19,3 +19,44 @@
 .datagovuk-search__sort-by label {
   flex-shrink: 0;
 }
+
+.datagovuk-search-results {
+  padding-left: 0;
+  list-style: none;
+}
+
+.datagovuk-search-results__item {
+  padding-bottom: 20px;
+}
+
+.datagovuk-search-results__item-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.datagovuk-search-results__item-label {
+  width: 150px;
+  flex-shrink: 0;
+  position: relative;
+  padding-left: 30px;
+}
+
+.datagovuk-search-results__item--icon::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 1px;
+  width: 26px;
+  height: 26px;
+  background-color: $datagovuk-black;
+}
+
+.datagovuk-search-results__item--icon-publisher::before {
+  -webkit-mask: url(static('images/icons/search-publisher.svg')) no-repeat center;
+  mask: url(static('images/icons/search-publisher.svg')) no-repeat center;
+}
+
+.datagovuk-search-results__item--icon-updated::before {
+  -webkit-mask: url(static('images/icons/search-updated.svg')) no-repeat center;
+  mask: url(static('images/icons/search-updated.svg')) no-repeat center;
+}
