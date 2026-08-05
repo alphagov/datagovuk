@@ -6,6 +6,7 @@ from jinja2 import ChoiceLoader, Environment, PackageLoader, PrefixLoader
 from markdownify import markdownify
 
 from .feature_flags import is_feature_flag_enabled
+from .markdown import render_markdown
 
 
 def to_govuk_items(field_choices):
@@ -47,6 +48,7 @@ def environment(**options):
     env.filters["to_govuk_items"] = to_govuk_items
     env.filters["format_file_size"] = format_file_size
     env.filters["html_to_md"] = markdownify
+    env.filters["markdown_to_html"] = render_markdown
     env.globals.update(
         {
             "static": static,
