@@ -3,6 +3,7 @@ from django.template import defaultfilters
 from django.templatetags.static import static
 from django.urls import reverse
 from jinja2 import ChoiceLoader, Environment, PackageLoader, PrefixLoader
+from markdownify import markdownify
 
 from .feature_flags import is_feature_flag_enabled
 
@@ -45,6 +46,7 @@ def environment(**options):
     env.filters.update(django_filters)
     env.filters["to_govuk_items"] = to_govuk_items
     env.filters["format_file_size"] = format_file_size
+    env.filters["html_to_md"] = markdownify
     env.globals.update(
         {
             "static": static,
