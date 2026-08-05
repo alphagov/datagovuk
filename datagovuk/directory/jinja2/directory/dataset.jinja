@@ -50,7 +50,9 @@
             <table class="govuk-table datagovuk-table">
               <thead class="govuk-table__head datagovuk-table__head">
                 <tr class="govuk-table__row">
-                  <th scope="col" class="govuk-table__header datagovuk-table__header govuk-body datagovuk-body">Link</th>
+                  <th scope="col" class="govuk-table__header datagovuk-table__header datagovuk-table__header--wrap govuk-body datagovuk-body">
+                    Link
+                  </th>
                   <th scope="col"
                       class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
                     Format
@@ -68,7 +70,7 @@
               <tbody class="govuk-table__body">
                 {% for resource in doc.datafiles %}
                   <tr class="govuk-table__row">
-                    <td class="govuk-table__cell datagovuk-table__cell govuk-body datagovuk-body">
+                    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--wrap govuk-body datagovuk-body">
                       <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name }}</a>
                       {% if resource.size %}({{ resource.size|format_file_size }}){% endif %}
                     </td>
@@ -93,7 +95,15 @@
           </div>
         </div>
       {% else %}
-        <p class="govuk-body datagovuk-body">This data hasn’t been released by the publisher.</p>
+        <div class="govuk-!-margin-bottom-8">
+          <p class="govuk-body datagovuk-body">This data hasn’t been released by the publisher.</p>
+        </div>
+      {% endif %}
+
+      {% if doc.docs %}
+        {% with supporting_documents=doc.docs %}
+          {% include "directory/includes/supporting_documents.jinja" %}
+        {% endwith %}
       {% endif %}
 
       {% if doc.contact_email or doc.foi_email or doc.foi_web %}

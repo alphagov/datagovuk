@@ -1,3 +1,4 @@
+import json
 import uuid
 from datetime import UTC, datetime
 
@@ -34,6 +35,30 @@ def solr_client(solr_url):
     client.delete(q="*:*")
 
 
+def make_supporting_document(**kwargs):
+    defaults = {
+        "id": str(uuid.uuid4()),
+        "name": "Supporting document",
+        "url": "https://example.com/doc.pdf",
+        "format": "PDF",
+        "size": None,
+        "metadata_modified": datetime.now(UTC).isoformat(),
+        "created": datetime.now(UTC).isoformat(),
+        "resource-type": "supporting-document",
+    }
+    return {**defaults, **kwargs}
+
+
+def make_validated_data_dict(resources=None, extras=None, organization_title="Example Publisher"):
+    return json.dumps(
+        {
+            "organization": {"title": organization_title},
+            "extras": extras or [],
+            "resources": resources or [],
+        },
+    )
+
+
 class SolrDocumentFactory(factory.DictFactory):
     id = factory.LazyFunction(lambda: str(uuid.uuid4()))
     name = factory.Sequence(lambda n: f"dataset-{n}")
@@ -53,7 +78,7 @@ class SolrDocumentFactory(factory.DictFactory):
     license_id = ""
     topic = ""
     res_format = []
-    validated_data_dict = "{}"
+    validated_data_dict = factory.LazyFunction(make_validated_data_dict)
 
     class Meta:
         rename = {

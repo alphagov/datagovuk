@@ -1,11 +1,14 @@
 .datagovuk-table-container {
     overflow: auto;
 }
-
 .datagovuk-table-container:focus {
     margin: -3px;
     border: 3px solid $datagovuk-black;
     outline: 3px solid $datagovuk-focus;
+}
+
+.datagovuk-table {
+    margin: 0;
 }
 
 .datagovuk-table .datagovuk-link:link,
@@ -26,9 +29,15 @@
     vertical-align: middle;
 }
 
+.datagovuk-table__header--wrap,
+.datagovuk-table__cell--wrap {
+    word-break: break-word;
+}
+
 .datagovuk-table__header--compact,
 .datagovuk-table__cell--compact {
     min-width: 0;
+    width: 150px;
     white-space: nowrap;
 }
 
