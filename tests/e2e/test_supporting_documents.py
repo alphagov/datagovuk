@@ -36,14 +36,14 @@ def dataset_with_supporting_docs(solr):
             name="Annual Report 2023",
             url="https://example.com/annual-report-2023.pdf",
             format="PDF",
-            last_modified="2024-01-15T00:00:00+00:00",
+            metadata_modified="2024-01-15T00:00:00+00:00",
         ),
         make_supporting_document(
             id=str(uuid.uuid4()),
             name="Methodology Notes",
             url="https://example.com/methodology.docx",
             format="DOCX",
-            last_modified="2023-11-01T00:00:00+00:00",
+            metadata_modified="2023-11-01T00:00:00+00:00",
         ),
     ]
     doc = SolrDocumentFactory(

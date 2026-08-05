@@ -42,7 +42,7 @@ def make_supporting_document(**kwargs):
         "url": "https://example.com/doc.pdf",
         "format": "PDF",
         "size": None,
-        "last_modified": None,
+        "metadata_modified": datetime.now(UTC).isoformat(),
         "created": datetime.now(UTC).isoformat(),
         "resource-type": "supporting-document",
     }

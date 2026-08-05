@@ -22,7 +22,7 @@
           <tr class="govuk-table__row">
             <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--wrap govuk-body datagovuk-body">
               <a href="{{ document.url }}" class="govuk-link datagovuk-link">{{ document.name }}</a>
-              {% if document.file_size %}({{ document.file_size }}){% endif %}
+              {% if document.file_size %}({{ document.file_size|format_file_size }}){% endif %}
             </td>
             <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
               {{ document.format }}
