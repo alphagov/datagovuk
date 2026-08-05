@@ -60,3 +60,27 @@
   -webkit-mask: url(static('images/icons/search-updated.svg')) no-repeat center;
   mask: url(static('images/icons/search-updated.svg')) no-repeat center;
 }
+/* Desktop styling overrides */
+@media (min-width: $desktop-breakpoint) {
+  .datagovuk-search-bar {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .datagovuk-search-bar .datagovuk-form-group {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    flex-grow: 1;
+  }
+
+  .datagovuk-search-bar .govuk-label {
+    flex-shrink: 0;
+  }
+
+  .datagovuk-search-bar .govuk-input {
+    flex-grow: 1;
+  }
+}

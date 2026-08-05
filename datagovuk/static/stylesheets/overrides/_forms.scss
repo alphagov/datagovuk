@@ -1,13 +1,21 @@
 .datagovuk-form-group {
   .govuk-label {
+    font-size: 20px;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 12px;
+    color: $datagovuk-black;
+  }
+
+  .govuk-input, .autocomplete__input.datagovuk-input, .autocomplete__hint {
+    padding: 25px 15px;
+    border-color: $datagovuk-black;
+    border-radius: 20px;
+    font-size: 20px;
     font-family: 'Inter', sans-serif;
   }
 
-  .govuk-input, .autocomplete__input.datagovuk-input  {
-    padding: 20px 20px;
-    border-radius: 10px;
-    font-size: 20px;
-    font-family: 'Inter', sans-serif;
+  .autocomplete__input.datagovuk-input  {
+    padding-right: 44px;
   }
 
   .govuk-select {
@@ -15,6 +23,13 @@
     font-size: 20px;
     font-family: 'Inter', sans-serif;
     min-width: auto;
+  }
+
+  .autocomplete__dropdown-arrow-down {
+    pointer-events: none;
+    z-index: 0;
+    top: 15px;
+    right: 15px;
   }
 
   .autocomplete__menu .autocomplete__option:first-of-type {
@@ -25,12 +40,9 @@
     min-height: 25px;
     font-family: 'Inter', sans-serif;
     color: $datagovuk-black;
-    border-bottom: 2px solid $datagovuk-grey;
-  }
-
-
-  .autocomplete__menu .autocomplete__option:nth-child(even) {
-    background-color: $datagovuk-light-grey;
+    background-color: $datagovuk-white;
+    border: none;
+    padding: 10px;
   }
 
   .autocomplete__menu .autocomplete__option:hover, .autocomplete__menu .autocomplete__option--focused {
@@ -42,13 +54,9 @@
   .autocomplete__menu {
     border: 2px solid $datagovuk-black !important;
     border-top: 2px solid $datagovuk-black !important;
-    border-radius: 10px;
+    border-radius: 20px;
     margin-top: 10px !important;
-  }
-
-  // Ensure the autocomplete scrollbar behaves with rounded border corners
-  .autocomplete__menu::-webkit-scrollbar {
-    width: 8px;
+    width: 100%;
   }
 
   .autocomplete__menu::-webkit-scrollbar-track {
@@ -63,5 +71,16 @@
 
   .autocomplete__menu::-webkit-scrollbar-thumb:hover {
     background: #888;
+  }
+}
+
+/* Desktop styling overrides */
+@media (min-width: $desktop-breakpoint) {
+  .datagovuk-form-group {
+    .govuk-label,
+    .govuk-input,
+    .govuk-select {
+      font-size: 22px;
+    }
   }
 }
