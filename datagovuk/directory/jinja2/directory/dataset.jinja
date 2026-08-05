@@ -100,6 +100,12 @@
         </div>
       {% endif %}
 
+      {% if doc.additional_information %}
+        {% with additional_information=doc.additional_information %}
+          {% include "directory/includes/additional_information.jinja" %}
+        {% endwith %}
+      {% endif %}
+
       {% if doc.docs %}
         {% with supporting_documents=doc.docs %}
           {% include "directory/includes/supporting_documents.jinja" %}
