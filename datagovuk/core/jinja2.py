@@ -1,3 +1,5 @@
+import re
+
 import nh3
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.template import defaultfilters
@@ -51,6 +53,22 @@ def sanitize_html(value):
     return Markup(cleaned_html)  # noqa: S704
 
 
+def strip_markdown(text):
+    """
+    Strips markdown syntax from a given text string.
+    """
+    if not text:
+        return ""
+    text = re.sub(r"!\[.*?\]\(.*?\)", "", text)  # Images
+    text = re.sub(r"\[(.*?)\]\(.*?\)", r"\1", text)  # Links
+    text = re.sub(r"`{1,3}(.*?)`{1,3}", r"\1", text)  # Inline code & code blocks
+    text = re.sub(r"^\s*[\*+-]\s+", "", text, flags=re.MULTILINE)  # Bullet lists
+    text = re.sub(r"#{1,6}\s*", "", text)  # Headers
+    text = re.sub(r"(\*\*|__)(.*?)\1", r"\2", text)  # Bold
+    text = re.sub(r"(\*|_)(.*?)\1", r"\2", text)  # Italics
+    return text.strip()
+
+
 def environment(**options):
     django_loader = options.pop("loader")
     loaders = [
@@ -75,6 +93,7 @@ def environment(**options):
     env.filters["html_to_markdown"] = markdownify
     env.filters["markdown_to_html"] = lambda markdown: Markup(render_markdown(markdown))  # noqa: S704
     env.filters["sanitize_html"] = sanitize_html
+    env.filters["strip_markdown"] = strip_markdown
     env.globals.update(
         {
             "static": static,

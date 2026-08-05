@@ -100,7 +100,9 @@
                   </div>
                   <div class="datagovuk-search-results__item-value">{{ doc.public_updated_at|date("d F Y") }}</div>
                 </div>
-                <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.summary | truncate(200) }}</div>
+                <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">
+                  {{ doc.summary | striptags | strip_markdown | truncate(200) }}
+                </div>
               </li>
             {% endfor %}
           </ul>
