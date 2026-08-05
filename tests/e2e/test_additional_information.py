@@ -12,7 +12,7 @@ from datagovuk.directory.tests.conftest import SolrDocumentFactory, make_validat
 DATASET_UUID = str(uuid.uuid4())
 DATASET_UUID_NO_EXTRAS = str(uuid.uuid4())
 DATASET_SLUG = "test-additional-information-dataset"
-SOLR_URL = os.getenv("SOLR_URL", "http://localhost:8984/solr/ckan")
+SOLR_URL = os.getenv("SOLR_URL", "http://localhost:8984/solr/ckan-test")
 
 
 @pytest.fixture(autouse=True)

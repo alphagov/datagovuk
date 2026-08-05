@@ -228,61 +228,6 @@ class TestSolrSupportingDocumentModel:
         assert doc.last_modified is None
 
 
-class TestExtractAdditionalInformation:
-    def test_returns_none_when_extras_empty(self):
-        assert SolrDataset.extract_additional_information([]) is None
-
-    def test_returns_none_when_no_relevant_keys(self):
-        extras = [{"key": "irrelevant-key", "value": "some-value"}]
-        assert SolrDataset.extract_additional_information(extras) is None
-
-    def test_returns_dict_with_relevant_keys(self):
-        extras = [
-            {"key": "guid", "value": "f3c7ffd4-4187-46fd-a590-99e2af539058"},
-            {"key": "metadata-language", "value": "eng"},
-            {"key": "irrelevant-key", "value": "ignored"},
-        ]
-        result = SolrDataset.extract_additional_information(extras)
-        assert result == {"guid": "f3c7ffd4-4187-46fd-a590-99e2af539058", "metadata-language": "eng"}
-
-    def test_parses_json_value_keys(self):
-        extras = [
-            {"key": "access_constraints", "value": '["no restrictions"]'},
-            {"key": "dataset-reference-date", "value": '[{"type": "creation", "value": "2020-01-01"}]'},
-        ]
-        result = SolrDataset.extract_additional_information(extras)
-        assert result["access_constraints"] == ["no restrictions"]
-        assert result["dataset-reference-date"] == [{"type": "creation", "value": "2020-01-01"}]
-
-    def test_parses_all_relevant_keys(self):
-        extras = [
-            {"key": "licence", "value": "ogl"},
-            {"key": "metadata-date", "value": "2020-01-01"},
-            {"key": "guid", "value": "f3c7ffd4-4187-46fd-a590-99e2af539058"},
-            {"key": "bbox-east-long", "value": "1.0"},
-            {"key": "bbox-west-long", "value": "-1.0"},
-            {"key": "bbox-north-lat", "value": "52.0"},
-            {"key": "bbox-south-lat", "value": "50.0"},
-            {"key": "spatial-reference-system", "value": "OSGB 1936"},
-            {"key": "frequency-of-update", "value": "annual"},
-            {"key": "responsible-party", "value": "Some Org"},
-            {"key": "resource-type", "value": "dataset"},
-            {"key": "metadata-language", "value": "eng"},
-            {"key": "harvest_object_id", "value": "harvest-123"},
-        ]
-        result = SolrDataset.extract_additional_information(extras)
-        assert len(result) == len(extras)
-
-    def test_returns_raw_string_for_access_constraints_when_invalid_json(self):
-        extras = [
-            {"key": "licence", "value": "Open Data"},
-            {"key": "access_constraints", "value": "None"},
-        ]
-        result = SolrDataset.extract_additional_information(extras)
-        assert result["access_constraints"] == "None"
-        assert result["licence"] == "Open Data"
-
-
 class TestSolrDatasetModel:
     def solr_doc(self, **overrides):
         doc = {
@@ -460,6 +405,59 @@ class TestSolrDatasetModel:
         assert solr_dataset.datafiles[0].name == "Data file"
         assert len(solr_dataset.docs) == 1
         assert solr_dataset.docs[0].name == "Supporting doc"
+
+    def test_extract_additional_information_returns_none_when_extras_empty(self):
+        assert SolrDataset.extract_additional_information([]) is None
+
+    def test_extract_additional_information_no_relevant_keys_returns_none(self):
+        extras = [{"key": "irrelevant-key", "value": "some-value"}]
+        assert SolrDataset.extract_additional_information(extras) is None
+
+    def test_extract_additional_information_returns_dict_with_relevant_keys(self):
+        extras = [
+            {"key": "guid", "value": "f3c7ffd4-4187-46fd-a590-99e2af539058"},
+            {"key": "metadata-language", "value": "eng"},
+            {"key": "irrelevant-key", "value": "ignored"},
+        ]
+        result = SolrDataset.extract_additional_information(extras)
+        assert result == {"guid": "f3c7ffd4-4187-46fd-a590-99e2af539058", "metadata-language": "eng"}
+
+    def test_extract_additional_information_parses_json_value_keys(self):
+        extras = [
+            {"key": "access_constraints", "value": '["no restrictions"]'},
+            {"key": "dataset-reference-date", "value": '[{"type": "creation", "value": "2020-01-01"}]'},
+        ]
+        result = SolrDataset.extract_additional_information(extras)
+        assert result["access_constraints"] == ["no restrictions"]
+        assert result["dataset-reference-date"] == [{"type": "creation", "value": "2020-01-01"}]
+
+    def test_extract_additional_information_parses_all_relevant_keys(self):
+        extras = [
+            {"key": "licence", "value": "ogl"},
+            {"key": "metadata-date", "value": "2020-01-01"},
+            {"key": "guid", "value": "f3c7ffd4-4187-46fd-a590-99e2af539058"},
+            {"key": "bbox-east-long", "value": "1.0"},
+            {"key": "bbox-west-long", "value": "-1.0"},
+            {"key": "bbox-north-lat", "value": "52.0"},
+            {"key": "bbox-south-lat", "value": "50.0"},
+            {"key": "spatial-reference-system", "value": "OSGB 1936"},
+            {"key": "frequency-of-update", "value": "annual"},
+            {"key": "responsible-party", "value": "Some Org"},
+            {"key": "resource-type", "value": "dataset"},
+            {"key": "metadata-language", "value": "eng"},
+            {"key": "harvest_object_id", "value": "harvest-123"},
+        ]
+        result = SolrDataset.extract_additional_information(extras)
+        assert len(result) == len(extras)
+
+    def test_extract_additional_information_returns_raw_string_for_access_constraints_when_invalid_json(self):
+        extras = [
+            {"key": "licence", "value": "Open Data"},
+            {"key": "access_constraints", "value": "None"},
+        ]
+        result = SolrDataset.extract_additional_information(extras)
+        assert result["access_constraints"] == "None"
+        assert result["licence"] == "Open Data"
 
 
 class TestPreviewModel:
