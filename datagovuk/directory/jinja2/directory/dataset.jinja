@@ -42,7 +42,9 @@
       }) }}
       {# djlint:on #}
       <h2 class="govuk-heading-l datagovuk-heading-l">Summary</h2>
-      <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">{{ doc.summary }}</div>
+      <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">
+        {{ doc.summary|html_to_markdown|sanitize_html|markdown_to_html }}
+      </div>
       <h2 class="govuk-heading-l datagovuk-heading-l">Data links</h2>
       {% if doc.datafiles %}
         <div class="govuk-!-margin-bottom-8">
