@@ -7,8 +7,12 @@
 
 {% block search_main %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl datagovuk-heading-xl govuk-!-margin-bottom-4">{{ doc.title }}</h1>
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
       {% set licence_html %}
         {% if doc.licence_title and doc.licence_url %}
           <a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link">{{ doc.licence_title }}</a>
@@ -22,38 +26,60 @@
       {{ govukSummaryList({
         "rows": [
           {
-            "key": {"text": "Published By:"},
+            "key": {"text": "Publisher"},
             "value": {"text": doc.organisation.title},
           },
           {
-            "key": {"text": "Last updated:"},
+            "key": {"text": "Last updated"},
             "value": {"text": doc.public_updated_at|date("d F Y")},
           },
           {
-            "key": {"text": "Topic:"},
+            "key": {"text": "Topic"},
             "value": {"text": doc.topic or "Not set"},
           },
           {
-            "key": {"text": "Licence:"},
+            "key": {"text": "Licence"},
             "value": {"html": licence_html},
           },
         ],
         "classes": "datagovuk-summary-list govuk-summary-list--no-border",
       }) }}
       {# djlint:on #}
-      <h2 class="govuk-heading-l datagovuk-heading-l">Summary</h2>
-      <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">
-        {#
-          Summary is supplied by publishers and can contain a mixture of markdown
-          and HTML.
-          Firstly sanitize the string according to our list of allowed HTML tags/attributes.
-          Next, convert the html to markdown and use datagovuk's markdown renderer to get the right styles.
-        #}
-        {{ doc.summary|sanitize_html|html_to_markdown|markdown_to_html }}
-      </div>
-      <h2 class="govuk-heading-l datagovuk-heading-l">Data links</h2>
-      {% if doc.datafiles %}
-        <div class="govuk-!-margin-bottom-8">
+      <section class="govuk-!-margin-bottom-8">
+        <h2 class="govuk-heading-m datagovuk-heading-m">Summary</h2>
+
+        <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">
+          {#
+            Summary is supplied by publishers and can contain a mixture of markdown
+            and HTML.
+            Firstly sanitize the string according to our list of allowed HTML tags/attributes.
+            Next, convert the html to markdown and use datagovuk's markdown renderer to get the right styles.
+          #}
+          {{ doc.summary|sanitize_html|html_to_markdown|markdown_to_html }}
+        </div>
+      </section>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <section class="more-from-publisher">
+        <div class="datagovuk-card">
+          <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
+          <p class="govuk-body datagovuk-body">
+            {# djlint:off #}
+            <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.title }}"
+               class="govuk-link datagovuk-link datagovuk-link--secondary">
+              All datasets from {{ doc.organisation.title }}
+            </a>
+            {# djlint:on #}
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <section class="govuk-!-margin-bottom-8">
+        <h2 class="govuk-heading-m datagovuk-heading-m">Data links</h2>
+        {% if doc.datafiles %}
           <div class="datagovuk-table-container" tabindex="0" role="region">
             <table class="govuk-table datagovuk-table">
               <thead class="govuk-table__head datagovuk-table__head">
@@ -101,32 +127,34 @@
               </tbody>
             </table>
           </div>
-        </div>
-      {% else %}
-        <div class="govuk-!-margin-bottom-8">
+        {% else %}
           <p class="govuk-body datagovuk-body">This data hasn’t been released by the publisher.</p>
-        </div>
-      {% endif %}
+        {% endif %}
 
-      {% if doc.additional_information %}
-        {% with additional_information=doc.additional_information %}
-          {% include "directory/includes/additional_information.jinja" %}
-        {% endwith %}
-      {% endif %}
+        {% if doc.additional_information %}
+            {% with additional_information=doc.additional_information %}
+            {% include "directory/includes/additional_information.jinja" %}
+            {% endwith %}
+        {% endif %}
 
-      {% if doc.docs %}
-        {% with supporting_documents=doc.docs %}
-          {% include "directory/includes/supporting_documents.jinja" %}
-        {% endwith %}
-      {% endif %}
+        {% if doc.docs %}
+          {% with supporting_documents=doc.docs %}
+            {% include "directory/includes/supporting_documents.jinja" %}
+          {% endwith %}
+        {% endif %}
+      </section>
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
       {% if doc.contact_email or doc.foi_email or doc.foi_web %}
         {% set pub = doc.organisation.name %}
-        <section class="contact">
-          <h2 class="govuk-heading-l datagovuk-heading-l">Contact</h2>
+        <section class="contact govuk-!-margin-bottom-8">
+          <h2 class="govuk-heading-m datagovuk-heading-m">Contact</h2>
 
           {% if doc.contact_email %}
-            <h3 class="govuk-heading-m datagovuk-heading-m">Enquiries</h3>
+            <h3 class="govuk-body datagovuk-body">Enquiries</h3>
             <p class="govuk-body datagovuk-body">
               <a href="{{ 'mailto:' ~ doc.contact_email }}"
                  class="govuk-link datagovuk-link datagovuk-link--secondary"
@@ -136,7 +164,7 @@
           {% endif %}
 
           {% if doc.foi_email or doc.foi_web %}
-            <h3 class="govuk-heading-m datagovuk-heading-m">FOI requests</h3>
+            <h3 class="govuk-body datagovuk-body">FOI requests</h3>
             {% if doc.foi_email %}
               <p class="govuk-body datagovuk-body govuk-!-margin-bottom-1">
                 <a href="{{ 'mailto:' ~ doc.foi_email }}"
@@ -157,7 +185,7 @@
         </section>
       {% endif %}
       <section class="edit">
-        <h2 class="govuk-heading-l datagovuk-heading-l">Edit this dataset</h2>
+        <h2 class="govuk-heading-m datagovuk-heading-m">Edit this dataset</h2>
         <p class="govuk-body datagovuk-body">
           You must have an account for this publisher on data.gov.uk to make any changes to a dataset.
         </p>
@@ -174,21 +202,6 @@
           "classes": "datagovuk-button",
         })}}
         {# djlint:on #}
-      </section>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <section class="more-from-publisher">
-        <div class="datagovuk-card">
-          <h2 class="govuk-heading-m datagovuk-heading-m">More from this publisher</h2>
-          <p class="govuk-body datagovuk-body">
-            {# djlint:off #}
-            <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.title }}"
-               class="govuk-link datagovuk-link datagovuk-link--secondary">
-              All datasets from {{ doc.organisation.title }}
-            </a>
-            {# djlint:on #}
-          </p>
-        </div>
       </section>
     </div>
   </div>
