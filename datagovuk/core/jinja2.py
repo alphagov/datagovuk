@@ -36,7 +36,7 @@ def sanitize_html(value):
     if not value:
         return ""
 
-    allowed_tags = {"p", "b", "i", "strong", "em", "a", "ul", "ol", "li", "br"}
+    allowed_tags = {"p", "b", "i", "strong", "em", "a", "ul", "ol", "li", "br", "h1", "h2", "h3", "h4", "h5", "h6"}
     allowed_attributes = {
         "a": {"href", "title", "target"},
     }
@@ -72,9 +72,9 @@ def environment(**options):
     env.filters.update(django_filters)
     env.filters["to_govuk_items"] = to_govuk_items
     env.filters["format_file_size"] = format_file_size
-    env.filters["html_to_md"] = markdownify
-    env.filters["markdown_to_html"] = render_markdown
-    env.filters["sanitize"] = sanitize_html
+    env.filters["html_to_markdown"] = markdownify
+    env.filters["markdown_to_html"] = lambda markdown: Markup(render_markdown(markdown))  # noqa: S704
+    env.filters["sanitize_html"] = sanitize_html
     env.globals.update(
         {
             "static": static,
