@@ -110,6 +110,36 @@ class TestMarkdownToHTMLRenderer:
             '<p class="govuk-body-m datagovuk-body">My second item</p>\n'
         )
 
+    def test_table(self):
+        markdown = inspect.cleandoc("""
+            | Header 1 | Header 2 |
+            |----------|----------|
+            | Cell 1   | Cell 2   |
+            | Cell 3   | Cell 4   |
+        """)
+        rendered_markdown = render_markdown(markdown)
+        assert rendered_markdown == (
+            '<div class="datagovuk-table-container" role="region" tabindex="0"'
+            '><table class="govuk-table datagovuk-table">\n'
+            '<thead class="govuk-table__head datagovuk-table__head">\n'
+            '<tr class="govuk-table__row datagovuk-table__row">\n'
+            '<th class="govuk-table__header datagovuk-table__header">Header 1</th>\n'
+            '<th class="govuk-table__header datagovuk-table__header">Header 2</th>\n'
+            "</tr>\n"
+            "</thead>\n"
+            '<tbody class="govuk-table__body datagovuk-table__body">\n'
+            '<tr class="govuk-table__row datagovuk-table__row">\n'
+            '<td class="govuk-table__cell datagovuk-table__cell">Cell 1</td>\n'
+            '<td class="govuk-table__cell datagovuk-table__cell">Cell 2</td>\n'
+            "</tr>\n"
+            '<tr class="govuk-table__row datagovuk-table__row">\n'
+            '<td class="govuk-table__cell datagovuk-table__cell">Cell 3</td>\n'
+            '<td class="govuk-table__cell datagovuk-table__cell">Cell 4</td>\n'
+            "</tr>\n"
+            "</tbody>\n"
+            "</table></div>\n"
+        )
+
 
 def test_get_template_context_from_markdown():
     context = get_template_context_from_markdown("datagovuk/core/tests/sample_markdown/sample.md")
