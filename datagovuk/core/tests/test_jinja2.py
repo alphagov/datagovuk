@@ -46,7 +46,7 @@ def test_sanitize_html_removes_disallowed_tags():
 
 def test_sanitize_html_preserves_allowed_attributes_on_a_tag():
     result = sanitize_html('<a href="https://example.com" title="Example" target="_blank">link</a>')
-    assert str(result) == '<a href="https://example.com" title="Example" target="_blank">link</a>'
+    assert str(result) == '<a href="https://example.com" title="Example">link</a>'
 
 
 def test_sanitize_html_removes_disallowed_attributes_on_a_tag():

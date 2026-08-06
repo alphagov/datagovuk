@@ -62,14 +62,10 @@ def sanitize_html(value):
         "tr",
         "td",
     }
-    allowed_attributes = {
-        "a": {"href", "title", "target"},
-    }
 
     cleaned_html = nh3.clean(
         value,
         tags=allowed_tags,
-        attributes=allowed_attributes,
         link_rel=None,
     )
 
@@ -113,7 +109,12 @@ def environment(**options):
     env.filters.update(django_filters)
     env.filters["to_govuk_items"] = to_govuk_items
     env.filters["format_file_size"] = format_file_size
-    env.filters["html_to_markdown"] = lambda html: markdownify(html, escape_misc=False, escape_asterisks=False)
+    env.filters["html_to_markdown"] = lambda html: markdownify(
+        html,
+        escape_misc=False,
+        escape_underscores=False,
+        escape_asterisks=False,
+    )
     env.filters["markdown_to_html"] = lambda markdown: Markup(render_markdown(markdown))  # noqa: S704
     env.filters["sanitize_html"] = sanitize_html
     env.filters["strip_markdown"] = strip_markdown
