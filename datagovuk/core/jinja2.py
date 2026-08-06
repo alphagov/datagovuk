@@ -58,6 +58,7 @@ def sanitize_html(value):
         "table",
         "thead",
         "tbody",
+        "th",
         "tr",
         "td",
     }
@@ -112,7 +113,7 @@ def environment(**options):
     env.filters.update(django_filters)
     env.filters["to_govuk_items"] = to_govuk_items
     env.filters["format_file_size"] = format_file_size
-    env.filters["html_to_markdown"] = markdownify
+    env.filters["html_to_markdown"] = lambda html: markdownify(html, escape_misc=False, escape_asterisks=False)
     env.filters["markdown_to_html"] = lambda markdown: Markup(render_markdown(markdown))  # noqa: S704
     env.filters["sanitize_html"] = sanitize_html
     env.filters["strip_markdown"] = strip_markdown
