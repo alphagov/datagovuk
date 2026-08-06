@@ -169,7 +169,7 @@ def legacy_dataset_redirect(request, legacy_dataset_name, **kwargs):
     if not dataset:
         raise Http404
 
-    return redirect("directory:dataset", uuid=dataset.uuid, slug=dataset.name)
+    return redirect("directory:dataset", permanent=True, uuid=dataset.uuid, slug=dataset.name)
 
 
 def legacy_datafile_redirect(request, legacy_dataset_name, datafile_uuid, **kwargs):
@@ -179,7 +179,13 @@ def legacy_datafile_redirect(request, legacy_dataset_name, datafile_uuid, **kwar
     if not any(datafile.uuid == datafile_uuid for datafile in dataset.datafiles):
         raise Http404
     try:
-        return redirect("directory:preview", dataset_uuid=dataset.uuid, name=dataset.name, datafile_uuid=datafile_uuid)
+        return redirect(
+            "directory:preview",
+            permanent=True,
+            dataset_uuid=dataset.uuid,
+            name=dataset.name,
+            datafile_uuid=datafile_uuid,
+        )
     except NoReverseMatch as error:
         raise Http404 from error
 

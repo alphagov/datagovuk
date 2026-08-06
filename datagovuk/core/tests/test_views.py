@@ -2,7 +2,7 @@ from http import HTTPStatus
 from unittest.mock import MagicMock, patch
 
 import pytest
-from django.http import Http404
+from django.http import Http404, HttpResponsePermanentRedirect
 from django.urls import NoReverseMatch, reverse
 from django.views.generic import TemplateView
 
@@ -18,7 +18,7 @@ def test_legacy_dataset_redirect_view_redirects_to_directory(mock_get_dataset_by
     mock_get_dataset_by_legacy_name.return_value = mock_dataset
     url = reverse("legacy_dataset", kwargs={"legacy_dataset_name": "some-dataset-name"})
     response = client.get(url)
-    assert response.status_code == HTTPStatus.FOUND
+    assert response.status_code == HttpResponsePermanentRedirect
     assert response.url == reverse(
         "directory:dataset",
         kwargs={"uuid": "11111111-1111-4111-8111-111111111111", "slug": "some-dataset-name"},
@@ -54,7 +54,7 @@ def test_legacy_datafile_redirect_view_redirects_to_preview(mock_get_dataset_by_
         },
     )
     response = client.get(url)
-    assert response.status_code == HTTPStatus.FOUND
+    assert response.status_code == HttpResponsePermanentRedirect.status_code
     assert response.url == reverse(
         "directory:preview",
         kwargs={
@@ -135,7 +135,7 @@ def test_legacy_search_redirect_view_redirects_to_directory_search(client, setti
     settings.FEATURE_FLAGS_ENABLED = [settings.FEATURE_FLAGS.SOLR_SEARCH.value]
     url = reverse("legacy_search")
     response = client.get(url)
-    assert response.status_code == HTTPStatus.FOUND
+    assert response.status_code == HTTPStatus.PERMANENT_REDIRECT
     assert response.url == reverse("directory:search")
 
 
