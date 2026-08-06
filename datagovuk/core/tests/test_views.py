@@ -2,7 +2,7 @@ from http import HTTPStatus
 from unittest.mock import MagicMock, patch
 
 import pytest
-from django.http import Http404, HttpResponsePermanentRedirect
+from django.http import Http404, HttpResponseNotFound, HttpResponsePermanentRedirect
 from django.urls import NoReverseMatch, reverse
 from django.views.generic import TemplateView
 
@@ -18,7 +18,7 @@ def test_legacy_dataset_redirect_view_redirects_to_directory(mock_get_dataset_by
     mock_get_dataset_by_legacy_name.return_value = mock_dataset
     url = reverse("legacy_dataset", kwargs={"legacy_dataset_name": "some-dataset-name"})
     response = client.get(url)
-    assert response.status_code == HttpResponsePermanentRedirect
+    assert response.status_code == HttpResponsePermanentRedirect.status_code
     assert response.url == reverse(
         "directory:dataset",
         kwargs={"uuid": "11111111-1111-4111-8111-111111111111", "slug": "some-dataset-name"},
@@ -35,7 +35,7 @@ def test_legacy_dataset_redirect_view_returns_404_for_invalid_dataset(
     mock_get_dataset_by_legacy_name.return_value = None
     url = reverse("legacy_dataset", kwargs={"legacy_dataset_name": "invalid-dataset"})
     response = client.get(url)
-    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.status_code == HttpResponseNotFound.status_code
 
 
 @patch("datagovuk.core.views.get_dataset_by_legacy_name")
@@ -81,7 +81,7 @@ def test_legacy_datafile_redirect_view_returns_404_for_invalid_dataset(
         },
     )
     response = client.get(url)
-    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.status_code == HttpResponseNotFound.status_code
 
 
 @patch("datagovuk.core.views.get_dataset_by_legacy_name")
@@ -103,13 +103,13 @@ def test_legacy_datafile_redirect_view_returns_404_for_invalid_datafile(
         },
     )
     response = client.get(url)
-    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.status_code == HttpResponseNotFound.status_code
 
 
 @patch("datagovuk.core.views.get_dataset_by_legacy_name")
-@patch("datagovuk.core.views.redirect", side_effect=NoReverseMatch("NoReverseMatch"))
+@patch("datagovuk.core.views.reverse", side_effect=NoReverseMatch("NoReverseMatch"))
 def test_legacy_datafile_redirect_view_returns_404_for_no_reverse_match(
-    mock_redirect,
+    mock_reverse,
     mock_get_dataset_by_legacy_name,
     client,
     settings,
@@ -128,14 +128,14 @@ def test_legacy_datafile_redirect_view_returns_404_for_no_reverse_match(
         },
     )
     response = client.get(url)
-    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.status_code == HttpResponseNotFound.status_code
 
 
 def test_legacy_search_redirect_view_redirects_to_directory_search(client, settings):
     settings.FEATURE_FLAGS_ENABLED = [settings.FEATURE_FLAGS.SOLR_SEARCH.value]
     url = reverse("legacy_search")
     response = client.get(url)
-    assert response.status_code == HTTPStatus.PERMANENT_REDIRECT
+    assert response.status_code == HttpResponsePermanentRedirect.status_code
     assert response.url == reverse("directory:search")
 
 

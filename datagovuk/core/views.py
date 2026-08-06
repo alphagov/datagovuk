@@ -2,10 +2,9 @@ import math
 
 from django.conf import settings
 from django.core.exceptions import PermissionDenied, SuspiciousOperation
-from django.http import Http404, HttpResponse, HttpResponseServerError
-from django.shortcuts import redirect
+from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect, HttpResponseServerError
 from django.template import loader
-from django.urls import NoReverseMatch
+from django.urls import NoReverseMatch, reverse
 from django.views.decorators.csrf import requires_csrf_token
 from django.views.generic import TemplateView, View
 from django.views.generic.edit import FormView
@@ -169,7 +168,9 @@ def legacy_dataset_redirect(request, legacy_dataset_name, **kwargs):
     if not dataset:
         raise Http404
 
-    return redirect("directory:dataset", permanent=True, uuid=dataset.uuid, slug=dataset.name)
+    return HttpResponsePermanentRedirect(
+        redirect_to=reverse("directory:dataset", kwargs={"uuid": dataset.uuid, "slug": dataset.name}),
+    )
 
 
 def legacy_datafile_redirect(request, legacy_dataset_name, datafile_uuid, **kwargs):
@@ -179,16 +180,19 @@ def legacy_datafile_redirect(request, legacy_dataset_name, datafile_uuid, **kwar
     if not any(datafile.uuid == datafile_uuid for datafile in dataset.datafiles):
         raise Http404
     try:
-        return redirect(
-            "directory:preview",
-            permanent=True,
-            dataset_uuid=dataset.uuid,
-            name=dataset.name,
-            datafile_uuid=datafile_uuid,
+        return HttpResponsePermanentRedirect(
+            redirect_to=reverse(
+                "directory:preview",
+                kwargs={
+                    "dataset_uuid": dataset.uuid,
+                    "name": dataset.name,
+                    "datafile_uuid": datafile_uuid,
+                },
+            ),
         )
     except NoReverseMatch as error:
         raise Http404 from error
 
 
 def legacy_search_redirect(request, **kwargs):
-    return redirect("directory:search")
+    return HttpResponsePermanentRedirect(redirect_to=reverse("directory:search"))
