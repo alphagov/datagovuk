@@ -2,13 +2,16 @@ import math
 
 from django.conf import settings
 from django.core.exceptions import PermissionDenied, SuspiciousOperation
-from django.http import HttpResponse, HttpResponseServerError
+from django.http import Http404, HttpResponse, HttpResponseServerError
+from django.shortcuts import redirect
 from django.template import loader
+from django.urls import NoReverseMatch
 from django.views.decorators.csrf import requires_csrf_token
 from django.views.generic import TemplateView, View
 from django.views.generic.edit import FormView
 
 from datagovuk.core.markdown import get_safe_markdown_path, get_template_context_from_markdown
+from datagovuk.directory.solr import get_dataset_by_legacy_name
 
 
 class RenderedMarkdownView(TemplateView):
@@ -159,3 +162,27 @@ class TestError500View(TemplateView):
 class VersionView(View):
     def get(self, *args, **kwargs):
         return HttpResponse(settings.DATAGOVUK_GIT_SHA)
+
+
+def legacy_dataset_redirect(request, legacy_dataset_name, **kwargs):
+    dataset = get_dataset_by_legacy_name(legacy_dataset_name)
+    if not dataset:
+        raise Http404
+
+    return redirect("directory:dataset", uuid=dataset.uuid, slug=dataset.name)
+
+
+def legacy_datafile_redirect(request, legacy_dataset_name, datafile_uuid, **kwargs):
+    dataset = get_dataset_by_legacy_name(legacy_dataset_name)
+    if not dataset:
+        raise Http404
+    if not any(datafile.uuid == datafile_uuid for datafile in dataset.datafiles):
+        raise Http404
+    try:
+        return redirect("directory:preview", dataset_uuid=dataset.uuid, name=dataset.name, datafile_uuid=datafile_uuid)
+    except NoReverseMatch as error:
+        raise Http404 from error
+
+
+def legacy_search_redirect(request, **kwargs):
+    return redirect("directory:search")

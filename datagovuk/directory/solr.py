@@ -176,6 +176,17 @@ def get_document(document_id):
     return doc
 
 
+def get_dataset_by_legacy_name(legacy_name):
+    solr_results = get_solr_client().search(
+        q=f'name:"{legacy_name}"',
+        fq=_get_filters(),
+        rows=1,
+    )
+    if solr_results.hits == 0:
+        return None
+    return SolrDataset.from_solr_doc(solr_results.docs[0])
+
+
 @dataclass
 class Preview:
     url: str
