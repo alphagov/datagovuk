@@ -10,7 +10,7 @@
 {% endmacro %}
 
 <section class="govuk-!-margin-bottom-8 additional-information">
-  <h2 class="govuk-heading-l datagovuk-heading-l">Additional information</h2>
+  <h2 class="govuk-heading-m datagovuk-heading-m">Additional information</h2>
   <dl class="govuk-summary-list govuk-!-margin-top-4">
     {% if additional_information['metadata-date'] %}
       {{ dataset_additional_information('Date added', additional_information['metadata-date'] | date("d F Y") ) }}
@@ -80,5 +80,4 @@
       </div>
     {% endif %}
   </dl>
-
 </section>
