@@ -133,24 +133,25 @@
       </section>
     </div>
   </div>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      {% if doc.additional_information %}
+  {% if doc.additional_information %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
         {% with additional_information=doc.additional_information %}
           {% include "directory/includes/additional_information.jinja" %}
         {% endwith %}
-      {% endif %}
+      </div>
     </div>
-  </div>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      {% if doc.docs %}
+  {% endif %}
+  {% if doc.docs %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
         {% with supporting_documents=doc.docs %}
           {% include "directory/includes/supporting_documents.jinja" %}
         {% endwith %}
-      {% endif %}
+      </div>
     </div>
-  </div>
+  {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
