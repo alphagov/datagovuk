@@ -1,0 +1,35 @@
+  {
+    "title": "Service assessment outcomes",
+    "visualisation_type": "headline",
+    "source": "https://www.gov.uk/service-standard-reports",
+    "publisher": "Government Digital Service",
+    "items": [
+      {
+        "subtitle": "Red",
+        "description": "The standard has not yet been met and the issues are critical.",
+        "value": 3,
+        "analysis": "In 2025 compared to 2024.",
+        "trend": "down",
+        "value_change": "-5",
+        "percent_change": "-62.5"
+      },
+      {
+        "subtitle": "Amber",
+        "description": "The standard has not yet been met, but the issues are not critical.",
+        "value": 14,
+        "analysis": "In 2025 compared to 2024.",
+        "trend": "down",
+        "value_change": "-11",
+        "percent_change": "-44"
+      },
+      {
+        "subtitle": "Green",
+        "description": "The service has met the standard and can continue to the next phase of delivery.",
+        "value": 10,
+        "analysis": "In 2025 compared to 2024.",
+        "trend": "down",
+        "value_change": "unchanged",
+        "percent_change": ""
+      }
+    ]
+  }
