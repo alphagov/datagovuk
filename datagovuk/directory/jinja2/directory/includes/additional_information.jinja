@@ -11,6 +11,14 @@
 
 <section class="govuk-!-margin-bottom-8 additional-information">
   <h2 class="govuk-heading-m datagovuk-heading-m">Additional information</h2>
+  {{ govukButton({
+    "text": "Show more",
+    "type": "button",
+    "classes": "datagovuk-button datagovuk-visibility-toggle govuk-!-margin-top-4",
+    "attributes": {
+      "aria-controls": "additional-information"
+    }
+  }) }}
   <dl class="govuk-summary-list govuk-!-margin-top-4">
     {% if additional_information['harvest_object_id'] %}
       <div class="govuk-summary-list__row">
