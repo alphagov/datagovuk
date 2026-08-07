@@ -130,21 +130,28 @@
         {% else %}
           <p class="govuk-body datagovuk-body">There are no links to this data.</p>
         {% endif %}
-
-        {% if doc.additional_information %}
-          {% with additional_information=doc.additional_information %}
-            {% include "directory/includes/additional_information.jinja" %}
-          {% endwith %}
-        {% endif %}
-
-        {% if doc.docs %}
-          {% with supporting_documents=doc.docs %}
-            {% include "directory/includes/supporting_documents.jinja" %}
-          {% endwith %}
-        {% endif %}
       </section>
     </div>
   </div>
+  {% if doc.additional_information %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        {% with additional_information=doc.additional_information %}
+          {% include "directory/includes/additional_information.jinja" %}
+        {% endwith %}
+      </div>
+    </div>
+  {% endif %}
+  {% if doc.docs %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        {% with supporting_documents=doc.docs %}
+          {% include "directory/includes/supporting_documents.jinja" %}
+        {% endwith %}
+      </div>
+    </div>
+  {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 

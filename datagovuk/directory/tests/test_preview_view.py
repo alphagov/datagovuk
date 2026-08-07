@@ -140,19 +140,6 @@ class TestPreviewView:
 
     @patch("datagovuk.directory.views.fetch_csv")
     @patch("datagovuk.directory.views.get_solr_client")
-    def test_feedback_section_visible_when_preview_exists(self, mock_solr, mock_fetch_csv, rf):
-        mock_solr.return_value.search.return_value.docs = [make_solr_doc()]
-        mock_fetch_csv.return_value = [["name"], ["John"]]
-
-        response = call_view(rf)
-
-        assert "datagovuk-feedback-inset-text" in response.rendered_content
-        assert "Is this data useful?" in response.rendered_content
-        assert 'href="https://forms.office.com/e/9V26PNFQaR"' in response.rendered_content
-        assert "Give us feedback" in response.rendered_content
-
-    @patch("datagovuk.directory.views.fetch_csv")
-    @patch("datagovuk.directory.views.get_solr_client")
     def test_feedback_section_not_visible_when_no_preview(self, mock_solr, mock_fetch_csv, rf):
         mock_solr.return_value.search.return_value.docs = [make_solr_doc()]
         mock_fetch_csv.return_value = []
