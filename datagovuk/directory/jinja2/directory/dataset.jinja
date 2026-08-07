@@ -71,7 +71,7 @@
       <section class="govuk-!-margin-bottom-8">
         <h2 class="govuk-heading-m datagovuk-heading-m">Summary</h2>
 
-        <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">
+        <div id="summary" class="govuk-!-margin-bottom-2 govuk-body datagovuk-body datagovuk-line-clamp">
           {#
             Summary is supplied by publishers and can contain a mixture of markdown
             and HTML.
@@ -80,6 +80,14 @@
           #}
           {{ doc.summary|sanitize_html|html_to_markdown|markdown_to_html }}
         </div>
+        {{ govukButton({
+          "text": "Show more",
+          "type": "button",
+          "classes": "datagovuk-button datagovuk-line-clamp-toggle govuk-!-margin-top-6",
+          "attributes": {
+            "aria-controls": "summary"
+          }
+        }) }}
       </section>
     </div>
     <div class="govuk-grid-column-one-third">
@@ -235,5 +243,6 @@
 {% block extra_js %}
   {% compress js %}
     <script src="{{ static('javascripts/visibility-toggle.js') }}"></script>
+    <script src="{{ static('javascripts/line-clamp-toggle.js') }}"></script>
   {% endcompress %}
 {% endblock extra_js %}
