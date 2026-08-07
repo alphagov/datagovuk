@@ -47,9 +47,7 @@
           Summary is supplied by publishers and can contain a mixture of markdown
           and HTML.
           Firstly sanitize the string according to our list of allowed HTML tags/attributes.
-          Next, convert the string purely to markdown.
-          Lastly, convert the markdown string to HTML via datagovuk's markdown renderer
-          (which applies datagovuk styling).
+          Next, convert the html to markdown and use datagovuk's markdown renderer to get the right styles.
         #}
         {{ doc.summary|sanitize_html|html_to_markdown|markdown_to_html }}
       </div>
