@@ -44,7 +44,7 @@ dev = [
   "django-debug-toolbar==7.0.0",
   "django-extensions==4.1",
   "django-stubs[compatible-mypy]==6.0.7",
-  "djlint==1.42.2",
+  "djlint==1.42.3",
   "factory-boy==3.3.3",
   "ipdb==0.13.13",
   "mypy==2.3.0",
@@ -55,7 +55,7 @@ dev = [
   "pytest-lazy-fixtures==1.4.0",
   "pytest-playwright==0.8.0",
   "pytest-sugar==1.1.1",
-  "ruff==0.15.22",
+  "ruff==0.16.0",
   "werkzeug[watchdog]==3.1.8",
 ]
 
