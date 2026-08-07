@@ -61,7 +61,7 @@ jobs:
 
   report_run_failure:
     name: Report run failure to Slack
-    if: ${{ always() }}
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
     needs: [poll_staging, smoke_test_staging, create_production_deployment_pr]
     runs-on: ubuntu-latest
     steps:
