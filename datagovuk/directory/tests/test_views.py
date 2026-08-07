@@ -568,13 +568,24 @@ class TestLegacyDatasetRedirectView:
 
 
 class TestLegacyDatafileRedirectView:
-    @patch("datagovuk.directory.views.get_dataset_by_legacy_name")
-    def test_legacy_datafile_redirect_view_redirects_to_preview(self, mock_get_dataset_by_legacy_name, client):
-        mock_dataset = MagicMock()
-        mock_dataset.uuid = "11111111-1111-1111-1111-111111111111"
-        mock_dataset.name = "some-dataset-name"
-        mock_dataset.datafiles = [MagicMock(uuid="22222222-2222-2222-2222-222222222222")]
-        mock_get_dataset_by_legacy_name.return_value = mock_dataset
+    def test_legacy_datafile_redirect_view_redirects_to_preview(self, solr_doc_factory, client):
+        solr_doc_factory(
+            id="11111111-1111-1111-1111-111111111111",
+            name="some-dataset-name",
+            validated_data_dict=json.dumps(
+                {
+                    "resources": [
+                        {
+                            "id": "22222222-2222-2222-2222-222222222222",
+                            "name": "Data",
+                            "url": "http://example.com/data.csv",
+                            "format": "CSV",
+                            "created": "2026-01-01",
+                        },
+                    ],
+                },
+            ),
+        )
         url = reverse(
             "directory:legacy_datafile",
             kwargs={
@@ -593,13 +604,12 @@ class TestLegacyDatafileRedirectView:
             },
         )
 
-    @patch("datagovuk.directory.views.get_dataset_by_legacy_name")
     def test_legacy_datafile_redirect_view_returns_404_for_invalid_dataset(
         self,
-        mock_get_dataset_by_legacy_name,
+        solr_doc_factory,
         client,
     ):
-        mock_get_dataset_by_legacy_name.return_value = None
+        solr_doc_factory(id="11111111-1111-1111-1111-111111111111", name="some-dataset-name")
         url = reverse(
             "directory:legacy_datafile",
             kwargs={
@@ -610,16 +620,13 @@ class TestLegacyDatafileRedirectView:
         response = client.get(url)
         assert response.status_code == HttpResponseNotFound.status_code
 
-    @patch("datagovuk.directory.views.get_dataset_by_legacy_name")
     def test_legacy_datafile_redirect_view_returns_404_for_invalid_datafile(
         self,
-        mock_get_dataset_by_legacy_name,
+        solr_doc_factory,
         client,
     ):
-        mock_dataset = MagicMock()
-        mock_dataset.datafiles = [MagicMock(uuid="22222222-2222-2222-2222-222222222222")]
-        mock_get_dataset_by_legacy_name.return_value = mock_dataset
-        unknown_datafile_uuid = "11111111-1111-1111-1111-111111111111"
+        solr_doc_factory(id="11111111-1111-1111-1111-111111111111", name="some-dataset-name")
+        unknown_datafile_uuid = "33333333-3333-3333-3333-333333333333"
         url = reverse(
             "directory:legacy_datafile",
             kwargs={
@@ -630,19 +637,30 @@ class TestLegacyDatafileRedirectView:
         response = client.get(url)
         assert response.status_code == HttpResponseNotFound.status_code
 
-    @patch("datagovuk.directory.views.get_dataset_by_legacy_name")
     @patch("datagovuk.directory.views.reverse", side_effect=NoReverseMatch("NoReverseMatch"))
     def test_legacy_datafile_redirect_view_returns_404_for_no_reverse_match(
         self,
         mock_reverse,
-        mock_get_dataset_by_legacy_name,
+        solr_doc_factory,
         client,
     ):
-        mock_dataset = MagicMock()
-        mock_dataset.uuid = "11111111-1111-1111-1111-111111111111"
-        mock_dataset.name = "some-dataset-name"
-        mock_dataset.datafiles = [MagicMock(uuid="22222222-2222-2222-2222-222222222222")]
-        mock_get_dataset_by_legacy_name.return_value = mock_dataset
+        solr_doc_factory(
+            id="11111111-1111-1111-1111-111111111111",
+            name="some-dataset-name",
+            validated_data_dict=json.dumps(
+                {
+                    "resources": [
+                        {
+                            "id": "22222222-2222-2222-2222-222222222222",
+                            "name": "Data",
+                            "url": "http://example.com/example.csv",
+                            "format": "CSV",
+                            "created": "2026-01-01",
+                        },
+                    ],
+                },
+            ),
+        )
         url = reverse(
             "directory:legacy_datafile",
             kwargs={
