@@ -10,8 +10,16 @@
 {% endmacro %}
 
 <section class="govuk-!-margin-bottom-8 additional-information">
-  <h2 class="govuk-heading-m datagovuk-heading-m">Additional information</h2>
-  <dl class="govuk-summary-list govuk-!-margin-top-4">
+  <h2 class="govuk-heading-m datagovuk-heading-m govuk-!-margin-bottom-1">Additional information</h2>
+  {{ govukButton({
+    "text": "Show more",
+    "type": "button",
+    "classes": "datagovuk-button datagovuk-visibility-toggle govuk-!-margin-top-4",
+    "attributes": {
+      "aria-controls": "additional-information"
+    }
+  }) }}
+  <dl id="additional-information" class="govuk-summary-list govuk-!-margin-top-1">
     {% if additional_information['metadata-date'] %}
       {{ dataset_additional_information('Date added', additional_information['metadata-date'] | date("d F Y") ) }}
     {% endif %}
