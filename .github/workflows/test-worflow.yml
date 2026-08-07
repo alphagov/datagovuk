@@ -1,0 +1,40 @@
+name: Test slack notification
+
+on:
+    push:
+        branches:
+            - DGUK-864-fix-slack-notify
+
+jobs:
+  first_job:
+    name: failing job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7.0.1
+      - name: Run a failure
+        run: exit 1
+
+  second_job:
+    name: Skipped job
+    needs: first_job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7.0.1
+      - name: Run a pass
+        run: echo "This job will be skipped because the first job fails"
+
+  report_run_failure:
+    name: Report run failure to Slack
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
+    needs: [first_job, second_job]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7.0.1
+      - name: Notify slack of failure
+        uses: ./.github/actions/report-run-failure
+        with:
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          channel: datagovuk-technical
