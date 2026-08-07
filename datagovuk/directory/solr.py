@@ -100,7 +100,7 @@ def _get_filters(filters=None):
 
     if filters.get("topic"):
         topic_slug = slugify(filters["topic"])
-        solr_filters.append(f"extras_theme-primary:{topic_slug}")
+        solr_filters.append(f'extras_theme-primary:"{topic_slug}"')
 
     if filters.get("format"):
         file_format = filters["format"]

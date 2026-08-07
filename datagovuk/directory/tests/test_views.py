@@ -174,6 +174,18 @@ class TestSearchView:
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
+    def test_view_filter_topic_overlapping_topic_terms_match_correctly(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(topic="business-and-economy")
+        solr_doc_factory(topic="crime-and-justice")
+        solr_doc_factory()
+
+        response = client.get(search_url, {"q": "dataset", "topic": "Business and economy"})
+
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_doc["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
     def test_view_filter_format_matching_mapped_format(self, client, solr_doc_factory, search_url):
         matching_document = solr_doc_factory(res_format=[".csv"])
         solr_doc_factory(res_format=["XLSX"])
