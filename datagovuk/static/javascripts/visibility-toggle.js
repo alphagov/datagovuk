@@ -9,7 +9,7 @@ class DatagovukVisibilityToggle {
   }
 
   getShowDisplayValue() {
-    if (this.$showTarget.tagName == "tbody") {
+    if (this.$showTarget.tagName == "TBODY") {
       return "table-row-group"
     }
     return "block"

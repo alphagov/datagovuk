@@ -5,6 +5,29 @@
 {% from "govuk_frontend_jinja/components/summary-list/macro.html" import govukSummaryList -%}
 {% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
 
+{% macro resource_row(resource, doc) %}
+  <tr class="govuk-table__row">
+    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--wrap govuk-body datagovuk-body">
+      <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name }}</a>
+      {% if resource.size %}({{ resource.size|format_file_size }}){% endif %}
+    </td>
+    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
+      {{ resource.format }}
+    </td>
+    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
+      {% if resource.is_csv %}
+        <a href="{{ url('directory:preview', kwargs={'dataset_uuid': doc.uuid, 'name': doc.name, 'datafile_uuid': resource.uuid}) }}"
+           class="govuk-link datagovuk-link">Preview</a>
+      {% else %}
+        –
+      {% endif %}
+    </td>
+    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
+      {{ resource.last_modified|date("d/m/Y") }}
+    </td>
+  </tr>
+{% endmacro %}
+
 {% block search_main %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
@@ -101,32 +124,27 @@
                   </th>
                 </tr>
               </thead>
+              {% set datafiles_start, datafiles_rest = doc.datafiles[:4], doc.datafiles[4:] %}
               <tbody class="govuk-table__body">
-                {% for resource in doc.datafiles %}
-                  <tr class="govuk-table__row">
-                    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--wrap govuk-body datagovuk-body">
-                      <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name }}</a>
-                      {% if resource.size %}({{ resource.size|format_file_size }}){% endif %}
-                    </td>
-                    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-                      {{ resource.format }}
-                    </td>
-                    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-                      {% if resource.is_csv %}
-                        <a href="{{ url('directory:preview', kwargs={'dataset_uuid': doc.uuid, 'name': doc.name, 'datafile_uuid': resource.uuid}) }}"
-                           class="govuk-link datagovuk-link">Preview</a>
-                      {% else %}
-                        –
-                      {% endif %}
-                    </td>
-                    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-                      {{ resource.last_modified|date("d/m/Y") }}
-                    </td>
-                  </tr>
-                {% endfor %}
+                {% for resource in datafiles_start %}{{ resource_row(resource, doc) }}{% endfor %}
               </tbody>
+              {% if datafiles_rest %}
+                <tbody id="truncated-resources-rest" class="govuk-table__body">
+                  {% for resource in datafiles_rest %}{{ resource_row(resource, doc) }}{% endfor %}
+                </tbody>
+              {% endif %}
             </table>
           </div>
+          {% if datafiles_rest %}
+            {{ govukButton({
+              "text": "Show more",
+              "type": "button",
+              "classes": "datagovuk-button datagovuk-visibility-toggle govuk-!-margin-top-6",
+              "attributes": {
+                "aria-controls": "truncated-resources-rest"
+              }
+            }) }}
+          {% endif %}
         {% else %}
           <p class="govuk-body datagovuk-body">There are no links to this data.</p>
         {% endif %}
