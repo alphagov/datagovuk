@@ -215,3 +215,9 @@
     </div>
   </div>
 {% endblock search_main %}
+
+{% block extra_js %}
+  {% compress js %}
+    <script src="{{ static('javascripts/visibility-toggle.js') }}"></script>
+  {% endcompress %}
+{% endblock extra_js %}
