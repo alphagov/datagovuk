@@ -29,28 +29,19 @@ def test_get_solr_client_solr_url_set(pysolr_mock, settings):
     assert client == pysolr_mock.Solr.return_value
 
 
-@patch("datagovuk.directory.solr.pysolr")
-def test_get_dataset_by_legacy_name(pysolr_mock, settings):
-    settings.SOLR_URL = "http://solr.example.net"
+def test_get_dataset_by_legacy_name(solr_doc_factory):
     legacy_name = "example-dataset"
-    search_result = MagicMock()
-    search_result.hits = 1
-    search_result.docs = [{"id": "1234", "name": legacy_name}]
-    pysolr_mock.Solr.return_value.search.return_value = search_result
+    solr_doc_factory(id="1234", name=legacy_name)
     dataset = get_dataset_by_legacy_name(legacy_name)
     assert dataset.uuid == "1234"
     assert dataset.name == legacy_name
 
 
-def test_get_dataset_by_legacy_name_not_found(settings):
-    settings.SOLR_URL = "http://solr.example.net"
+def test_get_dataset_by_legacy_name_not_found(solr_doc_factory):
     legacy_name = "non-existent-dataset"
-    with patch("datagovuk.directory.solr.get_solr_client") as mock_get_solr_client:
-        mock_solr_client = MagicMock()
-        mock_solr_client.search.return_value.hits = 0
-        mock_get_solr_client.return_value = mock_solr_client
-        dataset = get_dataset_by_legacy_name(legacy_name)
-        assert dataset is None
+    solr_doc_factory(id="1234", name="some-other-dataset")
+    dataset = get_dataset_by_legacy_name(legacy_name)
+    assert dataset is None
 
 
 @pytest.mark.parametrize(

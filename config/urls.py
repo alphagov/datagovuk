@@ -5,13 +5,6 @@ from django.views.decorators.cache import never_cache
 from django_prometheus import exports as prometheus_views
 from health_check.views import HealthCheckView
 
-from datagovuk.core.feature_flags import flag_required
-from datagovuk.core.views import (
-    legacy_datafile_redirect,
-    legacy_dataset_redirect,
-    legacy_search_redirect,
-)
-
 urlpatterns = [
     path("", include("datagovuk.pages.urls", namespace="pages")),
     path("", include("datagovuk.core.urls", namespace="core")),
@@ -30,21 +23,6 @@ urlpatterns = [
         "metrics/",
         never_cache(prometheus_views.ExportToDjangoView),
         name="prometheus-django-metrics",
-    ),
-    path(
-        "v1/dataset/<str:legacy_dataset_name>/",
-        flag_required(settings.FEATURE_FLAGS.SOLR_SEARCH, legacy_dataset_redirect),
-        name="legacy_dataset",
-    ),
-    path(
-        "v1/dataset/<str:legacy_dataset_name>/resource/<str:datafile_uuid>",
-        flag_required(settings.FEATURE_FLAGS.SOLR_SEARCH, legacy_datafile_redirect),
-        name="legacy_datafile",
-    ),
-    path(
-        "v1/data/search",
-        flag_required(settings.FEATURE_FLAGS.SOLR_SEARCH, legacy_search_redirect),
-        name="legacy_search",
     ),
 ]
 

@@ -3,7 +3,8 @@ from http import HTTPStatus
 from unittest.mock import MagicMock, patch
 
 import pytest
-from django.urls import reverse
+from django.http import HttpResponseNotFound, HttpResponsePermanentRedirect
+from django.urls import NoReverseMatch, reverse
 
 
 @pytest.fixture(autouse=True)
@@ -546,3 +547,116 @@ class TestDatasetView:
         response = client.get(url)
 
         assert response.context_data["doc"].datafiles[0].is_csv is False
+
+
+class TestLegacyDatasetRedirectView:
+    def test_legacy_dataset_redirect_view_redirects_to_directory(self, client, solr_doc_factory):
+        solr_doc_factory(id="11111111-1111-4111-8111-111111111111", name="some-dataset-name")
+        url = reverse("directory:legacy_dataset", kwargs={"legacy_dataset_name": "some-dataset-name"})
+        response = client.get(url)
+        assert response.status_code == HttpResponsePermanentRedirect.status_code
+        assert response.url == reverse(
+            "directory:dataset",
+            kwargs={"uuid": "11111111-1111-4111-8111-111111111111", "slug": "some-dataset-name"},
+        )
+
+    def test_legacy_dataset_redirect_view_returns_404_for_invalid_dataset(self, client, solr_doc_factory):
+        solr_doc_factory(id="11111111-1111-4111-8111-111111111112", name="some-other-name")
+        url = reverse("directory:legacy_dataset", kwargs={"legacy_dataset_name": "invalid-dataset"})
+        response = client.get(url)
+        assert response.status_code == HttpResponseNotFound.status_code
+
+
+class TestLegacyDatafileRedirectView:
+    @patch("datagovuk.directory.views.get_dataset_by_legacy_name")
+    def test_legacy_datafile_redirect_view_redirects_to_preview(self, mock_get_dataset_by_legacy_name, client):
+        mock_dataset = MagicMock()
+        mock_dataset.uuid = "11111111-1111-1111-1111-111111111111"
+        mock_dataset.name = "some-dataset-name"
+        mock_dataset.datafiles = [MagicMock(uuid="22222222-2222-2222-2222-222222222222")]
+        mock_get_dataset_by_legacy_name.return_value = mock_dataset
+        url = reverse(
+            "directory:legacy_datafile",
+            kwargs={
+                "legacy_dataset_name": "some-dataset-name",
+                "datafile_uuid": "22222222-2222-2222-2222-222222222222",
+            },
+        )
+        response = client.get(url)
+        assert response.status_code == HttpResponsePermanentRedirect.status_code
+        assert response.url == reverse(
+            "directory:preview",
+            kwargs={
+                "dataset_uuid": "11111111-1111-1111-1111-111111111111",
+                "name": "some-dataset-name",
+                "datafile_uuid": "22222222-2222-2222-2222-222222222222",
+            },
+        )
+
+    @patch("datagovuk.directory.views.get_dataset_by_legacy_name")
+    def test_legacy_datafile_redirect_view_returns_404_for_invalid_dataset(
+        self,
+        mock_get_dataset_by_legacy_name,
+        client,
+    ):
+        mock_get_dataset_by_legacy_name.return_value = None
+        url = reverse(
+            "directory:legacy_datafile",
+            kwargs={
+                "legacy_dataset_name": "invalid-dataset",
+                "datafile_uuid": "22222222-2222-2222-2222-222222222222",
+            },
+        )
+        response = client.get(url)
+        assert response.status_code == HttpResponseNotFound.status_code
+
+    @patch("datagovuk.directory.views.get_dataset_by_legacy_name")
+    def test_legacy_datafile_redirect_view_returns_404_for_invalid_datafile(
+        self,
+        mock_get_dataset_by_legacy_name,
+        client,
+    ):
+        mock_dataset = MagicMock()
+        mock_dataset.datafiles = [MagicMock(uuid="22222222-2222-2222-2222-222222222222")]
+        mock_get_dataset_by_legacy_name.return_value = mock_dataset
+        unknown_datafile_uuid = "11111111-1111-1111-1111-111111111111"
+        url = reverse(
+            "directory:legacy_datafile",
+            kwargs={
+                "legacy_dataset_name": "some-dataset-name",
+                "datafile_uuid": unknown_datafile_uuid,
+            },
+        )
+        response = client.get(url)
+        assert response.status_code == HttpResponseNotFound.status_code
+
+    @patch("datagovuk.directory.views.get_dataset_by_legacy_name")
+    @patch("datagovuk.directory.views.reverse", side_effect=NoReverseMatch("NoReverseMatch"))
+    def test_legacy_datafile_redirect_view_returns_404_for_no_reverse_match(
+        self,
+        mock_reverse,
+        mock_get_dataset_by_legacy_name,
+        client,
+    ):
+        mock_dataset = MagicMock()
+        mock_dataset.uuid = "11111111-1111-1111-1111-111111111111"
+        mock_dataset.name = "some-dataset-name"
+        mock_dataset.datafiles = [MagicMock(uuid="22222222-2222-2222-2222-222222222222")]
+        mock_get_dataset_by_legacy_name.return_value = mock_dataset
+        url = reverse(
+            "directory:legacy_datafile",
+            kwargs={
+                "legacy_dataset_name": "some-dataset-name",
+                "datafile_uuid": "22222222-2222-2222-2222-222222222222",
+            },
+        )
+        response = client.get(url)
+        assert response.status_code == HttpResponseNotFound.status_code
+
+
+class TestLegacySearchRedirectView:
+    def test_legacy_search_redirect_view_redirects_to_directory_search(self, client):
+        url = reverse("directory:legacy_search")
+        response = client.get(url)
+        assert response.status_code == HttpResponsePermanentRedirect.status_code
+        assert response.url == reverse("directory:search")
