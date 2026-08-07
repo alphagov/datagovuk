@@ -14,7 +14,7 @@ urlpatterns = [
         name="search",
     ),
     path(
-        "dataset/<uuid:uuid>/<slug:slug>",
+        "dataset/<uuid:uuid>/<slug:slug>/",
         flag_required(settings.FEATURE_FLAGS.SOLR_SEARCH, views.DatasetView.as_view()),
         name="dataset",
     ),
@@ -22,5 +22,20 @@ urlpatterns = [
         "dataset/<uuid:dataset_uuid>/<slug:name>/datafile/<uuid:datafile_uuid>/preview/",
         flag_required(settings.FEATURE_FLAGS.SOLR_SEARCH, views.PreviewView.as_view()),
         name="preview",
+    ),
+    path(
+        "dataset/<str:legacy_dataset_name>/",
+        views.LegacyDatasetRedirectView.as_view(),
+        name="legacy_dataset",
+    ),
+    path(
+        "dataset/<str:legacy_dataset_name>/resource/<str:datafile_uuid>/",
+        views.LegacyDatafileRedirectView.as_view(),
+        name="legacy_datafile",
+    ),
+    path(
+        "data/search/",
+        views.LegacySearchRedirectView.as_view(),
+        name="legacy_search",
     ),
 ]

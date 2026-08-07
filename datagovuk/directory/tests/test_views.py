@@ -3,7 +3,8 @@ from http import HTTPStatus
 from unittest.mock import MagicMock, patch
 
 import pytest
-from django.urls import reverse
+from django.http import HttpResponseNotFound, HttpResponsePermanentRedirect
+from django.urls import NoReverseMatch, reverse
 
 
 @pytest.fixture(autouse=True)
@@ -546,3 +547,134 @@ class TestDatasetView:
         response = client.get(url)
 
         assert response.context_data["doc"].datafiles[0].is_csv is False
+
+
+class TestLegacyDatasetRedirectView:
+    def test_legacy_dataset_redirect_view_redirects_to_directory(self, client, solr_doc_factory):
+        solr_doc_factory(id="11111111-1111-4111-8111-111111111111", name="some-dataset-name")
+        url = reverse("directory:legacy_dataset", kwargs={"legacy_dataset_name": "some-dataset-name"})
+        response = client.get(url)
+        assert response.status_code == HttpResponsePermanentRedirect.status_code
+        assert response.url == reverse(
+            "directory:dataset",
+            kwargs={"uuid": "11111111-1111-4111-8111-111111111111", "slug": "some-dataset-name"},
+        )
+
+    def test_legacy_dataset_redirect_view_returns_404_for_invalid_dataset(self, client, solr_doc_factory):
+        solr_doc_factory(id="11111111-1111-4111-8111-111111111112", name="some-other-name")
+        url = reverse("directory:legacy_dataset", kwargs={"legacy_dataset_name": "invalid-dataset"})
+        response = client.get(url)
+        assert response.status_code == HttpResponseNotFound.status_code
+
+
+class TestLegacyDatafileRedirectView:
+    def test_legacy_datafile_redirect_view_redirects_to_preview(self, solr_doc_factory, client):
+        solr_doc_factory(
+            id="11111111-1111-1111-1111-111111111111",
+            name="some-dataset-name",
+            validated_data_dict=json.dumps(
+                {
+                    "resources": [
+                        {
+                            "id": "22222222-2222-2222-2222-222222222222",
+                            "name": "Data",
+                            "url": "http://example.com/data.csv",
+                            "format": "CSV",
+                            "created": "2026-01-01",
+                        },
+                    ],
+                },
+            ),
+        )
+        url = reverse(
+            "directory:legacy_datafile",
+            kwargs={
+                "legacy_dataset_name": "some-dataset-name",
+                "datafile_uuid": "22222222-2222-2222-2222-222222222222",
+            },
+        )
+        response = client.get(url)
+        assert response.status_code == HttpResponsePermanentRedirect.status_code
+        assert response.url == reverse(
+            "directory:preview",
+            kwargs={
+                "dataset_uuid": "11111111-1111-1111-1111-111111111111",
+                "name": "some-dataset-name",
+                "datafile_uuid": "22222222-2222-2222-2222-222222222222",
+            },
+        )
+
+    def test_legacy_datafile_redirect_view_returns_404_for_invalid_dataset(
+        self,
+        solr_doc_factory,
+        client,
+    ):
+        solr_doc_factory(id="11111111-1111-1111-1111-111111111111", name="some-dataset-name")
+        url = reverse(
+            "directory:legacy_datafile",
+            kwargs={
+                "legacy_dataset_name": "invalid-dataset",
+                "datafile_uuid": "22222222-2222-2222-2222-222222222222",
+            },
+        )
+        response = client.get(url)
+        assert response.status_code == HttpResponseNotFound.status_code
+
+    def test_legacy_datafile_redirect_view_returns_404_for_invalid_datafile(
+        self,
+        solr_doc_factory,
+        client,
+    ):
+        solr_doc_factory(id="11111111-1111-1111-1111-111111111111", name="some-dataset-name")
+        unknown_datafile_uuid = "33333333-3333-3333-3333-333333333333"
+        url = reverse(
+            "directory:legacy_datafile",
+            kwargs={
+                "legacy_dataset_name": "some-dataset-name",
+                "datafile_uuid": unknown_datafile_uuid,
+            },
+        )
+        response = client.get(url)
+        assert response.status_code == HttpResponseNotFound.status_code
+
+    @patch("datagovuk.directory.views.reverse", side_effect=NoReverseMatch("NoReverseMatch"))
+    def test_legacy_datafile_redirect_view_returns_404_for_no_reverse_match(
+        self,
+        mock_reverse,
+        solr_doc_factory,
+        client,
+    ):
+        solr_doc_factory(
+            id="11111111-1111-1111-1111-111111111111",
+            name="some-dataset-name",
+            validated_data_dict=json.dumps(
+                {
+                    "resources": [
+                        {
+                            "id": "22222222-2222-2222-2222-222222222222",
+                            "name": "Data",
+                            "url": "http://example.com/example.csv",
+                            "format": "CSV",
+                            "created": "2026-01-01",
+                        },
+                    ],
+                },
+            ),
+        )
+        url = reverse(
+            "directory:legacy_datafile",
+            kwargs={
+                "legacy_dataset_name": "some-dataset-name",
+                "datafile_uuid": "22222222-2222-2222-2222-222222222222",
+            },
+        )
+        response = client.get(url)
+        assert response.status_code == HttpResponseNotFound.status_code
+
+
+class TestLegacySearchRedirectView:
+    def test_legacy_search_redirect_view_redirects_to_directory_search(self, client):
+        url = reverse("directory:legacy_search")
+        response = client.get(url)
+        assert response.status_code == HttpResponsePermanentRedirect.status_code
+        assert response.url == reverse("directory:search")

@@ -1,6 +1,6 @@
-from django.http import Http404
-from django.urls import reverse
-from django.views.generic import TemplateView
+from django.http import Http404, HttpResponsePermanentRedirect
+from django.urls import NoReverseMatch, reverse
+from django.views.generic import TemplateView, View
 from ordered_set import OrderedSet
 
 from datagovuk.core.utils import build_table_data
@@ -9,7 +9,15 @@ from datagovuk.core.views import GETFormView, PaginationMixin
 from .constants import FORMATS_BY_FORMAT_VALUE, TOPICS_BY_SOLR_ALIAS, FormatChoices, TopicChoices
 from .forms import SearchForm
 from .preview_utils import fetch_csv
-from .solr import SolrDatafile, SolrDataset, get_document, get_organisations_by_title, get_solr_client, search
+from .solr import (
+    SolrDatafile,
+    SolrDataset,
+    get_dataset_by_legacy_name,
+    get_document,
+    get_organisations_by_title,
+    get_solr_client,
+    search,
+)
 
 
 class SearchView(GETFormView, PaginationMixin):
@@ -185,3 +193,50 @@ class PreviewView(TemplateView):
         if datafile is None:
             raise SolrDatafile.DatafileNotFoundError
         return datafile
+
+
+class LegacyDatasetRedirectView(View):
+    def get(self, request, legacy_dataset_name, **kwargs):
+        return self.legacy_dataset_redirect(request, legacy_dataset_name, **kwargs)
+
+    def legacy_dataset_redirect(self, request, legacy_dataset_name, **kwargs):
+        dataset = get_dataset_by_legacy_name(legacy_dataset_name)
+        if not dataset:
+            raise Http404
+
+        return HttpResponsePermanentRedirect(
+            redirect_to=reverse("directory:dataset", kwargs={"uuid": dataset.uuid, "slug": dataset.name}),
+        )
+
+
+class LegacyDatafileRedirectView(View):
+    def get(self, request, legacy_dataset_name, datafile_uuid, **kwargs):
+        return self.legacy_datafile_redirect(request, legacy_dataset_name, datafile_uuid, **kwargs)
+
+    def legacy_datafile_redirect(self, request, legacy_dataset_name, datafile_uuid, **kwargs):
+        dataset = get_dataset_by_legacy_name(legacy_dataset_name)
+        if not dataset:
+            raise Http404
+        if not any(datafile.uuid == datafile_uuid for datafile in dataset.datafiles):
+            raise Http404
+        try:
+            return HttpResponsePermanentRedirect(
+                redirect_to=reverse(
+                    "directory:preview",
+                    kwargs={
+                        "dataset_uuid": dataset.uuid,
+                        "name": dataset.name,
+                        "datafile_uuid": datafile_uuid,
+                    },
+                ),
+            )
+        except NoReverseMatch as error:
+            raise Http404 from error
+
+
+class LegacySearchRedirectView(View):
+    def get(self, request, **kwargs):
+        return self.legacy_search_redirect(request, **kwargs)
+
+    def legacy_search_redirect(self, request, **kwargs):
+        return HttpResponsePermanentRedirect(redirect_to=reverse("directory:search"))
