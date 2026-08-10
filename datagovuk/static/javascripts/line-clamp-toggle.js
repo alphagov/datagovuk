@@ -4,6 +4,12 @@ class DatagovukLineClampToggle {
     this.$showTarget = document.querySelector("#" + this.$button.getAttribute("aria-controls"))
     this.clampClass = "datagovuk-line-clamp"
     this.$showTarget.classList.add(this.clampClass)
+
+    if (this.$showTarget.scrollHeight <= this.$showTarget.clientHeight) {
+      this.$button.style.display = "none"
+      return
+    }
+
     this.$button.setAttribute("aria-expanded", "false")
     this.$button.addEventListener("click", () => this.toggle())
   }
