@@ -395,6 +395,17 @@ class TestSolrDatasetModel:
         solr_dataset = SolrDataset.from_solr_doc(self.solr_doc())
         assert solr_dataset.additional_information is None
 
+    def test_from_solr_doc_harvested_is_true_when_additional_information_present(self):
+        extras = [{"key": "guid", "value": "abc-123"}]
+        solr_dataset = SolrDataset.from_solr_doc(
+            self.solr_doc(validated_data_dict=json.dumps({"extras": extras})),
+        )
+        assert solr_dataset.harvested is True
+
+    def test_from_solr_doc_harvested_is_false_when_additional_information_absent(self):
+        solr_dataset = SolrDataset.from_solr_doc(self.solr_doc())
+        assert solr_dataset.harvested is False
+
     def test_from_solr_doc_supporting_document_goes_to_docs_not_datafiles(self):
         resources = [
             {
