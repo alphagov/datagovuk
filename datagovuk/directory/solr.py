@@ -373,6 +373,8 @@ class SolrDataset:
 
         additional_information = SolrDataset.extract_additional_information(dataset_dict.get("extras", []))
 
+        harvested = additional_information is not None
+
         return SolrDataset(
             uuid=doc.get("id", ""),
             name=doc.get("name", ""),
@@ -381,6 +383,7 @@ class SolrDataset:
             organisation_name=doc.get("organization", ""),
             organisation=organisation_details,
             additional_information=additional_information,
+            harvested=harvested,
             public_updated_at=public_updated_at,
             topic=topic,
             licence_title=dataset_dict.get("license_title", ""),
