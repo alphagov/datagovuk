@@ -116,7 +116,22 @@ class TestAdditionalInformationSection:
         dataset_without_additional_information,
     ):
         page.goto(live_server_url + dataset_url_no_extras)
+        section = page.locator(".additional-information")
+        expect(section.get_by_role("button", name="Show more")).to_have_count(0)
         expect(page.get_by_role("heading", level=2, name="Additional information")).to_have_count(0)
+
+    def test_additional_information_section_collapsed(
+        self,
+        page,
+        live_server_url,
+        dataset_url,
+        dataset_with_additional_information,
+    ):
+        page.goto(live_server_url + dataset_url)
+        section = page.locator(".additional-information")
+        expect(section.locator("#additional-information")).to_be_hidden()
+        expect(page.get_by_role("heading", level=2, name="Additional information")).to_be_visible()
+        expect(section.get_by_role("button", name="Show more")).to_be_visible()
 
     def test_metadata_date_is_shown(
         self,
@@ -127,6 +142,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("Date added")).to_be_visible()
         expect(section.get_by_text("01 June 2024", exact=False).first).to_be_visible()
 
@@ -139,6 +155,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("Harvest GUID")).to_be_visible()
         expect(section.get_by_text("a1b2c3d4-0000-0000-0000-000000000001", exact=False)).to_be_visible()
 
@@ -151,6 +168,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("Frequency of update")).to_be_visible()
         expect(section.get_by_text("annual", exact=False)).to_be_visible()
 
@@ -163,6 +181,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("Spatial reference system")).to_be_visible()
         expect(section.get_by_text("OSGB 1936 / Test", exact=False)).to_be_visible()
 
@@ -175,6 +194,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("Extent (Latitude)")).to_be_visible()
         expect(section.get_by_text("Extent (Longitude)")).to_be_visible()
         expect(section.get_by_text("51.686° to 51.286°", exact=False)).to_be_visible()
@@ -189,6 +209,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("Access constraints")).to_be_visible()
         expect(section.get_by_text("Available under the Open Government Licence v3.0", exact=False)).to_be_visible()
 
@@ -201,6 +222,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("Dataset reference date (publication)")).to_be_visible()
         expect(section.get_by_text("Dataset reference date (revision)")).to_be_visible()
         expect(section.get_by_text("2024-01-01", exact=False).first).to_be_visible()
@@ -215,6 +237,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("Responsible party")).to_be_visible()
         expect(section.get_by_text("Example Publisher (pointOfContact)", exact=False)).to_be_visible()
 
@@ -227,6 +250,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("Metadata language")).to_be_visible()
         expect(section.get_by_text("eng", exact=False)).to_be_visible()
 
@@ -239,6 +263,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("ISO 19139 resource type")).to_be_visible()
         expect(section.locator("dd").get_by_text("dataset", exact=True)).to_be_visible()
 
@@ -251,6 +276,7 @@ class TestAdditionalInformationSection:
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
+        section.get_by_role("button", name="Show more").click()
         expect(section.get_by_text("Source Metadata")).to_be_visible()
         expect(section.get_by_role("link", name="XML")).to_have_attribute(
             "href",
