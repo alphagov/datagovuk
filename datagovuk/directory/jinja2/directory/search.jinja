@@ -60,7 +60,7 @@
         {% if results.hits > 0 %}
           <div class="datagovuk-search__results-header">
             <div class="govuk-body datagovuk-body datagovuk-search__results-count">
-              {{ pagination.first_result_in_page }} to {{ pagination.last_result_in_page }} of {{ pagination.total_results }} results
+              {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ pagination.total_results|intcomma }} results
             </div>
             {{ govukSelect({
                         "label": {
