@@ -116,10 +116,9 @@ class SearchView(GETFormView, PaginationMixin):
             docs = search_result["docs"]
             if results.hits > 0:
                 # If we have results, re-initialise the form now that we know what facets should be shown
-                form_kwargs = {
-                    **self.get_form_kwargs(),
-                    **self.get_choices_from_facets(results.facets["facet_fields"]),
-                }
+                form_kwargs = self.get_form_kwargs()
+                if query:
+                    form_kwargs.update(**self.get_choices_from_facets(results.facets["facet_fields"]))
                 form = self.form_class(**form_kwargs)
                 context["form"] = form
             context["results"] = results

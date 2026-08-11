@@ -237,33 +237,40 @@ class TestSearchView:
 
     def test_search_view_facets_reduce_with_filtering(self, client, solr_doc_factory, search_url):
         doc_1 = solr_doc_factory(
+            name="test",
             organization="some-other-publisher",
         )
         doc_2 = solr_doc_factory(
+            name="test",
             organization="my-publisher",
         )
         doc_3 = solr_doc_factory(
+            name="test",
             organization="my-publisher",
             topic="Environment",
         )
         doc_4 = solr_doc_factory(
+            name="test",
             organization="my-publisher",
             topic="Business and economy",
             res_format=["JSON"],
         )
         doc_5 = solr_doc_factory(
+            name="test",
             organization="my-publisher",
             topic="Environment",
             res_format=["CSV", "JSON"],
         )
         doc_6 = solr_doc_factory(
+            name="test",
             organization="my-publisher",
             topic="Environment",
             res_format=["CSV", "JSON", "XLS"],
         )
 
-        # Firstly search for all records...
-        response = client.get(search_url, {"q": ""})
+        query = "test"
+        # Firstly search for all 'test' records...
+        response = client.get(search_url, {"q": query})
         assert [doc["id"] for doc in response.context_data["results"].docs] == [
             doc_1["id"],
             doc_2["id"],
@@ -290,7 +297,7 @@ class TestSearchView:
         ]
 
         # Next filter by publisher...
-        response = client.get(search_url, {"q": "", "publisher": "My publisher"})
+        response = client.get(search_url, {"q": query, "publisher": "My publisher"})
         assert [doc["id"] for doc in response.context_data["results"].docs] == [
             doc_2["id"],
             doc_3["id"],
@@ -312,7 +319,7 @@ class TestSearchView:
         ]
 
         # Next filter by publisher and topic...
-        response = client.get(search_url, {"q": "", "publisher": "My publisher", "topic": "Environment"})
+        response = client.get(search_url, {"q": query, "publisher": "My publisher", "topic": "Environment"})
         assert [doc["id"] for doc in response.context_data["results"].docs] == [doc_3["id"], doc_5["id"], doc_6["id"]]
         assert response.context_data["form"].fields["publisher"].choices == [("", ""), ("My publisher", "My publisher")]
         assert response.context_data["form"].fields["topic"].choices == [("", ""), ("Environment", "Environment")]
@@ -326,7 +333,7 @@ class TestSearchView:
         # Next filter by publisher, topic and format...
         response = client.get(
             search_url,
-            {"q": "", "publisher": "My publisher", "topic": "Environment", "format": "XLS"},
+            {"q": query, "publisher": "My publisher", "topic": "Environment", "format": "XLS"},
         )
         assert [doc["id"] for doc in response.context_data["results"].docs] == [doc_6["id"]]
         assert response.context_data["form"].fields["publisher"].choices == [("", ""), ("My publisher", "My publisher")]

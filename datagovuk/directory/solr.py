@@ -143,11 +143,12 @@ def search(query, filters, sort="best", start=0, rows=20):
     solr_client = get_solr_client()
     solr_facets = _get_facets()
     solr_sort = _get_sort(sort)
-    search_options = {
-        **solr_facets,
-    }
+    search_options = {}
     if solr_sort:
         search_options["sort"] = solr_sort
+    if query:
+        search_options.update(solr_facets)
+
     solr_results = solr_client.search(
         q=solr_query,
         fq=solr_filters,
