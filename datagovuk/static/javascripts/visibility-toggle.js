@@ -1,6 +1,10 @@
 class DatagovukVisibilityToggle {
   constructor($button) {
     this.$button = $button
+    if (!this.$button) {
+      console.error('DatagovukVisibilityToggle - Elements not found')
+      return
+    }
     this.$showTarget = document.querySelector("#" + this.$button.getAttribute("aria-controls"))
     this.showDisplayValue = this.getShowDisplayValue()
     this.$showTarget.style.display = "none";
