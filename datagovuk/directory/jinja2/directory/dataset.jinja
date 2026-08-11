@@ -8,7 +8,7 @@
 {% macro resource_row(resource, doc) %}
   <tr class="govuk-table__row">
     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--wrap govuk-body datagovuk-body">
-      <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name }}</a>
+      <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name or "Data" }}</a>
       {% if resource.size %}({{ resource.size|format_file_size }}){% endif %}
     </td>
     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
