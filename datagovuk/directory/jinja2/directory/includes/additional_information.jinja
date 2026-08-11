@@ -11,16 +11,7 @@
 
 <section class="govuk-!-margin-bottom-8 additional-information">
   <h2 class="govuk-heading-m datagovuk-heading-m">Additional information</h2>
-  {{ govukButton({
-    "text": "View additional information",
-    "type": "button",
-    "classes": "datagovuk-button  datagovuk-button--secondary datagovuk-visibility-toggle govuk-!-margin-top-4",
-    "attributes": {
-      "aria-controls": "additional-information",
-      "data-hide-text": "Hide additional information"
-    }
-  }) }}
-  <dl class="govuk-summary-list govuk-!-margin-top-4">
+  <dl id="additional-information" class="govuk-summary-list govuk-!-margin-top-4">
     {% if additional_information['harvest_object_id'] %}
       <div class="govuk-summary-list__row">
         <dt class="govuk-body datagovuk-body govuk-summary-list__key">Source Metadata</dt>
@@ -89,4 +80,13 @@
 
     {{ dataset_additional_information('Metadata language', additional_information['metadata-language']) }}
   </dl>
+  {{ govukButton({
+    "text": "View additional information",
+    "type": "button",
+    "classes": "datagovuk-button  datagovuk-button--secondary datagovuk-visibility-toggle govuk-!-margin-top-4",
+    "attributes": {
+      "aria-controls": "additional-information",
+      "data-hide-text": "Hide additional information"
+    }
+  }) }}
 </section>
