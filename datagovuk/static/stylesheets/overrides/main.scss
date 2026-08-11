@@ -133,6 +133,11 @@
 .datagovuk-button--secondary {
   background-color: $datagovuk-light-grey;
   color: $datagovuk-black;
+
+  &:hover {
+    background-color: $datagovuk-grey;
+    color: $datagovuk-white;
+  }
 }
 
 .datagovuk-list {
