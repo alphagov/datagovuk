@@ -5,6 +5,8 @@ class DatagovukLineClampToggle {
       console.error('DatagovukLineClampToggle - Elements not found')
       return
     }
+    this.showText = this.$button.textContent
+    this.hideText = this.$button.getAttribute("data-hide-text") || "Hide"
     this.$showTarget = document.querySelector("#" + this.$button.getAttribute("aria-controls"))
     this.clampClass = "datagovuk-line-clamp"
     this.$showTarget.classList.add(this.clampClass)
@@ -24,11 +26,11 @@ class DatagovukLineClampToggle {
     if (isExpanded) {
       this.$showTarget.classList.add(this.clampClass)
       this.$button.setAttribute("aria-expanded", "false")
-      this.$button.textContent = "Show more"
+      this.$button.textContent = this.showText
     } else {
       this.$showTarget.classList.remove(this.clampClass)
       this.$button.setAttribute("aria-expanded", "true")
-      this.$button.textContent = "Show less"
+      this.$button.textContent = this.hideText
     }
   }
 }

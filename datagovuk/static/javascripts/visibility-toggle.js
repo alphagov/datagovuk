@@ -5,6 +5,8 @@ class DatagovukVisibilityToggle {
       console.error('DatagovukVisibilityToggle - Elements not found')
       return
     }
+    this.showText = this.$button.textContent
+    this.hideText = this.$button.getAttribute("data-hide-text") || "Hide"
     this.$showTarget = document.querySelector("#" + this.$button.getAttribute("aria-controls"))
     this.showDisplayValue = this.getShowDisplayValue()
     this.$showTarget.style.display = "none";
@@ -23,12 +25,12 @@ class DatagovukVisibilityToggle {
     if (this.$button.getAttribute("aria-expanded") == "false") {
       this.$showTarget.style.display = this.showDisplayValue
       this.$button.setAttribute("aria-expanded", "true")
-      this.$button.textContent = "Show less"
+      this.$button.textContent = this.hideText
     }
     else {
       this.$showTarget.style.display = "none"
       this.$button.setAttribute("aria-expanded", "false")
-      this.$button.textContent = "Show more"
+      this.$button.textContent = this.showText
     }
   }
 }

@@ -81,11 +81,12 @@
           {{ doc.summary|sanitize_html|html_to_markdown|markdown_to_html }}
         </div>
         {{ govukButton({
-          "text": "Show more",
+          "text": "View full summary",
           "type": "button",
           "classes": "datagovuk-button datagovuk-button--secondary datagovuk-line-clamp-toggle govuk-!-margin-top-6",
           "attributes": {
-            "aria-controls": "summary"
+            "aria-controls": "summary",
+            "data-hide-text": "Hide full summary"
           }
         }) }}
       </section>
@@ -149,7 +150,8 @@
               "type": "button",
               "classes": "datagovuk-button datagovuk-button--secondary datagovuk-visibility-toggle govuk-!-margin-top-6",
               "attributes": {
-                "aria-controls": "truncated-resources-rest"
+                "aria-controls": "truncated-resources-rest",
+                "data-hide-text": "Show less"
               }
             }) }}
           {% endif %}
