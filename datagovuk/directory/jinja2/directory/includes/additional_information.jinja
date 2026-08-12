@@ -12,22 +12,20 @@
 <section class="govuk-!-margin-bottom-8 additional-information">
   <h2 class="govuk-heading-m datagovuk-heading-m">Additional information</h2>
   <dl class="govuk-summary-list govuk-!-margin-top-4">
-    {% if additional_information['metadata-date'] %}
-      {{ dataset_additional_information('Date added', additional_information['metadata-date'] | date("d F Y") ) }}
-    {% endif %}
-
-    {% if additional_information['access_constraints'] %}
+    {% if additional_information['harvest_object_id'] %}
       <div class="govuk-summary-list__row">
-        <dt class="govuk-body datagovuk-body govuk-summary-list__key">Access constraints</dt>
-        {% set constraints = additional_information['access_constraints'] %}
+        <dt class="govuk-body datagovuk-body govuk-summary-list__key">Source Metadata</dt>
         <dd class="govuk-body datagovuk-body govuk-summary-list__value">
-          {% if constraints is string %}
-            {{ constraints }}
-          {% else %}
-            {{ constraints | first | default("Not specified", true) }}
-          {% endif %}
+          <a href="/api/2/rest/harvestobject/{{ additional_information['harvest_object_id'] }}/xml"
+             class="govuk-link datagovuk-link--secondary">XML</a>,
+          <a href="/api/2/rest/harvestobject/{{ additional_information['harvest_object_id'] }}/html"
+             class="govuk-link datagovuk-link--secondary">HTML</a>
         </dd>
       </div>
+    {% endif %}
+
+    {% if additional_information['metadata-date'] %}
+      {{ dataset_additional_information('Date added', additional_information['metadata-date'] | date("d F Y") ) }}
     {% endif %}
 
     {{ dataset_additional_information('Harvest GUID', additional_information['guid']) }}
@@ -62,22 +60,24 @@
 
     {{ dataset_additional_information('Frequency of update', additional_information['frequency-of-update']) }}
 
+    {% if additional_information['access_constraints'] %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-body datagovuk-body govuk-summary-list__key">Access constraints</dt>
+        {% set constraints = additional_information['access_constraints'] %}
+        <dd class="govuk-body datagovuk-body govuk-summary-list__value">
+          {% if constraints is string %}
+            {{ constraints }}
+          {% else %}
+            {{ constraints | first | default("Not specified", true) }}
+          {% endif %}
+        </dd>
+      </div>
+    {% endif %}
+
     {{ dataset_additional_information('Responsible party', additional_information['responsible-party']) }}
 
     {{ dataset_additional_information('ISO 19139 resource type', additional_information['resource-type']) }}
 
     {{ dataset_additional_information('Metadata language', additional_information['metadata-language']) }}
-
-    {% if additional_information['harvest_object_id'] %}
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-body datagovuk-body govuk-summary-list__key">Source Metadata</dt>
-        <dd class="govuk-body datagovuk-body govuk-summary-list__value">
-          <a href="/api/2/rest/harvestobject/{{ additional_information['harvest_object_id'] }}/xml"
-             class="govuk-link datagovuk-link--secondary">XML</a>,
-          <a href="/api/2/rest/harvestobject/{{ additional_information['harvest_object_id'] }}/html"
-             class="govuk-link datagovuk-link--secondary">HTML</a>
-        </dd>
-      </div>
-    {% endif %}
   </dl>
 </section>
