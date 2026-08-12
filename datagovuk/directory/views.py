@@ -10,7 +10,6 @@ from .constants import FORMATS_BY_FORMAT_VALUE, TOPICS_BY_SOLR_ALIAS, FormatChoi
 from .forms import SearchForm
 from .preview_utils import fetch_csv
 from .solr import (
-    SolrDatafile,
     SolrDataset,
     get_dataset_by_legacy_name,
     get_document,
@@ -193,7 +192,7 @@ class PreviewView(TemplateView):
         resource_uuid = str(self.kwargs["datafile_uuid"])
         datafile = next((f for f in dataset.datafiles if f.uuid == resource_uuid), None)
         if datafile is None:
-            raise SolrDatafile.DatafileNotFoundError
+            raise Http404
         return datafile
 
 

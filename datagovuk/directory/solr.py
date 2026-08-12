@@ -262,9 +262,6 @@ class SolrDatafile:
     def preview(self):
         return self.get_preview()
 
-    class DatafileNotFoundError(Exception):
-        pass
-
 
 @dataclass
 class SolrDataset:
