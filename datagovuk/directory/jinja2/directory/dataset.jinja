@@ -38,9 +38,13 @@
     <div class="govuk-grid-column-two-thirds">
       {% set licence_html %}
         {% if doc.licence_title and doc.licence_url %}
-          <a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link">{{ doc.licence_title }}</a>
+          <a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link" rel="dc:rights">{{ doc.licence_title }}</a>
         {% elif doc.licence_title %}
           {{ doc.licence_title }}
+        {% elif doc.licence_custom %}
+          Other licence
+          <br />
+          <a href="#licence-information" class="govuk-link datagovuk-link">View licence information</a>
         {% else %}
           Not set
         {% endif %}
@@ -219,6 +223,22 @@
           {% endif %}
         </section>
       {% endif %}
+
+      {% if doc.licence_custom %}
+        <section class="licence-information">
+          <h2 id="licence-information" class="govuk-heading-m datagovuk-heading-m">Licence information</h2>
+          <div class="govuk-!-margin-bottom-2 govuk-body datagovuk-body">
+            {#
+              licence_custom is supplied by publishers and can contain a mixture of markdown
+              and HTML.
+              Firstly sanitize the string according to our list of allowed HTML tags/attributes.
+              Next, convert the html to markdown and use datagovuk's markdown renderer to get the right styles.
+            #}
+            {{ doc.licence_custom|sanitize_html|html_to_markdown|markdown_to_html }}
+          </div>
+        </section>
+      {% endif %}
+
       {% if not doc.harvested %}
         <section class="edit">
           <h2 class="govuk-heading-m datagovuk-heading-m">Edit this dataset</h2>
