@@ -166,7 +166,7 @@
               <a href="{{ 'mailto:' ~ doc.contact_email if contact_email_is_email else doc.contact_email }}"
                  class="govuk-link datagovuk-link datagovuk-link--secondary"
                  data-ga-event="contact"
-                 data-ga-publisher="{{ pub }}">{{ doc.contact_email if contact_email_is_email else "Contact " ~ doc.organisation.title ~ " regarding this dataset" }}</a>
+                 data-ga-publisher="{{ pub }}">{{ doc.contact_email if contact_email_is_email else "Enquiries" }}</a>
             </p>
           {% endif %}
 
@@ -176,7 +176,7 @@
               <a href="{{ 'mailto:' ~ doc.foi_email if foi_email_is_email else doc.foi_email }}"
                  class="govuk-link datagovuk-link datagovuk-link--secondary"
                  data-ga-event="contact"
-                 data-ga-publisher="{{ pub }}">{{ doc.foi_email if foi_email_is_email else "Contact " ~ doc.organisation.title ~ " regarding Freedom of Information requests" }}</a>
+                 data-ga-publisher="{{ pub }}">{{ doc.foi_email if foi_email_is_email else "Freedom of Information (FOI) requests" }}</a>
             </p>
           {% endif %}
 
@@ -185,7 +185,7 @@
               <a href="{{ doc.foi_web }}"
                  class="govuk-link datagovuk-link datagovuk-link--secondary"
                  data-ga-event="contact"
-                 data-ga-publisher="{{ pub }}">Make a Freedom of Information request online</a>
+                 data-ga-publisher="{{ pub }}">Freedom of Information (FOI) requests</a>
             </p>
           {% endif %}
         </section>
