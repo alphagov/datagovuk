@@ -197,34 +197,33 @@
         <section class="contact govuk-!-margin-bottom-8">
           <h2 class="govuk-heading-m datagovuk-heading-m">Contact</h2>
 
+          {% set contact_email_is_email = "@" in doc.contact_email %}
           {% if doc.contact_email %}
-            <h3 class="govuk-body datagovuk-body">Enquiries</h3>
             <p class="govuk-body datagovuk-body">
-              <a href="{{ 'mailto:' ~ doc.contact_email }}"
+              <a href="{{ 'mailto:' ~ doc.contact_email if contact_email_is_email else doc.contact_email }}"
                  class="govuk-link datagovuk-link datagovuk-link--secondary"
                  data-ga-event="contact"
-                 data-ga-publisher="{{ pub }}">{{ doc.contact_email }}</a>
+                 data-ga-publisher="{{ pub }}">{{ doc.contact_email if contact_email_is_email else "Contact " ~ doc.organisation.title ~ " regarding this dataset" }}</a>
             </p>
           {% endif %}
 
-          {% if doc.foi_email or doc.foi_web %}
-            <h3 class="govuk-body datagovuk-body">FOI requests</h3>
-            {% if doc.foi_email %}
-              <p class="govuk-body datagovuk-body govuk-!-margin-bottom-1">
-                <a href="{{ 'mailto:' ~ doc.foi_email }}"
-                   class="govuk-link datagovuk-link datagovuk-link--secondary"
-                   data-ga-event="contact"
-                   data-ga-publisher="{{ pub }}">{{ doc.foi_email }}</a>
-              </p>
-            {% endif %}
-            {% if doc.foi_web %}
-              <p class="govuk-body datagovuk-body">
-                <a href="{{ doc.foi_web }}"
-                   class="govuk-link datagovuk-link datagovuk-link--secondary"
-                   data-ga-event="contact"
-                   data-ga-publisher="{{ pub }}">Make a Freedom of Information request online</a>
-              </p>
-            {% endif %}
+          {% set foi_email_is_email = "@" in doc.foi_email %}
+          {% if doc.foi_email %}
+            <p class="govuk-body datagovuk-body">
+              <a href="{{ 'mailto:' ~ doc.foi_email if foi_email_is_email else doc.foi_email }}"
+                 class="govuk-link datagovuk-link datagovuk-link--secondary"
+                 data-ga-event="contact"
+                 data-ga-publisher="{{ pub }}">{{ doc.foi_email if foi_email_is_email else "Contact " ~ doc.organisation.title ~ " regarding Freedom of Information requests" }}</a>
+            </p>
+          {% endif %}
+
+          {% if doc.foi_web %}
+            <p class="govuk-body datagovuk-body">
+              <a href="{{ doc.foi_web }}"
+                 class="govuk-link datagovuk-link datagovuk-link--secondary"
+                 data-ga-event="contact"
+                 data-ga-publisher="{{ pub }}">Make a Freedom of Information request online</a>
+            </p>
           {% endif %}
         </section>
       {% endif %}
