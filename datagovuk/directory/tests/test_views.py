@@ -7,11 +7,6 @@ from django.http import HttpResponseNotFound, HttpResponsePermanentRedirect
 from django.urls import NoReverseMatch, reverse
 
 
-@pytest.fixture(autouse=True)
-def directory_feature_flag(settings):
-    settings.FEATURE_FLAGS_ENABLED = [settings.FEATURE_FLAGS.SOLR_SEARCH.value]
-
-
 @pytest.fixture
 def mock_solr_results_factory():
     """
@@ -207,11 +202,6 @@ class TestSearchView:
         expected_ids = [matching_document["id"]]
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
-
-    def test_search_view_returns_404_if_feature_flag_not_enabled(self, client, settings, search_url):
-        settings.FEATURE_FLAGS_ENABLED = []
-        response = client.get(search_url, {"q": "multi"})
-        assert response.status_code == HTTPStatus.NOT_FOUND
 
     def test_search_view_returns_error_if_form_invalid(self, client, search_url):
         response = client.get(search_url, {"q": "multi" * 200})
@@ -493,13 +483,6 @@ class TestDatasetView:
 
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "active-dataset"})
         client.get(url)
-
-    def test_dataset_view_returns_404_if_feature_flag_not_enabled(self, client, settings):
-        settings.FEATURE_FLAGS_ENABLED = []
-        test_uuid = "550e8400-e29b-41d4-a716-446655440002"
-        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "active-dataset"})
-        response = client.get(url)
-        assert response.status_code == HTTPStatus.NOT_FOUND
 
     def test_csv_resource_shows_preview_link(self, client, solr_doc_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440003"
