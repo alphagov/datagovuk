@@ -6,7 +6,6 @@ import pytest
 from django.http import Http404
 from django.urls import reverse
 
-from datagovuk.directory.solr import SolrDatafile
 from datagovuk.directory.views import PreviewView
 
 HTTP_OK = 200
@@ -116,7 +115,7 @@ class TestPreviewView:
         mock_solr.return_value.search.return_value.docs = [make_solr_doc()]
         wrong_uuid = str(uuid.uuid4())
 
-        with pytest.raises(SolrDatafile.DatafileNotFoundError):
+        with pytest.raises(Http404):
             call_view(rf, datafile_uuid=wrong_uuid)
 
     @patch("datagovuk.directory.views.fetch_csv")
