@@ -358,6 +358,7 @@ class SolrDataset:
                 docs.append(SolrSupportingDocument.from_resource(resource))
             else:
                 datafiles.append(SolrDatafile.from_resource(resource, dataset_created_at))
+        datafiles.sort(reverse=True, key=lambda item: item.created_at)
 
         topic = doc.get("extras_theme-primary", "") or ""
         if topic:
