@@ -1,10 +1,4 @@
-import pytest
 from playwright.sync_api import expect
-
-
-@pytest.fixture(autouse=True)
-def enable_solr_feature_flag(settings):
-    settings.FEATURE_FLAGS_ENABLED = ["solr-search"]
 
 
 def test_directory_header_publish_your_data_links_to_publishers_page(page, live_server_url):

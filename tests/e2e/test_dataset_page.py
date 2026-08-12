@@ -6,11 +6,6 @@ DATASET_UUID = "e3c7ffd4-4187-46fd-a590-99e2af539058"
 DATASET_SLUG = "household-waste-recycling-centres"
 
 
-@pytest.fixture(autouse=True)
-def enable_solr_feature_flag(settings):
-    settings.FEATURE_FLAGS_ENABLED = ["solr-search"]
-
-
 @pytest.fixture
 def dataset_url():
     return reverse("directory:dataset", kwargs={"uuid": DATASET_UUID, "slug": DATASET_SLUG})
