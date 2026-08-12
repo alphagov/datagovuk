@@ -133,6 +133,15 @@
       </section>
     </div>
   </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <section class="govuk-!-margin-bottom-8">
+        {% with dataset=true %}
+          {% include "includes/feedback.jinja" %}
+        {% endwith %}
+      </section>
+    </div>
+  </div>
   {% if doc.additional_information %}
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
