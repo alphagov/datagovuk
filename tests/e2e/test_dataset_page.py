@@ -41,3 +41,16 @@ class TestDatasetPage:
         page.goto(live_server_url + dataset_url)
         rows = page.locator("tbody tr.govuk-table__row")
         expect(rows.first.locator("td.govuk-table__cell.datagovuk-table__cell")).to_have_count(4)
+
+    def test_feedback_shows_dataset_specific_text(self, page, live_server_url, dataset_url):
+        page.goto(live_server_url + dataset_url)
+        feedback = page.locator(".datagovuk-feedback-inset-text")
+        expect(feedback).to_contain_text("Is this data/dataset useful?")
+
+    def test_feedback_link(self, page, live_server_url, dataset_url):
+        page.goto(live_server_url + dataset_url)
+        feedback = page.locator(".datagovuk-feedback-inset-text")
+        expect(feedback.get_by_role("link", name="Give us feedback")).to_have_attribute(
+            "href",
+            "https://forms.office.com/e/9V26PNFQaR",
+        )
