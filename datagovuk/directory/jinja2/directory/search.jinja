@@ -97,7 +97,7 @@
                   <div class="datagovuk-search-results__item-label datagovuk-search-results__item--icon datagovuk-search-results__item--icon-updated">
                     Updated
                   </div>
-                  <div class="datagovuk-search-results__item-value">{{ doc.public_updated_at|date("d F Y") }}</div>
+                  <div class="datagovuk-search-results__item-value">{{ doc.public_updated_at|date("j n Y") }}</div>
                 </div>
                 <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.summary | striptags | truncate(200) }}</div>
               </li>
