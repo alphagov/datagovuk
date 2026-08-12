@@ -1,13 +1,13 @@
 class DatagovukLineClampToggle {
   constructor($button) {
     this.$button = $button
-    if (!this.$button) {
-      console.error('DatagovukLineClampToggle - Elements not found')
-      return
-    }
     this.showText = this.$button.textContent
     this.hideText = this.$button.getAttribute("data-hide-text") || "Hide"
     this.$showTarget = document.querySelector("#" + this.$button.getAttribute("aria-controls"))
+    if (!this.$showTarget) {
+      console.error('DatagovukLineClampToggle - Elements not found')
+      return
+    }
     this.clampClass = "datagovuk-line-clamp"
     this.$showTarget.classList.add(this.clampClass)
 
