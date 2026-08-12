@@ -19,7 +19,6 @@ def override_solr_settings(solr_url, settings):
     Overrides Django settings for all tests to point to the temporary container.
     """
     settings.SOLR_URL = solr_url
-    settings.FEATURE_FLAGS_ENABLED = [settings.FEATURE_FLAGS.SOLR_SEARCH.value]
 
 
 @pytest.fixture
