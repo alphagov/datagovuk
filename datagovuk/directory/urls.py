@@ -24,12 +24,12 @@ urlpatterns = [
         name="preview",
     ),
     path(
-        "dataset/<str:legacy_dataset_name>/",
+        "dataset/<str:legacy_dataset_name>",
         views.LegacyDatasetRedirectView.as_view(),
         name="legacy_dataset",
     ),
     path(
-        "dataset/<str:legacy_dataset_name>/resource/<str:datafile_uuid>/",
+        "dataset/<str:legacy_dataset_name>/resource/<str:datafile_uuid>",
         views.LegacyDatafileRedirectView.as_view(),
         name="legacy_datafile",
     ),
