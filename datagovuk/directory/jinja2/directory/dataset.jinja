@@ -31,7 +31,8 @@
 {% block search_main %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <h1 class="govuk-heading-xl datagovuk-heading-xl govuk-!-margin-bottom-4">{{ doc.title }}</h1>
+      {% set title_class = "datagovuk-heading-xl--small" if doc.title|length > 100 else "" %}
+      <h1 class="govuk-heading-xl datagovuk-heading-xl govuk-!-margin-bottom-6 {{ title_class }}">{{ doc.title }}</h1>
     </div>
   </div>
   <div class="govuk-grid-row">
@@ -73,7 +74,7 @@
       <section class="govuk-!-margin-bottom-8">
         <h2 class="govuk-heading-m datagovuk-heading-m">Summary</h2>
 
-        <div id="summary" class="govuk-!-margin-bottom-2 govuk-body datagovuk-body dataset-summary datagovuk-line-clamp">
+        <div id="summary" class="govuk-!-margin-bottom-2 govuk-body datagovuk-body datagovuk-dataset-summary datagovuk-line-clamp">
           {#
             Summary is supplied by publishers and can contain a mixture of markdown
             and HTML.
@@ -94,7 +95,7 @@
       </section>
     </div>
     <div class="govuk-grid-column-one-third">
-      <section class="more-from-publisher">
+      <section class="datagovuk-more-from-publisher">
         <div class="datagovuk-card">
           <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
           <p class="govuk-body datagovuk-body">
@@ -245,6 +246,19 @@
         </section>
       {% endif %}
 
+      <section class="datagovuk-more-from-publisher--mobile">
+        <div class="datagovuk-card govuk-!-margin-bottom-8">
+          <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
+          <p class="govuk-body datagovuk-body">
+            {# djlint:off #}
+                <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.title }}"
+                    class="govuk-link datagovuk-link datagovuk-link--secondary">
+                All datasets from {{ doc.organisation.title }}
+                </a>
+            {# djlint:on #}
+          </p>
+        </div>
+      </section>
       {% if not doc.harvested %}
         <section class="edit">
           <h2 class="govuk-heading-m datagovuk-heading-m">Edit this dataset</h2>
