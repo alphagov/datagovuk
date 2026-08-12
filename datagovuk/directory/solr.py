@@ -235,6 +235,10 @@ class SolrDatafile:
         last_modified = resource.get("last_modified")
         if last_modified:
             last_modified = datetime.fromisoformat(last_modified)
+        elif resource.get("created_at"):
+            last_modified = datetime.fromisoformat(resource["created_at"])
+        else:
+            last_modified = datetime.fromisoformat(dataset_created_at)
 
         return SolrDatafile(
             name=resource.get("name") or resource.get("description") or "",
