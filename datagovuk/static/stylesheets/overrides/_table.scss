@@ -50,3 +50,7 @@
     padding-right: 30px;
     padding-left: 10px;
 }
+
+.datagovuk-table tr:last-child .govuk-table__cell {
+    border-bottom: none;
+}
