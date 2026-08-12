@@ -119,5 +119,5 @@ class TestSupportingDocumentsTemplate:
     ):
         page.goto(live_server_url + dataset_url)
         supporting_table = page.locator(".supporting-documents .datagovuk-table-container")
-        expect(supporting_table.get_by_text("15/01/2024")).to_be_visible()
-        expect(supporting_table.get_by_text("01/11/2023")).to_be_visible()
+        expect(supporting_table.get_by_text("15/1/2024")).to_be_visible()
+        expect(supporting_table.get_by_text("1/11/2023")).to_be_visible()
