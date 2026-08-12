@@ -4,9 +4,16 @@ from unittest.mock import MagicMock
 from datagovuk.core.utils import build_table_data, capture_exception, is_numeric
 
 
-def test_capture_exception_no_sentry(caplog):
+def test_capture_exception_sentry_not_initialised(caplog):
     with caplog.at_level(logging.DEBUG):
         capture_exception(NotImplementedError("My exception"))
+    log_record = caplog.records[-1]
+    assert log_record.message == "My exception"
+
+
+def test_capture_exception_sentry_suppressed(caplog):
+    with caplog.at_level(logging.DEBUG):
+        capture_exception(NotImplementedError("My exception"), send_to_sentry=False)
     log_record = caplog.records[-1]
     assert log_record.message == "My exception"
 
