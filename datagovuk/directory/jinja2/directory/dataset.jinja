@@ -23,7 +23,7 @@
       {% endif %}
     </td>
     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-      {{ resource.last_modified|date("d/m/Y") }}
+      {{ resource.last_modified|date("j/n/Y") }}
     </td>
   </tr>
 {% endmacro %}
@@ -53,8 +53,8 @@
             "value": {"text": doc.organisation.title},
           },
           {
-            "key": {"text": "Last updated"},
-            "value": {"text": doc.public_updated_at|date("d F Y")},
+            "key": {"text": "Updated"},
+            "value": {"text": doc.public_updated_at|date("j F Y")},
           },
           {
             "key": {"text": "Topic"},
@@ -129,7 +129,7 @@
                   </th>
                   <th scope="col"
                       class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
-                    Last updated
+                    Updated
                   </th>
                 </tr>
               </thead>
