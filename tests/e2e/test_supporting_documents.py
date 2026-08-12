@@ -16,11 +16,6 @@ DATASET_UUID = str(uuid.uuid4())
 DATASET_SLUG = "test-supporting-documents-dataset"
 
 
-@pytest.fixture(autouse=True)
-def enable_solr_feature_flag(settings):
-    settings.FEATURE_FLAGS_ENABLED = ["solr-search"]
-
-
 @pytest.fixture
 def solr(settings):
     client = pysolr.Solr(settings.SOLR_URL, always_commit=True)

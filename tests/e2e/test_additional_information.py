@@ -15,12 +15,6 @@ DATASET_SLUG = "test-additional-information-dataset"
 SOLR_URL = os.getenv("SOLR_URL", "http://localhost:8984/solr/ckan-test")
 
 
-@pytest.fixture(autouse=True)
-def enable_solr_feature_flag(settings):
-    settings.FEATURE_FLAGS_ENABLED = ["solr-search"]
-    settings.SOLR_URL = SOLR_URL
-
-
 @pytest.fixture
 def solr():
     client = pysolr.Solr(SOLR_URL, always_commit=True)

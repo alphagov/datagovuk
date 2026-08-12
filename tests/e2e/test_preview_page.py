@@ -7,11 +7,6 @@ DATASET_SLUG = "nhs-england-clinical-commissiong-group-and-local-authority-infor
 DATAFILE_UUID = "160e549b-6016-4036-873a-1d8ef951eb8e"
 
 
-@pytest.fixture(autouse=True)
-def enable_solr_feature_flag(settings):
-    settings.FEATURE_FLAGS_ENABLED = ["solr-search"]
-
-
 @pytest.fixture
 def preview_url():
     return reverse(
