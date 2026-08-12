@@ -11,7 +11,7 @@ class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
     def link(self, text, url, title=None):
         return f'<a href="{url}" class="govuk-link datagovuk-link datagovuk-link--secondary">{text}</a>'
 
-    def heading(self, text, level):
+    def heading(self, text, level, **kwargs):
         valid_header_sizes = ["xl", "l", "m", "s"]
 
         start_size = "xl"
@@ -32,7 +32,7 @@ class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
     def block_quote(self, text):
         return f'<blockquote class="govuk-inset-text datagovuk-inset-text">{text}</blockquote>\n'
 
-    def list(self, text, ordered, depth=None):
+    def list(self, text, ordered, depth=None, **kwargs):
         if ordered:
             return f'<ol class="govuk-list govuk-list--number datagovuk-list datagovuk-body">{text}</ol>\n'
         return f'<ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body">{text}</ul>\n'
