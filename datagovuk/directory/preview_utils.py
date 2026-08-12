@@ -26,7 +26,7 @@ def fetch_raw_content(url: str):
         raw_content = raw_content.replace("\r\n", "\n").replace("\r", "\n")
         return raw_content.rpartition("\n")[0]
     except (requests.RequestException, UnicodeDecodeError) as e:
-        capture_exception(e)
+        capture_exception(e, send_to_sentry=False)
         return ""
 
 
