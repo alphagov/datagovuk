@@ -1,58 +1,8 @@
-import uuid
-
-import pysolr
 import pytest
 from django.urls import reverse
 from playwright.sync_api import expect
 
-from datagovuk.directory.tests.factories import (
-    SolrDocumentFactory,
-    SolrOrganisationFactory,
-    make_supporting_document,
-    make_validated_data_dict,
-)
-
-DATASET_UUID = str(uuid.uuid4())
-DATASET_SLUG = "test-supporting-documents-dataset"
-
-
-@pytest.fixture
-def solr(settings):
-    client = pysolr.Solr(settings.SOLR_URL, always_commit=True)
-    yield client
-    client.delete(q=f"id:{DATASET_UUID}")
-
-
-@pytest.fixture
-def dataset_with_supporting_docs(solr):
-    resources = [
-        make_supporting_document(
-            id=str(uuid.uuid4()),
-            name="Annual Report 2023",
-            url="https://example.com/annual-report-2023.pdf",
-            format="PDF",
-            metadata_modified="2024-01-15T00:00:00+00:00",
-        ),
-        make_supporting_document(
-            id=str(uuid.uuid4()),
-            name="Methodology Notes",
-            url="https://example.com/methodology.docx",
-            format="DOCX",
-            metadata_modified="2023-11-01T00:00:00+00:00",
-        ),
-    ]
-    doc = SolrDocumentFactory(
-        id=DATASET_UUID,
-        name=DATASET_SLUG,
-        title="Test Supporting Documents Dataset",
-        validated_data_dict=make_validated_data_dict(resources=resources),
-    )
-    organisation_doc = SolrOrganisationFactory(
-        title="Example Publisher 1",
-        name=doc["organization"],
-    )
-    solr.add([doc, organisation_doc])
-    return doc
+from datagovuk.directory.e2e_fixtures import DATASET_SLUG, DATASET_UUID
 
 
 @pytest.fixture
@@ -66,7 +16,6 @@ class TestSupportingDocumentsTemplate:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_supporting_docs,
     ):
         page.goto(live_server_url + dataset_url)
         supporting_table = page.locator(".supporting-documents .datagovuk-table-container")
@@ -80,7 +29,6 @@ class TestSupportingDocumentsTemplate:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_supporting_docs,
     ):
         page.goto(live_server_url + dataset_url)
         supporting_table = page.locator(".supporting-documents .datagovuk-table-container")
@@ -98,7 +46,6 @@ class TestSupportingDocumentsTemplate:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_supporting_docs,
     ):
         page.goto(live_server_url + dataset_url)
         supporting_table = page.locator(".supporting-documents .datagovuk-table-container")
@@ -110,7 +57,6 @@ class TestSupportingDocumentsTemplate:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_supporting_docs,
     ):
         page.goto(live_server_url + dataset_url)
         supporting_table = page.locator(".supporting-documents .datagovuk-table-container")
