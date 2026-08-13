@@ -70,6 +70,26 @@ def dataset_with_additional_information(solr_client):
             "created": datetime.now(UTC).isoformat(),
             "resource-type": "resource",
         },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Annual Report 2023",
+            "url": "https://example.com/annual-report-2023.pdf",
+            "format": "PDF",
+            "size": None,
+            "metadata_modified": "2024-01-15T00:00:00+00:00",
+            "created": datetime.now(UTC).isoformat(),
+            "resource-type": "supporting-document",
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Methodology Notes",
+            "url": "https://example.com/methodology.docx",
+            "format": "DOCX",
+            "size": None,
+            "metadata_modified": "2023-11-01T00:00:00+00:00",
+            "created": datetime.now(UTC).isoformat(),
+            "resource-type": "supporting-document",
+        },
     ]
     doc = create_solr_doc(
         solr_client,
