@@ -10,6 +10,7 @@ from .tests.factories import create_solr_doc
 DATASET_UUID = "0d94a8d6-a10b-4d6f-9c9e-2a38df9503d1"
 DATASET_UUID_NO_EXTRAS = "e6946d44-3090-4e3f-9dd2-4269f0da4f73"
 DATASET_SLUG = "test-additional-information-dataset"
+DATAFILE_UUID = "9667a107-91ef-424b-be74-f36d35e580d1"
 
 
 def dataset_with_additional_information(solr_client):
@@ -51,9 +52,19 @@ def dataset_with_additional_information(solr_client):
     resources = [
         {
             "id": str(uuid.uuid4()),
-            "name": "Supporting document",
+            "name": "Resource 1",
             "url": "https://example.com/doc.pdf",
             "format": "PDF",
+            "size": None,
+            "metadata_modified": datetime.now(UTC).isoformat(),
+            "created": datetime.now(UTC).isoformat(),
+            "resource-type": "resource",
+        },
+        {
+            "id": DATAFILE_UUID,
+            "name": "Resource 2",
+            "url": "https://example.com/doc.pdf",
+            "format": "CSV",
             "size": None,
             "metadata_modified": datetime.now(UTC).isoformat(),
             "created": datetime.now(UTC).isoformat(),
