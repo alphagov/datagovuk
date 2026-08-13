@@ -2,8 +2,7 @@ import pytest
 from django.urls import reverse
 from playwright.sync_api import expect
 
-DATASET_UUID = "e3c7ffd4-4187-46fd-a590-99e2af539058"
-DATASET_SLUG = "household-waste-recycling-centres"
+from datagovuk.directory.e2e_fixtures import DATASET_SLUG, DATASET_UUID
 
 
 @pytest.fixture

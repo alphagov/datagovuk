@@ -4,6 +4,8 @@ import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import sync_playwright
 
+from datagovuk.directory.e2e_fixtures import create_e2e_fixtures, delete_e2e_fixtures
+
 PLAYWRIGHT_HOST = os.getenv("PLAYWRIGHT_HOST", "127.0.0.1")
 DOCKER_HOSTNAME = "django"
 BASE_URL = os.getenv("BASE_URL")
@@ -24,6 +26,15 @@ def live_server_url(request, settings):
     server.host = "0.0.0.0"  # noqa: S104
     server.setUpClass()
     return server.live_server_url.replace("0.0.0.0", DOCKER_HOSTNAME)  # noqa: S104
+
+
+@pytest.fixture(scope="session", autouse=True)
+def setup_suite():
+    create_e2e_fixtures()
+
+    yield
+
+    delete_e2e_fixtures()
 
 
 @pytest.fixture(scope="session")
