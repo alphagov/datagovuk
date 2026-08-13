@@ -1,6 +1,3 @@
-import uuid
-from datetime import UTC, datetime
-
 import pysolr
 import pytest
 from django.core.cache import cache
@@ -32,20 +29,6 @@ def solr_client(solr_url):
     client.delete(q="*:*")
     yield client
     client.delete(q="*:*")
-
-
-def make_supporting_document(**kwargs):
-    defaults = {
-        "id": str(uuid.uuid4()),
-        "name": "Supporting document",
-        "url": "https://example.com/doc.pdf",
-        "format": "PDF",
-        "size": None,
-        "metadata_modified": datetime.now(UTC).isoformat(),
-        "created": datetime.now(UTC).isoformat(),
-        "resource-type": "supporting-document",
-    }
-    return {**defaults, **kwargs}
 
 
 @pytest.fixture
