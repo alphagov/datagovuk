@@ -5,7 +5,7 @@ import pytest
 from django.urls import reverse
 from playwright.sync_api import expect
 
-from datagovuk.directory.tests.conftest import (
+from datagovuk.directory.tests.factories import (
     SolrDocumentFactory,
     SolrOrganisationFactory,
     make_supporting_document,

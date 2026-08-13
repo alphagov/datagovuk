@@ -7,7 +7,7 @@ import pytest
 from django.urls import reverse
 from playwright.sync_api import expect
 
-from datagovuk.directory.tests.conftest import SolrDocumentFactory, make_validated_data_dict
+from datagovuk.directory.tests.factories import SolrDocumentFactory, make_validated_data_dict
 
 DATASET_UUID = str(uuid.uuid4())
 DATASET_UUID_NO_EXTRAS = str(uuid.uuid4())

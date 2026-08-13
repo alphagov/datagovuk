@@ -15,6 +15,20 @@ def make_validated_data_dict(resources=None, extras=None, organization_title="Ex
     )
 
 
+def make_supporting_document(**kwargs):
+    defaults = {
+        "id": str(uuid.uuid4()),
+        "name": "Supporting document",
+        "url": "https://example.com/doc.pdf",
+        "format": "PDF",
+        "size": None,
+        "metadata_modified": datetime.now(UTC).isoformat(),
+        "created": datetime.now(UTC).isoformat(),
+        "resource-type": "supporting-document",
+    }
+    return {**defaults, **kwargs}
+
+
 class SolrDocumentFactory(factory.DictFactory):
     id = factory.LazyFunction(lambda: str(uuid.uuid4()))
     name = factory.Sequence(lambda n: f"dataset-{n}")
