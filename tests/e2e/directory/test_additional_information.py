@@ -1,89 +1,13 @@
-import json
-import os
-import uuid
-
-import pysolr
 import pytest
 from django.urls import reverse
 from playwright.sync_api import expect
 
-from datagovuk.directory.tests.factories import SolrDocumentFactory, make_validated_data_dict
-
-DATASET_UUID = str(uuid.uuid4())
-DATASET_UUID_NO_EXTRAS = str(uuid.uuid4())
-DATASET_SLUG = "test-additional-information-dataset"
-SOLR_URL = os.getenv("SOLR_URL", "http://localhost:8984/solr/ckan-test")
-
-
-@pytest.fixture
-def solr():
-    client = pysolr.Solr(SOLR_URL, always_commit=True)
-    yield client
-    client.delete(q=f"id:{DATASET_UUID} OR id:{DATASET_UUID_NO_EXTRAS}")
+from datagovuk.directory.e2e_fixtures import DATASET_SLUG, DATASET_UUID, DATASET_UUID_NO_EXTRAS
 
 
 @pytest.fixture
 def dataset_url():
     return reverse("directory:dataset", kwargs={"uuid": DATASET_UUID, "slug": DATASET_SLUG})
-
-
-@pytest.fixture
-def dataset_with_additional_information(solr):
-    extras = [
-        {"key": "licence", "value": "ogl"},
-        {"key": "metadata-date", "value": "2024-06-01T00:00:00"},
-        {"key": "guid", "value": "a1b2c3d4-0000-0000-0000-000000000001"},
-        {"key": "frequency-of-update", "value": "annual"},
-        {"key": "metadata-language", "value": "eng"},
-        {"key": "spatial-reference-system", "value": "OSGB 1936 / Test"},
-        {"key": "responsible-party", "value": "Example Publisher (pointOfContact)"},
-        {"key": "access_constraints", "value": '["Available under the Open Government Licence v3.0"]'},
-        {
-            "key": "dataset-reference-date",
-            "value": json.dumps(
-                [{"type": "publication", "value": "2024-01-01"}, {"type": "revision", "value": "2024-06-01"}],
-            ),
-        },
-        {
-            "key": "bbox-north-lat",
-            "value": "51.686",
-        },
-        {
-            "key": "bbox-south-lat",
-            "value": "51.286",
-        },
-        {
-            "key": "bbox-west-long",
-            "value": "-0.510",
-        },
-        {
-            "key": "bbox-east-long",
-            "value": "-0.489",
-        },
-        {"key": "metadata-language", "value": "eng"},
-        {"key": "resource-type", "value": "dataset"},
-        {"key": "harvest_object_id", "value": "harvest-object-abc123"},
-    ]
-    doc = SolrDocumentFactory(
-        id=DATASET_UUID,
-        name=DATASET_SLUG,
-        title="Test Additional Information Dataset",
-        validated_data_dict=make_validated_data_dict(extras=extras),
-    )
-    solr.add([doc])
-    return doc
-
-
-@pytest.fixture
-def dataset_without_additional_information(solr):
-    doc = SolrDocumentFactory(
-        id=DATASET_UUID_NO_EXTRAS,
-        name=DATASET_SLUG,
-        title="Test No Additional Information Dataset",
-        validated_data_dict=make_validated_data_dict(),
-    )
-    solr.add([doc])
-    return doc
 
 
 @pytest.fixture
@@ -97,7 +21,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         expect(page.get_by_role("heading", level=2, name="Additional information")).to_be_visible()
@@ -107,7 +30,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url_no_extras,
-        dataset_without_additional_information,
     ):
         page.goto(live_server_url + dataset_url_no_extras)
         section = page.locator(".additional-information")
@@ -119,7 +41,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -132,7 +53,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -145,7 +65,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -158,7 +77,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -171,7 +89,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -184,7 +101,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -199,7 +115,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -212,7 +127,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -227,7 +141,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -240,7 +153,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -253,7 +165,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")
@@ -266,7 +177,6 @@ class TestAdditionalInformationSection:
         page,
         live_server_url,
         dataset_url,
-        dataset_with_additional_information,
     ):
         page.goto(live_server_url + dataset_url)
         section = page.locator(".additional-information")

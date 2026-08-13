@@ -7,7 +7,7 @@ from .factories import create_solr_doc
 
 @pytest.fixture
 def solr_url(settings):
-    return settings.SOLR_URL + "-test"
+    return settings.SOLR_URL
 
 
 @pytest.fixture(autouse=True)
