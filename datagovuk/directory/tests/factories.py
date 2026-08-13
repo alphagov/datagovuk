@@ -48,12 +48,30 @@ class SolrDocumentFactory(factory.DictFactory):
     license_id = ""
     topic = ""
     res_format = []
-    validated_data_dict = factory.LazyFunction(make_validated_data_dict)
 
     class Meta:
         rename = {
             "topic": "extras_theme-primary",
         }
+
+    class Params:
+        # These parameters won't appear in the dict output directly
+        resources = None
+        extras = None
+        organization_title = None
+
+    @factory.lazy_attribute
+    def validated_data_dict(self):
+        # Default organization title based on self.organization if not passed
+        org_title = self.organization_title or self.organization.replace("-", " ").title()
+
+        return json.dumps(
+            {
+                "organization": {"title": org_title},
+                "extras": self.extras if self.extras is not None else [],
+                "resources": self.resources if self.resources is not None else [],
+            },
+        )
 
 
 class SolrOrganisationFactory(factory.DictFactory):

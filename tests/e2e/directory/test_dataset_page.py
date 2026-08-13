@@ -13,7 +13,7 @@ def dataset_url():
 class TestDatasetPage:
     def test_heading_is_visible(self, page, live_server_url, dataset_url):
         page.goto(live_server_url + dataset_url)
-        expect(page.get_by_role("heading", level=1)).to_have_text("Household Waste Recycling Centres")
+        expect(page.get_by_role("heading", level=1)).to_have_text("Test Additional Information Dataset")
 
     def test_data_links_heading_present(self, page, live_server_url, dataset_url):
         page.goto(live_server_url + dataset_url)

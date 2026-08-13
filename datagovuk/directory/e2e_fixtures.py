@@ -1,9 +1,11 @@
 import json
+import uuid
+from datetime import UTC, datetime
 
 import pysolr
 from django.conf import settings
 
-from .tests.factories import create_solr_doc, make_validated_data_dict
+from .tests.factories import create_solr_doc
 
 DATASET_UUID = "0d94a8d6-a10b-4d6f-9c9e-2a38df9503d1"
 DATASET_UUID_NO_EXTRAS = "e6946d44-3090-4e3f-9dd2-4269f0da4f73"
@@ -46,12 +48,25 @@ def dataset_with_additional_information(solr_client):
         {"key": "resource-type", "value": "dataset"},
         {"key": "harvest_object_id", "value": "harvest-object-abc123"},
     ]
+    resources = [
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Supporting document",
+            "url": "https://example.com/doc.pdf",
+            "format": "PDF",
+            "size": None,
+            "metadata_modified": datetime.now(UTC).isoformat(),
+            "created": datetime.now(UTC).isoformat(),
+            "resource-type": "resource",
+        },
+    ]
     doc = create_solr_doc(
         solr_client,
         id=DATASET_UUID,
         name=DATASET_SLUG,
         title="Test Additional Information Dataset",
-        validated_data_dict=make_validated_data_dict(extras=extras),
+        extras=extras,
+        resources=resources,
     )
     return doc
 
@@ -62,7 +77,6 @@ def dataset_without_additional_information(solr_client):
         id=DATASET_UUID_NO_EXTRAS,
         name=DATASET_SLUG,
         title="Test No Additional Information Dataset",
-        validated_data_dict=make_validated_data_dict(),
     )
     return doc
 
