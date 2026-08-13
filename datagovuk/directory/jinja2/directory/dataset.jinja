@@ -28,13 +28,13 @@
   </tr>
 {% endmacro %}
 
-{% block meta_data %}
+{% block extra_head %}
   <meta name="dc:title" content="{{ doc.title }}" />
   <meta name="dc:publisher" content="{{ doc.organisation.title }}" />
   <meta name="dc:date" content="{{ doc.public_updated_at|date('Y-m-d') }}" />
 
   {% if doc.licence_title %}<meta name="dc:rights" content="{{ doc.licence_title }}" />{% endif %}
-{% endblock meta_data %}
+{% endblock extra_head %}
 
 {% block search_main %}
   <div class="govuk-grid-row">
