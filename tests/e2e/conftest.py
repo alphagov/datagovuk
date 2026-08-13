@@ -30,6 +30,11 @@ def live_server_url(request, settings):
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_suite():
+    if BASE_URL:
+        # Don't bother with any fixture creation if we are running E2E tests against
+        # a remote environment
+        return
+
     create_e2e_fixtures()
 
     yield
