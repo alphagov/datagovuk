@@ -21,7 +21,7 @@ class TestDatasetPage:
 
     def test_table_visible(self, page, live_server_url, dataset_url):
         page.goto(live_server_url + dataset_url)
-        expect(page.locator(".datagovuk-table-container")).to_be_visible()
+        expect(page.locator("#datagovuk-resources-table")).to_be_visible()
 
     def test_table_has_correct_column_headers(self, page, live_server_url, dataset_url):
         page.goto(live_server_url + dataset_url)
