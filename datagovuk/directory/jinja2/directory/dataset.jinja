@@ -30,7 +30,6 @@
 
 {% block meta_data %}
   <meta name="dc:title" content="{{ doc.title }}" />
-  {# changed this to publisher because creator could be someone else? #}
   <meta name="dc:publisher" content="{{ doc.organisation.title }}" />
   <meta name="dc:date" content="{{ doc.public_updated_at|date('Y-m-d') }}" />
 
