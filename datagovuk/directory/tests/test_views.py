@@ -608,7 +608,8 @@ class TestDatasetView:
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-name"})
         response = client.get(url)
 
-        assert '<meta name="dc:rights" content="{{ doc.licence_title }}"' not in response.rendered_content
+        assert 'name="dc:rights"' not in response.rendered_content
+        assert "Not set" in response.rendered_content
 
     def test_meta_data_where_license_url_not_provided(self, client, solr_doc_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440007"
@@ -627,11 +628,8 @@ class TestDatasetView:
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-name"})
         response = client.get(url)
 
-        licence_link = (
-            '<a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link"'
-            ' rel="dc:rights">{{ doc.licence_title }}</a>'
-        )
-        assert licence_link not in response.rendered_content
+        assert '<meta name="dc:rights" content="Licence title"' in response.rendered_content
+        assert 'rel="dc:rights"' not in response.rendered_content
 
     def test_meta_data_where_license_title_and_url_not_provided(self, client, solr_doc_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440008"
@@ -648,12 +646,9 @@ class TestDatasetView:
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-name"})
         response = client.get(url)
 
-        assert '<meta name="dc:rights" content="{{ doc.licence_title }}"' not in response.rendered_content
-        licence_link = (
-            '<a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link"'
-            ' rel="dc:rights">{{ doc.licence_title }}</a>'
-        )
-        assert licence_link not in response.rendered_content
+        assert 'name="dc:rights"' not in response.rendered_content
+        assert 'rel="dc:rights"' not in response.rendered_content
+        assert "Not set" in response.rendered_content
 
     def test_dataset_summary_has_metadata_dc_properties(self, client, solr_doc_factory):
         test_uuid = "550e8400-e29b-41d4-a716-446655440009"
