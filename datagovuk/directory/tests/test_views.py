@@ -567,6 +567,121 @@ class TestDatasetView:
 
         assert response.context_data["doc"].datafiles[0].is_csv is False
 
+    def test_meta_data_provided(self, client, solr_doc_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440005"
+        solr_doc_factory(
+            id=test_uuid,
+            name="dataset-name",
+            title="Dataset Title",
+            metadata_modified="2026-01-01T00:00:00Z",
+            validated_data_dict=json.dumps(
+                {
+                    "organization": {"title": "Test Org"},
+                    "resources": [],
+                    "license_title": "Licence title",
+                    "license_url": "https://example.com/license",
+                },
+            ),
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-name"})
+        response = client.get(url)
+
+        assert '<meta name="dc:title" content="Dataset Title"' in response.rendered_content
+        assert '<meta name="dc:publisher" content="Test Org"' in response.rendered_content
+        assert '<meta name="dc:date" content="2026-01-01"' in response.rendered_content
+        assert '<meta name="dc:rights" content="Licence title"' in response.rendered_content
+
+    def test_meta_data_where_license_title_not_provided(self, client, solr_doc_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440006"
+        solr_doc_factory(
+            id=test_uuid,
+            name="dataset-name",
+            validated_data_dict=json.dumps(
+                {
+                    "organization": {"title": "Test Org"},
+                    "resources": [],
+                },
+            ),
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-name"})
+        response = client.get(url)
+
+        assert '<meta name="dc:rights" content="{{ doc.licence_title }}"' not in response.rendered_content
+
+    def test_meta_data_where_license_url_not_provided(self, client, solr_doc_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440007"
+        solr_doc_factory(
+            id=test_uuid,
+            name="dataset-name",
+            validated_data_dict=json.dumps(
+                {
+                    "organization": {"title": "Test Org"},
+                    "resources": [],
+                    "license_title": "Licence title",
+                },
+            ),
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-name"})
+        response = client.get(url)
+
+        licence_link = (
+            '<a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link"'
+            ' rel="dc:rights">{{ doc.licence_title }}</a>'
+        )
+        assert licence_link not in response.rendered_content
+
+    def test_meta_data_where_license_title_and_url_not_provided(self, client, solr_doc_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440008"
+        solr_doc_factory(
+            id=test_uuid,
+            name="dataset-name",
+            validated_data_dict=json.dumps(
+                {
+                    "organization": {"title": "Test Org"},
+                },
+            ),
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-name"})
+        response = client.get(url)
+
+        assert '<meta name="dc:rights" content="{{ doc.licence_title }}"' not in response.rendered_content
+        licence_link = (
+            '<a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link"'
+            ' rel="dc:rights">{{ doc.licence_title }}</a>'
+        )
+        assert licence_link not in response.rendered_content
+
+    def test_dataset_summary_has_metadata_dc_properties(self, client, solr_doc_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440009"
+        solr_doc_factory(
+            id=test_uuid,
+            name="dataset-name",
+            metadata_modified="2026-01-01T00:00:00Z",
+            validated_data_dict=json.dumps(
+                {
+                    "organization": {"title": "Test Org"},
+                    "license_title": "Licence title",
+                    "license_url": "https://example.com/license",
+                },
+            ),
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-name"})
+        response = client.get(url)
+
+        assert '<span property="dc:publisher">Test Org</span>' in response.rendered_content
+        assert '<span property="dc:date">1 January 2026</span>' in response.rendered_content
+        assert '<span property="dc:rights">' in response.rendered_content
+        assert (
+            '<a href="https://example.com/license" class="govuk-link datagovuk-link" rel="dc:rights">Licence title</a>'
+            in response.rendered_content
+        )
+        assert 'property="dc:description"' in response.rendered_content
+
 
 class TestLegacyDatasetRedirectView:
     def test_legacy_dataset_redirect_view_redirects_to_directory(self, client, solr_doc_factory):

@@ -28,36 +28,56 @@
   </tr>
 {% endmacro %}
 
+{% block meta_data %}
+  <meta name="dc:title" content="{{ doc.title }}" />
+  {# changed this to publisher because creator could be someone else? #}
+  <meta name="dc:publisher" content="{{ doc.organisation.title }}" />
+  <meta name="dc:date" content="{{ doc.public_updated_at|date('Y-m-d') }}" />
+
+  {% if doc.licence_title %}<meta name="dc:rights" content="{{ doc.licence_title }}" />{% endif %}
+{% endblock meta_data %}
+
 {% block search_main %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       {% set title_class = "datagovuk-heading-xl--small" if doc.title|length > 100 else "" %}
-      <h1 class="govuk-heading-xl datagovuk-heading-xl govuk-!-margin-bottom-6 {{ title_class }}">{{ doc.title }}</h1>
+      <h1 class="govuk-heading-xl datagovuk-heading-xl govuk-!-margin-bottom-6 {{ title_class }}" property="dc:title">
+        {{ doc.title }}
+      </h1>
     </div>
   </div>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% set licence_html %}
-        {% if doc.licence_title and doc.licence_url %}
-          <a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link" rel="dc:rights">{{ doc.licence_title }}</a>
-        {% elif doc.licence_title %}
-          {{ doc.licence_title }}
-        {% elif doc.licence_custom %}
-          <a href="#licence-information" class="govuk-link datagovuk-link">View licence information</a>
-        {% else %}
-          Not set
-        {% endif %}
+        <span property="dc:rights">
+          {% if doc.licence_title and doc.licence_url %}
+            <a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link" rel="dc:rights">{{ doc.licence_title }}</a>
+          {% elif doc.licence_title %}
+            {{ doc.licence_title }}
+          {% elif doc.licence_custom %}
+            <a href="#licence-information" class="govuk-link datagovuk-link">View licence information</a>
+          {% else %}
+            Not set
+          {% endif %}
+        </span>
+      {% endset %}
+
+      {% set publisher_html %}
+        <span property="dc:publisher">{{ doc.organisation.title }}</span>
+      {% endset %}
+      {% set last_updated_html %}
+        <span property="dc:date">{{ doc.public_updated_at|date("j F Y") }}</span>
       {% endset %}
       {# djlint:off #}
       {{ govukSummaryList({
         "rows": [
           {
             "key": {"text": "Publisher"},
-            "value": {"text": doc.organisation.title},
+            "value": {"html": publisher_html},
           },
           {
             "key": {"text": "Updated"},
-            "value": {"text": doc.public_updated_at|date("j F Y")},
+            "value": {"html": last_updated_html},
           },
           {
             "key": {"text": "Topic"},
@@ -74,7 +94,9 @@
       <section class="govuk-!-margin-bottom-8">
         <h2 class="govuk-heading-m datagovuk-heading-m">Summary</h2>
 
-        <div id="summary" class="govuk-!-margin-bottom-2 govuk-body datagovuk-body datagovuk-dataset-summary datagovuk-line-clamp">
+        <div id="summary"
+             class="govuk-!-margin-bottom-2 govuk-body datagovuk-body datagovuk-dataset-summary datagovuk-line-clamp"
+             property="dc:description">
           {#
             Summary is supplied by publishers and can contain a mixture of markdown
             and HTML.
