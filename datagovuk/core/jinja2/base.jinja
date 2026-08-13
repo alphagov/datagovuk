@@ -2,6 +2,10 @@
 <html lang="en" class="govuk-template datagovuk-template">
   <head>
     <meta charset="utf-8" />
+
+    {% block extra_head %}
+    {% endblock extra_head %}
+
     <title>
       {% block page_title %}
         {{ page_title }} - National Data Library
