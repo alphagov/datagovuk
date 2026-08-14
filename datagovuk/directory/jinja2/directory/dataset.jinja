@@ -217,7 +217,6 @@
     <div class="govuk-grid-column-two-thirds">
 
       {% if doc.contact_email or doc.foi_email or doc.foi_web %}
-        {% set pub = doc.organisation.name %}
         <section class="contact govuk-!-margin-bottom-8">
           <h2 class="govuk-heading-m datagovuk-heading-m">Contact</h2>
 
@@ -226,9 +225,7 @@
             <h3 class="govuk-heading-s datagovuk-heading-s">Enquiries</h3>
             <p class="govuk-body datagovuk-body">
               <a href="{{ 'mailto:' ~ doc.contact_email if contact_email_is_email else doc.contact_email }}"
-                 class="govuk-link datagovuk-link datagovuk-link--secondary"
-                 data-ga-event="contact"
-                 data-ga-publisher="{{ pub }}">{{ doc.contact_email if contact_email_is_email else "Enquiries" }}</a>
+                 class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.contact_email if contact_email_is_email else "Enquiries" }}</a>
             </p>
           {% endif %}
 
@@ -238,18 +235,13 @@
             {% if doc.foi_email %}
               <p class="govuk-body datagovuk-body">
                 <a href="{{ 'mailto:' ~ doc.foi_email if foi_email_is_email else doc.foi_email }}"
-                   class="govuk-link datagovuk-link datagovuk-link--secondary"
-                   data-ga-event="contact"
-                   data-ga-publisher="{{ pub }}">{{ doc.foi_email if foi_email_is_email else "Freedom of Information (FOI) requests" }}</a>
+                   class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.foi_email if foi_email_is_email else "Freedom of Information (FOI) requests" }}</a>
               </p>
             {% endif %}
 
             {% if doc.foi_web %}
               <p class="govuk-body datagovuk-body">
-                <a href="{{ doc.foi_web }}"
-                   class="govuk-link datagovuk-link datagovuk-link--secondary"
-                   data-ga-event="contact"
-                   data-ga-publisher="{{ pub }}">Freedom of Information (FOI) requests</a>
+                <a href="{{ doc.foi_web }}" class="govuk-link datagovuk-link datagovuk-link--secondary">Freedom of Information (FOI) requests</a>
               </p>
             {% endif %}
           {% endif %}

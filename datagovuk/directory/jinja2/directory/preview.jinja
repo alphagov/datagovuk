@@ -18,11 +18,7 @@
           You're previewing the first {{ preview_rows }} rows of this file.
         </p>
 
-        <a href="{{ datafile.url }}"
-           class="govuk-button datagovuk-button govuk-!-margin-bottom-8"
-           data-ga-event="preview-download"
-           data-ga-format="CSV"
-           data-ga-publisher="{{ dataset.organisation_name }}">
+        <a href="{{ datafile.url }}" class="govuk-button datagovuk-button govuk-!-margin-bottom-8">
           <div class="datagovuk-button__content">
             Download CSV
             <img src="{{ static('images/download.svg') }}" alt="Download" />
