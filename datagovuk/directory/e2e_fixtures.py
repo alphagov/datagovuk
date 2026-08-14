@@ -6,15 +6,12 @@ import pysolr
 from django.conf import settings
 from django.core.cache import cache
 
-from .tests.factories import create_solr_doc
+from .tests.factories import E2E_ORGANISATION_SLUG, E2E_ORGANISATION_SLUG_2, create_solr_doc
 
 DATASET_UUID = "0d94a8d6-a10b-4d6f-9c9e-2a38df9503d1"
 DATASET_UUID_NO_EXTRAS = "e6946d44-3090-4e3f-9dd2-4269f0da4f73"
 DATASET_SLUG = "test-additional-information-dataset"
 DATAFILE_UUID = "9667a107-91ef-424b-be74-f36d35e580d1"
-
-E2E_ORGANISATION_ID = "e2e-publisher-1"
-E2E_ORGANISATION_ID_2 = "e2e-publisher-2"
 
 
 def dataset_with_additional_information(solr_client):
@@ -132,7 +129,7 @@ def search_datasets(solr_client):
         solr_client,
         name="search-dataset-publisher",
         title="DGUK E2E Search dataset publisher",
-        organization=E2E_ORGANISATION_ID_2,
+        organization=E2E_ORGANISATION_SLUG_2,
     )
     create_solr_doc(
         solr_client,
@@ -166,5 +163,6 @@ def create_e2e_fixtures():
 
 def delete_e2e_fixtures():
     client = pysolr.Solr(settings.SOLR_URL, always_commit=True)
-    client.delete(q=f"organization:{E2E_ORGANISATION_ID} OR organization:{E2E_ORGANISATION_ID_2}")
+    client.delete(q=f"organization:{E2E_ORGANISATION_SLUG} OR organization:{E2E_ORGANISATION_SLUG_2}")
+    client.delete(q=f"site_id:dgu_organisations* AND (name:{E2E_ORGANISATION_SLUG} OR name:{E2E_ORGANISATION_SLUG_2})")
     cache.clear()
