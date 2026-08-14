@@ -9,3 +9,9 @@
 .datagovuk-preview-table__header {
     min-width: 250px;
 }
+
+.datagovuk-table-container:focus {
+    margin: -3px;
+    border: 3px solid $datagovuk-black;
+    outline: 3px solid $datagovuk-yellow;
+}
