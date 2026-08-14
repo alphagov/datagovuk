@@ -4,6 +4,7 @@ from datetime import UTC, datetime
 
 import pysolr
 from django.conf import settings
+from django.core.cache import cache
 
 from .tests.factories import create_solr_doc
 
@@ -113,11 +114,15 @@ def dataset_without_additional_information(solr_client):
 
 
 def create_e2e_fixtures():
+    # Ensure we have only one copy of fixture data records
+    delete_e2e_fixtures()
     client = pysolr.Solr(settings.SOLR_URL, always_commit=True)
     dataset_with_additional_information(client)
     dataset_without_additional_information(client)
+    cache.clear()
 
 
 def delete_e2e_fixtures():
     client = pysolr.Solr(settings.SOLR_URL, always_commit=True)
     client.delete(q=f"id:{DATASET_UUID} OR id:{DATASET_UUID_NO_EXTRAS}")
+    cache.clear()
