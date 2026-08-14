@@ -65,7 +65,7 @@ def pytest_generate_tests(metafunc):
     """
     if "device_name" in metafunc.fixturenames:
         marker = metafunc.definition.get_closest_marker("devices")
-        devices = marker.args[0] if marker else ["desktop"]  # default to desktop only
+        devices = marker.args[0] if marker else ["mobile", "desktop"]  # default to both desktop and mobile
         metafunc.parametrize("device_name", devices, indirect=True)
 
 
@@ -107,12 +107,6 @@ def page(browser, browser_context_args, request):
 
     page.close()
     context.close()
-
-
-@pytest.fixture
-def mobile_page(page):
-    page.set_viewport_size({"width": 390, "height": 844})
-    return page
 
 
 @pytest.fixture

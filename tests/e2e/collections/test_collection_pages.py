@@ -1,12 +1,12 @@
 import pytest
 from django.urls import reverse
 from playwright.sync_api import expect
-from pytest_lazy_fixtures import lf
 
 from datagovuk.collections.constants import get_collections_by_slug
 
 
 @pytest.mark.smoke
+@pytest.mark.devices(["desktop"])
 def test_collection_pages(page, live_server_url):
     for collection_slug, collection_pages in get_collections_by_slug().items():
         for collection_page in collection_pages["topics"]:
@@ -39,85 +39,57 @@ def test_collection_page_has_cache_control_header_set(page, live_server_url):
     assert cache_control == "max-age=1800, public"
 
 
-@pytest.mark.parametrize(
-    "lazy_page",
-    [
-        lf("page"),
-        lf("mobile_page"),
-    ],
-)
-def test_collection_page_line_chart_is_visible(lazy_page, live_server_url):
+def test_collection_page_line_chart_is_visible(page, live_server_url):
     url = reverse(
         "collections:collection_page",
         kwargs={"collection_name": "land-and-property", "collection_page_name": "uk-house-prices"},
     )
-    lazy_page.goto(live_server_url + url)
+    page.goto(live_server_url + url)
 
-    expect(lazy_page.locator(".line-chart")).to_be_visible()
-    expect(lazy_page.locator(".line-chart canvas")).to_be_visible()
-    expect(lazy_page.get_by_role("heading", level=2, name="Average house price")).to_be_visible()
+    expect(page.locator(".line-chart")).to_be_visible()
+    expect(page.locator(".line-chart canvas")).to_be_visible()
+    expect(page.get_by_role("heading", level=2, name="Average house price")).to_be_visible()
 
 
-@pytest.mark.parametrize(
-    "lazy_page",
-    [
-        lf("page"),
-        lf("mobile_page"),
-    ],
-)
-def test_collection_page_bar_chart_is_visible(lazy_page, live_server_url):
+def test_collection_page_bar_chart_is_visible(page, live_server_url):
     url = reverse(
         "collections:collection_page",
         kwargs={"collection_name": "government", "collection_page_name": "election-results"},
     )
-    lazy_page.goto(live_server_url + url)
+    page.goto(live_server_url + url)
 
-    expect(lazy_page.locator(".bar-chart")).to_be_visible()
-    expect(lazy_page.locator(".bar-chart canvas")).to_be_visible()
-    expect(lazy_page.get_by_role("heading", level=2, name="2024 Vote share by party (%)")).to_be_visible()
+    expect(page.locator(".bar-chart")).to_be_visible()
+    expect(page.locator(".bar-chart canvas")).to_be_visible()
+    expect(page.get_by_role("heading", level=2, name="2024 Vote share by party (%)")).to_be_visible()
 
 
-@pytest.mark.parametrize(
-    "lazy_page",
-    [
-        lf("page"),
-        lf("mobile_page"),
-    ],
-)
-def test_collection_page_headline_is_visible(lazy_page, live_server_url):
+def test_collection_page_headline_is_visible(page, live_server_url):
     url = reverse(
         "collections:collection_page",
         kwargs={"collection_name": "business-and-economy", "collection_page_name": "get-company-information"},
     )
-    lazy_page.goto(live_server_url + url)
+    page.goto(live_server_url + url)
 
-    expect(lazy_page.get_by_role("heading", name="Company formations")).to_be_visible()
-    expect(lazy_page.get_by_role("heading", name="Company dissolutions")).to_be_visible()
-    expect(lazy_page.get_by_text("In 2024/2025 compared to 2023/2024.").first).to_be_visible()
-    headline_column = lazy_page.locator(".datagovuk-headline__column").first
+    expect(page.get_by_role("heading", name="Company formations")).to_be_visible()
+    expect(page.get_by_role("heading", name="Company dissolutions")).to_be_visible()
+    expect(page.get_by_text("In 2024/2025 compared to 2023/2024.").first).to_be_visible()
+    headline_column = page.locator(".datagovuk-headline__column").first
     expect(headline_column.locator(".datagovuk-headline__number", has_text="801,864")).to_be_visible()
     expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="9.7%")).to_be_visible()
 
 
-@pytest.mark.parametrize(
-    "lazy_page",
-    [
-        lf("page"),
-        lf("mobile_page"),
-    ],
-)
-def test_collection_page_headline_no_percent_change(lazy_page, live_server_url):
+def test_collection_page_headline_no_percent_change(page, live_server_url):
     url = reverse(
         "collections:collection_page",
         kwargs={"collection_name": "early-years", "collection_page_name": "education-statistics"},
     )
-    lazy_page.goto(live_server_url + url)
+    page.goto(live_server_url + url)
 
-    expect(lazy_page.get_by_role("heading", name="Good level of development")).to_be_visible()
-    expect(lazy_page.get_by_role("heading", name="Expected level across all early learning goals")).to_be_visible()
-    expect(lazy_page.get_by_text("In 2024/25, up from 65.2% in 2021/22.")).to_be_visible()
-    expect(lazy_page.get_by_text("In 2024/25, up from 63.4% in 2021/22.")).to_be_visible()
-    headline_column = lazy_page.locator(".datagovuk-headline__column").first
+    expect(page.get_by_role("heading", name="Good level of development")).to_be_visible()
+    expect(page.get_by_role("heading", name="Expected level across all early learning goals")).to_be_visible()
+    expect(page.get_by_text("In 2024/25, up from 65.2% in 2021/22.")).to_be_visible()
+    expect(page.get_by_text("In 2024/25, up from 63.4% in 2021/22.")).to_be_visible()
+    headline_column = page.locator(".datagovuk-headline__column").first
     expect(headline_column.locator(".datagovuk-headline__number", has_text="68.3%")).to_be_visible()
     expect(
         headline_column.locator(".datagovuk-headline__change-value", has_text="3.1 percentage points"),
@@ -125,42 +97,29 @@ def test_collection_page_headline_no_percent_change(lazy_page, live_server_url):
     expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="(%)")).not_to_be_visible()
 
 
-@pytest.mark.parametrize(
-    "lazy_page",
-    [
-        lf("page"),
-        lf("mobile_page"),
-    ],
-)
-def test_collection_page_without_chart_has_no_chart(lazy_page, live_server_url):
+def test_collection_page_without_chart_has_no_chart(page, live_server_url):
     url = reverse(
         "collections:collection_page",
         kwargs={"collection_name": "land-and-property", "collection_page_name": "fire-statistics"},
     )
-    lazy_page.goto(live_server_url + url)
+    page.goto(live_server_url + url)
 
-    expect(lazy_page.locator(".line-chart")).to_have_count(0)
+    expect(page.locator(".line-chart")).to_have_count(0)
 
 
-@pytest.mark.parametrize(
-    "lazy_page",
-    [
-        lf("page"),
-        lf("mobile_page"),
-    ],
-)
-def test_collection_page_download(lazy_page, live_server_url):
+def test_collection_page_download(page, live_server_url):
     url = reverse(
         "collections:collection_page",
         kwargs={"collection_name": "business-and-economy", "collection_page_name": "uk-trade"},
     )
-    lazy_page.goto(live_server_url + url)
-    with lazy_page.expect_download() as download_info:
-        lazy_page.get_by_role("link", name="Download the chart data").click()
+    page.goto(live_server_url + url)
+    with page.expect_download() as download_info:
+        page.get_by_role("link", name="Download the chart data").click()
     download = download_info.value
     assert download.suggested_filename == "total-uk-imports-exports.csv"
 
 
+@pytest.mark.devices(["desktop"])
 def test_collection_page_with_aria_current_page(page, live_server_url):
     url = reverse(
         "collections:collection_page",
@@ -173,14 +132,15 @@ def test_collection_page_with_aria_current_page(page, live_server_url):
     )
 
 
-def test_collection_page_with_aria_current_mobile(mobile_page, live_server_url):
+@pytest.mark.devices(["mobile"])
+def test_collection_page_with_aria_current_mobile(page, live_server_url):
     url = reverse(
         "collections:collection_page",
         kwargs={"collection_name": "land-and-property", "collection_page_name": "uk-house-prices"},
     )
-    mobile_page.goto(live_server_url + url)
-    mobile_page.get_by_role("button", name="Pages").click()
-    expect(mobile_page.get_by_role("link", name="UK house prices", exact=True)).to_have_attribute(
+    page.goto(live_server_url + url)
+    page.get_by_role("button", name="Pages").click()
+    expect(page.get_by_role("link", name="UK house prices", exact=True)).to_have_attribute(
         "aria-current",
         "page",
     )
