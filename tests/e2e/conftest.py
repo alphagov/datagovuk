@@ -32,13 +32,11 @@ def setup_suite():
     if BASE_URL:
         # Don't bother with any fixture creation if we are running E2E tests against
         # a remote environment
-        return
-
-    create_e2e_fixtures()
-
-    yield
-
-    delete_e2e_fixtures()
+        yield
+    else:
+        create_e2e_fixtures()
+        yield
+        delete_e2e_fixtures()
 
 
 @pytest.fixture(scope="session")
