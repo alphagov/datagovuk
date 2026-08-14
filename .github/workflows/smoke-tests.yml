@@ -82,7 +82,7 @@ jobs:
             -e BASE_URL=${{ env.BASE_URL }} \
             -e E2E_BASIC_AUTH_USERNAME=${{ env.E2E_BASIC_AUTH_USERNAME }} \
             -e E2E_BASIC_AUTH_PASSWORD=${{ env.E2E_BASIC_AUTH_PASSWORD }} \
-            django pytest --reruns 2 -m smoke tests/e2e/ --override-ini="addopts=--import-mode=importlib"
+            django pytest --reruns 1 -m smoke tests/e2e/ --override-ini="addopts=--import-mode=importlib"
 
       - name: Upload E2E failure traces
         if: failure()
