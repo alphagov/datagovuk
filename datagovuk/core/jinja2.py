@@ -1,4 +1,7 @@
+import html
+
 import nh3
+from bs4 import BeautifulSoup
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.template import defaultfilters
 from django.templatetags.static import static
@@ -67,7 +70,11 @@ def sanitize_html(value):
         link_rel=None,
     )
 
-    return Markup(cleaned_html)  # noqa: S704
+    return Markup(html.unescape(cleaned_html))  # noqa: S704
+
+
+def is_html(value):
+    return bool(BeautifulSoup(value, "html.parser").find())
 
 
 def environment(**options):
@@ -91,6 +98,7 @@ def environment(**options):
     env.filters.update(django_filters)
     env.filters["to_govuk_items"] = to_govuk_items
     env.filters["format_file_size"] = format_file_size
+    env.filters["is_html"] = is_html
     env.filters["html_to_markdown"] = lambda html: markdownify(
         html,
         escape_misc=False,

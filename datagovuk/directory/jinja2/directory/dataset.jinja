@@ -28,6 +28,22 @@
   </tr>
 {% endmacro %}
 
+{% macro render_publisher_string(value) %}
+  {#
+    String is supplied by publishers and can contain a mixture of markdown
+    and HTML.
+    Firstly sanitize the string according to our list of allowed HTML tags/attributes.
+    Next, if the string is html convert the html to markdown and use datagovuk's markdown renderer to get the right styles.
+    Otherwise, if the string is not html just use datagovuk's markdown renderer to get the right styles.
+  #}
+  {% set sanitized = value|sanitize_html %}
+  {% if sanitized|is_html %}
+    {{ sanitized|html_to_markdown|markdown_to_html }}
+  {% else %}
+    {{ sanitized|markdown_to_html }}
+  {% endif %}
+{% endmacro %}
+
 {% block extra_head %}
   <meta name="dc:title" content="{{ doc.title }}" />
   <meta name="dc:publisher" content="{{ doc.organisation.title }}" />
@@ -95,15 +111,7 @@
 
         <div id="summary"
              class="govuk-!-margin-bottom-2 govuk-body datagovuk-body datagovuk-dataset-summary datagovuk-line-clamp"
-             property="dc:description">
-          {#
-            Summary is supplied by publishers and can contain a mixture of markdown
-            and HTML.
-            Firstly sanitize the string according to our list of allowed HTML tags/attributes.
-            Next, convert the html to markdown and use datagovuk's markdown renderer to get the right styles.
-          #}
-          {{ doc.summary|sanitize_html|html_to_markdown|markdown_to_html }}
-        </div>
+             property="dc:description">{{ render_publisher_string(doc.summary) }}</div>
         {{ govukButton({
           "text": "View full summary",
           "type": "button",
@@ -251,15 +259,7 @@
       {% if doc.licence_custom %}
         <section class="licence-information">
           <h2 id="licence-information" class="govuk-heading-m datagovuk-heading-m">Licence information</h2>
-          <div class="govuk-!-margin-bottom-8 govuk-body datagovuk-body">
-            {#
-              licence_custom is supplied by publishers and can contain a mixture of markdown
-              and HTML.
-              Firstly sanitize the string according to our list of allowed HTML tags/attributes.
-              Next, convert the html to markdown and use datagovuk's markdown renderer to get the right styles.
-            #}
-            {{ doc.licence_custom|sanitize_html|html_to_markdown|markdown_to_html }}
-          </div>
+          <div class="govuk-!-margin-bottom-8 govuk-body datagovuk-body">{{ render_publisher_string(doc.licence_custom) }}</div>
         </section>
       {% endif %}
 
