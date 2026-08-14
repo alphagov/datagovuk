@@ -315,6 +315,7 @@ dependencies = [
     { name = "ordered-set" },
     { name = "pillow" },
     { name = "pysolr" },
+    { name = "pytest-rerunfailures" },
     { name = "python-frontmatter" },
     { name = "python-slugify" },
     { name = "sentry-sdk" },
@@ -363,6 +364,7 @@ requires-dist = [
     { name = "ordered-set", specifier = "==4.1.0" },
     { name = "pillow", specifier = "==12.3.0" },
     { name = "pysolr", specifier = "==3.11.0" },
+    { name = "pytest-rerunfailures", specifier = "==16.5" },
     { name = "python-frontmatter", specifier = "==1.3.0" },
     { name = "python-slugify", specifier = "==8.0.4" },
     { name = "sentry-sdk", specifier = "==2.66.1" },
@@ -1312,6 +1314,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/58/ef/172eb8e23c80491fc72f1401c72f9305663873649351306a38b18406b0c9/pytest_playwright-0.8.0.tar.gz", hash = "sha256:7888d4a2443160c82e0c506c437076679f86b36d1910427250d90fbf1843a981", size = 17132, upload-time = "2026-05-18T10:16:15.919Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/fe/71/1c545fac6a9054b52b3771238fb2dc6e8f1d0ccec116e1c7786ec191887c/pytest_playwright-0.8.0-py3-none-any.whl", hash = "sha256:856aae6efd4bc055f2ef229c647768760bcaad5cd3a5983c314ac260a974a933", size = 17143, upload-time = "2026-05-18T10:16:18.226Z" },
+]
+
+[[package]]
+name = "pytest-rerunfailures"
+version = "16.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0b/4f/615f3d41cacf8641534304037daeb63b1f80a98a130019cb9b743e4b8e1e/pytest_rerunfailures-16.5.tar.gz", hash = "sha256:1481b45e6eb73228d19979c4481a8532007fadc6881d1198622cad1901c4afb2", size = 41475, upload-time = "2026-08-13T07:12:16.415Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/42/e8/ccfe2ec87fd45c1581c1835e64b338e70da9bc79965cd415da0aa4b738af/pytest_rerunfailures-16.5-py3-none-any.whl", hash = "sha256:f58d93fa529022013b2bdaeefe39f0e36d3c54b1ff7ee437e59c2b7bd59a429f", size = 18706, upload-time = "2026-08-13T07:12:15.213Z" },
 ]
 
 [[package]]
