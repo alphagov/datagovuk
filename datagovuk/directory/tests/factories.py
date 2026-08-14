@@ -15,7 +15,7 @@ class SolrDocumentFactory(factory.DictFactory):
     )
     metadata_modified = factory.LazyAttribute(lambda o: o.metadata_created)
     state = "active"
-    organization = "example-publisher-1"
+    organization = "e2e-publisher-1"
     capacity = "public"
     entity_type = "package"
     dataset_type = "dataset"
