@@ -68,7 +68,7 @@ jobs:
 
       - name: Run E2E Tests
         run: |
-          docker compose -f docker-compose.local.yml exec django pytest --reruns 2 tests/e2e/
+          docker compose -f docker-compose.local.yml exec django pytest --reruns 1 tests/e2e/
 
       - name: Upload E2E failure traces
         if: failure()
