@@ -1,14 +1,16 @@
 .datagovuk-table-container {
+    margin-bottom: 20px;
     overflow: auto;
 }
 .datagovuk-table-container:focus {
     margin: -3px;
+    margin-bottom: 17px;
     border: 3px solid $datagovuk-black;
-    outline: 3px solid $datagovuk-focus;
+    outline: 3px solid $datagovuk-focus !important;
 }
 
 .datagovuk-table {
-    margin: 0;
+    margin-bottom: 0px;
 }
 
 .datagovuk-table .datagovuk-link:link,
