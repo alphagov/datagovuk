@@ -6,15 +6,17 @@
     color: $datagovuk-black;
   }
 
-  .govuk-input, .autocomplete__input.datagovuk-input, .autocomplete__hint {
+  .govuk-input, .autocomplete__input, .autocomplete__hint {
     padding: 25px 15px;
+    color: $datagovuk-black;
     border-color: $datagovuk-black;
     border-radius: 20px;
     font-size: 20px;
     font-family: 'Inter', sans-serif;
+    border-width: 1px;
   }
 
-  .autocomplete__input.datagovuk-input  {
+  .autocomplete__input  {
     padding-right: 44px;
   }
 
@@ -23,13 +25,16 @@
     font-size: 20px;
     font-family: 'Inter', sans-serif;
     min-width: auto;
+    border-width: 1px;
   }
 
   .autocomplete__dropdown-arrow-down {
     pointer-events: none;
     z-index: 0;
-    top: 15px;
-    right: 15px;
+    top: 12px;
+    right: 12px;
+    height: 30px;
+    width: 30px;
   }
 
   .autocomplete__menu .autocomplete__option:first-of-type {
@@ -75,6 +80,7 @@
 
   .govuk-checkboxes__label:before {
     border-radius: 8px;
+    border-width: 1px;
   }
 }
 
