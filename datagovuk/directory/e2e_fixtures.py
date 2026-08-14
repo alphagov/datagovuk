@@ -13,6 +13,9 @@ DATASET_UUID_NO_EXTRAS = "e6946d44-3090-4e3f-9dd2-4269f0da4f73"
 DATASET_SLUG = "test-additional-information-dataset"
 DATAFILE_UUID = "9667a107-91ef-424b-be74-f36d35e580d1"
 
+E2E_ORGANISATION_ID = "e2e-publisher-1"
+E2E_ORGANISATION_ID_2 = "e2e-publisher-2"
+
 
 def dataset_with_additional_information(solr_client):
     extras = [
@@ -113,16 +116,55 @@ def dataset_without_additional_information(solr_client):
     return doc
 
 
+def search_datasets(solr_client):
+    create_solr_doc(
+        solr_client,
+        name="search-dataset-generic",
+        title="DGUK E2E Search dataset generic",
+    )
+    create_solr_doc(
+        solr_client,
+        name="search-dataset-topic",
+        title="DGUK E2E Search dataset topic",
+        topic="environment",
+    )
+    create_solr_doc(
+        solr_client,
+        name="search-dataset-publisher",
+        title="DGUK E2E Search dataset publisher",
+        organization=E2E_ORGANISATION_ID_2,
+    )
+    create_solr_doc(
+        solr_client,
+        name="search-dataset-format",
+        title="DGUK E2E Search dataset format",
+        res_format=[".csv"],
+    )
+    create_solr_doc(
+        solr_client,
+        name="search-dataset-licence",
+        title="DGUK E2E Search dataset licence",
+        license_id="ogl",
+    )
+    # Most recent by virtue of being the last created..
+    create_solr_doc(
+        solr_client,
+        name="search-dataset-recent",
+        title="DGUK E2E Search dataset recent",
+    )
+
+
 def create_e2e_fixtures():
     # Ensure we have only one copy of fixture data records
     delete_e2e_fixtures()
     client = pysolr.Solr(settings.SOLR_URL, always_commit=True)
     dataset_with_additional_information(client)
     dataset_without_additional_information(client)
+    search_datasets(client)
     cache.clear()
 
 
 def delete_e2e_fixtures():
     client = pysolr.Solr(settings.SOLR_URL, always_commit=True)
-    client.delete(q=f"id:{DATASET_UUID} OR id:{DATASET_UUID_NO_EXTRAS}")
+    client.delete(q=f"organization:{E2E_ORGANISATION_ID} OR organization:{E2E_ORGANISATION_ID_2}")
     cache.clear()
