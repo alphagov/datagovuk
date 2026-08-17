@@ -1,5 +1,3 @@
-import html
-
 import nh3
 from bs4 import BeautifulSoup
 from django.contrib.humanize.templatetags.humanize import intcomma
@@ -70,7 +68,7 @@ def sanitize_html(value):
         link_rel=None,
     )
 
-    return Markup(html.unescape(cleaned_html))  # noqa: S704
+    return Markup(cleaned_html.replace("&nbsp;", " "))  # noqa: S704
 
 
 def is_html(value):
