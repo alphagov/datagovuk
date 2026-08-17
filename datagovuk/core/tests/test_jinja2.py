@@ -1,4 +1,4 @@
-from datagovuk.core.jinja2 import format_file_size, sanitize_html, to_govuk_items
+from datagovuk.core.jinja2 import format_file_size, is_html, sanitize_html, to_govuk_items
 
 
 def test_to_govuk_items_returns_items_list():
@@ -57,3 +57,31 @@ def test_sanitize_html_removes_disallowed_attributes_on_a_tag():
 def test_sanitize_html_removes_unexpected_tags_with_attributes():
     result = sanitize_html('<span style="color:red" class="foo">text</span>')
     assert str(result) == "text"
+
+
+def test_is_html_returns_true_for_html():
+    assert is_html("<p>Hello world</p>") is True
+
+
+def test_is_html_returns_true_for_nested_html():
+    assert is_html("<ul><li>Item 1</li><li>Item 2</li></ul>") is True
+
+
+def test_is_html_returns_false_for_plain_text():
+    assert is_html("Hello world") is False
+
+
+def test_is_html_returns_false_for_empty_string():
+    assert is_html("") is False
+
+
+def test_is_html_returns_false_for_whitespace_only():
+    assert is_html("   ") is False
+
+
+def test_is_html_returns_false_for_html_escaped_text():
+    assert is_html("&lt;p&gt;Hello world&lt;/p&gt;") is False
+
+
+def test_is_html_returns_true_for_self_closing_tag():
+    assert is_html("<br/>") is True
