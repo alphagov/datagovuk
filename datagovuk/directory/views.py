@@ -1,4 +1,6 @@
-from django.http import Http404, HttpResponsePermanentRedirect
+import math
+
+from django.http import Http404, HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.urls import NoReverseMatch, reverse
 from django.views.generic import TemplateView, View
 from ordered_set import OrderedSet
@@ -22,6 +24,7 @@ from .solr import (
 class SearchView(GETFormView, PaginationMixin):
     template_name = "directory/search.jinja"
     form_class = SearchForm
+    rows_per_page = 20
 
     def _translate_legacy_params(self, request):
         legacy_params = {
@@ -57,7 +60,29 @@ class SearchView(GETFormView, PaginationMixin):
         query = form.cleaned_data["query"]
         filters = dict(form.cleaned_data)
         del filters["query"]
-        context = self.get_context_data(query=query, filters=filters)
+
+        solr_max_page = 2_147_483_647 // self.rows_per_page
+        try:
+            page = int(self.request.GET.get("page", 1))
+        except ValueError:
+            page = 1
+        page = max(1, min(page, solr_max_page))
+
+        sort = self.request.GET.get("sort", "best")
+        search_result = search(
+            query=query,
+            filters=filters,
+            start=(page - 1) * self.rows_per_page,
+            rows=self.rows_per_page,
+            sort=sort,
+        )
+        last_page = max(1, math.ceil(search_result["results"].hits / self.rows_per_page))
+        if page > last_page:
+            params = self.request.GET.copy()
+            params["page"] = last_page
+            return HttpResponseRedirect(f"{self.request.path}?{params.urlencode()}")
+
+        context = self.get_context_data(query=query, filters=filters, search_result=search_result, page=page, sort=sort)
         return self.render_to_response(context)
 
     def get_choices_from_facets(self, facets):
@@ -98,19 +123,9 @@ class SearchView(GETFormView, PaginationMixin):
             "format_choices": format_choices,
         }
 
-    def get_context_data(self, query=None, filters=None, **kwargs):
+    def get_context_data(self, query=None, filters=None, search_result=None, page=None, sort=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        page = int(self.request.GET.get("page", 1))
-        sort = self.request.GET.get("sort", "best")
-        rows_per_page = 20
         if query is not None:
-            search_result = search(
-                query=query,
-                filters=filters,
-                start=((page - 1) * rows_per_page),
-                rows=rows_per_page,
-                sort=sort,
-            )
             results = search_result["results"]
             docs = search_result["docs"]
             show_facets = (results.hits > 0) and query
@@ -126,7 +141,7 @@ class SearchView(GETFormView, PaginationMixin):
             context["results"] = results
             context["pagination"] = self.get_govuk_pagination(
                 page=page,
-                rows_per_page=rows_per_page,
+                rows_per_page=self.rows_per_page,
                 total_results=results.hits,
             )
             context["docs"] = docs

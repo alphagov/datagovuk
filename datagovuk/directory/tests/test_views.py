@@ -335,6 +335,44 @@ class TestSearchView:
             ("XLS", "XLS"),
         ]
 
+    def test_page_overflow_does_not_raise_solr_error(self, client, solr_doc_factory, search_url):
+        solr_doc_factory(title="test")
+
+        response = client.get(search_url, {"q": "test", "page": "2333300000"})
+
+        assert response.status_code == HTTPStatus.FOUND
+
+    def test_page_exceeding_max_page_redirects_to_last_page(self, client, solr_doc_factory, search_url):
+        for _ in range(3):
+            solr_doc_factory(title="test")
+
+        response = client.get(search_url, {"q": "test", "page": "12020"})
+
+        assert response.status_code == HTTPStatus.FOUND
+        assert "page=1" in response.url
+
+    def test_valid_page_does_not_redirect(self, client, solr_doc_factory, search_url):
+        for _ in range(25):
+            solr_doc_factory(title="test")
+
+        response = client.get(search_url, {"q": "test", "page": "2"})
+
+        assert response.status_code == HTTPStatus.OK
+
+    def test_non_integer_page_defaults_to_page_one(self, client, solr_doc_factory, search_url):
+        solr_doc_factory(title="test")
+
+        response = client.get(search_url, {"q": "test", "page": "abc"})
+
+        assert response.status_code == HTTPStatus.OK
+
+    def test_negative_page_defaults_to_page_one(self, client, solr_doc_factory, search_url):
+        solr_doc_factory(title="test")
+
+        response = client.get(search_url, {"q": "test", "page": "-5"})
+
+        assert response.status_code == HTTPStatus.OK
+
 
 class TestDatasetView:
     def test_view_existing_dataset_returns_ok(self, client, solr_doc_factory):
