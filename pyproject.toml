@@ -167,7 +167,7 @@ ini_options.markers = [ "smoke", "devices" ]
 [tool.coverage]
 # ==== Coverage ====
 run.include = [ "datagovuk/**" ]
-run.omit = [ "*/conftest.py", "*/migrations/*", "*/tests/*" ]
+run.omit = [ "*/conftest.py", "*/migrations/*", "*/tests/*", "datagovuk/directory/e2e_fixtures.py" ]
 run.plugins = [ "django_coverage_plugin" ]
 
 # ==== djLint ====
