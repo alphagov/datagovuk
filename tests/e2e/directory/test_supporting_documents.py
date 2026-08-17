@@ -11,6 +11,7 @@ def dataset_url():
 
 
 class TestSupportingDocumentsTemplate:
+    @pytest.mark.smoke
     def test_supporting_documents_table_has_correct_headers(
         self,
         page,

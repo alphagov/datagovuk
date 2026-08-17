@@ -14,6 +14,7 @@ def preview_url():
 
 
 class TestPreviewPage:
+    @pytest.mark.smoke
     def test_heading_is_visible(self, page, live_server_url, preview_url):
         page.goto(live_server_url + preview_url)
         expect(page.get_by_role("heading", level=1)).to_contain_text("Resource 2")
