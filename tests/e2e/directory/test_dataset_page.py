@@ -1,7 +1,9 @@
+import pytest
 from playwright.sync_api import expect
 
 
 class TestDatasetPage:
+    @pytest.mark.smoke
     def test_heading_is_visible(self, page, live_server_url, dataset_url):
         page.goto(live_server_url + dataset_url)
         expect(page.get_by_role("heading", level=1)).to_have_text("Test Additional Information Dataset")
@@ -10,6 +12,7 @@ class TestDatasetPage:
         page.goto(live_server_url + dataset_url)
         expect(page.get_by_role("heading", level=2, name="Data links")).to_be_visible()
 
+    @pytest.mark.smoke
     def test_table_visible(self, page, live_server_url, dataset_url):
         page.goto(live_server_url + dataset_url)
         expect(page.locator("#datagovuk-resources-table")).to_be_visible()

@@ -9,6 +9,7 @@ def search_url():
 
 
 class TestSearch:
+    @pytest.mark.smoke
     def test_search_query_only(
         self,
         page,
@@ -28,6 +29,7 @@ class TestSearch:
         expect(page.get_by_role("link", name="DGUK E2E Search dataset topic")).to_be_visible()
         expect(page.get_by_role("link", name="DGUK E2E Search dataset recent")).to_be_visible()
 
+    @pytest.mark.smoke
     def test_search_and_sort(
         self,
         page,
@@ -44,6 +46,7 @@ class TestSearch:
         results = page.locator(".datagovuk-search-results__item")
         expect(results.nth(0).get_by_role("link", name="DGUK E2E Search dataset recent")).to_be_visible()
 
+    @pytest.mark.smoke
     def test_search_filter_by_publisher(
         self,
         page,
@@ -61,6 +64,7 @@ class TestSearch:
         expect(page.get_by_text("1 to 1 of 1 results")).to_be_visible()
         expect(page.get_by_role("link", name="DGUK E2E Search dataset publisher")).to_be_visible()
 
+    @pytest.mark.smoke
     def test_search_filter_by_topic(
         self,
         page,
@@ -78,6 +82,7 @@ class TestSearch:
         expect(page.get_by_text("1 to 1 of 1 results")).to_be_visible()
         expect(page.get_by_role("link", name="DGUK E2E Search dataset topic")).to_be_visible()
 
+    @pytest.mark.smoke
     def test_search_filter_by_format(
         self,
         page,
@@ -95,6 +100,7 @@ class TestSearch:
         expect(page.get_by_text("1 to 1 of 1 results")).to_be_visible()
         expect(page.get_by_role("link", name="DGUK E2E Search dataset format")).to_be_visible()
 
+    @pytest.mark.smoke
     def test_search_filter_by_licence(
         self,
         page,

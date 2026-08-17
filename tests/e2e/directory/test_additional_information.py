@@ -11,6 +11,7 @@ def dataset_url_no_extras():
 
 
 class TestAdditionalInformationSection:
+    @pytest.mark.smoke
     def test_additional_information_heading_is_visible(
         self,
         page,
@@ -20,6 +21,7 @@ class TestAdditionalInformationSection:
         page.goto(live_server_url + dataset_url)
         expect(page.get_by_role("heading", level=2, name="Additional information")).to_be_visible()
 
+    @pytest.mark.smoke
     def test_additional_information_heading_absent_when_no_extras(
         self,
         page,
