@@ -25,8 +25,8 @@ services:
 
   playwright:
     build:
-      context: ./docker/playwright
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./docker/playwright/Dockerfile
     image: datagovuk_local_playwright
     container_name: datagovuk_local_playwright
     ports:
