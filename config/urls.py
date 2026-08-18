@@ -19,11 +19,6 @@ urlpatterns = [
             ],
         ),
     ),
-    path(
-        "metrics/",
-        never_cache(prometheus_views.ExportToDjangoView),
-        name="prometheus-django-metrics",
-    ),
     path("", include("datagovuk.ckan_redirect.urls", namespace="ckan_redirect")),
 ]
 
@@ -55,6 +50,11 @@ if settings.DEBUG:
             "500/",
             default_views.server_error,
             name="error_server_error",
+        ),
+        path(
+            "metrics/",
+            never_cache(prometheus_views.ExportToDjangoView),
+            name="prometheus-django-metrics",
         ),
     ]
     if "debug_toolbar" in settings.INSTALLED_APPS:
