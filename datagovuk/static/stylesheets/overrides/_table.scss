@@ -2,11 +2,12 @@
     margin-bottom: 20px;
     overflow: auto;
 }
+
 .datagovuk-table-container:focus {
     margin: -3px;
     margin-bottom: 17px;
     border: 3px solid $datagovuk-black;
-    outline: 3px solid $datagovuk-focus !important;
+    outline: 3px solid $datagovuk-yellow !important;
 }
 
 .datagovuk-table {
