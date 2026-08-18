@@ -62,11 +62,8 @@ class SearchView(GETFormView, PaginationMixin):
         del filters["query"]
 
         solr_max_page = 2_147_483_647 // self.rows_per_page
-        try:
-            page = int(self.request.GET.get("page", 1))
-        except ValueError:
-            page = 1
-        page = max(1, min(page, solr_max_page))
+
+        page = self._get_page(solr_max_page)
 
         sort = self.request.GET.get("sort", "best")
         search_result = search(
@@ -84,6 +81,13 @@ class SearchView(GETFormView, PaginationMixin):
 
         context = self.get_context_data(query=query, filters=filters, search_result=search_result, page=page, sort=sort)
         return self.render_to_response(context)
+
+    def _get_page(self, solr_max_page):
+        try:
+            page = int(self.request.GET.get("page", 1))
+        except ValueError:
+            page = 1
+        return max(1, min(page, solr_max_page))
 
     def get_choices_from_facets(self, facets):
         facets = {
