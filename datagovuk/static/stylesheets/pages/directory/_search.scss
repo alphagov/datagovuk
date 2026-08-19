@@ -63,17 +63,20 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 15px;
+  margin-bottom: 20px;
 }
 
 .datagovuk-search__results-count {
   flex-grow: 1;
   flex-shrink: 0;
+  color: $datagovuk-grey;
 }
 
 .datagovuk-search__sort-by {
   display: flex;
   align-items: baseline;
   gap: 15px;
+  margin-bottom: 0;
 }
 
 .datagovuk-search__sort-by label {
@@ -85,13 +88,19 @@
   content: none;
 }
 
+.datagovuk-search-filters-heading {
+  margin-top: 5px;
+  margin-bottom: 40px;
+}
+
 .datagovuk-search-results {
   padding-left: 0;
   list-style: none;
+  margin-top: 0;
 }
 
 .datagovuk-search-results__item {
-  padding-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .datagovuk-search-results__item-row {
