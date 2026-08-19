@@ -36,19 +36,29 @@
   <div class="govuk-width-container datagovuk-width-container">
     <form method="get" action="{{ url('directory:search') }}">
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds-from-desktop">
+        <div class="govuk-grid-column-full">
           <div class="datagovuk-search-bar">
             {# djlint:off #}
+            <div class="datagovuk-search-input-wrapper">
             {{ govukInput({
                 "label": {
                 "text": "Search directory",
+                "classes":"govuk-visually-hidden"
+                },
+                "attributes":{
+                    "placeholder":"Search directory",
+                    "autocomplete":"off"
                 },
                 "name": "query",
                 "value": form.query.value() if form else "",
                 "errorMessage": {"html": form.query.errors} if form and form.query.errors else None,
                 "formGroup": {"classes": "datagovuk-form-group"},
             }) }}
-            {{ govukButton({"text": "Search", "classes": "datagovuk-button"}) }}
+            </div>
+            {{ govukButton({
+                "html": "<span class=\"govuk-visually-hidden\">Search</span>",
+                "classes": "datagovuk-button datagovuk-button--secondary"
+            })}}
             </div>
         </div>
       </div>

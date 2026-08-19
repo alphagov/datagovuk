@@ -1,6 +1,61 @@
+.datagovuk-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
 .datagovuk-search-bar .govuk-input {
+  padding-left: 50px;
   border-width: 2px;
+}
+
+.datagovuk-search-bar .datagovuk-search-input-wrapper {
+  position: relative;
+  flex-grow: 1;
+}
+
+.datagovuk-search-bar .datagovuk-search-input-wrapper::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 26px;
+  height: 26px;
+  background-color: $datagovuk-grey;
+  -webkit-mask: url(static('images/icons/search.svg')) no-repeat center;
+  mask: url(static('images/icons/search.svg')) no-repeat center;
+  pointer-events: none;
+}
+
+.datagovuk-search-bar .govuk-button {
+  width: 52px;
+  height: 52px;
+}
+
+.datagovuk-search-bar .govuk-button::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 13px;
+  width: 26px;
+  height: 26px;
+  background-color: $datagovuk-black;
+  -webkit-mask: url(static('images/icons/search.svg')) no-repeat center;
+  mask: url(static('images/icons/search.svg')) no-repeat center;
+  pointer-events: none;
+}
+
+.datagovuk-search-bar .govuk-button::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 13px;
+  width: 26px;
+  height: 26px;
+  background-color: $datagovuk-black;
+  -webkit-mask: url(static('images/icons/search.svg')) no-repeat center;
+  mask: url(static('images/icons/search.svg')) no-repeat center;
+  pointer-events: none;
 }
 
 .datagovuk-search__results-header {
@@ -23,6 +78,11 @@
 
 .datagovuk-search__sort-by label {
   flex-shrink: 0;
+}
+
+// fix for govuk-form-group causing a gap on the right
+.datagovuk-search__sort-by::after {
+  content: none;
 }
 
 .datagovuk-search-results {
@@ -69,20 +129,13 @@
 @media (min-width: $desktop-breakpoint) {
   .datagovuk-search-bar {
     display: flex;
-    align-items: baseline;
     margin-bottom: 20px;
     margin-top: 20px;
   }
 
   .datagovuk-search-bar .datagovuk-form-group {
     display: flex;
-    gap: 10px;
-    align-items: baseline;
     flex-grow: 1;
-  }
-
-  .datagovuk-search-bar .govuk-label {
-    flex-shrink: 0;
   }
 
   .datagovuk-search-bar .govuk-input {

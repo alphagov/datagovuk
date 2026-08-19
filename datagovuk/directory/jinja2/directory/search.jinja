@@ -9,6 +9,7 @@
 {% block search_main %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
+      <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase">Filters</h2>
       {# djlint:off #}
       {{ govukSelect({
         "label": {
@@ -60,7 +61,11 @@
         {% if results.hits > 0 %}
           <div class="datagovuk-search__results-header">
             <div class="govuk-body datagovuk-body datagovuk-search__results-count">
-              {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ pagination.total_results|intcomma }} results
+              {% if pagination.first_result_in_page != 1 %}
+                {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ pagination.total_results|intcomma }} results
+              {% else %}
+                {{ pagination.total_results|intcomma }} results
+              {% endif %}
             </div>
             {{ govukSelect({
                         "label": {

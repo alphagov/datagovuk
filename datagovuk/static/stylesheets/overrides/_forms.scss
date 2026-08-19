@@ -9,8 +9,8 @@
   .govuk-input, .autocomplete__input, .autocomplete__hint {
     padding: 25px 15px;
     color: $datagovuk-black;
-    border-color: $datagovuk-black;
-    border-radius: 20px;
+    border-color: $datagovuk-mid-grey;
+    border-radius: 10px;
     font-size: 20px;
     font-family: 'Inter', sans-serif;
     border-width: 1px;
@@ -26,6 +26,7 @@
     font-family: 'Inter', sans-serif;
     min-width: auto;
     border-width: 1px;
+    border-color: $datagovuk-mid-grey;
   }
 
   .autocomplete__dropdown-arrow-down {
@@ -51,9 +52,7 @@
   }
 
   .autocomplete__menu .autocomplete__option:hover, .autocomplete__menu .autocomplete__option--focused {
-    color: #FFF;
-    background-color: $datagovuk-green;
-    border-color: $datagovuk-green;
+    background-color: $datagovuk-light-grey;
   }
 
   .autocomplete__menu {
@@ -64,23 +63,10 @@
     width: 100%;
   }
 
-  .autocomplete__menu::-webkit-scrollbar-track {
-    background: transparent;
-    margin: 8px 0;
-  }
-
-  .autocomplete__menu::-webkit-scrollbar-thumb {
-    background: #bbb;
-    border-radius: 4px;
-  }
-
-  .autocomplete__menu::-webkit-scrollbar-thumb:hover {
-    background: #888;
-  }
-
   .govuk-checkboxes__label:before {
     border-radius: 8px;
     border-width: 1px;
+    border-color: $datagovuk-mid-grey;
   }
 }
 
