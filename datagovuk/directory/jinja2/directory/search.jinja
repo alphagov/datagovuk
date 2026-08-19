@@ -62,9 +62,9 @@
           <div class="datagovuk-search__results-header">
             <div class="govuk-body datagovuk-body datagovuk-search__results-count">
               {% if pagination.first_result_in_page != 1 %}
-                {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ pagination.total_results|intcomma }} results
+                {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ pagination.total_results|intcomma }} result{{ "s" if pagination.total_results > 1 else "" }}
               {% else %}
-                {{ pagination.total_results|intcomma }} results
+                {{ pagination.total_results|intcomma }} result{{ "s" if pagination.total_results > 1 else "" }}
               {% endif %}
             </div>
             {{ govukSelect({
