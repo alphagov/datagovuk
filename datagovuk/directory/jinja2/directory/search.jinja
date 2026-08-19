@@ -9,7 +9,7 @@
 {% block search_main %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase">Filters</h2>
+      <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
       {# djlint:off #}
       {{ govukSelect({
         "label": {
@@ -53,7 +53,7 @@
          "formGroup": {"classes": "datagovuk-form-group"},
       }) }}
       {# djlint:on #}
-      {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button"}) }}
+      {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button datagovuk-button--secondary"}) }}
     </div>
 
     <div class="govuk-grid-column-two-thirds">
