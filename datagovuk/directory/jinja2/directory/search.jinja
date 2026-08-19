@@ -93,15 +93,11 @@
                      class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.title }}</a>
                 </h2>
                 <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
-                  <div class="datagovuk-search-results__item-label datagovuk-search-results__item--icon datagovuk-search-results__item--icon-publisher">
-                    Publisher
-                  </div>
+                  <div class="datagovuk-search-results__item-label">Publisher</div>
                   <div class="datagovuk-search-results__item-value">{{ doc.organisation.title }}</div>
                 </div>
                 <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
-                  <div class="datagovuk-search-results__item-label datagovuk-search-results__item--icon datagovuk-search-results__item--icon-updated">
-                    Updated
-                  </div>
+                  <div class="datagovuk-search-results__item-label">Updated</div>
                   <div class="datagovuk-search-results__item-value">{{ doc.public_updated_at|date("j F Y") }}</div>
                 </div>
                 <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.summary | striptags | truncate(200) }}</div>
