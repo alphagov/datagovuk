@@ -9,7 +9,11 @@
         <a href="{{ url('pages:about') }}" class="govuk-footer__link datagovuk-footer__link datagovuk-link">About</a>
       </li>
       <li class="govuk-footer__inline-list-item">
-        <a href="{{ url('pages:support') }}" class="govuk-footer__link datagovuk-footer__link  datagovuk-link">Support</a>
+        {% if is_feature_flag_enabled(FEATURE_FLAGS.SUPPORT_FORM) %}
+          <a href="{{ url('support:support-form') }}" class="govuk-footer__link datagovuk-footer__link  datagovuk-link">Support</a>
+        {% else %}
+          <a href="{{ url('pages:support') }}" class="govuk-footer__link datagovuk-footer__link  datagovuk-link">Support</a>
+        {% endif %}
       </li>
       <li class="govuk-footer__inline-list-item">
         <a href="{{ url('pages:accessibility') }}" class="govuk-footer__link datagovuk-footer__link  datagovuk-link">Accessibility</a>
