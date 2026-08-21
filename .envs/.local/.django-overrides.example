@@ -1,3 +1,4 @@
 # For testing GTM integration, uncomment the below
 #GOOGLE_TAG_MANAGER_ID=GTM-5WRWCH8X
 FEATURE_FLAGS_ENABLED=test-feature-flag
+ZENDESK_API_KEY=your-secret-key

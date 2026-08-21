@@ -84,6 +84,7 @@ LOCAL_APPS = [
     "datagovuk.collections",
     "datagovuk.directory",
     "datagovuk.ckan_redirect",
+    "datagovuk.support",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -316,12 +317,18 @@ DATAGOVUK_GIT_SHA = env("GIT_SHA", default=None)
 
 class FEATURE_FLAGS(Enum):  # noqa: N801
     TEST_FEATURE_FLAG = "test-feature-flag"
+    SUPPORT_FORM = "support-form"
 
 
 FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
+
 
 SOLR_URL = env("SOLR_URL", default=None)
 
 MONKEYPATCH_ZSCALER_SSL = env.bool("MONKEYPATCH_ZSCALER_SSL", False)
 
 CKAN_DOMAIN = "ckan.publishing.service.gov.uk"
+
+ZENDESK_API_KEY = env("ZENDESK_API_KEY", default=None)
+ZENDESK_TICKET_URL = env("ZENDESK_TICKET_URL", default=None)
+NOTIFY_ZENDESK_EMAIL = env("NOTIFY_ZENDESK_EMAIL", default=None)
