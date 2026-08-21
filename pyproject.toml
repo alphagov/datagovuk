@@ -40,12 +40,12 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "coverage==7.15.3",
+  "coverage==7.15.4",
   "django-coverage-plugin==3.2.2",
   "django-debug-toolbar==7.0.0",
   "django-extensions==4.1",
-  "django-stubs[compatible-mypy]==6.0.7",
-  "djlint==1.44.0",
+  "django-stubs[compatible-mypy]==6.0.8",
+  "djlint==1.44.1",
   "ipdb==0.13.13",
   "mypy==2.3.0",
   "playwright==1.62.0",
