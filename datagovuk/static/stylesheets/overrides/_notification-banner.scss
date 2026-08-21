@@ -1,0 +1,13 @@
+.datagovuk-notification-banner.govuk-notification-banner--success {
+  background-color: $datagovuk-light-green;
+}
+
+.datagovuk-notification-banner .govuk-notification-banner__title,
+.datagovuk-notification-banner .govuk-notification-banner__heading {
+  font-family: 'Inter', sans-serif;
+  color: $datagovuk-dark-green;
+}
+
+.datagovuk-notification-banner.govuk-notification-banner--success .govuk-notification-banner__content {
+  background-color: $datagovuk-light-green;
+}
