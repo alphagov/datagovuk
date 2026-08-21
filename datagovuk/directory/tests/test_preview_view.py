@@ -145,7 +145,7 @@ class TestPreviewView:
 
         response = call_view(rf)
 
-        assert "datagovuk-feedback-inset-text" not in response.rendered_content
+        assert "datagovuk-inset-text" not in response.rendered_content
 
     @patch("datagovuk.directory.views.fetch_csv")
     @patch("datagovuk.directory.views.get_solr_client")
