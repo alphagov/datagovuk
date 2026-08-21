@@ -6,7 +6,26 @@
     color: $datagovuk-black;
   }
 
-  .govuk-input, .autocomplete__input, .autocomplete__hint {
+  .govuk-hint {
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    color: $datagovuk-grey;
+    margin-bottom: 20px !important;
+  }
+
+  .govuk-label.datagovuk-heading-m {
+    font-size: 26px;
+    font-weight: normal;
+    line-height: 120%;
+  }
+
+  .govuk-fieldset__legend .datagovuk-heading-m {
+    font-size: 26px;
+    font-weight: normal;
+    line-height: 120%;
+  }
+
+  .govuk-input, .govuk-textarea, .autocomplete__input, .autocomplete__hint {
     padding: 25px 15px;
     color: $datagovuk-black;
     border-color: $datagovuk-mid-grey;
@@ -75,8 +94,13 @@
   .datagovuk-form-group {
     .govuk-label,
     .govuk-input,
+    .govuk-textarea,
     .govuk-select {
       font-size: 22px;
+    }
+
+    .govuk-label.datagovuk-heading-m {
+      font-size: 30px;
     }
   }
 }
