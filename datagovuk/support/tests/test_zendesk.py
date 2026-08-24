@@ -1,8 +1,11 @@
+import base64
+import json
 import logging
 from http import HTTPStatus
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
+import responses
 
 from datagovuk.support.zendesk import NDLSupportTicket, ZendeskClient, ZendeskError, send_ticket_to_zendesk
 
@@ -58,11 +61,13 @@ class TestZendeskClient:
         with pytest.raises(NotImplementedError, match=f"{missing_setting} not set"):
             ZendeskClient()
 
-    @patch("datagovuk.support.zendesk.requests.Session.post")
-    def test_successful_ticket_creation(self, mock_post, zendesk_client, ticket, caplog):
-        mock_post.return_value = MagicMock(
-            status_code=HTTPStatus.CREATED,
-            json=MagicMock(return_value={"ticket": {"id": ZENDESK_TICKET_ID}}),
+    @responses.activate
+    def test_successful_ticket_creation(self, zendesk_client, ticket, caplog):
+        responses.add(
+            responses.POST,
+            "https://govuk.zendesk.com/api/v2/tickets.json",
+            json={"ticket": {"id": ZENDESK_TICKET_ID}},
+            status=HTTPStatus.CREATED,
         )
 
         with caplog.at_level(logging.INFO):
@@ -71,29 +76,28 @@ class TestZendeskClient:
         assert result == ZENDESK_TICKET_ID
         assert f"Zendesk create ticket {ZENDESK_TICKET_ID} succeeded" in caplog.messages
 
-    @patch("datagovuk.support.zendesk.requests.Session.post")
-    def test_failed_ticket_creation_raises_zendesk_error(self, mock_post, zendesk_client, ticket):
-        mock_response = MagicMock(
-            status_code=HTTPStatus.UNAUTHORIZED,
-            json=MagicMock(return_value={"foo": "bar"}),
+    @responses.activate
+    def test_failed_ticket_creation_raises_zendesk_error(self, zendesk_client, ticket):
+        responses.add(
+            responses.POST,
+            "https://govuk.zendesk.com/api/v2/tickets.json",
+            json={"foo": "bar"},
+            status=HTTPStatus.UNAUTHORIZED,
         )
-        mock_post.return_value = mock_response
 
-        with pytest.raises(ZendeskError) as exc_info:
+        with pytest.raises(ZendeskError):
             zendesk_client.send_ticket_to_zendesk(ticket)
 
-        assert exc_info.value.response == mock_response
-
-    @patch("datagovuk.support.zendesk.requests.Session.post")
-    def test_suspended_user_returns_none(self, mock_post, zendesk_client, ticket, caplog):
-        mock_post.return_value = MagicMock(
-            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-            json=MagicMock(
-                return_value={
-                    "error": "RecordInvalid",
-                    "details": {"requester": [{"description": "Requester: user is suspended."}]},
-                },
-            ),
+    @responses.activate
+    def test_suspended_user_returns_none(self, zendesk_client, ticket, caplog):
+        responses.add(
+            responses.POST,
+            "https://govuk.zendesk.com/api/v2/tickets.json",
+            json={
+                "error": "RecordInvalid",
+                "details": {"requester": [{"description": "Requester: user is suspended."}]},
+            },
+            status=HTTPStatus.UNPROCESSABLE_ENTITY,
         )
 
         with caplog.at_level(logging.WARNING):
@@ -102,21 +106,24 @@ class TestZendeskClient:
         assert result is None
         assert "Zendesk create ticket failed because user is suspended" in caplog.text
 
-    @patch("datagovuk.support.zendesk.requests.Session.post")
-    def test_sends_correct_request_data(self, mock_post, zendesk_client, ticket):
-        mock_post.return_value = MagicMock(
-            status_code=HTTPStatus.CREATED,
-            json=MagicMock(return_value={"ticket": {"id": ZENDESK_TICKET_ID}}),
+    @responses.activate
+    def test_sends_correct_request_data(self, zendesk_client, ticket):
+        responses.add(
+            responses.POST,
+            "https://govuk.zendesk.com/api/v2/tickets.json",
+            json={"ticket": {"id": ZENDESK_TICKET_ID}},
+            status=HTTPStatus.CREATED,
         )
 
         zendesk_client.send_ticket_to_zendesk(ticket)
 
-        mock_post.assert_called_once_with(
-            "https://govuk.zendesk.com/api/v2/tickets.json",
-            json=ticket.request_data,
-            auth=("test@example.com/token", "testkey"),
-            headers={"Content-type": "application/json"},
-        )
+        assert len(responses.calls) == 1
+        request = responses.calls[0].request
+        assert request.url == "https://govuk.zendesk.com/api/v2/tickets.json"
+        assert json.loads(request.body) == ticket.request_data
+        assert request.headers["Content-type"] == "application/json"
+        basic_auth = base64.b64encode(b"test@example.com/token:testkey").decode()
+        assert request.headers["Authorization"] == f"Basic {basic_auth}"
 
 
 class TestNDLSupportTicket:

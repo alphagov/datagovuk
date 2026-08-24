@@ -31,7 +31,7 @@ class SupportFormView(FormView):
         message_body = []
         # TODO: page reference would be the HTTP referer url path + query params?
         if http_referer:
-            # TODO: how would we show the parsed_url in the message_body?
+            # TODO: how should we show the parsed_url in the message_body?
             message_body.append(f"Page referred from: {http_referer}")
         message_body.append(f"\nDetails:\n{details}")
 
@@ -39,8 +39,8 @@ class SupportFormView(FormView):
             send_ticket_to_zendesk(message_body, requester_name, requester_email)
         except ZendeskError as e:
             capture_exception(e)
-            messages.error(self.request, "Please try again later")
+            messages.error(self.request, "Your message wasn't sent")
             return self.form_invalid(form)
 
-        messages.success(self.request, "Your support ticket has been successfully sent")
+        messages.success(self.request, "Your message was sent")
         return super().form_valid(form)

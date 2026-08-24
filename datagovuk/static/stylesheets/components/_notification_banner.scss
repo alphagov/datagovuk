@@ -1,0 +1,48 @@
+.datagovuk-success-notification-banner {
+    margin: 0px;
+    margin-bottom: 30px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: $datagovuk-light-green;
+}
+
+.datagovuk-success-notification-banner .datagovuk-notification-banner__text.datagovuk-body {
+    color: $datagovuk-dark-green;
+}
+
+.datagovuk-error-notification-banner {
+    background-color: $datagovuk-pink;
+}
+
+.datagovuk-notification-banner__text {
+    padding-left: 10px;
+}
+
+.datagovuk-notification-banner__icon {
+    display: block;
+}
+
+.datagovuk-error-notification-banner {
+    margin: 0;
+    margin-bottom: 30px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: $datagovuk-light-pink;
+}
+
+.datagovuk-error-notification-banner .datagovuk-notification-banner__text.datagovuk-body {
+    color: $datagovuk-dark-pink;
+}
+
+.datagovuk-success-notification-banner:focus,
+.datagovuk-error-notification-banner:focus {
+    border: 3px solid $datagovuk-black;
+    outline: 3px solid $datagovuk-yellow;
+}
+
+/* Desktop styling overrides */
+@media (min-width: $desktop-header-breakpoint) {
+    .datagovuk-notification-banner__icon {
+        padding: 15px;
+    }
+}

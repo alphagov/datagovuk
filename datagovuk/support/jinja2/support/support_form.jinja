@@ -1,11 +1,8 @@
 {% extends "base.jinja" %}
 
-{% from "govuk_frontend_jinja/components/radios/macro.html" import govukRadios -%}
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput -%}
 {% from "govuk_frontend_jinja/components/character-count/macro.html" import govukCharacterCount -%}
 {% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
-{% from "govuk_frontend_jinja/components/notification-banner/macro.html" import govukNotificationBanner -%}
-{% from "govuk_frontend_jinja/components/error-summary/macro.html" import govukErrorSummary -%}
 
 {% set page_title = "Contact" %}
 
@@ -14,39 +11,17 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-l datagovuk-heading-l">Contact National Data Library</h1>
-
         {% if messages %}
           {% for message in messages %}
             {% if message.tags == "success" %}
-              <div>
-                <section class="govuk-notification-banner gem-c-notice govuk-!-margin-bottom-8"
-                         aria-label="Notice"
-                         aria-live="polite"
-                         role="region">
-                  <div>
-                    <h2 class="govuk-heading-l datagovuk-heading-l govuk-notification-banner__heading">Success</h2>
-                    <p class="govuk-body datagovuk-body">{{ message.message }}</p>
-                  </div>
-                </section>
-              </div>
+              {% include "includes/success_banner.jinja" %}
             {% else %}
-              <div>
-                <section class="govuk-notification-banner datagovuk-error-banner govuk-!-margin-bottom-8"
-                         aria-label="Notice"
-                         aria-live="polite"
-                         role="region">
-                  <div>
-                    <h2 class="govuk-heading-l datagovuk-heading-l govuk-notification-banner__heading">
-                      Sorry, there is a problem with the service
-                    </h2>
-                    <p class="govuk-body datagovuk-body">{{ message.message }}</p>
-                  </div>
-                </section>
-              </div>
+              {% include "includes/error_banner.jinja" %}
             {% endif %}
           {% endfor %}
         {% endif %}
+
+        <h1 class="govuk-heading-l datagovuk-heading-l">Contact National Data Library</h1>
 
         <section class="govuk-!-margin-bottom-8">
           <p class="govuk-body datagovuk-body">
@@ -77,11 +52,9 @@
         <form method="post" novalidate class="govuk-!-margin-bottom-8">
           {{ csrf_input }}
 
-          {# hidden value with http refererr #}
           <input type="hidden" class="govuk-visually-hidden" name="http_referer" value="{{ form.http_referer.value() |default('') }}" />
 
           {# djlint:off #}
-          {# TODO: shoule the hint text be grey or black? #}
             {{
               govukCharacterCount({
                 "label": {

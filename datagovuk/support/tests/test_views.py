@@ -16,6 +16,7 @@ class TestSupportFormView:
         response = client.get("/support-form/")
         assert response.status_code == HTTPStatus.OK
         assert "Contact National Data Library" in response.content.decode()
+        assert "Your message was sent" in response.content.decode()
 
     @patch("datagovuk.support.views.send_ticket_to_zendesk")
     def test_view_valid_submission_redirects_and_sends_zendesk_ticket(self, mock_zendesk, client):
@@ -95,4 +96,4 @@ class TestSupportFormView:
         }
         response = client.post("/support-form/", data=form_data)
         assert response.status_code == HTTPStatus.OK
-        assert "Please try again later" in response.content.decode()
+        assert "Your message wasn't sent" in response.content.decode()
