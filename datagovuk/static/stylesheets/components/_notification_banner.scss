@@ -1,13 +1,12 @@
 .datagovuk-success-notification-banner {
     margin: 0px;
     margin-bottom: 30px;
-    margin-top: 20px;
     padding: 15px;
-    background-color: $datagovuk-light-green;
     border-radius: 10px;
+    background-color: $datagovuk-light-green;
 }
 
-.datagovuk-notification-banner__content .datagovuk-body {
+.datagovuk-success-notification-banner .datagovuk-notification-banner__text.datagovuk-body {
     color: $datagovuk-dark-green;
 }
 
@@ -21,6 +20,18 @@
 
 .datagovuk-notification-banner__icon {
     display: block;
+}
+
+.datagovuk-error-notification-banner {
+    margin: 0px;
+    margin-bottom: 30px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: $datagovuk-light-pink;
+}
+
+.datagovuk-error-notification-banner .datagovuk-notification-banner__text.datagovuk-body {
+    color: $datagovuk-dark-pink;
 }
 
 /* Desktop styling overrides */
