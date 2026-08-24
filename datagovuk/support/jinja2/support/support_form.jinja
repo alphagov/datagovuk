@@ -14,39 +14,17 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-l datagovuk-heading-l">Contact National Data Library</h1>
-
         {% if messages %}
           {% for message in messages %}
             {% if message.tags == "success" %}
-              <div>
-                <section class="govuk-notification-banner gem-c-notice govuk-!-margin-bottom-8"
-                         aria-label="Notice"
-                         aria-live="polite"
-                         role="region">
-                  <div>
-                    <h2 class="govuk-heading-l datagovuk-heading-l govuk-notification-banner__heading">Success</h2>
-                    <p class="govuk-body datagovuk-body">{{ message.message }}</p>
-                  </div>
-                </section>
-              </div>
+              {% include "includes/success_banner.jinja" %}
             {% else %}
-              <div>
-                <section class="govuk-notification-banner datagovuk-error-banner govuk-!-margin-bottom-8"
-                         aria-label="Notice"
-                         aria-live="polite"
-                         role="region">
-                  <div>
-                    <h2 class="govuk-heading-l datagovuk-heading-l govuk-notification-banner__heading">
-                      Sorry, there is a problem with the service
-                    </h2>
-                    <p class="govuk-body datagovuk-body">{{ message.message }}</p>
-                  </div>
-                </section>
-              </div>
+              {% include "includes/error_banner.jinja" %}
             {% endif %}
           {% endfor %}
         {% endif %}
+
+        <h1 class="govuk-heading-l datagovuk-heading-l">Contact National Data Library</h1>
 
         <section class="govuk-!-margin-bottom-8">
           <p class="govuk-body datagovuk-body">
