@@ -6,27 +6,40 @@
 }
 
 .datagovuk-notification-banner {
-    margin: 0px;
+    margin: 0;
     margin-bottom: 30px;
     padding: 15px;
     border-radius: 10px;
 }
 
-.datagovuk-success-notification-banner {
+.datagovuk-notification-banner--success {
     background-color: $datagovuk-light-green;
 }
 
-.datagovuk-error-notification-banner {
+.datagovuk-notification-banner--error {
     background-color: $datagovuk-light-pink;
+
+}
+
+.datagovuk-notification-banner--success:focus,
+.datagovuk-notification-banner--error:focus {
+    border: 3px solid $datagovuk-black;
+    outline: 3px solid $datagovuk-yellow;
+}
+
+.datagovuk-notification-banner--success,
+.datagovuk-notification-banner--error {
+    border: 3px solid transparent; // Fixes :focus repositioning other elements on page
+    padding: 13px;
 }
 
 .datagovuk-notification-banner__content {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .datagovuk-notification-banner__content .datagovuk-body {
-   margin: 0;
+    margin: 0;
 }
 
 .datagovuk-close {
@@ -36,9 +49,9 @@
 }
 
 .datagovuk-close__image {
-  display: block;
-  width: 20px;
-  height: 20px;
+    display: block;
+    width: 20px;
+    height: 20px;
 }
 
 .datagovuk-notification-banner__icon {
@@ -47,7 +60,7 @@
     padding-left: 0px;
 }
 
-.datagovuk-success-notification-banner .datagovuk-notification-banner__text.datagovuk-body {
+.datagovuk-notification-banner--success .datagovuk-notification-banner__text.datagovuk-body {
     color: $datagovuk-dark-green;
 }
 
@@ -55,14 +68,8 @@
     padding-left: 10px;
 }
 
-.datagovuk-error-notification-banner .datagovuk-notification-banner__text.datagovuk-body {
+.datagovuk-notification-banner--error .datagovuk-notification-banner__text.datagovuk-body {
     color: $datagovuk-dark-pink;
-}
-
-.datagovuk-success-notification-banner:focus,
-.datagovuk-error-notification-banner:focus {
-    border: 3px solid $datagovuk-black;
-    outline: 3px solid $datagovuk-yellow;
 }
 
 /* Desktop styling overrides */
@@ -75,6 +82,10 @@
         margin-bottom: 20px;
         margin-top: 20px;
         padding: 15px 0px;
+    }
+
+    .datagovuk-notification-banner--success,.datagovuk-notification-banner--error {
+        padding: 12px;
     }
 
     .datagovuk-survey-notification-banner .datagovuk-notification-banner__icon {
