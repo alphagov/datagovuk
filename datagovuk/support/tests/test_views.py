@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import pytest
 from django.contrib.messages import get_messages
+from django.urls import reverse
 
 from datagovuk.support.zendesk import ZendeskError
 
@@ -14,7 +15,8 @@ def support_feature_flag(settings):
 
 class TestSupportFormView:
     def test_view_renders_successfully(self, client):
-        response = client.get("/support-form/")
+        url = reverse("support:support-form")
+        response = client.get(url)
         assert response.status_code == HTTPStatus.OK
         assert "Contact National Data Library" in response.content.decode()
 
@@ -26,7 +28,8 @@ class TestSupportFormView:
             "name": "Test user",
             "email": "test@example.com",
         }
-        response = client.post("/support-form/", data=form_data)
+        url = reverse("support:support-form")
+        response = client.post(url, data=form_data)
         assert response.status_code == HTTPStatus.FOUND
         mock_zendesk.assert_called_once_with(
             [
@@ -47,7 +50,8 @@ class TestSupportFormView:
             "name": "Test user",
             "email": "test@example.com",
         }
-        response = client.post("/support-form/", data=form_data)
+        url = reverse("support:support-form")
+        response = client.post(url, data=form_data)
         assert response.status_code == HTTPStatus.FOUND
         mock_zendesk.assert_called_once_with(
             [
@@ -65,7 +69,8 @@ class TestSupportFormView:
             "name": "Test user",
             "email": "test@example.com",
         }
-        response = client.post("/support-form/", data=form_data)
+        url = reverse("support:support-form")
+        response = client.post(url, data=form_data)
         assert response.status_code == HTTPStatus.OK
         assert "This field is required." in response.content.decode()
         mock_zendesk.assert_not_called()
@@ -78,7 +83,8 @@ class TestSupportFormView:
             "name": "",
             "email": "",
         }
-        response = client.post("/support-form/", data=form_data)
+        url = reverse("support:support-form")
+        response = client.post(url, data=form_data)
         assert response.status_code == HTTPStatus.FOUND
         mock_zendesk.assert_called_once_with(
             [
@@ -97,7 +103,8 @@ class TestSupportFormView:
             "name": "Test user",
             "email": "test@example.com",
         }
-        response = client.post("/support-form/", data=form_data)
+        url = reverse("support:support-form")
+        response = client.post(url, data=form_data)
         assert response.status_code == HTTPStatus.OK
         stored_messages = list(get_messages(response.wsgi_request))
         assert len(stored_messages) == 1
