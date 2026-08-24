@@ -31,7 +31,7 @@ class SupportFormView(FormView):
         message_body = []
         # TODO: page reference would be the HTTP referer url path + query params?
         if http_referer:
-            # TODO: how would we show the parsed_url in the message_body?
+            # TODO: how should we show the parsed_url in the message_body?
             message_body.append(f"Page referred from: {http_referer}")
         message_body.append(f"\nDetails:\n{details}")
 
