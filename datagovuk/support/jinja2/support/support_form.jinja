@@ -1,11 +1,8 @@
 {% extends "base.jinja" %}
 
-{% from "govuk_frontend_jinja/components/radios/macro.html" import govukRadios -%}
 {% from "govuk_frontend_jinja/components/input/macro.html" import govukInput -%}
 {% from "govuk_frontend_jinja/components/character-count/macro.html" import govukCharacterCount -%}
 {% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
-{% from "govuk_frontend_jinja/components/notification-banner/macro.html" import govukNotificationBanner -%}
-{% from "govuk_frontend_jinja/components/error-summary/macro.html" import govukErrorSummary -%}
 
 {% set page_title = "Contact" %}
 
@@ -55,11 +52,9 @@
         <form method="post" novalidate class="govuk-!-margin-bottom-8">
           {{ csrf_input }}
 
-          {# hidden value with http refererr #}
           <input type="hidden" class="govuk-visually-hidden" name="http_referer" value="{{ form.http_referer.value() |default('') }}" />
 
           {# djlint:off #}
-          {# TODO: shoule the hint text be grey or black? #}
             {{
               govukCharacterCount({
                 "label": {

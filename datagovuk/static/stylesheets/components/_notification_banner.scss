@@ -23,7 +23,7 @@
 }
 
 .datagovuk-error-notification-banner {
-    margin: 0px;
+    margin: 0;
     margin-bottom: 30px;
     padding: 15px;
     border-radius: 10px;
@@ -32,6 +32,12 @@
 
 .datagovuk-error-notification-banner .datagovuk-notification-banner__text.datagovuk-body {
     color: $datagovuk-dark-pink;
+}
+
+.datagovuk-success-notification-banner:focus,
+.datagovuk-error-notification-banner:focus {
+    border: 3px solid $datagovuk-black;
+    outline: 3px solid $datagovuk-yellow;
 }
 
 /* Desktop styling overrides */

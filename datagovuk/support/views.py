@@ -39,8 +39,8 @@ class SupportFormView(FormView):
             send_ticket_to_zendesk(message_body, requester_name, requester_email)
         except ZendeskError as e:
             capture_exception(e)
-            messages.error(self.request, "Please try again later")
+            messages.error(self.request, "Your message wasn't sent")
             return self.form_invalid(form)
 
-        messages.success(self.request, "Your support ticket has been successfully sent")
+        messages.success(self.request, "Your message was sent")
         return super().form_valid(form)
