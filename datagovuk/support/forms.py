@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import URLValidator
 from django.db import models
 
 
@@ -22,4 +23,5 @@ class SupportForm(forms.Form):
     )
     http_referer = forms.CharField(
         required=False,
+        validators=[URLValidator(schemes=["http", "https"])],
     )

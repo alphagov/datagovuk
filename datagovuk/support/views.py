@@ -23,7 +23,7 @@ class SupportFormView(FormView):
 
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
-        http_referer = cleaned_data["http_referer"]
+        http_referer = cleaned_data.get("http_referer", "")
         details = cleaned_data["details"]
         requester_name = cleaned_data["name"] or None
         requester_email = cleaned_data["email"] or None
