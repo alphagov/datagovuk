@@ -29,9 +29,8 @@ class SupportFormView(FormView):
         requester_email = cleaned_data["email"] or None
 
         message_body = []
-        # TODO: page reference would be the HTTP referer url path + query params?
         if http_referer:
-            # TODO: how should we show the parsed_url in the message_body?
+            # TODO: how should we show the parsed_url in the message_body? must include query params?
             message_body.append(f"Page referred from: {http_referer}")
         message_body.append(f"\nDetails:\n{details}")
 

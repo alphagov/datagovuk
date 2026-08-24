@@ -2,6 +2,7 @@ from http import HTTPStatus
 from unittest.mock import patch
 
 import pytest
+from django.contrib.messages import get_messages
 
 from datagovuk.support.zendesk import ZendeskError
 
@@ -16,7 +17,6 @@ class TestSupportFormView:
         response = client.get("/support-form/")
         assert response.status_code == HTTPStatus.OK
         assert "Contact National Data Library" in response.content.decode()
-        assert "Your message was sent" in response.content.decode()
 
     @patch("datagovuk.support.views.send_ticket_to_zendesk")
     def test_view_valid_submission_redirects_and_sends_zendesk_ticket(self, mock_zendesk, client):
@@ -36,6 +36,9 @@ class TestSupportFormView:
             "Test user",
             "test@example.com",
         )
+        messages = list(get_messages(response.wsgi_request))
+        assert len(messages) == 1
+        assert str(messages[0]) == "Your message was sent"
 
     @patch("datagovuk.support.views.send_ticket_to_zendesk")
     def test_view_with_no_http_referer_sends_zendesk_ticket_without_page_referer(self, mock_zendesk, client):
@@ -96,4 +99,6 @@ class TestSupportFormView:
         }
         response = client.post("/support-form/", data=form_data)
         assert response.status_code == HTTPStatus.OK
-        assert "Your message wasn't sent" in response.content.decode()
+        stored_messages = list(get_messages(response.wsgi_request))
+        assert len(stored_messages) == 1
+        assert str(stored_messages[0]) == "Your message wasn't sent"
