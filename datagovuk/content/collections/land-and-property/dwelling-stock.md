@@ -6,7 +6,7 @@ websites:
 api:
 dataset:
 page-last-updated: "2026-07-23"
-visualisation-data: "dwelling-stock/dwelling-stock.json"
+visualisation-data: "dwelling-stock/dwelling-stock-2009-2025-private-non-private.json"
 contact:
 status: for-publication
 ---
