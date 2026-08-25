@@ -62,15 +62,8 @@ jobs:
             --task-definition ${{ env.APP_NAME }} \
             --region ${{ env.AWS_REGION }} \
             --query 'taskDefinition' \
-            --output json | \
-          python3 -c "
-import sys, json
-td = json.load(sys.stdin)
-for k in ['taskDefinitionArn','revision','status','requiresAttributes',
-          'compatibilities','registeredAt','registeredBy','deregisteredAt']:
-    td.pop(k, None)
-print(json.dumps(td))
-" > task-definition.json
+            --output json > /tmp/td.json
+          jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .deregisteredAt)' /tmp/td.json > task-definition.json
 
       - name: Update task definition with new image
         id: render-task-def
