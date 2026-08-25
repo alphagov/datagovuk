@@ -11,15 +11,13 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
 
-        {% if messages %}
-          {% for message in messages %}
-            {% if message.tags == "success" %}
-              {% include "includes/success_banner.jinja" %}
-            {% else %}
-              {% include "includes/error_banner.jinja" %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
+        {% for message in messages %}
+          {% if message.tags == "success" %}
+            {% include "includes/success_banner.jinja" %}
+          {% else %}
+            {% include "includes/error_banner.jinja" %}
+          {% endif %}
+        {% endfor %}
 
         <h1 class="govuk-heading-l datagovuk-heading-l">Contact National Data Library</h1>
 
