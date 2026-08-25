@@ -54,7 +54,7 @@
                 "id": form.details.id_for_label,
                 "name": form.details.html_name,
                 "value": form.details.value() or "",
-                "maxlength": 1200,
+                "maxlength": form.details.field.max_length,
                 "errorMessage": {"text": form.details.errors|join} if form.details.errors else None,
                 "formGroup": {
                   "classes": "datagovuk-form-group"
