@@ -32,16 +32,7 @@ def test_accessibility_page_content(page, live_server_url):
     )
 
 
-@pytest.mark.smoke
-def test_support_page_content(page, live_server_url):
-    page.goto(live_server_url + "/support/")
-    expect(page.get_by_role("heading", level=1)).to_have_text("Support")
-    expect(page.get_by_role("heading", level=2, name="If you’re a civil servant")).to_be_visible()  # noqa: RUF001
-    expect(page.get_by_role("heading", level=2, name="Other")).to_be_visible()
-    expect(page.get_by_role("link", name="#datagovuk")).to_have_attribute(
-        "href",
-        "https://ukgovernmentdigital.slack.com/archives/C037J3GTE4T",
-    )
+# TODO: reenable the support page test once the new support page is implemented in all environments
 
 
 def test_team_page_content(page, live_server_url):

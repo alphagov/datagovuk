@@ -1,0 +1,13 @@
+<div class="datagovuk-notification-banner datagovuk-notification-banner--error"
+     role="region"
+     aria-label="error notification banner"
+     data-module="notification-banner-close"
+     tabindex="-1">
+  <div class="datagovuk-notification-banner__content">
+    <img class="datagovuk-notification-banner__icon" src="{{ static('images/error.svg') }}" alt="" />
+    <p class="govuk-body datagovuk-body datagovuk-notification-banner__text">{{ message.message }}</p>
+    <a class="datagovuk-close govuk-link datagovuk-link" href="#" aria-label="Close error banner">
+      <img class="datagovuk-close__image" src="{{ static('images/close_error.svg') }}" alt="" />
+    </a>
+  </div>
+</div>
