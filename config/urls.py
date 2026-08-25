@@ -11,6 +11,7 @@ urlpatterns = [
     path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
     path("collections/", include("datagovuk.collections.urls", namespace="collections")),
     path("", include("datagovuk.directory.urls", namespace="directory")),
+    path("", include("datagovuk.support.urls", namespace="support")),
     path(
         "health/",
         HealthCheckView.as_view(
