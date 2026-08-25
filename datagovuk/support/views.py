@@ -30,7 +30,7 @@ class SupportFormView(FormView):
 
         message_body = []
         if http_referer:
-            # TODO: how should we show the parsed_url in the message_body? must include query params?
+            # TODO: how should we show the parsed_url in the message_body?
             message_body.append(f"Page referred from: {http_referer}")
         message_body.append(f"\nDetails:\n{details}")
 
