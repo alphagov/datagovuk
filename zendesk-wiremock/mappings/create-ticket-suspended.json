@@ -1,0 +1,25 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "POST",
+    "urlPath": "/api/v2/tickets.json",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.ticket[?(@.requester.email == 'suspended@example.net')]"
+      }
+    ]
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "details": {
+        "requester": [
+            {"description": "suspended"}
+        ]
+      }
+    }
+  }
+}
