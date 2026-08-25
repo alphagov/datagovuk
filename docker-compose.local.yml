@@ -23,6 +23,15 @@ services:
       solr:
         condition: service_healthy
 
+  zendesk-wiremock:
+    image: wiremock/wiremock:3.13.2
+    container_name: zendesk-wiremock
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./zendesk-wiremock/mappings:/home/wiremock/mappings
+    entrypoint: ["/docker-entrypoint.sh", "--global-response-templating"]
+
   playwright:
     build:
       context: .
