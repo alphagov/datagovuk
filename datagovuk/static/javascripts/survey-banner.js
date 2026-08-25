@@ -21,7 +21,7 @@ class DatagovukSurveyBanner {
 }
 
 // Initialize
-const $surveyBanner = document.querySelector('.datagovuk-survey-notification-banner')
+const $surveyBanner = document.querySelector('.datagovuk-notification-banner')
 if ($surveyBanner) {
   new DatagovukSurveyBanner($surveyBanner)
 }
