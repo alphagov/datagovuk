@@ -5,7 +5,7 @@
     "urlPath": "/api/v2/tickets.json",
     "bodyPatterns": [
       {
-        "matchesJsonPath": "$.ticket[?(@.ticket.comment.body == 'Trigger Error')]"
+        "matchesJsonPath": "$.ticket[?(@.comment.body contains 'Trigger Error')]"
       }
     ]
   },
