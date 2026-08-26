@@ -16,7 +16,7 @@ The National Data Library service cannot:
 ## If you need support with an issue
 For support with an issue, please use the [GOV.UK support form](https://www.gov.uk/contact/govuk) and mention that it’s about the National Data Library or data.gov.uk.
 
-Note if this is a quetsion about a dataset on teh dircetory, those are maintained by publishers, so you should contact the publisher directly using the contact details on the dataset’s page. 
+Note if this is a question about a dataset on the directory, those are maintained by publishers, so you should contact the publisher directly using the contact details on the dataset’s page.
 
 ## If you have feedback
 If you have feedback or a question about the curated data collections, the data manual or our roadmap, please complete our [feedback form](https://forms.office.com/e/9V26PNFQaR).
