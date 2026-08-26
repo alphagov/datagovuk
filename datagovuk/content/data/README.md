@@ -3,6 +3,12 @@
 This document records where the visualisation data for each item in data directory was collected from and what, if
 any processing (manual) that was done to that data.
 
+Our colours:
+Pink: #C27A9A
+Green: #00890B
+Black: #333333
+Blue: #026BDB
+
 
 ## Line and bar charts
 
