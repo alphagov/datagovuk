@@ -16,7 +16,7 @@ ZENDESK_TICKET_ID = 12345
 def zendesk_client(settings):
     settings.ZENDESK_API_KEY = "testkey"
     settings.ZENDESK_TICKET_URL = "https://govuk.zendesk.com/api/v2/tickets.json"
-    settings.NOTIFY_ZENDESK_EMAIL = "test@example.com"
+    settings.NDL_ZENDESK_EMAIL = "test@example.com"
     return ZendeskClient()
 
 
@@ -51,11 +51,11 @@ def test_send_ticket_to_zendesk_creates_and_sends_ticket(mock_zendesk):
 
 
 class TestZendeskClient:
-    @pytest.mark.parametrize("missing_setting", ["ZENDESK_API_KEY", "ZENDESK_TICKET_URL", "NOTIFY_ZENDESK_EMAIL"])
+    @pytest.mark.parametrize("missing_setting", ["ZENDESK_API_KEY", "ZENDESK_TICKET_URL", "NDL_ZENDESK_EMAIL"])
     def test_zendesk_client_raises_not_implemented_error_when_setting_not_set(self, settings, missing_setting):
         settings.ZENDESK_API_KEY = "testkey"
         settings.ZENDESK_TICKET_URL = "https://govuk.zendesk.com/api/v2/tickets.json"
-        settings.NOTIFY_ZENDESK_EMAIL = "test@example.com"
+        settings.NDL_ZENDESK_EMAIL = "test@example.com"
         setattr(settings, missing_setting, None)
 
         with pytest.raises(NotImplementedError, match=f"{missing_setting} not set"):
