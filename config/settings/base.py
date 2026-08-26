@@ -331,4 +331,4 @@ CKAN_DOMAIN = "ckan.publishing.service.gov.uk"
 
 ZENDESK_API_KEY = env("ZENDESK_API_KEY", default=None)
 ZENDESK_TICKET_URL = env("ZENDESK_TICKET_URL", default=None)
-NOTIFY_ZENDESK_EMAIL = env("NOTIFY_ZENDESK_EMAIL", default=None)
+NDL_ZENDESK_EMAIL = env("NDL_ZENDESK_EMAIL", default=None)

@@ -26,20 +26,20 @@ class ZendeskClient:
     """
 
     def __init__(self):
-        for setting in ("ZENDESK_API_KEY", "ZENDESK_TICKET_URL", "NOTIFY_ZENDESK_EMAIL"):
+        for setting in ("ZENDESK_API_KEY", "ZENDESK_TICKET_URL", "NDL_ZENDESK_EMAIL"):
             if not getattr(settings, setting):
                 error_message = f"{setting} not set"
                 raise NotImplementedError(error_message)
         self.api_key = settings.ZENDESK_API_KEY
         self.ticket_url = settings.ZENDESK_TICKET_URL
-        self.notify_zendesk_email = settings.NOTIFY_ZENDESK_EMAIL
+        self.NDL_ZENDESK_EMAIL = settings.NDL_ZENDESK_EMAIL
         self.requests_session = requests.Session()
 
     def send_ticket_to_zendesk(self, ticket):
         response = self.requests_session.post(
             self.ticket_url,
             json=ticket.request_data,
-            auth=(f"{self.notify_zendesk_email}/token", self.api_key),
+            auth=(f"{self.NDL_ZENDESK_EMAIL}/token", self.api_key),
             headers={"Content-type": "application/json"},
         )
 

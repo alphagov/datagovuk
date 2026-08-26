@@ -4,5 +4,5 @@ DJANGO_SETTINGS_MODULE=config.settings.local
 PLAYWRIGHT_HOST=playwright
 SOLR_URL=http://solr:8983/solr/ckan
 ZENDESK_TICKET_URL=http://zendesk-wiremock:8080/api/v2/tickets.json
-NOTIFY_ZENDESK_EMAIL=test@example.net
+NDL_ZENDESK_EMAIL=test@example.net
 ZENDESK_API_KEY=fake-key
