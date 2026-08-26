@@ -1,5 +1,5 @@
 {
-  "title": "Local authority owned dwellings let by local authorities (England)",
+  "title": "Local authority owned dwelling lets (England)",
   "visualisation_type": "line",
   "source": "https://www.gov.uk/government/statistical-data-sets/live-tables-on-rents-lettings-and-tenancies",
   "download": "rents-201011-to-202425.csv",
