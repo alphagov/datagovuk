@@ -45,7 +45,7 @@ def test_get_visualisation_bar_chart():
 
     assert isinstance(visualisation["visualisation"], BarChart)
     assert visualisation["type"] == "bar"
-    assert visualisation["title"] == "2024 Vote share by party (%)"
+    assert visualisation["title"] == "2024 UK General Election vote share by party (%)"
 
 
 def test_get_visualisation_headline():
@@ -53,7 +53,7 @@ def test_get_visualisation_headline():
 
     assert isinstance(visualisation["visualisation"], Headline)
     assert visualisation["type"] == "headline"
-    assert visualisation["title"] == "Companies incorporated and dissolved (2024-25)"
+    assert visualisation["title"] == "Companies incorporated and dissolved (2024/25)"
     assert "New companies incorporated 2024/2025" in str(visualisation["visualisation"])
 
 
