@@ -1,9 +1,10 @@
 {
-  "title": "UK annual mean temperature (°C), 1884 to 2025",
+  "title": "UK annual mean temperature",
   "visualisation_type": "line",
   "source": "https://www.metoffice.gov.uk/research/climate/maps-and-data/uk-and-regional-series",
   "download": "uk-mean-temperature.csv",
   "publisher": "Met Office",
+  "visualisation_suffix": "°C",
   "series": [
     {
       "color": "#C27A9A",

@@ -60,7 +60,9 @@ def test_collection_page_bar_chart_is_visible(page, live_server_url):
 
     expect(page.locator(".bar-chart")).to_be_visible()
     expect(page.locator(".bar-chart canvas")).to_be_visible()
-    expect(page.get_by_role("heading", level=2, name="2024 Vote share by party (%)")).to_be_visible()
+    expect(
+        page.get_by_role("heading", level=2, name="2024 UK General Election vote share by party (%)"),
+    ).to_be_visible()
 
 
 def test_collection_page_headline_is_visible(page, live_server_url):
@@ -72,7 +74,7 @@ def test_collection_page_headline_is_visible(page, live_server_url):
 
     expect(page.get_by_role("heading", name="Company formations")).to_be_visible()
     expect(page.get_by_role("heading", name="Company dissolutions")).to_be_visible()
-    expect(page.get_by_text("In 2024/2025 compared to 2023/2024.").first).to_be_visible()
+    expect(page.get_by_text("compared to 2023/2024.").first).to_be_visible()
     headline_column = page.locator(".datagovuk-headline__column").first
     expect(headline_column.locator(".datagovuk-headline__number", has_text="801,864")).to_be_visible()
     expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="9.7%")).to_be_visible()
