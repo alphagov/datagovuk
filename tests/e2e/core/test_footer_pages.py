@@ -4,10 +4,10 @@ from playwright.sync_api import expect
 
 @pytest.mark.smoke
 def test_footer_pages(page, live_server_url):
+    # TODO: Add the /support link test back in after the new page is released
     footer_links = {
         "Roadmap": "/roadmap/",
         "About": "/about/",
-        "Support": "/support/",
         "Accessibility": "/accessibility/",
         "Cookies": "/cookies/",
         "Privacy and terms": "/privacy-and-terms/",
