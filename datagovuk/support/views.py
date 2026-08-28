@@ -36,10 +36,12 @@ class SupportFormView(FormView):
 
         try:
             send_ticket_to_zendesk(message_body, requester_name, requester_email)
+            messages.success(self.request, "Your message was sent.")
+            return super().form_valid(form)
         except ZendeskError as e:
             capture_exception(e)
-            messages.error(self.request, "Your message wasn't sent")
-            return self.form_invalid(form)
-
-        messages.success(self.request, "Your message was sent")
-        return super().form_valid(form)
+            messages.error(
+                self.request,
+                "Your message was not sent due to a service problem. Try again later.",
+            )
+        return self.form_invalid(form)
