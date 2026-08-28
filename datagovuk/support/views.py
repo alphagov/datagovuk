@@ -27,19 +27,25 @@ class SupportFormView(FormView):
         details = cleaned_data["details"]
         requester_name = cleaned_data["name"] or None
         requester_email = cleaned_data["email"] or None
+        user_agent = self.request.headers.get("user-agent", "")
 
         message_body = []
+        if requester_name or requester_email:
+            message_body.append(f"[Requester]\n{requester_name} \n<{requester_email}>")
+        message_body.append(f"[Details]\n{details}")
         if http_referer:
-            # TODO: how should we show the parsed_url in the message_body?
-            message_body.append(f"Page referred from: {http_referer}")
-        message_body.append(f"\nDetails:\n{details}")
+            message_body.append(f"[Referrer]\n{http_referer}")
+        if user_agent:
+            message_body.append(f"[User agent]\n{user_agent}")
 
         try:
             send_ticket_to_zendesk(message_body, requester_name, requester_email)
+            messages.success(self.request, "Your message was sent.")
+            return super().form_valid(form)
         except ZendeskError as e:
             capture_exception(e)
-            messages.error(self.request, "Your message wasn't sent")
-            return self.form_invalid(form)
-
-        messages.success(self.request, "Your message was sent")
-        return super().form_valid(form)
+            messages.error(
+                self.request,
+                "Your message was not sent due to a service problem. Try again later.",
+            )
+        return self.form_invalid(form)

@@ -29,22 +29,28 @@ class TestSupportFormView:
             "email": "test@example.com",
         }
         url = reverse("support:support-form")
-        response = client.post(url, data=form_data)
+        response = client.post(url, data=form_data, HTTP_USER_AGENT="test-agent")
         assert response.status_code == HTTPStatus.FOUND
         mock_zendesk.assert_called_once_with(
             [
-                "Page referred from: https://example.com/some-page",
-                "\nDetails:\nTest details",
+                "[Requester]\nTest user \n<test@example.com>",
+                "[Details]\nTest details",
+                "[Referrer]\nhttps://example.com/some-page",
+                "[User agent]\ntest-agent",
             ],
             "Test user",
             "test@example.com",
         )
         messages = list(get_messages(response.wsgi_request))
         assert len(messages) == 1
-        assert str(messages[0]) == "Your message was sent"
+        assert str(messages[0]) == "Your message was sent."
 
     @patch("datagovuk.support.views.send_ticket_to_zendesk")
-    def test_view_with_no_http_referer_sends_zendesk_ticket_without_page_referer(self, mock_zendesk, client):
+    def test_view_with_no_http_referer_and_user_agent_sends_zendesk_ticket_without_page_referer_and_user_agent(
+        self,
+        mock_zendesk,
+        client,
+    ):
         form_data = {
             "details": "Test details",
             "name": "Test user",
@@ -55,7 +61,8 @@ class TestSupportFormView:
         assert response.status_code == HTTPStatus.FOUND
         mock_zendesk.assert_called_once_with(
             [
-                "\nDetails:\nTest details",
+                "[Requester]\nTest user \n<test@example.com>",
+                "[Details]\nTest details",
             ],
             "Test user",
             "test@example.com",
@@ -88,8 +95,8 @@ class TestSupportFormView:
         assert response.status_code == HTTPStatus.FOUND
         mock_zendesk.assert_called_once_with(
             [
-                "Page referred from: https://example.com/some-page",
-                "\nDetails:\nTest details",
+                "[Details]\nTest details",
+                "[Referrer]\nhttps://example.com/some-page",
             ],
             None,
             None,
@@ -108,4 +115,4 @@ class TestSupportFormView:
         assert response.status_code == HTTPStatus.OK
         stored_messages = list(get_messages(response.wsgi_request))
         assert len(stored_messages) == 1
-        assert str(stored_messages[0]) == "Your message wasn't sent"
+        assert str(stored_messages[0]) == "Your message was not sent due to a service problem. Try again later."

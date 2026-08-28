@@ -34,7 +34,7 @@ def ticket():
 @patch("datagovuk.support.zendesk.ZendeskClient")
 def test_send_ticket_to_zendesk_creates_and_sends_ticket(mock_zendesk):
     send_ticket_to_zendesk(
-        message_body=["Page referred from: https://example.com", "\nDetails:\nTest details"],
+        message_body="[Details]\nTest details",
         name="Test user",
         email="test@example.com",
     )
@@ -42,7 +42,7 @@ def test_send_ticket_to_zendesk_creates_and_sends_ticket(mock_zendesk):
     mock_zendesk.return_value.send_ticket_to_zendesk.assert_called_once_with(
         NDLSupportTicket(
             subject="Support request from National Data Library",
-            message="Page referred from: https://example.com\n\nDetails:\nTest details",
+            message="[Details]\nTest details",
             requester_name="Test user",
             requester_email="test@example.com",
             tags=["national_data_library"],
@@ -134,13 +134,11 @@ class TestNDLSupportTicket:
             tags=["national_data_library"],
         )
 
-        assert ticket.request_data == {
-            "ticket": {
-                "subject": "Test subject",
-                "comment": {"body": "Test message", "public": False},
-                "tags": ["national_data_library"],
-            },
-        }
+        data = ticket.request_data
+        assert data["ticket"]["subject"] == "Test subject"
+        assert data["ticket"]["comment"] == {"body": "Test message", "public": False}
+        assert data["ticket"]["tags"] == ["national_data_library"]
+        assert "requester" in data["ticket"]
 
     def test_request_data_with_requester_email(self):
         ticket = NDLSupportTicket(

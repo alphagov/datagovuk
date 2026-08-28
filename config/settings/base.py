@@ -332,3 +332,4 @@ CKAN_DOMAIN = "ckan.publishing.service.gov.uk"
 ZENDESK_API_KEY = env("ZENDESK_API_KEY", default=None)
 ZENDESK_TICKET_URL = env("ZENDESK_TICKET_URL", default=None)
 NDL_ZENDESK_EMAIL = env("NDL_ZENDESK_EMAIL", default=None)
+NDL_ZENDESK_GROUP_ID = env.int("NDL_ZENDESK_GROUP_ID", default=None)
