@@ -56,7 +56,7 @@ dev = [
   "pytest-rerunfailures==16.5",
   "pytest-sugar==1.1.1",
   "responses==0.26.2",
-  "ruff==0.16.2",
+  "ruff==0.16.3",
   "werkzeug[watchdog]==3.1.8",
 ]
 
