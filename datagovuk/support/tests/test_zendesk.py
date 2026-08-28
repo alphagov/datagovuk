@@ -17,6 +17,7 @@ def zendesk_client(settings):
     settings.ZENDESK_API_KEY = "testkey"
     settings.ZENDESK_TICKET_URL = "https://govuk.zendesk.com/api/v2/tickets.json"
     settings.NDL_ZENDESK_EMAIL = "test@example.com"
+    settings.NDL_ZENDESK_GROUP_ID = 12345
     return ZendeskClient()
 
 
@@ -24,7 +25,7 @@ def zendesk_client(settings):
 def ticket():
     return NDLSupportTicket(
         subject="Support request from National Data Library",
-        message="Test message",
+        message=["Test message"],
         requester_name="Test user",
         requester_email="test@example.com",
         tags=["national_data_library"],
@@ -34,7 +35,7 @@ def ticket():
 @patch("datagovuk.support.zendesk.ZendeskClient")
 def test_send_ticket_to_zendesk_creates_and_sends_ticket(mock_zendesk):
     send_ticket_to_zendesk(
-        message_body=["Page referred from: https://example.com", "\nDetails:\nTest details"],
+        message_body=["[Details]\nTest details"],
         name="Test user",
         email="test@example.com",
     )
@@ -42,7 +43,7 @@ def test_send_ticket_to_zendesk_creates_and_sends_ticket(mock_zendesk):
     mock_zendesk.return_value.send_ticket_to_zendesk.assert_called_once_with(
         NDLSupportTicket(
             subject="Support request from National Data Library",
-            message="Page referred from: https://example.com\n\nDetails:\nTest details",
+            message=["[Details]\nTest details"],
             requester_name="Test user",
             requester_email="test@example.com",
             tags=["national_data_library"],
@@ -51,11 +52,15 @@ def test_send_ticket_to_zendesk_creates_and_sends_ticket(mock_zendesk):
 
 
 class TestZendeskClient:
-    @pytest.mark.parametrize("missing_setting", ["ZENDESK_API_KEY", "ZENDESK_TICKET_URL", "NDL_ZENDESK_EMAIL"])
+    @pytest.mark.parametrize(
+        "missing_setting",
+        ["ZENDESK_API_KEY", "ZENDESK_TICKET_URL", "NDL_ZENDESK_EMAIL", "NDL_ZENDESK_GROUP_ID"],
+    )
     def test_zendesk_client_raises_not_implemented_error_when_setting_not_set(self, settings, missing_setting):
         settings.ZENDESK_API_KEY = "testkey"
         settings.ZENDESK_TICKET_URL = "https://govuk.zendesk.com/api/v2/tickets.json"
         settings.NDL_ZENDESK_EMAIL = "test@example.com"
+        settings.NDL_ZENDESK_GROUP_ID = 12345
         setattr(settings, missing_setting, None)
 
         with pytest.raises(NotImplementedError, match=f"{missing_setting} not set"):
@@ -130,22 +135,20 @@ class TestNDLSupportTicket:
     def test_request_data_without_requester_email_and_name(self):
         ticket = NDLSupportTicket(
             subject="Test subject",
-            message="Test message",
+            message=["Test message"],
             tags=["national_data_library"],
         )
 
-        assert ticket.request_data == {
-            "ticket": {
-                "subject": "Test subject",
-                "comment": {"body": "Test message", "public": False},
-                "tags": ["national_data_library"],
-            },
-        }
+        data = ticket.request_data
+        assert data["ticket"]["subject"] == "Test subject"
+        assert data["ticket"]["comment"] == {"body": "Test message", "public": False}
+        assert data["ticket"]["tags"] == ["national_data_library"]
+        assert "requester" in data["ticket"]
 
     def test_request_data_with_requester_email(self):
         ticket = NDLSupportTicket(
             subject="Test subject",
-            message="Test message",
+            message=["Test message"],
             requester_name="Test user",
             requester_email="test@example.com",
             tags=["national_data_library"],
@@ -159,7 +162,7 @@ class TestNDLSupportTicket:
     def test_request_data_with_requester_email_but_no_name_falls_back_to_email(self):
         ticket = NDLSupportTicket(
             subject="Test subject",
-            message="Test message",
+            message=["Test message"],
             requester_email="test@example.com",
         )
 

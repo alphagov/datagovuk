@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def send_ticket_to_zendesk(message_body, name, email):
     ticket = NDLSupportTicket(
         subject="Support request from National Data Library",
-        message="\n".join(message_body),
+        message=message_body,
         requester_name=name,
         requester_email=email,
         tags=["national_data_library"],
@@ -26,20 +26,20 @@ class ZendeskClient:
     """
 
     def __init__(self):
-        for setting in ("ZENDESK_API_KEY", "ZENDESK_TICKET_URL", "NDL_ZENDESK_EMAIL"):
+        for setting in ("ZENDESK_API_KEY", "ZENDESK_TICKET_URL", "NDL_ZENDESK_EMAIL", "NDL_ZENDESK_GROUP_ID"):
             if not getattr(settings, setting):
                 error_message = f"{setting} not set"
                 raise NotImplementedError(error_message)
         self.api_key = settings.ZENDESK_API_KEY
         self.ticket_url = settings.ZENDESK_TICKET_URL
-        self.NDL_ZENDESK_EMAIL = settings.NDL_ZENDESK_EMAIL
+        self.ndl_zendesk_email = settings.NDL_ZENDESK_EMAIL
         self.requests_session = requests.Session()
 
     def send_ticket_to_zendesk(self, ticket):
         response = self.requests_session.post(
             self.ticket_url,
             json=ticket.request_data,
-            auth=(f"{self.NDL_ZENDESK_EMAIL}/token", self.api_key),
+            auth=(f"{self.ndl_zendesk_email}/token", self.api_key),
             headers={"Content-type": "application/json"},
         )
 
@@ -79,7 +79,7 @@ class ZendeskError(Exception):
 @dataclasses.dataclass
 class NDLSupportTicket:
     subject: str
-    message: str
+    message: list[str]
     requester_name: str | None = None
     requester_email: str | None = None
     tags: list[str] = dataclasses.field(default_factory=list)
@@ -89,15 +89,17 @@ class NDLSupportTicket:
         data = {
             "ticket": {
                 "subject": self.subject,
-                "comment": {"body": self.message, "public": False},
+                "comment": {"body": "\n\n".join(self.message), "public": False},
                 "tags": self.tags,
+                "group_id": settings.NDL_ZENDESK_GROUP_ID,
             },
         }
 
-        if self.requester_email:
-            data["ticket"]["requester"] = {
-                "email": self.requester_email,
-                "name": self.requester_name or self.requester_email,
-            }
+        requester_email = self.requester_email or settings.NDL_ZENDESK_EMAIL
+
+        data["ticket"]["requester"] = {
+            "email": requester_email,
+            "name": self.requester_name or requester_email,
+        }
 
         return data
