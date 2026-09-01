@@ -513,6 +513,32 @@ class TestDatasetView:
         assert len(response.context_data["doc"].datafiles) == 1
         assert response.context_data["doc"].datafiles[0].name == "Data file"
 
+    def test_view_existing_dataset_with_no_resources(self, client, solr_doc_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440001"
+        solr_doc_factory(
+            id=test_uuid,
+            name="dataset-with-resources",
+            title="Dataset With Resources",
+            notes="Has resources",
+            metadata_modified="2026-02-20T15:30:00Z",
+            organization="publishing-org",
+            res_url=[],
+            validated_data_dict=json.dumps(
+                {
+                    "name": "dataset-with-resources",
+                    "id": test_uuid,
+                    "organization": {"title": "Publishing Org"},
+                },
+            ),
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-with-resources"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["doc"].title == "Dataset With Resources"
+        assert len(response.context_data["doc"].datafiles) == 0
+
     def test_view_nonexistent_dataset_returns_404(self, client, solr_doc_factory):
         test_uuid = "00000000-0000-0000-0000-000000000000"
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "nonexistent"})
