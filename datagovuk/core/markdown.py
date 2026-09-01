@@ -11,7 +11,7 @@ class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
     def link(self, text, url, title=None):
         return f'<a href="{url}" class="govuk-link datagovuk-link datagovuk-link--secondary">{text}</a>'
 
-    def heading(self, text, level):
+    def heading(self, text, level, **kwargs):
         valid_header_sizes = ["xl", "l", "m", "s"]
 
         start_size = "xl"
@@ -32,7 +32,7 @@ class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
     def block_quote(self, text):
         return f'<blockquote class="govuk-inset-text datagovuk-inset-text">{text}</blockquote>\n'
 
-    def list(self, text, ordered, depth=None):
+    def list(self, text, ordered, depth=None, **kwargs):
         if ordered:
             return f'<ol class="govuk-list govuk-list--number datagovuk-list datagovuk-body">{text}</ol>\n'
         return f'<ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body">{text}</ul>\n'
@@ -40,8 +40,29 @@ class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
     def thematic_break(self):
         return '<hr class="datagovuk-collection-header__underline">\n'
 
+    def table(self, text):
+        return f'<div class="datagovuk-table-container" role="region" tabindex="0"><table class="govuk-table datagovuk-table">\n{text}</table></div>\n'  # noqa: E501
 
-render_markdown = mistune.create_markdown(renderer=MarkdownToHTMLRenderer())
+    def table_head(self, text):
+        return f'<thead class="govuk-table__head datagovuk-table__head">\n<tr class="govuk-table__row datagovuk-table__row">\n{text}</tr>\n</thead>\n'  # noqa: E501
+
+    def table_body(self, text):
+        return f'<tbody class="govuk-table__body datagovuk-table__body">\n{text}</tbody>\n'
+
+    def table_row(self, text):
+        return f'<tr class="govuk-table__row datagovuk-table__row">\n{text}</tr>\n'
+
+    def table_cell(self, text, align=None, head=False):  # noqa: FBT002
+        tag = "th" if head else "td"
+        classes = "govuk-table__header datagovuk-table__header" if head else "govuk-table__cell datagovuk-table__cell"
+
+        return f'<{tag} class="{classes}">{text}</{tag}>\n'
+
+
+render_markdown = mistune.create_markdown(
+    renderer=MarkdownToHTMLRenderer(),
+    plugins=["table"],
+)
 
 
 def _transform_context(value):

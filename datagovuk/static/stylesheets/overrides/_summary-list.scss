@@ -1,0 +1,9 @@
+.datagovuk-summary-list {
+  color: $datagovuk-black;
+  font-family: "Inter", sans-serif;
+
+  .govuk-summary-list__key {
+    font-weight: normal;
+    color: $datagovuk-grey;
+  }
+}

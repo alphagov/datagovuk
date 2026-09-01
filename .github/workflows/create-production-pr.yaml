@@ -51,7 +51,7 @@ jobs:
     name: Create production deployment PR
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - run: bash ./docker/create-pr.sh
     env:
       GH_TOKEN: ${{ secrets.PR_GITHUB_TOKEN }}
@@ -61,15 +61,13 @@ jobs:
 
   report_run_failure:
     name: Report run failure to Slack
-    if: ${{ always() }}
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
     needs: [poll_staging, smoke_test_staging, create_production_deployment_pr]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        if: ${{ failure() }}
-        uses: actions/checkout@v7.0.0
+        uses: actions/checkout@v7.0.1
       - name: Notify slack of failure
-        if: ${{ failure() }}
         uses: ./.github/actions/report-run-failure
         with:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}

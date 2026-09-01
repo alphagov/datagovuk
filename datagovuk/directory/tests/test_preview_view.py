@@ -6,7 +6,6 @@ import pytest
 from django.http import Http404
 from django.urls import reverse
 
-from datagovuk.directory.solr import SolrDatafile
 from datagovuk.directory.views import PreviewView
 
 HTTP_OK = 200
@@ -83,14 +82,14 @@ class TestPreviewView:
         assert response.context_data["preview_rows"] == MAX_PREVIEW_ROWS
         assert response.context_data["preview_exists"] is True
         assert response.context_data["table_headings"] == [
-            {"text": "name", "format": False},
+            {"text": "name", "format": "text"},
             {"text": "age", "format": "numeric"},
         ]
         assert response.context_data["table_rows"] == [
-            [{"text": "John", "format": False}, {"text": "30", "format": "numeric"}],
-            [{"text": "Doe", "format": False}, {"text": "25", "format": "numeric"}],
-            [{"text": "Jane", "format": False}, {"text": "40", "format": "numeric"}],
-            [{"text": "Doe", "format": False}, {"text": "35", "format": "numeric"}],
+            [{"text": "John", "format": "text"}, {"text": "30", "format": "numeric"}],
+            [{"text": "Doe", "format": "text"}, {"text": "25", "format": "numeric"}],
+            [{"text": "Jane", "format": "text"}, {"text": "40", "format": "numeric"}],
+            [{"text": "Doe", "format": "text"}, {"text": "35", "format": "numeric"}],
         ]
         assert len(response.context_data["table_rows"]) == MAX_PREVIEW_ROWS
 
@@ -116,7 +115,7 @@ class TestPreviewView:
         mock_solr.return_value.search.return_value.docs = [make_solr_doc()]
         wrong_uuid = str(uuid.uuid4())
 
-        with pytest.raises(SolrDatafile.DatafileNotFoundError):
+        with pytest.raises(Http404):
             call_view(rf, datafile_uuid=wrong_uuid)
 
     @patch("datagovuk.directory.views.fetch_csv")
@@ -140,12 +139,21 @@ class TestPreviewView:
 
     @patch("datagovuk.directory.views.fetch_csv")
     @patch("datagovuk.directory.views.get_solr_client")
+    def test_feedback_section_not_visible_when_no_preview(self, mock_solr, mock_fetch_csv, rf):
+        mock_solr.return_value.search.return_value.docs = [make_solr_doc()]
+        mock_fetch_csv.return_value = []
+
+        response = call_view(rf)
+
+        assert "datagovuk-inset-text" not in response.rendered_content
+
+    @patch("datagovuk.directory.views.fetch_csv")
+    @patch("datagovuk.directory.views.get_solr_client")
     def test_back_link_points_to_dataset_page(self, mock_solr, mock_fetch_csv, rf):
         mock_solr.return_value.search.return_value.docs = [make_solr_doc()]
         mock_fetch_csv.return_value = [["name"], ["John"]]
 
         response = call_view(rf)
-        response.render()
 
         expected_url = reverse("directory:dataset", kwargs={"uuid": DATASET_UUID, "slug": "test-dataset"})
-        assert expected_url in response.content.decode()
+        assert response.context_data["back_link"] == expected_url

@@ -38,7 +38,7 @@ LANGUAGE_CODE = "en-GB"
 # https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
-USE_I18N = True
+USE_I18N = False
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
 USE_TZ = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
@@ -83,6 +83,8 @@ LOCAL_APPS = [
     "datagovuk.data_manual",
     "datagovuk.collections",
     "datagovuk.directory",
+    "datagovuk.ckan_redirect",
+    "datagovuk.support",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -218,6 +220,7 @@ TEMPLATES = [
             ],
             "extensions": [
                 "compressor.contrib.jinja2ext.CompressorExtension",
+                "jinja2.ext.do",
             ],
         },
     },
@@ -314,11 +317,19 @@ DATAGOVUK_GIT_SHA = env("GIT_SHA", default=None)
 
 class FEATURE_FLAGS(Enum):  # noqa: N801
     TEST_FEATURE_FLAG = "test-feature-flag"
-    SOLR_SEARCH = "solr-search"
+    SUPPORT_FORM = "support-form"
 
 
 FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
 
+
 SOLR_URL = env("SOLR_URL", default=None)
 
 MONKEYPATCH_ZSCALER_SSL = env.bool("MONKEYPATCH_ZSCALER_SSL", False)
+
+CKAN_DOMAIN = "ckan.publishing.service.gov.uk"
+
+ZENDESK_API_KEY = env("ZENDESK_API_KEY", default=None)
+ZENDESK_TICKET_URL = env("ZENDESK_TICKET_URL", default=None)
+NDL_ZENDESK_EMAIL = env("NDL_ZENDESK_EMAIL", default=None)
+NDL_ZENDESK_GROUP_ID = env.int("NDL_ZENDESK_GROUP_ID", default=None)

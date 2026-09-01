@@ -3,8 +3,9 @@ from http import HTTPStatus
 import pytest
 from django.http import Http404
 from django.urls import reverse
+from django.views.generic import TemplateView
 
-from datagovuk.core.views import RenderedMarkdownView
+from datagovuk.core.views import PaginationMixin, RenderedMarkdownView
 
 
 class ConcreteRenderedMarkdownView(RenderedMarkdownView):
@@ -120,3 +121,210 @@ class TestVersionView:
 
         assert response.status_code == HTTPStatus.OK
         assert response.content.decode() == "None"
+
+
+class ConcretePaginationView(PaginationMixin, TemplateView):
+    template_name = "collections/collection_page.jinja"
+
+
+class TestPaginationMixin:
+    def test_build_page_url_adds_page_param(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search?q=test", {"q": "test"})
+        url = view.build_page_url(3)
+        assert url == "/search?q=test&page=3"
+
+    def test_build_page_url_overwrites_existing_page_param(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search?page=1", {"page": "1"})
+        url = view.build_page_url(2)
+        assert url == "/search?page=2"
+
+    def test_build_page_url_preserves_other_query_params(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search?sort=recent&order=desc", {"sort": "recent", "order": "desc"})
+        url = view.build_page_url(5)
+        assert "sort=recent" in url
+        assert "order=desc" in url
+        assert "page=5" in url
+
+    def testget_page_sequence_shows_all_pages_under_threshold(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(1, 5)
+        assert sequence == [1, 2, 3, 4, 5]
+
+    def testget_page_sequence_shows_all_pages_at_threshold(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(1, 6)
+        assert sequence == [1, 2, 3, 4, 5, 6]
+
+    def testget_page_sequence_shows_first_pages_and_ellipsis_when_near_start(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(1, 10)
+        assert sequence == [1, 2, 3, 4, "ellipsis", 10]
+
+    def testget_page_sequence_shows_first_pages_and_ellipsis_on_second_page(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(2, 10)
+        assert sequence == [1, 2, 3, 4, "ellipsis", 10]
+
+    def testget_page_sequence_shows_first_pages_and_ellipsis_on_third_page(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(3, 10)
+        assert sequence == [1, 2, 3, 4, "ellipsis", 10]
+
+    def testget_page_sequence_shows_first_pages_and_ellipsis_on_fourth_page(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(4, 10)
+        assert sequence == [1, "ellipsis", 3, 4, 5, "ellipsis", 10]
+
+    def testget_page_sequence_shows_ellipsis_and_neighbours_when_in_middle(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(5, 10)
+        assert sequence == [1, "ellipsis", 4, 5, 6, "ellipsis", 10]
+
+    def testget_page_sequence_shows_ellipsis_and_neighbours_near_end(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(7, 10)
+        assert sequence == [1, "ellipsis", 7, 8, 9, 10]
+
+    def testget_page_sequence_shows_last_pages_near_end(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(9, 10)
+        assert sequence == [1, "ellipsis", 7, 8, 9, 10]
+
+    def testget_page_sequence_shows_last_pages_on_last_page(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(10, 10)
+        assert sequence == [1, "ellipsis", 7, 8, 9, 10]
+
+    def testget_page_sequence_shows_single_page_when_only_one(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(1, 1)
+        assert sequence == [1]
+
+    def testget_page_sequence_shows_all_pages_when_two(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(1, 2)
+        assert sequence == [1, 2]
+
+    def testget_page_sequence_returns_empty_list_when_zero_pages(self):
+        view = ConcretePaginationView()
+        sequence = view.get_page_sequence(1, 0)
+        assert sequence == []
+
+    def test_get_govuk_pagination_returns_empty_dict_with_single_page(self):
+        view = ConcretePaginationView()
+        pagination = view.get_govuk_pagination(page=1, rows_per_page=20, total_results=18)
+        assert pagination == {
+            "page": 1,
+            "first_result_in_page": 1,
+            "last_result_in_page": 18,
+            "total_results": 18,
+        }
+
+    def test_get_govuk_pagination_returns_empty_dict_with_zero_pages(self):
+        view = ConcretePaginationView()
+        pagination = view.get_govuk_pagination(page=1, rows_per_page=20, total_results=0)
+        assert pagination == {
+            "page": 1,
+            "first_result_in_page": None,
+            "last_result_in_page": None,
+            "total_results": 0,
+        }
+
+    def test_get_govuk_pagination_returns_next_on_first_page(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search")
+        pagination = view.get_govuk_pagination(page=1, rows_per_page=20, total_results=35)
+        assert pagination == {
+            "page": 1,
+            "first_result_in_page": 1,
+            "last_result_in_page": 20,
+            "total_results": 35,
+            "pages": {
+                "items": [
+                    {"number": 1, "href": "/search?page=1", "current": True},
+                    {"number": 2, "href": "/search?page=2"},
+                ],
+                "next": {"href": "/search?page=2"},
+            },
+        }
+        assert "previous" not in pagination
+
+    def test_get_govuk_pagination_returns_previous_on_last_page(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search")
+        pagination = view.get_govuk_pagination(page=2, rows_per_page=2, total_results=4)
+        assert pagination == {
+            "page": 2,
+            "first_result_in_page": 3,
+            "last_result_in_page": 4,
+            "total_results": 4,
+            "pages": {
+                "items": [
+                    {"number": 1, "href": "/search?page=1"},
+                    {"number": 2, "href": "/search?page=2", "current": True},
+                ],
+                "previous": {"href": "/search?page=1"},
+            },
+        }
+
+    def test_get_govuk_pagination_has_no_previous_on_first_page_of_many(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search")
+        pagination = view.get_govuk_pagination(page=1, rows_per_page=10, total_results=100)
+        pages = pagination["pages"]
+        assert "previous" not in pages
+        assert "next" in pages
+        assert pages["next"]["href"] == "/search?page=2"
+
+    def test_get_govuk_pagination_has_no_next_on_last_page(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search")
+        pagination = view.get_govuk_pagination(page=10, rows_per_page=10, total_results=100)
+        pages = pagination["pages"]
+        assert "next" not in pages
+        assert "previous" in pages
+        assert pages["previous"]["href"] == "/search?page=9"
+
+    def test_get_govuk_pagination_has_previous_and_next_in_middle(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search")
+        pagination = view.get_govuk_pagination(page=5, rows_per_page=10, total_results=100)
+        assert pagination["pages"]["previous"]["href"] == "/search?page=4"
+        assert pagination["pages"]["next"]["href"] == "/search?page=6"
+
+    def test_get_govuk_pagination_marks_current_page(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search")
+        pagination = view.get_govuk_pagination(page=3, rows_per_page=10, total_results=100)
+        current_items = [item for item in pagination["pages"]["items"] if item.get("current")]
+        assert len(current_items) == 1
+        assert current_items[0]["number"] == 3  # noqa: PLR2004
+
+    def test_get_govuk_pagination_preserves_query_params_in_hrefs(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search?sort=recent", {"sort": "recent"})
+        pagination = view.get_govuk_pagination(page=2, rows_per_page=5, total_results=25)
+        href = pagination["pages"]["items"][1]["href"]
+        assert "sort=recent" in href
+        assert "page=2" in href
+
+    def test_get_govuk_pagination_marks_ellipsis_items(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search")
+        pagination = view.get_govuk_pagination(page=5, rows_per_page=10, total_results=100)
+        ellipsis_items = [item for item in pagination["pages"]["items"] if item.get("ellipsis")]
+        assert len(ellipsis_items) == 2  # noqa: PLR2004
+        assert all(item["ellipsis"] is True for item in ellipsis_items)
+        # Ensure ellipsis items don't have other keys
+        for item in ellipsis_items:
+            assert set(item.keys()) == {"ellipsis"}
+
+    def test_get_govuk_pagination_no_ellipsis_for_small_pagination(self, rf):
+        view = ConcretePaginationView()
+        view.request = rf.get("/search")
+        pagination = view.get_govuk_pagination(page=3, rows_per_page=5, total_results=25)
+        ellipsis_items = [item for item in pagination["pages"]["items"] if item.get("ellipsis")]
+        assert len(ellipsis_items) == 0

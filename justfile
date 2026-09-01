@@ -45,6 +45,11 @@ up *args:
     @echo "Starting up containers..."
     GIT_SHA=$(git rev-parse HEAD) docker compose -f docker-compose.local.yml up -d --remove-orphans {{args}}
 
+# restart: Restart containers
+restart *args:
+    @echo "Restarting containers..."
+    GIT_SHA=$(git rev-parse HEAD) docker compose -f docker-compose.local.yml restart
+
 # down: Stop containers.
 down  *args:
     @echo "Stopping containers..."
@@ -70,9 +75,19 @@ shell:
 bash:
     @docker compose run --rm django bash
 
+# run: Executes docker compose run command
+run +args:
+    @docker compose run --rm {{args}}
+
 # test: Run pytest
 test *args:
     @docker compose exec django pytest {{args}}
+
+test-unit *args:
+    @docker compose exec django pytest datagovuk/ {{args}}
+
+test-e2e *args:
+    @docker compose exec django pytest tests/e2e/ {{args}}
 
 coverage:
     @docker compose exec django coverage run -m pytest datagovuk/

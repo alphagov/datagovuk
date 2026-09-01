@@ -7,7 +7,7 @@ class DatagovukHeader {
       $header.querySelector('#datagovuk-header-button-collections'),
       $header.querySelector('#datagovuk-header-button-data-manual')
     ]
-    this.$menus = Array.from($header.querySelectorAll('.datagovuk-menu'))
+    this.$menus = Array.from($header.querySelectorAll('.datagovuk-header__inner .datagovuk-menu'))
 
     if (this.$menus.length === 0 || !this.$mobileButton) {
       console.error('Header - Elements not found')
@@ -32,6 +32,16 @@ class DatagovukHeader {
       // events bubble up so we need to check that focus has left header entirely
       if (this.$header.contains(event.relatedTarget) === false) this.closeAll()
     })
+
+    // Directory
+
+    this.$mobileDirectoryButton = $header.querySelector('#datagovuk-directory-header-button-all')
+
+    if (this.$mobileDirectoryButton) {
+      this.$directoryMenu = $header.querySelector('.datagovuk-directory-menu')
+      this.$mobileDirectoryButton.setAttribute('aria-expanded', 'false')
+      this.$mobileDirectoryButton.addEventListener('click', () => this.toggleMobileDirectory())
+    }
   }
 
   watchMediaQueryChange() {
@@ -94,6 +104,11 @@ class DatagovukHeader {
     this.$desktopButtons.forEach($button => {
       $button.setAttribute('aria-expanded', 'false')
     })
+
+    if (this.$mobileDirectoryButton) {
+      this.$directoryMenu.style.display = 'none'
+      this.$mobileDirectoryButton.setAttribute('aria-expanded', 'false')
+    }
   }
 
   handleKeydown(event) {
@@ -107,6 +122,21 @@ class DatagovukHeader {
         this.closeAll()
         $openButton.focus()
       }
+    }
+  }
+
+  // directory menu
+
+  toggleMobileDirectory() {
+
+    const shouldOpen = this.$mobileDirectoryButton.getAttribute('aria-expanded') === 'false'
+
+    // Close other open desktop menus or the mobile menu
+    this.closeAll()
+
+    if (shouldOpen) {
+      this.$mobileDirectoryButton.setAttribute('aria-expanded', 'true')
+      this.$directoryMenu.style.display = 'block'
     }
   }
 

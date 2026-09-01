@@ -1,6 +1,9 @@
 $datagovuk-black: #333333;
 $datagovuk-grey: #5D5D5D;
-$datagovuk-light-grey: #FAFAFA;
+$datagovuk-mid-grey: #8E8E8E;
+$datagovuk-light-grey: #F7F7F7;
+$datagovuk-light-grey-hover: #ECECEC;
+$datagovuk-white: #FFFFFF;
 
 $datagovuk-dark-green: #00381E;
 $datagovuk-green: #00890B;
@@ -8,6 +11,11 @@ $datagovuk-light-green: #F1FAF0;
 $datagovuk-dark-pink: #4D303D;
 $datagovuk-pink: #C27A9A;
 $datagovuk-light-pink: #FBF4F7;
+$datagovuk-yellow: #FFDC73;
+
+.datagovuk-\!-colour-white {
+  color: $datagovuk-white !important;
+}
 
 .datagovuk-\!-colour-grey {
   color: $datagovuk-grey !important;

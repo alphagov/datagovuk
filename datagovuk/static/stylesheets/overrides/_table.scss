@@ -1,0 +1,55 @@
+.datagovuk-table-container {
+    margin-bottom: 20px;
+    overflow: auto;
+}
+
+.datagovuk-table-container:focus {
+    margin: -3px;
+    margin-bottom: 17px;
+    border: 3px solid $datagovuk-black;
+    outline: 3px solid $datagovuk-yellow !important;
+}
+
+.datagovuk-table {
+    margin-bottom: 0px;
+}
+
+.datagovuk-table .datagovuk-link:link,
+.datagovuk-table .datagovuk-link:visited {
+    color: $datagovuk-green;
+}
+
+.datagovuk-table__head {
+    background-color: $datagovuk-light-grey;
+}
+
+.datagovuk-table__header {
+    min-width: 210px;
+    padding-right: 30px;
+    padding-left: 10px;
+    color: $datagovuk-black;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.datagovuk-table__header--wrap,
+.datagovuk-table__cell--wrap {
+    word-break: break-word;
+}
+
+.datagovuk-table__header--compact,
+.datagovuk-table__cell--compact {
+    min-width: 0;
+    width: 150px;
+    white-space: nowrap;
+}
+
+.datagovuk-table th:last-child,
+.datagovuk-table td:last-child {
+    padding-right: 20px;
+}
+
+.datagovuk-table__cell {
+    padding-right: 30px;
+    padding-left: 10px;
+}

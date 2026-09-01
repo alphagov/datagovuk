@@ -1,5 +1,9 @@
 @import 'footer';
 @import 'cookie-banner';
+@import 'table';
+@import 'forms';
+@import 'pagination';
+@import 'summary-list';
 
 /* inter-regular - latin */
 @font-face {
@@ -117,8 +121,32 @@
     .datagovuk-button__arrow { display: none; }
     .datagovuk-button__arrow--focus { display: inline-block; }
   }
+
+  .datagovuk-button__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
 }
 
+.datagovuk-button--secondary {
+  background-color: $datagovuk-light-grey;
+  color: $datagovuk-black;
+
+  &:hover {
+    color: $datagovuk-black;
+    background-color: $datagovuk-light-grey-hover;
+  }
+
+  &:link {
+    color: $datagovuk-black;
+  }
+
+  &:visited {
+    color: $datagovuk-black;
+  }
+}
 
 .datagovuk-list {
   font-size: 20px;
@@ -151,6 +179,10 @@
 @media (min-width: $desktop-breakpoint) {
   .datagovuk-heading-xl{
     font-size: 42px;
+  }
+
+  .datagovuk-heading-xl--small {
+    font-size: 34px;
   }
 
   .datagovuk-heading-l {
