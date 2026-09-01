@@ -52,6 +52,17 @@
          ],
          "formGroup": {"classes": "datagovuk-form-group"},
       }) }}
+      {{ govukCheckboxes({
+         "name": form.datasets_with_links_only.name,
+         "items": [
+           {
+             "value": "on",
+             "checked": true if form.datasets_with_links_only.value() else false,
+             "text": form.datasets_with_links_only.label,
+           },
+         ],
+         "formGroup": {"classes": "datagovuk-form-group"},
+      }) }}
       {# djlint:on #}
       {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button datagovuk-button--secondary"}) }}
     </div>

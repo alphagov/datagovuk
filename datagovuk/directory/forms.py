@@ -9,6 +9,7 @@ class SearchForm(forms.Form):
     topic = forms.ChoiceField(label="Topic", choices=TopicChoices, required=False)
     format = forms.ChoiceField(label="Format", choices=FormatChoices, required=False)
     open_government_licence_only = forms.BooleanField(label="Open Government Licence (OGL) only", required=False)
+    datasets_with_links_only = forms.BooleanField(label="Show datasets with links only", required=False, initial=True)
 
     def __init__(self, *args, **kwargs):
         publisher_choices = kwargs.pop("publisher_choices", [])

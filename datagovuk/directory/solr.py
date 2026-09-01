@@ -118,6 +118,11 @@ def _get_filters(filters=None):
         ogl_filter_value = " ".join(ogl_ids)
         solr_filters.append(f"license_id:({ogl_filter_value})")
 
+    if filters.get("datasets_with_links_only"):
+        # res_url has one record per resource link, so filter datasets with no links
+        #   with a > 0 filter
+        solr_filters.append("res_url:[1 TO *]")
+
     return solr_filters
 
 
