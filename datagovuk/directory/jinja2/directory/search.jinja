@@ -53,12 +53,12 @@
          "formGroup": {"classes": "datagovuk-form-group"},
       }) }}
       {{ govukCheckboxes({
-         "name": form.datasets_with_links_only.name,
+         "name": form.include_datasets_with_no_links.name,
          "items": [
            {
              "value": "on",
-             "checked": true if form.datasets_with_links_only.value() else false,
-             "text": form.datasets_with_links_only.label,
+             "checked": true if form.include_datasets_with_no_links.value() else false,
+             "text": form.include_datasets_with_no_links.label,
            },
          ],
          "formGroup": {"classes": "datagovuk-form-group"},

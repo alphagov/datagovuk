@@ -139,7 +139,7 @@ class TestSearch:
         page.get_by_role("button", name="Search").click()
         # Wait for autocomplete JS to catch up..
         page.wait_for_timeout(1000)
-        page.get_by_role("checkbox", name="Show datasets with links only").uncheck()
+        page.get_by_role("checkbox", name="Include datasets with no links").check()
         page.get_by_role("button", name="Apply filters").click()
         expect(page.get_by_text("7 results")).to_be_visible()
         expect(page.get_by_role("link", name="DGUK E2E Search dataset licence")).to_be_visible()
