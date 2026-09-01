@@ -8,7 +8,7 @@ api:
   link-text: Water Quality Explorer API
 dataset:
 page-last-updated: "2026-03-24"
-visualisation-data:
+visualisation-data: "water-quality/bathing-water-quality-2025-sample.json"
 contact:
 status: for-publication
 ---
