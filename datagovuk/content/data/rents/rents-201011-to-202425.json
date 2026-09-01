@@ -8,7 +8,7 @@
   "series": [
     {
       "name": "Total lets",
-      "color": "#b30000",
+      "color": "#C27A9A",
       "data": {
         "2010-11": 144126,
         "2011-12": 141140,
@@ -50,7 +50,7 @@
     },
     {
       "name": "Lets to existing tenants",
-      "color": "#525a90",
+      "color": "#333333",
       "data": {
         "2010-11": 36188,
         "2011-12": 36627,
@@ -71,7 +71,7 @@
     },
     {
       "name": "Mutual exchanges",
-      "color": "#4D303D",
+      "color": "#026BDB",
       "data": {
         "2010-11": 13834,
         "2011-12": 15103,
