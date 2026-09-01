@@ -83,47 +83,50 @@ def _get_query(query):
     return f"(title:({processed_query})^2 OR notes:({processed_query}))"
 
 
-def _get_filters(filters=None):
+def _get_base_filters():
     solr_filters = [
         "state:active",
         "type:dataset",
         "-site_id:dgu_organisations*",
     ]
-    if not filters:
-        filters = {}
+    return solr_filters
+
+
+def _get_user_filters(filters):
+    user_filters = []
 
     if filters.get("publisher"):
         all_organisations = get_organisations_by_title()
         organisation_slug = all_organisations.get(filters["publisher"])
         if organisation_slug:
-            solr_filters.append(f"organization:{organisation_slug}")
+            user_filters.append(f"organization:{organisation_slug}")
 
     if filters.get("topic"):
         topic_slug = slugify(filters["topic"])
-        solr_filters.append(f'extras_theme-primary:"{topic_slug}"')
+        user_filters.append(f'extras_theme-primary:"{topic_slug}"')
 
     if filters.get("format"):
         file_format = filters["format"]
         if file_format == FormatChoices.OTHER:
-            solr_filters.extend(
+            user_filters.extend(
                 [f'-res_format:"{f}"' for f in list(itertools.chain.from_iterable(FORMATS.values()))],
             )
         elif file_format in FORMATS:
-            solr_filters.append(
+            user_filters.append(
                 " OR ".join(f'res_format:"{f}"' for f in FORMATS[file_format]),
             )
 
     if filters.get("open_government_licence_only") is True:
         ogl_ids = ("uk-ogl", "OGL-UK-*", "ogl")
         ogl_filter_value = " ".join(ogl_ids)
-        solr_filters.append(f"license_id:({ogl_filter_value})")
+        user_filters.append(f"license_id:({ogl_filter_value})")
 
     if not filters.get("include_datasets_with_no_links"):
         # res_url has one record per resource link, so filter datasets with no links
         #   with a > 0 filter
-        solr_filters.append("res_url:[1 TO *]")
+        user_filters.append("res_url:[1 TO *]")
 
-    return solr_filters
+    return user_filters
 
 
 def _get_sort(sort):
@@ -144,7 +147,10 @@ def _get_facets():
 
 def search(query, filters, sort="best", start=0, rows=20):
     solr_query = _get_query(query)
-    solr_filters = _get_filters(filters)
+    base_filters = _get_base_filters()
+    user_filters = _get_user_filters(filters)
+    solr_filters = base_filters + user_filters
+
     solr_client = get_solr_client()
     solr_facets = _get_facets()
     solr_sort = _get_sort(sort)
@@ -172,7 +178,7 @@ def get_document(document_id):
     solr_client = get_solr_client()
     solr_results = solr_client.search(
         q=f"id:{document_id}",
-        fq=_get_filters(),
+        fq=_get_base_filters(),
     )
     if solr_results.hits == 0:
         return None
@@ -185,7 +191,7 @@ def get_document(document_id):
 def get_dataset_by_legacy_name(legacy_name):
     solr_results = get_solr_client().search(
         q=f'name:"{legacy_name}"',
-        fq=_get_filters(),
+        fq=_get_base_filters(),
         rows=1,
     )
     if solr_results.hits == 0:
