@@ -8,7 +8,7 @@
     "series": [
       {
         "name": "Total",
-        "color": "#000000",
+        "color": "#C27A9A",
         "data": {
             "2009": 22.69,
             "2010": 22.84,
@@ -31,7 +31,7 @@
       },
       {
         "name": "Private sector",
-        "color": "#C27A9A",
+        "color": "#00890B",
         "data": {
         "2009": 18.61,
         "2010": 18.74,
@@ -54,7 +54,7 @@
       },
       {
         "name": "Public sector and housing associations",
-        "color": "#00890B",
+        "color": "#333333",
         "data": {
         "2009": 4.09,
         "2010": 4.09,
