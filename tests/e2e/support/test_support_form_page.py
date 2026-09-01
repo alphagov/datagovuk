@@ -15,6 +15,10 @@ class TestSupportFormPage:
             "href",
             "https://ukgovernmentdigital.slack.com/archives/C037J3GTE4T",
         )
+        expect(page.get_by_role("link", name="feedback form")).to_have_attribute(
+            "href",
+            "https://forms.office.com/e/9V26PNFQaR",
+        )
 
     def test_support_form_empty_submission_shows_validation_error(self, page, live_server_url, settings):
         settings.FEATURE_FLAGS_ENABLED = ["support-form"]
