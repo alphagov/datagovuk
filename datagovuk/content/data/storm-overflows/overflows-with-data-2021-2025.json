@@ -1,0 +1,25 @@
+{
+  "title": "Number of storm overflows with spill data (England)",
+  "publisher": "Department for Environment Food & Rural Affairs",
+  "source": "https://www.data.gov.uk/collections/environment/storm-overflows",
+  "download": "overflows_with_data-2016-2025.csv",
+  "visualisation_type": "line",
+  "series": [
+    {
+      "name": "England",
+      "color": "#C27A9A",
+      "data": {
+        "2016": 862,
+        "2017": 2515,
+        "2018": 6182,
+        "2019": 8276,
+        "2020": 12092,
+        "2021": 12393,
+        "2022": 13080,
+        "2023": 14031,
+        "2024": 14182,
+        "2025": 14239
+      }
+    }
+  ]
+}

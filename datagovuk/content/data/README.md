@@ -154,11 +154,11 @@ columns for 'Year' and 'All motor vehicles' to [road-traffic/road-traffic-mileag
 > [!WARNING]
 > The number of overflows being monitored increased dramatically over this period (from 862 in 2016 to 14,182 in 2024). The apparent rise in total spill events will be influenced by this expanded monitoring coverage, and not solely by an increase in spill frequency. This context isn't clear from visualisation data alone.
 
-The source webpage for the data is [https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac](https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac)
+Source: [https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac](https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac)
+Table: EDM Storm Overflow Annual Return - Long-term Trends.zip
 
-The visualisation data was downloaded from that dataset. The `Total monitored spill events (thousands)` and `Overflows monitored` columns were kept for years 2016 to 2024 to create [storm-overflows/storm-overflows.csv](storm-overflows/storm-overflows.csv)
-
-The file [storm-overflows/storm-overflows.json](storm-overflows/storm-overflows.json) uses the data from the csv file as its `series.data` object. Only the `Total monitored spill events (thousands)` column is used in the visualisation. The `Overflows monitored` column is retained in the CSV for context.
+Copy the years and 'total number of storm overflows listed' rows, transposing these into columns in a new sheet.
+Rename the years column to years. Remove the years for which there is no data (chart starts at 2021).
 
 
 ### UK mean temperature
