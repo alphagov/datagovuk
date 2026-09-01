@@ -1,9 +1,21 @@
+import itertools
 import json
+import logging
+import re
 from dataclasses import dataclass, field
+from datetime import datetime
 
 import pysolr
+from cache_memoize import cache_memoize
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.text import slugify
+
+from .constants import FORMATS, STOP_WORDS, FormatChoices
+
+ORGANISATIONS_LIMIT = 6000
+
+logger = logging.getLogger(__file__)
 
 
 def get_solr_client():
@@ -11,6 +23,169 @@ def get_solr_client():
         message = "SOLR_URL was not set"
         raise ImproperlyConfigured(message)
     return pysolr.Solr(settings.SOLR_URL, always_commit=True, timeout=2)
+
+
+# TODO: Ideally we would switch to a redis caching backend to cache this once across
+#   production app servers.  With in-memory caching, this would cache once per-process
+@cache_memoize(10 * 60)
+def get_organisations_by_title():
+    solr_client = get_solr_client()
+    results = solr_client.search(
+        q="*:*",
+        fq=["site_id:dgu_organisations*"],
+        fl=["title", "name"],
+        rows=ORGANISATIONS_LIMIT,
+    )
+    organisations = {doc["title"]: doc["name"] for doc in results if "title" in doc and "name" in doc}
+    return organisations
+
+
+@cache_memoize(10 * 60)
+def get_organisation_by_name(name):
+    solr_client = get_solr_client()
+    results = solr_client.search(
+        q="*:*",
+        fq=["site_id:dgu_organisations*", f"name:{name}"],
+        fl=["title", "name", "extras_contact-email", "extras_foi-email", "extras_foi-web", "extras_foi-name"],
+        rows=1,
+    )
+    if not results:
+        return None
+    return results.docs[0]
+
+
+def process_query(query_string):
+    # Matches either a quoted phrase (Group 1) or an individual word (Group 2)
+    phrase_regex = r'"(.*?)"|\b(\w+)\b'
+    matches = re.findall(phrase_regex, query_string)
+
+    processed_terms = []
+    for phrase, term in matches:
+        if phrase:
+            # Keep quoted phrases intact
+            processed_terms.append(f'"{phrase}"')
+        elif term and term.lower() not in STOP_WORDS:
+            # Keep individual words if they are not stop words
+            processed_terms.append(term)
+
+    # Join the remaining terms back into a single search string
+    return " ".join(processed_terms)
+
+
+def _get_query(query):
+    # TODO: We should do some escaping to avoid any injection in to our SOLR query
+    if not query:
+        return "*:*"
+    processed_query = process_query(query)
+    if not processed_query:
+        # Return a logically impossible query, to trigger empty results..
+        return "id:[* TO *] AND -id:[* TO *]"
+    return f"(title:({processed_query})^2 OR notes:({processed_query}))"
+
+
+def _get_filters(filters=None):
+    solr_filters = [
+        "state:active",
+        "type:dataset",
+        "-site_id:dgu_organisations*",
+    ]
+    if not filters:
+        filters = {}
+
+    if filters.get("publisher"):
+        all_organisations = get_organisations_by_title()
+        organisation_slug = all_organisations.get(filters["publisher"])
+        if organisation_slug:
+            solr_filters.append(f"organization:{organisation_slug}")
+
+    if filters.get("topic"):
+        topic_slug = slugify(filters["topic"])
+        solr_filters.append(f'extras_theme-primary:"{topic_slug}"')
+
+    if filters.get("format"):
+        file_format = filters["format"]
+        if file_format == FormatChoices.OTHER:
+            solr_filters.extend(
+                [f'-res_format:"{f}"' for f in list(itertools.chain.from_iterable(FORMATS.values()))],
+            )
+        elif file_format in FORMATS:
+            solr_filters.append(
+                " OR ".join(f'res_format:"{f}"' for f in FORMATS[file_format]),
+            )
+
+    if filters.get("open_government_licence_only") is True:
+        ogl_ids = ("uk-ogl", "OGL-UK-*", "ogl")
+        ogl_filter_value = " ".join(ogl_ids)
+        solr_filters.append(f"license_id:({ogl_filter_value})")
+
+    return solr_filters
+
+
+def _get_sort(sort):
+    if sort == "recent":
+        return "metadata_modified desc"
+    return None
+
+
+def _get_facets():
+    return {
+        "facet": "true",
+        "facet.field": ["organization", "extras_theme-primary", "res_format"],
+        "f.organization.facet.limit": ORGANISATIONS_LIMIT,
+        "facet.sort": "count",
+        "facet.mincount": 1,
+    }
+
+
+def search(query, filters, sort="best", start=0, rows=20):
+    solr_query = _get_query(query)
+    solr_filters = _get_filters(filters)
+    solr_client = get_solr_client()
+    solr_facets = _get_facets()
+    solr_sort = _get_sort(sort)
+    search_options = {}
+    if solr_sort:
+        search_options["sort"] = solr_sort
+    if query:
+        search_options.update(solr_facets)
+
+    solr_results = solr_client.search(
+        q=solr_query,
+        fq=solr_filters,
+        start=start,
+        rows=rows,
+        **search_options,
+    )
+    docs = [SolrDataset.from_solr_doc(result) for result in solr_results]
+    return {
+        "results": solr_results,
+        "docs": docs,
+    }
+
+
+def get_document(document_id):
+    solr_client = get_solr_client()
+    solr_results = solr_client.search(
+        q=f"id:{document_id}",
+        fq=_get_filters(),
+    )
+    if solr_results.hits == 0:
+        return None
+    docs = [SolrDataset.from_solr_doc(result) for result in solr_results]
+    doc = docs[0]
+    doc.load_organisation()
+    return doc
+
+
+def get_dataset_by_legacy_name(legacy_name):
+    solr_results = get_solr_client().search(
+        q=f'name:"{legacy_name}"',
+        fq=_get_filters(),
+        rows=1,
+    )
+    if solr_results.hits == 0:
+        return None
+    return SolrDataset.from_solr_doc(solr_results.docs[0])
 
 
 @dataclass
@@ -21,12 +196,34 @@ class Preview:
 
 
 @dataclass
+class SolrSupportingDocument:
+    name: str
+    url: str
+    format: str
+    file_size: str
+    last_modified: datetime | None
+
+    @staticmethod
+    def from_resource(resource: dict):
+        raw_date = resource.get("metadata_modified") or resource.get("created")
+        return SolrSupportingDocument(
+            name=resource.get("name") or "No name specified",
+            url=resource.get("url", ""),
+            format=(resource.get("format") or "").strip().upper(),
+            file_size=resource.get("size", ""),
+            last_modified=datetime.fromisoformat(raw_date) if raw_date else None,
+        )
+
+
+@dataclass
 class SolrDatafile:
     name: str
     url: str
     created_at: str
     format: str
     uuid: str
+    last_modified: datetime
+    size: str
     is_csv: bool = False
     _preview: Preview | None = field(default=None, repr=False)
 
@@ -34,6 +231,17 @@ class SolrDatafile:
     def from_resource(resource: dict, dataset_created_at: str):
         resource_format = resource.get("format") or ""
         resource_format = resource_format.strip().removeprefix(".").removesuffix(".").upper()
+
+        last_modified = resource.get("last_modified")
+        if last_modified:
+            last_modified = datetime.fromisoformat(last_modified)
+        elif resource.get("created"):
+            last_modified = datetime.fromisoformat(resource["created"])
+        elif dataset_created_at:
+            last_modified = datetime.fromisoformat(dataset_created_at)
+        else:
+            last_modified = ""
+
         return SolrDatafile(
             name=resource.get("name") or resource.get("description") or "",
             url=resource.get("url", ""),
@@ -41,6 +249,8 @@ class SolrDatafile:
             format=resource_format,
             uuid=resource.get("id", ""),
             is_csv=resource_format == "CSV",
+            last_modified=last_modified,
+            size=resource.get("size", ""),
         )
 
     def get_preview(self):
@@ -52,9 +262,6 @@ class SolrDatafile:
     def preview(self):
         return self.get_preview()
 
-    class DatafileNotFoundError(Exception):
-        pass
-
 
 @dataclass
 class SolrDataset:
@@ -62,10 +269,12 @@ class SolrDataset:
     name: str
     title: str
     summary: str
-    public_updated_at: str
+    public_updated_at: datetime
     topic: str
     licence_title: str
     licence_url: str
+    raw_doc: dict
+    additional_information: dict = field(default_factory=dict)
     datafiles: list = field(default_factory=list)
     contact_email: str = ""
     contact_name: str = ""
@@ -81,6 +290,65 @@ class SolrDataset:
     organisation_name: str = ""
     is_organogram: bool = False
 
+    def load_organisation(self):
+        organisation = get_organisation_by_name(self.organisation_name)
+        if not organisation:
+            return
+        # Some values on the dataset should have default values taken from the
+        # associated organisation record.  Go through those default values
+        # and set the values on this dataset to them if the dataset does not have
+        # a value set already
+        default_fields = ["extras_contact-email", "extras_foi-email", "extras_foi-web", "extras_foi-name"]
+        for organisation_field in default_fields:
+            default_value = organisation.get(organisation_field)
+            dataset_field = organisation_field.split("_")[1].replace("-", "_")
+            dataset_value_missing = getattr(self, dataset_field) == ""
+            if dataset_value_missing and default_value:
+                setattr(self, dataset_field, default_value)
+
+    @staticmethod
+    def extract_additional_information(data):
+        relevant_keys = {
+            "licence",
+            "metadata-date",
+            "access_constraints",
+            "guid",
+            "bbox-east-long",
+            "bbox-west-long",
+            "bbox-north-lat",
+            "bbox-south-lat",
+            "spatial-reference-system",
+            "dataset-reference-date",
+            "frequency-of-update",
+            "responsible-party",
+            "resource-type",
+            "metadata-language",
+            "harvest_object_id",
+        }
+
+        json_value_keys = {"access_constraints", "dataset-reference-date"}
+
+        additional_info = {}
+
+        for item in data:
+            key = item.get("key")
+            value = item.get("value")
+
+            if key in json_value_keys:
+                try:
+                    additional_info[key] = json.loads(value)
+                except json.JSONDecodeError, TypeError:
+                    additional_info[key] = value
+            elif key == "metadata-date":
+                try:
+                    additional_info[key] = datetime.fromisoformat(value) if value else None
+                except ValueError:
+                    additional_info[key] = None
+            elif key in relevant_keys:
+                additional_info[key] = value
+
+        return additional_info if additional_info else None
+
     @staticmethod
     def from_solr_doc(doc: dict):
         dataset_dict = json.loads(doc.get("validated_data_dict", "{}"))
@@ -90,9 +358,10 @@ class SolrDataset:
         docs = []
         for resource in dataset_dict.get("resources", []):
             if resource.get("resource-type") == "supporting-document":
-                docs.append(resource)
+                docs.append(SolrSupportingDocument.from_resource(resource))
             else:
                 datafiles.append(SolrDatafile.from_resource(resource, dataset_created_at))
+        datafiles.sort(reverse=True, key=lambda item: item.created_at)
 
         topic = doc.get("extras_theme-primary", "") or ""
         if topic:
@@ -101,13 +370,26 @@ class SolrDataset:
         licence_custom = doc.get("extras_licence", "") or ""
         if licence_custom:
             licence_custom = licence_custom.replace('"', "").replace("[", "").replace("]", "")
+        public_updated_at = None
+        metadata_modified = doc.get("metadata_modified")
+        if metadata_modified:
+            public_updated_at = datetime.fromisoformat(metadata_modified)
+        organisation_details = dataset_dict.get("organization", {})
+
+        additional_information = SolrDataset.extract_additional_information(dataset_dict.get("extras", []))
+
+        harvested = additional_information is not None
 
         return SolrDataset(
             uuid=doc.get("id", ""),
             name=doc.get("name", ""),
             title=doc.get("title", ""),
             summary=doc.get("notes", ""),
-            public_updated_at=doc.get("metadata_modified", ""),
+            organisation_name=doc.get("organization", ""),
+            organisation=organisation_details,
+            additional_information=additional_information,
+            harvested=harvested,
+            public_updated_at=public_updated_at,
             topic=topic,
             licence_title=dataset_dict.get("license_title", ""),
             licence_url=dataset_dict.get("license_url", ""),
@@ -120,4 +402,5 @@ class SolrDataset:
             foi_web=dataset_dict.get("foi-web", ""),
             datafiles=datafiles,
             docs=docs,
+            raw_doc=doc,
         )

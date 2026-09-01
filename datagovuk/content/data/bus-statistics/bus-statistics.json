@@ -1,13 +1,14 @@
 {
-    "title": "Passenger bus journeys on local services (millions)",
+    "title": "Passenger bus journeys on local services",
     "visualisation_type": "line",
+    "visualisation_suffix": "m",
     "source": "https://www.gov.uk/government/statistical-data-sets/bus-statistics-data-tables",
     "download": "bus-journeys-millions-2005-2025.csv",
     "publisher": "Department for Transport",
     "series": [
       {
         "name": "Great Britain",
-        "color": "#000000",
+        "color": "#C27A9A",
         "data": {
           "2005": 4608.582644,
           "2006": 4699.493989,

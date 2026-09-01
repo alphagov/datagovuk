@@ -1,0 +1,32 @@
+{% extends "base.jinja" %}
+
+{% set page_title = "Publishers" %}
+{% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
+{% from "govuk_frontend_jinja/components/inset-text/macro.html" import govukInsetText -%}
+
+{% block main %}
+  <div class="govuk-width-container datagovuk-width-container govuk-!-margin-top-9 datagovuk-content">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl datagovuk-heading-xl">Publish your data</h1>
+        <p class="govuk-body datagovuk-body">
+          You must have a Data publisher account to publish data for your organisation. If you already have one, sign in to get started.
+        </p>
+        {{ govukButton({
+          "href": "https://ckan.publishing.service.gov.uk/user/login",
+          "text": "Sign in",
+          "classes": "datagovuk-button"
+        }) }}
+        {{ govukInsetText({
+          "text": "To make any changes to an existing dataset, publishers must go to the dataset they want to change, go to the bottom of the page in the Edit this dataset section, and then sign in.",
+          "classes": "datagovuk-inset-text"
+        }) }}
+        <h2 class="govuk-heading-l datagovuk-heading-l">Become a publisher</h2>
+        <p class="govuk-body datagovuk-body">
+          To get started, take a look at the <a href="https://guidance.data.gov.uk/publish_and_manage_data/"
+    class="govuk-link datagovuk-link datagovuk-link--secondary">information about publishing datasets</a>. You can also <a href="{{ url('pages:support') }}" class="govuk-link datagovuk-link datagovuk-link--secondary">ask us for help</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock main %}

@@ -1,0 +1,17 @@
+.datagovuk-preview .datagovuk-table-container {
+    outline: 5px solid $datagovuk-light-grey;
+}
+
+.datagovuk-button:focus img {
+    filter: invert(1); // TODO: Have a seperate icon image with inverted colours
+}
+
+.datagovuk-preview-table__header {
+    min-width: 250px;
+}
+
+.datagovuk-table-container:focus {
+    margin: -3px;
+    border: 3px solid $datagovuk-black;
+    outline: 3px solid $datagovuk-yellow;
+}

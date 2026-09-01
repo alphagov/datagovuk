@@ -1,0 +1,19 @@
+.datagovuk-dataset-summary {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.datagovuk-more-from-publisher {
+  display: none;
+}
+
+/* Desktop styling overrides */
+@media (min-width: $desktop-breakpoint) {
+  .datagovuk-more-from-publisher {
+    display: block;
+  }
+
+  .datagovuk-more-from-publisher--mobile {
+    display: none;
+  }
+}

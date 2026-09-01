@@ -1,0 +1,107 @@
+{% extends "base.jinja" %}
+
+{% from "govuk_frontend_jinja/components/input/macro.html" import govukInput -%}
+{% from "govuk_frontend_jinja/components/character-count/macro.html" import govukCharacterCount -%}
+{% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
+
+{% set page_title = "Contact" %}
+
+{% block main %}
+  <div class="govuk-width-container datagovuk-width-container govuk-!-margin-top-9">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        {% for message in messages %}
+          {% if message.tags == "success" %}
+            {% include "includes/success_banner.jinja" %}
+          {% else %}
+            {% include "includes/error_banner.jinja" %}
+          {% endif %}
+        {% endfor %}
+
+        <h1 class="govuk-heading-l datagovuk-heading-l">Contact National Data Library</h1>
+
+        <section class="govuk-!-margin-bottom-8">
+          <p class="govuk-body datagovuk-body">
+            The Government Digital Service (GDS) maintains the service behind the National Data Library.
+          </p>
+
+          <p class="govuk-body datagovuk-body">The National Data Library service cannot:</p>
+          <ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body">
+            <li>provide personal information or medical records</li>
+            <li>combine data from multiple datasets</li>
+            <li>host data</li>
+          </ul>
+
+          <p class="govuk-body datagovuk-body govuk-!-margin-bottom-8">
+            If you are providing feedback or would like to suggest new features or data, please use our feedback form. Otherwise, submit your request through the support form below.
+          </p>
+        </section>
+
+        <div class="govuk-inset-text datagovuk-inset-text govuk-!-margin-bottom-8">
+          <p class="govuk-body datagovuk-body">
+            Civil Servant? <a href="https://ukgovernmentdigital.slack.com/archives/C037J3GTE4T" class="govuk-link datagovuk-link--secondary">Join the National Data Library on Slack</a>
+          </p>
+        </div>
+
+        <form method="post" novalidate class="govuk-!-margin-bottom-8">
+          {{ csrf_input }}
+
+          <input type="hidden" class="govuk-visually-hidden" name="http_referer" value="{{ form.http_referer.value() |default('') }}" />
+
+          {# djlint:off #}
+            {{
+              govukCharacterCount({
+                "label": {
+                  "text": form.details.label,
+                  "classes": "govuk-heading-m datagovuk-heading-m govuk-!-margin-bottom-4",
+                },
+                "hint": {"text": "For example if you were searching for something, what did you type into the search box?"},
+                "id": form.details.id_for_label,
+                "name": form.details.html_name,
+                "value": form.details.value() or "",
+                "maxlength": form.details.field.max_length,
+                "errorMessage": {"text": form.details.errors|join} if form.details.errors else None,
+                "formGroup": {
+                  "classes": "datagovuk-form-group"
+                }
+              })
+            }}
+
+            <div class="govuk-form-group datagovuk-form-group govuk-!-margin-bottom-8">
+              <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m datagovuk-heading-m">
+                  If you want a reply (optional)
+                </legend>
+
+                <p class="govuk-body datagovuk-body govuk-!-margin-bottom-8">If you'd like us to get back to you, please leave your details below</p>
+
+                {{ govukInput({
+                  "label": {"text": form.name.label, "classes": "govuk-body datagovuk-body"},
+                  "id": form.name.id_for_label,
+                  "name": form.name.html_name,
+                  "value": form.name.value() or "",
+                  "errorMessage": {"text": form.name.errors|join} if form.name.errors else None,
+                  "formGroup": {"classes": "datagovuk-form-group"},
+                }) }}
+
+                {{ govukInput({
+                  "label": {"text": form.email.label, "classes": "govuk-body datagovuk-body"},
+                  "hint": {"text": "We'll only use this to reply to your message", "classes": "govuk-body datagovuk-body"},
+                  "id": form.email.id_for_label,
+                  "name": form.email.html_name,
+                  "value": form.email.value() or "",
+                  "type": "email",
+                  "errorMessage": {"text": form.email.errors|join} if form.email.errors else None,
+                  "formGroup": {"classes": "datagovuk-form-group"},
+                }) }}
+              </fieldset>
+            </div>
+
+            {{ govukButton({"text": "Send message", "classes": "datagovuk-button"}) }}
+          {# djlint:on #}
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock main %}

@@ -1,15 +1,16 @@
 {
-  "title": "Total UK exports and imports in goods and services 2010 to 2025",
+  "title": "Total UK exports and imports in goods and services",
   "visualisation_type": "line",
   "source": "https://www.gov.uk/government/statistics/uk-trade-in-numbers/uk-trade-in-numbers-web-version",
   "download": "total-uk-imports-exports.csv",
   "publisher": "Department for Business and Trade",
   "number_base": 1000,
   "visualisation_suffix": "bn",
+  "visualisation_prefix": "£",
   "min_value": 100,
   "series": [
     {
-      "name": "Value of exports in £ billions",
+      "name": "Value of exports",
       "color": "#C27A9A",
       "data": {
         "2010": 464.495,
@@ -31,7 +32,7 @@
        }
     },
     {
-      "name": "Value of imports in £ billions",
+      "name": "Value of imports",
       "color": "#00890B",
       "data": {
         "2010": 489.677,

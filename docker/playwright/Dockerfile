@@ -1,6 +1,11 @@
 FROM ghcr.io/astral-sh/uv:python3.14-bookworm-slim
 
-RUN --mount=type=cache,target=/root/.cache/pip pip install playwright==1.61.0
+WORKDIR /app
+
+COPY pyproject.toml uv.lock ./
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install --system playwright
 
 RUN playwright install --with-deps chromium
 

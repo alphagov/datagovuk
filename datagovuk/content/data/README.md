@@ -3,6 +3,12 @@
 This document records where the visualisation data for each item in data directory was collected from and what, if
 any processing (manual) that was done to that data.
 
+Our colours:
+Pink: #C27A9A
+Green: #00890B
+Black: #333333
+Blue: #026BDB
+
 
 ## Line and bar charts
 
@@ -52,6 +58,15 @@ Source: https://assets.publishing.service.gov.uk/media/69c11f97cfa346b9d4704a50/
 This is table BUS01 on https://www.gov.uk/government/statistical-data-sets/bus-statistics-data-tables#quarterly-bus-fares-statistics.
 
 Columns 'Year ending March' and 'Great Britain' were extracted from sheet BUS01a and saved to [bus-statistics/bus-journeys-millions-2005-2025.csv](bus-statistics/bus-journeys-millions-2005-2025.csv).
+
+### Council Tax Average Band D
+Source: https://www.gov.uk/government/statistics/council-tax-levels-set-by-local-authorities-in-england-2026-to-2027
+
+File: Council Tax levels set by local authorities in England 2026 to 2027: Tables 1 to 9
+
+Sheet: Table 3
+
+Copy the 'Year' and 'Pounds £' columns into a .csv. Remove references to the notes.
 
 ### Driving tests
 
@@ -103,6 +118,18 @@ The resulting CSV contains metadata header rows and three time series (annual, q
 
 The file [inflation/inflation.json](inflation/inflation.json) uses the data from the csv file as its `series.data` object.
 
+
+### Local government finance
+
+Source: https://www.gov.uk/government/statistical-data-sets/live-tables-on-local-government-finance
+Table: Capital payments and receipts Q4 2025 to 2026, England
+Sheet: Year_&_Quarter_Series
+
+Extract the columns for 'Financial year ending (FYE)', and 'Total capital expenditure'.
+Replace Financial year ending with 'Financial year' and update the values manually; 2011 becomes 2010-11 for example.
+Divide total capital expenditure by 1000 to get the values in billions, and add (£, billions) to the column title.
+Round those values to the nearest 1 decimal point.
+
 ### MOT test results
 
 Source: https://www.gov.uk/government/statistical-data-sets/mot-testing-data-for-great-britain
@@ -117,7 +144,6 @@ Remove the second year in finanial year to make the axis labels neater.
 ### Rents
 Source: https://www.data.gov.uk/collections/land-and-property/rents-lettings-and-tenancies
 Table: 602
-Sheet: England data
 
 ### Road traffic mileage
 

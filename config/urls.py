@@ -10,7 +10,8 @@ urlpatterns = [
     path("", include("datagovuk.core.urls", namespace="core")),
     path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
     path("collections/", include("datagovuk.collections.urls", namespace="collections")),
-    path("v1/", include("datagovuk.directory.urls", namespace="directory")),
+    path("", include("datagovuk.directory.urls", namespace="directory")),
+    path("", include("datagovuk.support.urls", namespace="support")),
     path(
         "health/",
         HealthCheckView.as_view(
@@ -19,11 +20,7 @@ urlpatterns = [
             ],
         ),
     ),
-    path(
-        "metrics/",
-        never_cache(prometheus_views.ExportToDjangoView),
-        name="prometheus-django-metrics",
-    ),
+    path("", include("datagovuk.ckan_redirect.urls", namespace="ckan_redirect")),
 ]
 
 handler500 = "datagovuk.core.views.server_error"
@@ -54,6 +51,11 @@ if settings.DEBUG:
             "500/",
             default_views.server_error,
             name="error_server_error",
+        ),
+        path(
+            "metrics/",
+            never_cache(prometheus_views.ExportToDjangoView),
+            name="prometheus-django-metrics",
         ),
     ]
     if "debug_toolbar" in settings.INSTALLED_APPS:

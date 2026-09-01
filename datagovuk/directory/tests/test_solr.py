@@ -1,10 +1,19 @@
 import json
+from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
 from django.core.exceptions import ImproperlyConfigured
 
-from datagovuk.directory.solr import Preview, SolrDatafile, SolrDataset, get_solr_client
+from datagovuk.directory.solr import (
+    Preview,
+    SolrDatafile,
+    SolrDataset,
+    SolrSupportingDocument,
+    get_dataset_by_legacy_name,
+    get_solr_client,
+    process_query,
+)
 
 
 def test_get_solr_client_no_solr_url(settings):
@@ -18,6 +27,33 @@ def test_get_solr_client_solr_url_set(pysolr_mock, settings):
     settings.SOLR_URL = "http://solr.example.net"
     client = get_solr_client()
     assert client == pysolr_mock.Solr.return_value
+
+
+def test_get_dataset_by_legacy_name(solr_doc_factory):
+    legacy_name = "example-dataset"
+    solr_doc_factory(id="1234", name=legacy_name)
+    dataset = get_dataset_by_legacy_name(legacy_name)
+    assert dataset.uuid == "1234"
+    assert dataset.name == legacy_name
+
+
+def test_get_dataset_by_legacy_name_not_found(solr_doc_factory):
+    legacy_name = "non-existent-dataset"
+    solr_doc_factory(id="1234", name="some-other-dataset")
+    dataset = get_dataset_by_legacy_name(legacy_name)
+    assert dataset is None
+
+
+@pytest.mark.parametrize(
+    ("query", "expected_processed_query"),
+    [
+        ("of mice and men", "mice men"),
+        ('"of mice and men"', '"of mice and men"'),
+    ],
+)
+def test_process_query_removes_stop_words(query, expected_processed_query):
+    processed_query = process_query(query)
+    assert processed_query == expected_processed_query
 
 
 class TestSolrDatafileModel:
@@ -54,6 +90,45 @@ class TestSolrDatafileModel:
         assert solr_datafile.format == "CSV"
         assert solr_datafile.url == "https://example.com/test.csv"
         assert solr_datafile.created_at == "2023-01-01T00:00:00Z"
+        assert solr_datafile.uuid == "e5523c1b-2133-4431-9bca-ea19c939b0a8"
+        assert solr_datafile.is_csv is True
+
+    def test_solr_datafile_model_from_resource_with_last_modified(self):
+        resource = {
+            "id": "e5523c1b-2133-4431-9bca-ea19c939b0a8",
+            "name": "Population projections (2014-based) persons by single year of age",
+            "url": "https://example.com/test.csv",
+            "created": "2016-06-06T15:14:20.764117",
+            "last_modified": "2016-06-06T15:14:20.764117",
+            "description": "ONS single year of age population projections for districts within North Yorkshire",
+            "format": "CSV",
+        }
+
+        solr_datafile = SolrDatafile.from_resource(resource, "2023-01-01T00:00:00Z")
+        assert solr_datafile.name == "Population projections (2014-based) persons by single year of age"
+        assert solr_datafile.format == "CSV"
+        assert solr_datafile.url == "https://example.com/test.csv"
+        assert solr_datafile.created_at == "2016-06-06T15:14:20.764117"
+        assert solr_datafile.last_modified == datetime.fromisoformat("2016-06-06T15:14:20.764117")
+        assert solr_datafile.uuid == "e5523c1b-2133-4431-9bca-ea19c939b0a8"
+        assert solr_datafile.is_csv is True
+
+    def test_solr_datafile_model_from_resource_with_created_at(self):
+        resource = {
+            "id": "e5523c1b-2133-4431-9bca-ea19c939b0a8",
+            "name": "Population projections (2014-based) persons by single year of age",
+            "url": "https://example.com/test.csv",
+            "created": "2016-06-06T15:14:20.764117",
+            "description": "ONS single year of age population projections for districts within North Yorkshire",
+            "format": "CSV",
+        }
+
+        solr_datafile = SolrDatafile.from_resource(resource, "2023-01-01T00:00:00Z")
+        assert solr_datafile.name == "Population projections (2014-based) persons by single year of age"
+        assert solr_datafile.format == "CSV"
+        assert solr_datafile.url == "https://example.com/test.csv"
+        assert solr_datafile.created_at == "2016-06-06T15:14:20.764117"
+        assert solr_datafile.last_modified == datetime.fromisoformat("2016-06-06T15:14:20.764117")
         assert solr_datafile.uuid == "e5523c1b-2133-4431-9bca-ea19c939b0a8"
         assert solr_datafile.is_csv is True
 
@@ -96,6 +171,8 @@ class TestSolrDatafileModel:
             created_at="2023-01-01T00:00:00Z",
             format="CSV",
             uuid="550e8400-e29b-41d4-a716-446655440003",
+            last_modified="2023-01-01T00:00:00Z",
+            size=1024,
             _preview=mock_preview,
         )
 
@@ -112,6 +189,8 @@ class TestSolrDatafileModel:
             created_at="2023-01-01T00:00:00Z",
             format="CSV",
             uuid="550e8400-e29b-41d4-a716-446655440003",
+            last_modified="2023-01-01T00:00:00Z",
+            size=1024,
             _preview=None,
         )
 
@@ -128,6 +207,8 @@ class TestSolrDatafileModel:
             created_at="2023-01-01T00:00:00Z",
             format="CSV",
             uuid="550e8400-e29b-41d4-a716-446655440003",
+            last_modified="2023-01-01T00:00:00Z",
+            size=1024,
             _preview=None,
         )
 
@@ -136,6 +217,50 @@ class TestSolrDatafileModel:
         assert preview.url == "https://example.com/test.csv"
         assert preview.format == "CSV"
         assert preview.exists is False
+
+
+class TestSolrSupportingDocumentModel:
+    def test_from_resource(self):
+        resource = {
+            "name": "My report",
+            "url": "https://example.com/report.pdf",
+            "format": " pdf ",
+            "size": "1024",
+            "metadata_modified": "2023-06-01T12:00:00",
+        }
+
+        doc = SolrSupportingDocument.from_resource(resource)
+
+        assert doc.name == "My report"
+        assert doc.url == "https://example.com/report.pdf"
+        assert doc.format == "PDF"
+        assert doc.file_size == "1024"
+        assert doc.last_modified == datetime.fromisoformat("2023-06-01T12:00:00")
+
+    def test_from_resource_falls_back_to_created_when_metadata_modified_absent(self):
+        resource = {
+            "name": "My report",
+            "url": "https://example.com/report.pdf",
+            "format": "PDF",
+            "size": None,
+            "created": "2022-01-01T00:00:00",
+        }
+
+        doc = SolrSupportingDocument.from_resource(resource)
+
+        assert doc.last_modified == datetime.fromisoformat("2022-01-01T00:00:00")
+
+    def test_from_resource_last_updated_none_when_both_absent(self):
+        resource = {
+            "name": "My report",
+            "url": "https://example.com/report.pdf",
+            "format": "PDF",
+            "size": None,
+        }
+
+        doc = SolrSupportingDocument.from_resource(resource)
+
+        assert doc.last_modified is None
 
 
 class TestSolrDatasetModel:
@@ -158,7 +283,7 @@ class TestSolrDatasetModel:
         assert solr_dataset.name == "a-very-interesting-dataset"
         assert solr_dataset.title == "A very interesting dataset"
         assert solr_dataset.summary == "Lorem ipsum dolor sit amet."
-        assert solr_dataset.public_updated_at == "2017-06-30T09:08:37.040Z"
+        assert solr_dataset.public_updated_at == datetime.fromisoformat("2017-06-30T09:08:37.040Z")
 
     def test_from_solr_doc_datafile_parsed(self):
         resources = [
@@ -253,6 +378,53 @@ class TestSolrDatasetModel:
         assert solr_dataset.foi_email == "foi@example.com"
         assert solr_dataset.foi_web == "https://example.com/foi"
 
+    def test_from_solr_doc_additional_information_parsed_from_extras(self):
+        extras = [
+            {"key": "guid", "value": "abc-123"},
+            {"key": "metadata-language", "value": "eng"},
+            {"key": "irrelevant", "value": "ignored"},
+        ]
+        solr_dataset = SolrDataset.from_solr_doc(
+            self.solr_doc(validated_data_dict=json.dumps({"extras": extras})),
+        )
+        assert solr_dataset.additional_information == {"guid": "abc-123", "metadata-language": "eng"}
+
+    def test_from_solr_doc_additional_information_metadata_date_parsed_as_datetime(self):
+        extras = [{"key": "metadata-date", "value": "2023-06-15T00:00:00"}]
+        solr_dataset = SolrDataset.from_solr_doc(
+            self.solr_doc(validated_data_dict=json.dumps({"extras": extras})),
+        )
+        assert solr_dataset.additional_information["metadata-date"] == datetime.fromisoformat("2023-06-15T00:00:00")
+
+    def test_from_solr_doc_additional_information_metadata_date_falls_back_to_none_on_invalid_value(self):
+        extras = [{"key": "metadata-date", "value": "not-a-date"}]
+        solr_dataset = SolrDataset.from_solr_doc(
+            self.solr_doc(validated_data_dict=json.dumps({"extras": extras})),
+        )
+        assert solr_dataset.additional_information["metadata-date"] is None
+
+    def test_from_solr_doc_additional_information_none_when_no_relevant_extras(self):
+        extras = [{"key": "irrelevant", "value": "ignored"}]
+        solr_dataset = SolrDataset.from_solr_doc(
+            self.solr_doc(validated_data_dict=json.dumps({"extras": extras})),
+        )
+        assert solr_dataset.additional_information is None
+
+    def test_from_solr_doc_additional_information_none_when_extras_absent(self):
+        solr_dataset = SolrDataset.from_solr_doc(self.solr_doc())
+        assert solr_dataset.additional_information is None
+
+    def test_from_solr_doc_harvested_is_true_when_additional_information_present(self):
+        extras = [{"key": "guid", "value": "abc-123"}]
+        solr_dataset = SolrDataset.from_solr_doc(
+            self.solr_doc(validated_data_dict=json.dumps({"extras": extras})),
+        )
+        assert solr_dataset.harvested is True
+
+    def test_from_solr_doc_harvested_is_false_when_additional_information_absent(self):
+        solr_dataset = SolrDataset.from_solr_doc(self.solr_doc())
+        assert solr_dataset.harvested is False
+
     def test_from_solr_doc_supporting_document_goes_to_docs_not_datafiles(self):
         resources = [
             {
@@ -278,7 +450,60 @@ class TestSolrDatasetModel:
         assert len(solr_dataset.datafiles) == 1
         assert solr_dataset.datafiles[0].name == "Data file"
         assert len(solr_dataset.docs) == 1
-        assert solr_dataset.docs[0]["name"] == "Supporting doc"
+        assert solr_dataset.docs[0].name == "Supporting doc"
+
+    def test_extract_additional_information_returns_none_when_extras_empty(self):
+        assert SolrDataset.extract_additional_information([]) is None
+
+    def test_extract_additional_information_no_relevant_keys_returns_none(self):
+        extras = [{"key": "irrelevant-key", "value": "some-value"}]
+        assert SolrDataset.extract_additional_information(extras) is None
+
+    def test_extract_additional_information_returns_dict_with_relevant_keys(self):
+        extras = [
+            {"key": "guid", "value": "f3c7ffd4-4187-46fd-a590-99e2af539058"},
+            {"key": "metadata-language", "value": "eng"},
+            {"key": "irrelevant-key", "value": "ignored"},
+        ]
+        result = SolrDataset.extract_additional_information(extras)
+        assert result == {"guid": "f3c7ffd4-4187-46fd-a590-99e2af539058", "metadata-language": "eng"}
+
+    def test_extract_additional_information_parses_json_value_keys(self):
+        extras = [
+            {"key": "access_constraints", "value": '["no restrictions"]'},
+            {"key": "dataset-reference-date", "value": '[{"type": "creation", "value": "2020-01-01"}]'},
+        ]
+        result = SolrDataset.extract_additional_information(extras)
+        assert result["access_constraints"] == ["no restrictions"]
+        assert result["dataset-reference-date"] == [{"type": "creation", "value": "2020-01-01"}]
+
+    def test_extract_additional_information_parses_all_relevant_keys(self):
+        extras = [
+            {"key": "licence", "value": "ogl"},
+            {"key": "metadata-date", "value": "2020-01-01"},
+            {"key": "guid", "value": "f3c7ffd4-4187-46fd-a590-99e2af539058"},
+            {"key": "bbox-east-long", "value": "1.0"},
+            {"key": "bbox-west-long", "value": "-1.0"},
+            {"key": "bbox-north-lat", "value": "52.0"},
+            {"key": "bbox-south-lat", "value": "50.0"},
+            {"key": "spatial-reference-system", "value": "OSGB 1936"},
+            {"key": "frequency-of-update", "value": "annual"},
+            {"key": "responsible-party", "value": "Some Org"},
+            {"key": "resource-type", "value": "dataset"},
+            {"key": "metadata-language", "value": "eng"},
+            {"key": "harvest_object_id", "value": "harvest-123"},
+        ]
+        result = SolrDataset.extract_additional_information(extras)
+        assert len(result) == len(extras)
+
+    def test_extract_additional_information_returns_raw_string_for_access_constraints_when_invalid_json(self):
+        extras = [
+            {"key": "licence", "value": "Open Data"},
+            {"key": "access_constraints", "value": "None"},
+        ]
+        result = SolrDataset.extract_additional_information(extras)
+        assert result["access_constraints"] == "None"
+        assert result["licence"] == "Open Data"
 
 
 class TestPreviewModel:
