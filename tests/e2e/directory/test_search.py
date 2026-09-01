@@ -124,3 +124,28 @@ class TestSearch:
         page.get_by_role("button", name="Apply filters").click()
         expect(page.get_by_text("1 result")).to_be_visible()
         expect(page.get_by_role("link", name="DGUK E2E Search dataset licence")).to_be_visible()
+
+    @pytest.mark.smoke
+    def test_search_show_missing_links(
+        self,
+        page,
+        live_server_url,
+        search_url,
+    ):
+        page.goto(live_server_url + search_url)
+        expect(page.get_by_role("heading", level=1, name="Directory")).to_be_visible()
+        page.get_by_role("textbox", name="Search directory").click()
+        page.get_by_role("textbox", name="Search directory").fill('"E2E Search"')
+        page.get_by_role("button", name="Search").click()
+        # Wait for autocomplete JS to catch up..
+        page.wait_for_timeout(1000)
+        page.get_by_role("checkbox", name="Show datasets with links only").uncheck()
+        page.get_by_role("button", name="Apply filters").click()
+        expect(page.get_by_text("7 results")).to_be_visible()
+        expect(page.get_by_role("link", name="DGUK E2E Search dataset licence")).to_be_visible()
+        expect(page.get_by_role("link", name="DGUK E2E Search dataset publisher")).to_be_visible()
+        expect(page.get_by_role("link", name="DGUK E2E Search dataset generic")).to_be_visible()
+        expect(page.get_by_role("link", name="DGUK E2E Search dataset format")).to_be_visible()
+        expect(page.get_by_role("link", name="DGUK E2E Search dataset topic")).to_be_visible()
+        expect(page.get_by_role("link", name="DGUK E2E Search dataset missing links")).to_be_visible()
+        expect(page.get_by_role("link", name="DGUK E2E Search dataset recent")).to_be_visible()

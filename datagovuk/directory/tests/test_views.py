@@ -158,6 +158,17 @@ class TestSearchView:
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
+    def test_view_filter_datasets_with_link_only(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory()
+        solr_doc_factory(res_url=[])
+
+        response = client.get(search_url, {"q": "dataset", "datasets_with_links_only": "on"})
+
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_doc["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
     def test_view_filter_topic(self, client, solr_doc_factory, search_url):
         matching_doc = solr_doc_factory(topic="environment")
         solr_doc_factory()
