@@ -1,0 +1,11 @@
+{
+    "title": "Bathing water quality sample in England (2025, %)",
+    "visualisation_type": "bar",
+    "download": "bathing-water-quality-2025-sample.csv",
+    "data": {
+        "Excellent": 66.1,
+        "Good": 21.1,
+        "Sufficient": 5.6,
+        "Poor": 7.1
+    }
+}
