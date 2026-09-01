@@ -31,7 +31,7 @@
             id="datagovuk-header-button-data-manual"
             aria-controls="datagovuk-menu-data-manual">Data manual</button>
 
-    {% set search_url = "/search" %}
+    {% set search_url = url("directory:search") %}
 
     <div class="datagovuk-menu" id="datagovuk-menu-data-manual">
       <h2 class="datagovuk-menu__heading">Data manual</h2>
@@ -48,4 +48,5 @@
       </div>
     </div>
   </div>
+  {{ header_end or "" }}
 </header>

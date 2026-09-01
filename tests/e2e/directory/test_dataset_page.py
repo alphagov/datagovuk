@@ -1,0 +1,44 @@
+import pytest
+from playwright.sync_api import expect
+
+
+class TestDatasetPage:
+    @pytest.mark.smoke
+    def test_heading_is_visible(self, page, live_server_url, dataset_url):
+        page.goto(live_server_url + dataset_url)
+        expect(page.get_by_role("heading", level=1)).to_have_text("Test Additional Information Dataset")
+
+    def test_data_links_heading_present(self, page, live_server_url, dataset_url):
+        page.goto(live_server_url + dataset_url)
+        expect(page.get_by_role("heading", level=2, name="Data links")).to_be_visible()
+
+    @pytest.mark.smoke
+    def test_table_visible(self, page, live_server_url, dataset_url):
+        page.goto(live_server_url + dataset_url)
+        expect(page.locator("#datagovuk-resources-table")).to_be_visible()
+
+    def test_table_has_correct_column_headers(self, page, live_server_url, dataset_url):
+        page.goto(live_server_url + dataset_url)
+        headers = page.locator("thead.govuk-table__head tr th.govuk-table__header.datagovuk-table__header")
+        expect(headers.nth(0)).to_have_text("Link")
+        expect(headers.nth(1)).to_have_text("Format")
+        expect(headers.nth(2)).to_have_text("Preview")
+        expect(headers.nth(3)).to_have_text("Updated")
+
+    def test_table_rows_have_govuk_classes(self, page, live_server_url, dataset_url):
+        page.goto(live_server_url + dataset_url)
+        rows = page.locator("tbody tr.govuk-table__row")
+        expect(rows.first.locator("td.govuk-table__cell.datagovuk-table__cell")).to_have_count(4)
+
+    def test_feedback_shows_dataset_specific_text(self, page, live_server_url, dataset_url):
+        page.goto(live_server_url + dataset_url)
+        feedback = page.locator(".datagovuk-inset-text")
+        expect(feedback).to_contain_text("Is this data/dataset useful?")
+
+    def test_feedback_link(self, page, live_server_url, dataset_url):
+        page.goto(live_server_url + dataset_url)
+        feedback = page.locator(".datagovuk-inset-text")
+        expect(feedback.get_by_role("link", name="Give us feedback")).to_have_attribute(
+            "href",
+            "https://forms.office.com/e/9V26PNFQaR",
+        )

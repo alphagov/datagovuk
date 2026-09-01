@@ -1,23 +1,152 @@
-{% extends "base.jinja" %}
+{% extends "directory/base.jinja" %}
 
-{% set page_title = "Search" %}
+{% set page_title = "Search directory" %}
+{% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
+{% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect -%}
+{% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes -%}
+{% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination -%}
 
-{% block main %}
-  <div class="govuk-width-container datagovuk-width-container">
-    <form method="get">
-      <label for="query">Search:</label>
-      <input type="text" id="query" name="q" placeholder="Type here..." />
+{% block search_main %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
+      {# djlint:off #}
+      {{ govukSelect({
+        "label": {
+          "text": form.publisher.label,
+        },
+        "name": form.publisher.name,
+        "value": form.publisher.value(),
+        "items": form.publisher.field.choices|to_govuk_items,
+        "errorMessage": {"html": form.publisher.errors} if form.publisher.errors else None,
+        "formGroup": {"classes": "datagovuk-form-group"},
+      }) }}
+      {{ govukSelect({
+        "label": {
+          "text": form.topic.label,
+        },
+        "name": form.topic.name,
+        "value": form.topic.value(),
+        "items": form.topic.field.choices|to_govuk_items,
+        "errorMessage": {"html": form.topic.errors} if form.topic.errors else None,
+        "formGroup": {"classes": "datagovuk-form-group"},
+      }) }}
+      {{ govukSelect({
+        "label": {
+          "text": form.format.label,
+        },
+        "name": form.format.name,
+        "value": form.format.value(),
+        "items": form.format.field.choices|to_govuk_items,
+        "errorMessage": {"html": form.format.errors} if form.format.errors else None,
+        "formGroup": {"classes": "datagovuk-form-group"},
+      }) }}
+      {{ govukCheckboxes({
+         "name": form.open_government_licence_only.name,
+         "items": [
+           {
+             "value": "on",
+             "checked": true if form.open_government_licence_only.value() else false,
+             "text": form.open_government_licence_only.label,
+           },
+         ],
+         "formGroup": {"classes": "datagovuk-form-group"},
+      }) }}
+      {# djlint:on #}
+      {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button datagovuk-button--secondary"}) }}
+    </div>
 
-      <button type="submit">Submit</button>
-    </form>
-    {% if results %}
-      Hits: {{ results.hits }}
-      {% for result in results %}
-        <p>
-          <a href="{{ url('directory:dataset', kwargs={'uuid': result.id, 'slug': result.name}) }}"
-             class="govuk-link datagovuk-link">{{ result.title }}</a>
-        </p>
-      {% endfor %}
-    {% endif %}
+    <div class="govuk-grid-column-two-thirds">
+      {% if search_made %}
+        {% if results.hits > 0 %}
+          <div class="datagovuk-search__results-header">
+            <div class="govuk-body datagovuk-body datagovuk-search__results-count">
+              {% if pagination.first_result_in_page != 1 %}
+                {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ pagination.total_results|intcomma }} result{{ "s" if pagination.total_results > 1 else "" }}
+              {% else %}
+                {{ pagination.total_results|intcomma }} result{{ "s" if pagination.total_results > 1 else "" }}
+              {% endif %}
+            </div>
+            {{ govukSelect({
+                        "label": {
+                        "text": "Sort by"
+                        },
+                        "name": "sort",
+                        "value": sort,
+                        "items": [
+                        {"text": "Most relevant", "value": "best"},
+                        {"text": "Most recent", "value": "recent"}
+                        ],
+                        "formGroup": {
+                        "classes": "datagovuk-form-group datagovuk-search__sort-by"
+                        },
+                        "attributes": {
+                        "onchange": "this.form.submit()"
+                        }
+                        }) }}
+          </div>
+          <ul class="datagovuk-search-results">
+            {% for doc in docs %}
+              <li class="datagovuk-search-results__item">
+                <h2 class="govuk-body datagovuk-body">
+                  <a href="{{ url('directory:dataset', kwargs={'uuid': doc.uuid, 'slug': doc.name}) }}"
+                     class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.title }}</a>
+                </h2>
+                <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
+                  <div class="datagovuk-search-results__item-label">Publisher</div>
+                  <div class="datagovuk-search-results__item-value">{{ doc.organisation.title }}</div>
+                </div>
+                <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
+                  <div class="datagovuk-search-results__item-label">Updated</div>
+                  <div class="datagovuk-search-results__item-value">{{ doc.public_updated_at|date("j F Y") }}</div>
+                </div>
+                <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.summary | striptags | truncate(200) }}</div>
+              </li>
+            {% endfor %}
+          </ul>
+          {% if pagination.pages %}{{ govukPagination(dict(pagination.pages, classes="datagovuk-pagination") ) }}{% endif %}
+        {% else %}
+          <p class="govuk-body datagovuk-body">0 results found</p>
+          <p class="govuk-body datagovuk-body">Improve your search results by:</p>
+          <ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body">
+            <li>removing filters</li>
+            <li>double-checking your spelling</li>
+            <li>using fewer keywords</li>
+            <li>searching for something less specific</li>
+          </ul>
+        {% endif %}
+      {% endif %}
+    </div>
   </div>
-{% endblock main %}
+{% endblock search_main %}
+
+{% block extra_js %}
+  {% compress js %}
+    <script type="text/javascript" src={{static("javascripts/accessible-autocomplete-3.0.1.min.js")}}></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const selectsToEnhance = ["publisher", "topic", "format"];
+        selectsToEnhance.forEach(id => {
+          const element = document.querySelector(`#${id}`);
+          accessibleAutocomplete.enhanceSelectElement({
+            selectElement: element,
+            showAllValues: true,
+            defaultValue: '',
+            preserveNullOptions: true,
+            inputClasses: "govuk-input",
+            menuClasses: "datagovuk-autocomplete__menu",
+            dropdownArrow: function (config) {
+              return '<svg class="' + config.className + '" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 11.25L15 18.75L22.5 11.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>'
+            }
+          });
+        });
+      });
+    </script>
+  {% endcompress %}
+{% endblock extra_js %}
+
+{% block extra_css %}
+  {% compress css %}
+    <link href="{{ static('stylesheets/accessible-autocomplete-3.0.1.min.css') }}" rel="stylesheet" />
+  {% endcompress %}
+{% endblock extra_css %}

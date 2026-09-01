@@ -1,0 +1,115 @@
+// TODO: Make the notification banner styling dynamic to multi line text.
+// The --success is styled to be for single line text, but the --error is styled to be for multi line text.
+
+.datagovuk-notification-banner {
+  margin: 0;
+  margin-bottom: 30px;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.datagovuk-notification-banner--error {
+  background-color: $datagovuk-light-pink;
+}
+
+.datagovuk-notification-banner--success {
+  background-color: $datagovuk-light-green;
+}
+
+.datagovuk-notification-banner--success:focus,
+.datagovuk-notification-banner--error:focus {
+  border: 3px solid $datagovuk-black;
+  outline: 3px solid $datagovuk-yellow;
+}
+
+.datagovuk-notification-banner__text {
+  display: flex;
+  width: 100%;
+  padding: 0 0 0 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.datagovuk-notification-banner--success .datagovuk-notification-banner__text {
+  padding-left: 0;
+  color: $datagovuk-dark-green;
+}
+
+.datagovuk-notification-banner--error .datagovuk-notification-banner__text {
+  color: $datagovuk-dark-pink;
+}
+
+.datagovuk-notification-banner--success,
+.datagovuk-notification-banner--error {
+  border: 3px solid transparent; // Fixes :focus repositioning other elements on page
+  padding: 13px;
+}
+
+.datagovuk-notification-banner__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.datagovuk-notification-banner__content .datagovuk-body {
+  margin: 0;
+}
+
+.datagovuk-close {
+  padding: 12px;
+  padding-top: 15px;
+  margin-left: auto;
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
+
+.datagovuk-close__image {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.datagovuk-notification-banner__icon {
+  padding: 12px;
+  padding-top: 15px;
+  align-self: flex-start;
+}
+
+.datagovuk-notification-banner--error .datagovuk-notification-banner__icon {
+  padding-top: 5px;
+}
+
+.datagovuk-notification-banner--error .datagovuk-close {
+  padding-top: 5px;
+}
+
+/* Desktop styling overrides */
+@media (min-width: $desktop-header-breakpoint) {
+  .datagovuk-notification-banner--success.datagovuk-notification-banner__icon,
+  .datagovuk-notification-banner--error.datagovuk-notification-banner__icon {
+    padding-bottom: 5px;
+  }
+
+  .datagovuk-notification-banner__content {
+    align-items: center;
+  }
+
+  .datagovuk-notification-banner--success, .datagovuk-notification-banner--error {
+    padding: 12px;
+  }
+
+  .datagovuk-close {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .datagovuk-notification-banner--success .datagovuk-notification-banner__text {
+    justify-content: flex-start;
+    padding: 0 0 0 5px;
+  }
+
+  .datagovuk-notification-banner--error .datagovuk-notification-banner__icon,
+  .datagovuk-notification-banner--error .datagovuk-close {
+    padding-top: 5px;
+  }
+}

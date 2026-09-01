@@ -1,0 +1,27 @@
+.datagovuk-pagination {
+
+  .govuk-pagination__item--current {
+    background-color: $datagovuk-green;
+    border-radius: 10px;
+
+    .govuk-link:link,
+    .govuk-link:visited,
+    .govuk-link, {
+      color: #FFF;
+      text-decoration: none;
+    }
+  }
+
+  .govuk-link:link,
+  .govuk-link:visited,
+  .govuk-link {
+    font-family: 'Inter', sans-serif;
+    color: $datagovuk-green;
+    text-decoration-thickness: 2px;
+    font-weight: normal;
+  }
+
+  .govuk-pagination__icon {
+    stroke: $datagovuk-green;
+  }
+}

@@ -23,10 +23,19 @@ services:
       solr:
         condition: service_healthy
 
+  zendesk-wiremock:
+    image: wiremock/wiremock:3.13.2
+    container_name: zendesk-wiremock
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./zendesk-wiremock/mappings:/home/wiremock/mappings
+    entrypoint: ["/docker-entrypoint.sh", "--global-response-templating"]
+
   playwright:
     build:
-      context: ./docker/playwright
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./docker/playwright/Dockerfile
     image: datagovuk_local_playwright
     container_name: datagovuk_local_playwright
     ports:
@@ -39,6 +48,10 @@ services:
       - "8984:8983"
     volumes:
       - solr_data:/opt/solr/server/solr/ckan/data
+    command: >
+      bash -c "precreate-core ckan /opt/solr/server/solr/configsets/ckan;
+               precreate-core ckan-test /opt/solr/server/solr/configsets/ckan; # Set up a ckan-test core with the same config for testing...
+               exec solr -f"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8983/solr/ckan/admin/ping"]
       interval: 5s

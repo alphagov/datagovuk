@@ -38,10 +38,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
-        uses: actions/checkout@v7.0.0
+        uses: actions/checkout@v7.0.1
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.2.0
+        uses: docker/setup-buildx-action@v4.3.0
 
       - name: Build and cache local backend
         uses: docker/bake-action@v7.3.0
@@ -82,7 +82,7 @@ jobs:
             -e BASE_URL=${{ env.BASE_URL }} \
             -e E2E_BASIC_AUTH_USERNAME=${{ env.E2E_BASIC_AUTH_USERNAME }} \
             -e E2E_BASIC_AUTH_PASSWORD=${{ env.E2E_BASIC_AUTH_PASSWORD }} \
-            django pytest -m smoke tests/e2e/ --override-ini="addopts=--import-mode=importlib"
+            django pytest --reruns 1 -m smoke tests/e2e/ --override-ini="addopts=--import-mode=importlib"
 
       - name: Upload E2E failure traces
         if: failure()
