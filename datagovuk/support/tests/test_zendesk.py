@@ -141,7 +141,7 @@ class TestNDLSupportTicket:
 
         data = ticket.request_data
         assert data["ticket"]["subject"] == "Test subject"
-        assert data["ticket"]["comment"] == {"body": "Test message", "public": False}
+        assert data["ticket"]["comment"] == {"body": "Test message", "public": True}
         assert data["ticket"]["tags"] == ["national_data_library"]
         assert "requester" in data["ticket"]
 

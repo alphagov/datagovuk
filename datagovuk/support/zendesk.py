@@ -89,7 +89,7 @@ class NDLSupportTicket:
         data = {
             "ticket": {
                 "subject": self.subject,
-                "comment": {"body": "\n\n".join(self.message), "public": False},
+                "comment": {"body": "\n\n".join(self.message), "public": True},
                 "tags": self.tags,
                 "group_id": settings.NDL_ZENDESK_GROUP_ID,
             },
