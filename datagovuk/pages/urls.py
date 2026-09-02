@@ -24,12 +24,6 @@ urlpatterns = [
         kwargs={"slug": "accessibility"},
     ),
     path(
-        "support/",
-        views.PagesView.as_view(),
-        name="support",
-        kwargs={"slug": "support"},
-    ),
-    path(
         "team/",
         views.PagesView.as_view(),
         name="team",

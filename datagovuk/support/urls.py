@@ -6,7 +6,7 @@ app_name = "support"
 
 urlpatterns = [
     path(
-        "support-form/",
+        "support/",
         views.SupportFormView.as_view(),
         name="support-form",
     ),
