@@ -24,7 +24,7 @@ dependencies = [
   "django-prometheus==2.5.0",
   "factory-boy==3.3.3",
   "govuk-frontend-jinja==4.1.0",
-  "gunicorn==26.0.0",
+  "gunicorn==26.1.0",
   "jinja2==3.1.6",
   "markdownify==1.2.3",
   "mistune==3.3.4",
