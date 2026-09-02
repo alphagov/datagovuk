@@ -92,6 +92,7 @@ test-e2e *args:
 coverage:
     @docker compose exec django coverage run -m pytest datagovuk/
     @docker compose exec django coverage html
+    open htmlcov/index.html
 
 # e2e-install-playwright: Install playwright locally
 e2e-install-playwright:
