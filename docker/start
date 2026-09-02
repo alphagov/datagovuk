@@ -9,4 +9,4 @@ export PROMETHEUS_MULTIPROC_DIR=$APP_HOME/tmp/prometheus_multiproc_dir
 rm -rf $PROMETHEUS_MULTIPROC_DIR
 mkdir -p $PROMETHEUS_MULTIPROC_DIR
 
-exec gunicorn --control-socket $APP_HOME/tmp/gunicorn.ctl -c config/gunicorn_conf.py config.wsgi --bind 0.0.0.0:8000 --chdir=/app --workers $GUNICORN_WORKERS --threads $GUNICORN_THREADS
+exec gunicorn --control-socket $APP_HOME/tmp/gunicorn.ctl -c config/gunicorn_conf.py config.wsgi --bind 0.0.0.0:8000 --chdir=/app --workers $GUNICORN_WORKERS --threads $GUNICORN_THREADS --max-requests 1000 --max-requests-jitter 50
