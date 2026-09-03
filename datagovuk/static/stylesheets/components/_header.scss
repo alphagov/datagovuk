@@ -38,6 +38,14 @@
     padding: 22px 0;
 }
 
+.datagovuk-header__search {
+    display: none;
+}
+
+.datagovuk-header__nav {
+    display: none;
+}
+
 .datagovuk-header__button:after,
 .datagovuk-directory-header__button:after {
     transform: translateY(-35%) rotate(45deg) scale(1);
@@ -140,8 +148,66 @@
         padding-top: 20px;
     }
 
+    .datagovuk-header__inner {
+        justify-content: space-between;
+    }
+
+    .datagovuk-header__logo {
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
     .datagovuk-header__logo-link {
         width: 200px;
+    }
+
+    .datagovuk-header__search {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 20px;
+        height: 57px;
+        width: 400px;
+        flex-shrink: 0;
+        background: white;
+        border: 1px solid #0b0c0c;
+        border-radius: 12px;
+
+        &:focus-within {
+            outline: 3px solid #ffdd00;
+            outline-offset: 0;
+        }
+    }
+
+    .datagovuk-header__search-icon {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+    }
+
+    .datagovuk-header__search-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-family: Inter, sans-serif;
+        font-size: 20px;
+        color: $datagovuk-black;
+        min-width: 0;
+
+        &:focus {
+            outline: none;
+        }
+
+        &::placeholder {
+            color: $datagovuk-grey;
+        }
+    }
+
+    .datagovuk-header__nav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        flex-shrink: 0;
     }
 
     .datagovuk-header__link,

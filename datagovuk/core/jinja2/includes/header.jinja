@@ -10,10 +10,24 @@
             class="datagovuk-header__button"
             id="datagovuk-header-button-all"
             aria-controls="datagovuk-menu-collections">Menu</button>
-    <button type="button"
-            class="datagovuk-header__button"
-            id="datagovuk-header-button-collections"
-            aria-controls="datagovuk-menu-collections">Collections</button>
+
+    {% set search_url = url("directory:search") %}
+
+    <form class="datagovuk-header__search" action="{{ search_url }}" method="get" role="search">
+      <img src="{{ static('images/icons/search.svg') }}" width="24" height="24" alt="" class="datagovuk-header__search-icon" aria-hidden="true" />
+      <label class="govuk-visually-hidden" for="header-search-query">Search datasets</label>
+      <input class="datagovuk-header__search-input" type="text" id="header-search-query" name="query" />
+      <button class="govuk-visually-hidden" type="submit">Search</button>
+    </form>
+
+    <div class="datagovuk-header__nav">
+      <button type="button"
+              class="datagovuk-header__button"
+              id="datagovuk-header-button-collections"
+              aria-controls="datagovuk-menu-collections">Collections</button>
+      <a class="datagovuk-header__link" href="{{ url('support:support-form') }}">Help</a>
+    </div>
+
     <div class="datagovuk-menu" id="datagovuk-menu-collections">
       <h2 class="datagovuk-menu__heading">Collections</h2>
       <div class="datagovuk-menu__items">
@@ -24,27 +38,6 @@
             {% if collection.is_spotlight %}<span class="datagovuk-menu__spotlight-tag">Spotlight</span>{% endif %}
           </a>
         {% endfor %}
-      </div>
-    </div>
-    <button type="button"
-            class="datagovuk-header__button"
-            id="datagovuk-header-button-data-manual"
-            aria-controls="datagovuk-menu-data-manual">Data manual</button>
-
-    {% set search_url = url("directory:search") %}
-
-    <div class="datagovuk-menu" id="datagovuk-menu-data-manual">
-      <h2 class="datagovuk-menu__heading">Data manual</h2>
-      <div class="datagovuk-menu__items">
-        {% for page in data_manual_menu_items %}
-          <a href="{{ page["url"] }}" class="govuk-link datagovuk-link datagovuk-menu__item-link">{{ page["title"] }}</a>
-        {% endfor %}
-      </div>
-    </div>
-    <a class="datagovuk-header__link" href="{{ search_url }}">Directory</a>
-    <div class="datagovuk-menu">
-      <div class="datagovuk-menu__items">
-        <a href="{{ search_url }}" class="govuk-link datagovuk-link datagovuk-menu__item-link">Directory</a>
       </div>
     </div>
   </div>

@@ -8,8 +8,8 @@ def test_header(page, live_server_url) -> None:
     page.goto(live_server_url)
     expect(page.get_by_role("link", name="Home")).to_be_visible()
     expect(page.get_by_role("button", name="Collections")).to_be_visible()
-    expect(page.get_by_role("button", name="Data manual")).to_be_visible()
-    expect(page.get_by_role("banner").get_by_role("link", name="Directory")).to_be_visible()
+    expect(page.get_by_role("banner").get_by_role("link", name="Help")).to_be_visible()
+    expect(page.get_by_role("banner").get_by_role("searchbox", name="Search datasets")).to_be_visible()
     header_collections_locator = page.locator("#datagovuk-menu-collections")
     # Expect collection link to only be visible after clicking Collections sub-menu
     collection_labels = [
@@ -31,24 +31,11 @@ def test_header(page, live_server_url) -> None:
         page.locator("#datagovuk-menu-collections").get_by_role("link", name=collection_label).click()
         expect(page.get_by_role("heading", name=collection_label)).to_be_visible()
         page.goto(live_server_url)
-    # Expect data manual link to only be visible after clicking Data Manual sub-menu
-    expect(page.get_by_role("link", name="Who this manual is for")).not_to_be_visible()
-    page.get_by_role("button", name="Data manual").click()
-    expect(page.get_by_role("link", name="Who this manual is for")).to_be_visible()
-    expect(page.get_by_role("link", name="Data management")).to_be_visible()
-    expect(page.get_by_role("link", name="Data standards", exact=True)).to_be_visible()
-    expect(page.get_by_role("link", name="Security")).to_be_visible()
-    expect(page.get_by_role("link", name="Data protection and privacy")).to_be_visible()
-    expect(page.get_by_role("link", name="Data sharing")).to_be_visible()
-    expect(page.get_by_role("link", name="AI and data-driven technologies")).to_be_visible()
-    expect(page.get_by_role("link", name="APIs and technical guidance")).to_be_visible()
-    expect(page.get_by_role("link", name="General guidance")).to_be_visible()
-    expect(page.get_by_role("link", name="Tell us what you think")).to_be_visible()
-    expect(page.get_by_role("link", name="Join a data community")).to_be_visible()
-    # Ensure directory link works
-    page.get_by_role("banner").get_by_role("link", name="Directory").click()
+    # Ensure search form submits correctly
+    page.get_by_role("banner").get_by_role("searchbox", name="Search datasets").fill("housing")
+    page.get_by_role("banner").get_by_role("searchbox", name="Search datasets").press("Enter")
 
-    expect(page).to_have_url(live_server_url + "/search")
+    expect(page).to_have_url(live_server_url + "/search?query=housing")
     page.goto(live_server_url)
 
 
@@ -58,19 +45,12 @@ def test_header_mobile(page, live_server_url) -> None:
     page.goto(live_server_url)
     expect(page.get_by_role("link", name="Home")).to_be_visible()
     expect(page.get_by_role("button", name="Menu")).to_be_visible()
-    # Expect link to only be visible after clicking Menu
+    # Expect collection link to only be visible after clicking Menu
     expect(
         page.locator("#datagovuk-menu-collections").get_by_role("link", name="Business and economy"),
     ).not_to_be_visible()
-    expect(page.get_by_role("link", name="Who this manual is for")).not_to_be_visible()
     page.get_by_role("button", name="Menu").click()
     expect(
         page.locator("#datagovuk-menu-collections").get_by_role("link", name="Business and economy"),
     ).to_be_visible()
-    expect(page.get_by_role("link", name="Who this manual is for")).to_be_visible()
-    expect(page.get_by_role("banner").get_by_role("link", name="Directory")).to_be_visible()
-    # Ensure directory link works
-    page.get_by_role("banner").get_by_role("link", name="Directory").click()
-
-    expect(page).to_have_url(live_server_url + "/search")
     page.goto(live_server_url)
