@@ -54,7 +54,7 @@ def test_collection_page_line_chart_is_visible(page, live_server_url):
 def test_collection_page_bar_chart_is_visible(page, live_server_url):
     url = reverse(
         "collections:collection_page",
-        kwargs={"collection_name": "government", "collection_page_name": "election-results"},
+        kwargs={"collection_name": "government-and-parliament", "collection_page_name": "election-results"},
     )
     page.goto(live_server_url + url)
 

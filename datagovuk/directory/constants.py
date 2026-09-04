@@ -12,7 +12,7 @@ class TopicChoices(models.TextChoices):
     )
     EDUCATION = "Education", "Education"
     ENVIRONMENT = "Environment", "Environment"
-    GOVERNMENT = "Government", "Government"
+    GOVERNMENT = "Government and Parliament", "Government and Parliament"
     GOVERNMENT_REFERENCE_DATA = (
         "Government reference data",
         "Government reference data",
