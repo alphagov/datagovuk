@@ -1,17 +1,15 @@
 ---
-title: Land and property ownership
+title: Parliamentary voting records
 websites:
-  - url: https://www.gov.uk/search-property-information-land-registry
-    link-text: HM Land Registry
-  - url: https://use-land-property-data.service.gov.uk
-    link-text: HM Land Registry datasets
-  - url: https://www.gov.uk/guidance/national-polygon-service
-    link-text: National Polygon Service
-  - url: https://www.ros.gov.uk
-    link-text: Registers of Scotland
+  - url: https://votes.parliament.uk/
+    link-text: Browse voting records
+  - url: https://explore.data.parliament.uk/
+    link-text: Data explorer 
 api:
-  url: https://use-land-property-data.service.gov.uk/api-information
-  link-text: HM Land Registry API
+  - url: https://commonsvotes-api.parliament.uk/swagger/ui/index
+    link-text: Commons Votes API
+  - url: https://lordsvotes-api.parliament.uk/index.html 
+    link-text: Lords Votes  API 
 dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
@@ -19,10 +17,13 @@ contact:
 status: for-publication
 ---
 
-Find information about a property in England or Wales via HM Land Registry, or in Scotland via Registers of Scotland. With HM Land Registry you’ll need to set up an account first. It’s then free to get a property summary and, from the datasets page, download most of the data in CSV or GML format. There’s a charge to get a title register or title plan.
+Find out how Members of the Parliament and Lords vote on motions and legislation. UK Parliament publishes voting results for the House of Commons (from 2016) and House of Lords (from 1999), showing how each member voted. 
 
-You can also get information about the extent of registered land in England and Wales via the National Polygon Service. The service contains 3 licensed, chargeable datasets that provide the indicative shape and position of boundaries, legal interests and class of title, and unique property reference numbers.
+You can: 
+- browse voting records on the Parliament website  
+- download proceedings in XML, JSON or CSV format 
+- access the data through APIs 
 
-With Registers of Scotland, you can search the land register to find property prices, view boundaries on a map or check if land or property 
+Please note: Voting in Parliament often includes physically dividing members into two different sections or ‘divisions’. There may be a difference between the official result of a division based on the Tellers’ count and the number of Members’ names recorded leading to minor count discrepancies. [Read about divisions on the Parliament website](https://www.parliament.uk/about/how/business/divisions/).
 
-is on the register. There’s a charge for the title sheet, which includes current owners and other information.
+
