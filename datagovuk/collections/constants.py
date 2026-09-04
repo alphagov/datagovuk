@@ -42,8 +42,8 @@ BASE_COLLECTIONS = [
         ],
     },
     {
-        "title": "Government",
-        "slug": "government",
+        "title": "Government and Parliament",
+        "slug": "government-and-parliament",
         "description": "Elections and legislation, finance and performance, Council Tax",
         "topics": [
             {"title": "Election results", "slug": "election-results"},
