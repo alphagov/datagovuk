@@ -154,7 +154,7 @@ class TestCollectionView:
         [
             ("business-and-economy", "uk-trade"),
             ("environment", "weather"),
-            ("government", "election-results"),
+            ("government-and-parliament", "election-results"),
             ("land-and-property", "uk-house-prices"),
             ("people", "births"),
             ("transport", "road-traffic"),
