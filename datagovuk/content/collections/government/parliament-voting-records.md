@@ -1,5 +1,5 @@
 ---
-title: Parliamentary voting records
+title: Parliament voting records
 websites:
   - url: https://votes.parliament.uk/
     link-text: Browse voting records
