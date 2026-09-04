@@ -53,7 +53,7 @@ BASE_COLLECTIONS = [
             {"title": "Council tax statistics", "slug": "council-tax-statistics"},
             {"title": "Contracts finder", "slug": "contracts-finder"},
             {"title": "Transparency data", "slug": "transparency-data"},
-            {"title": "Parliamentary voting records", "slug": "parliamentary-voting-records"},
+            {"title": "Parliament voting records", "slug": "parliament-voting-records"},
         ],
     },
     {
