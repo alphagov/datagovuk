@@ -2,8 +2,9 @@ import os
 
 import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from filelock import FileLock
 
-from datagovuk.directory.e2e_fixtures import create_e2e_fixtures, delete_e2e_fixtures
+from datagovuk.directory.e2e_fixtures import create_e2e_fixtures
 
 PLAYWRIGHT_HOST = os.getenv("PLAYWRIGHT_HOST", "127.0.0.1")
 DOCKER_HOSTNAME = "django"
@@ -28,15 +29,19 @@ def live_server_url(request, settings):
 
 
 @pytest.fixture(scope="session", autouse=True)
-def setup_suite():
+def setup_suite(tmp_path_factory):
     if BASE_URL:
         # Don't bother with any fixture creation if we are running E2E tests against
         # a remote environment
-        yield
-    else:
-        create_e2e_fixtures()
-        yield
-        delete_e2e_fixtures()
+        return
+    # get the temp directory shared by all workers
+    root_tmp_dir = tmp_path_factory.getbasetemp().parent
+
+    lock_file = root_tmp_dir / "e2e_fixture"
+    with FileLock(str(lock_file) + ".lock"):
+        if not lock_file.is_file():
+            create_e2e_fixtures()
+            lock_file.write_text("done")
 
 
 @pytest.fixture(scope="session")

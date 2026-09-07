@@ -81,13 +81,16 @@ run +args:
 
 # test: Run pytest
 test *args:
+    @docker compose exec django pytest -n auto {{args}}
+
+test-sync *args:
     @docker compose exec django pytest {{args}}
 
 test-unit *args:
-    @docker compose exec django pytest datagovuk/ {{args}}
+    @docker compose exec django pytest -n auto datagovuk/ {{args}}
 
 test-e2e *args:
-    @docker compose exec django pytest tests/e2e/ {{args}}
+    @docker compose exec django pytest -n auto tests/e2e/ {{args}}
 
 coverage:
     @docker compose exec django coverage run -m pytest datagovuk/
