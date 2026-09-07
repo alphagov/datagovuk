@@ -199,6 +199,20 @@ class TestCollectionView:
         assert response.status_code == HTTPStatus.NOT_FOUND
 
 
+class TestGovernmentCollectionRedirects:
+    def test_collection_redirects_to_government_and_parliament(self, client):
+        response = client.get("/collections/government")
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response.url == "/collections/government-and-parliament"
+
+    def test_collection_page_redirects_to_government_and_parliament(self, client):
+        response = client.get("/collections/government/election-results")
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response.url == "/collections/government-and-parliament/election-results"
+
+
 class TestCollectionDownloadView:
     def test_download_success(self, client):
         url = reverse(
