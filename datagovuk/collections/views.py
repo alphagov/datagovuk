@@ -58,7 +58,6 @@ class CollectionPageView(RenderedMarkdownView):
         context["collection_pages"] = collection_pages
         if context["visualisation_data"]:
             context["visualisation"] = get_visualisation(context["visualisation_data"])
-
         return context
 
 
