@@ -80,6 +80,28 @@ def test_collection_page_headline_is_visible(page, live_server_url):
     expect(headline_column.locator(".datagovuk-headline__change-value-percent", has_text="9.7%")).to_be_visible()
 
 
+def test_collection_page_with_api_and_dataset_shows_both_links(page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "transport", "collection_page_name": "road-traffic"},
+    )
+    page.goto(live_server_url + url)
+
+    expect(page.get_by_role("link", name="Road traffic API")).to_be_visible()
+    expect(page.get_by_role("link", name="Road traffic datasets")).to_be_visible()
+
+
+def test_collection_page_has_multiple_api_links(page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "government-and-parliament", "collection_page_name": "parliament-voting-records"},
+    )
+    page.goto(live_server_url + url)
+
+    expect(page.get_by_role("link", name="Commons Votes API")).to_be_visible()
+    expect(page.get_by_role("link", name="Lords Votes API")).to_be_visible()
+
+
 def test_collection_page_headline_no_percent_change(page, live_server_url):
     url = reverse(
         "collections:collection_page",

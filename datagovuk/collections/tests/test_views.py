@@ -56,6 +56,28 @@ class TestCollectionPageView:
             "url": "/collections/land-and-property/uk-house-prices",
         }
 
+    def test_view_contains_multiple_api_links(self, client):
+        url = reverse(
+            "collections:collection_page",
+            kwargs={
+                "collection_name": "government-and-parliament",
+                "collection_page_name": "parliament-voting-records",
+            },
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["api"] == [
+            {
+                "url": "https://commonsvotes-api.parliament.uk/swagger/ui/index",
+                "link_text": "Commons Votes API",
+            },
+            {
+                "url": "https://lordsvotes-api.parliament.uk/index.html",
+                "link_text": "Lords Votes API",
+            },
+        ]
+
     def test_view_second_collection_item_success(self, client):
         url = reverse(
             "collections:collection_page",
