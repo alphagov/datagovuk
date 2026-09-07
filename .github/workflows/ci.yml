@@ -28,7 +28,6 @@ jobs:
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
 
-  # With no caching at all, the entire ci process takes 3m to complete!
   pytest-unit:
     runs-on: ubuntu-latest
 
