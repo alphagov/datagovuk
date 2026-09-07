@@ -206,11 +206,24 @@ class TestGovernmentCollectionRedirects:
         assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
         assert response.url == "/collections/government-and-parliament"
 
-    def test_collection_page_redirects_to_government_and_parliament(self, client):
-        response = client.get("/collections/government/election-results")
+    @pytest.mark.parametrize(
+        "collection_page_name",
+        [
+            "election-results",
+            "legislation",
+            "service-assessment-reports",
+            "local-government-finance",
+            "council-tax-statistics",
+            "contracts-finder",
+            "transparency-data",
+            "parliament-voting-records",
+        ],
+    )
+    def test_collection_page_redirects_to_government_and_parliament(self, client, collection_page_name):
+        response = client.get(f"/collections/government/{collection_page_name}")
 
         assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
-        assert response.url == "/collections/government-and-parliament/election-results"
+        assert response.url == f"/collections/government-and-parliament/{collection_page_name}"
 
 
 class TestCollectionDownloadView:
