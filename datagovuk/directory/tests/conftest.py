@@ -1,5 +1,6 @@
 import pysolr
 import pytest
+import requests
 from django.core.cache import cache
 
 from .factories import create_solr_doc
@@ -24,11 +25,31 @@ def solr_client(solr_url):
     pysolr Client connected to the container.
     Wipes all Solr data before and after each test for test isolation.
     """
+    solr_base_url_end = solr_url.rfind("/solr") + 5
+    solr_base_url = solr_url[:solr_base_url_end]
+    solr_core_name = solr_url[solr_base_url_end + 1 :]
+    # Create solr test core...
+    params = {
+        "action": "CREATE",
+        "name": solr_core_name,
+        "configSet": "ckan-template",
+        "wt": "json",
+    }
+    requests.get(f"{solr_base_url}/admin/cores", params=params)  # noqa: S113
     client = pysolr.Solr(solr_url, always_commit=True)
 
     client.delete(q="*:*")
     yield client
     client.delete(q="*:*")
+
+    params = {
+        "action": "UNLOAD",
+        "core": solr_core_name,
+        "deleteIndex": "true",
+        "deleteInstanceDir": "true",
+        "wt": "json",
+    }
+    requests.get(f"{solr_base_url}/admin/cores", params=params)  # noqa: S113
 
 
 @pytest.fixture

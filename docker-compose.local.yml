@@ -49,8 +49,9 @@ services:
     volumes:
       - solr_data:/opt/solr/server/solr/ckan/data
     command: >
-      bash -c "precreate-core ckan /opt/solr/server/solr/configsets/ckan;
-               precreate-core ckan-test /opt/solr/server/solr/configsets/ckan; # Set up a ckan-test core with the same config for testing...
+      bash -c "mkdir /var/solr/data/configsets;
+               cp -r /opt/solr/server/solr/configsets/ckan /var/solr/data/configsets/ckan-template;
+               precreate-core ckan /opt/solr/server/solr/configsets/ckan;
                exec solr -f"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8983/solr/ckan/admin/ping"]
