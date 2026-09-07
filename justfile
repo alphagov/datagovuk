@@ -87,7 +87,7 @@ test-sync *args:
     @docker compose exec django pytest {{args}}
 
 test-unit *args:
-    @docker compose exec django pytest -n auto datagovuk/ {{args}}
+    @docker compose exec django pytest datagovuk/ {{args}}
 
 test-e2e *args:
     @docker compose exec django pytest -n auto tests/e2e/ {{args}}
