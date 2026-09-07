@@ -55,6 +55,7 @@ dev = [
   "pytest-playwright==0.9.0",
   "pytest-rerunfailures==16.6",
   "pytest-sugar==1.1.1",
+  "pytest-xdist==3.8.0",
   "responses==0.26.2",
   "ruff==0.16.4",
   "werkzeug[watchdog]==3.1.8",
