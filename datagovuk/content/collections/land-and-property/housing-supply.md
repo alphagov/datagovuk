@@ -1,10 +1,8 @@
 ---
 title: Housing supply
-websites:
+links:
   - url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-house-building
     link-text: Housing supply
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

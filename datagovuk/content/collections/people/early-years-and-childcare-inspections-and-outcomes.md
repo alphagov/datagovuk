@@ -1,10 +1,8 @@
 ---
 title: Early years and childcare inspections and outcomes
-websites:
+links:
   - url: https://www.gov.uk/government/collections/early-years-and-childcare-statistics
     link-text: Childcare provider statistics
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

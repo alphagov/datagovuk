@@ -1,12 +1,10 @@
 ---
 title: Landfill sites
-websites:
+links:
   - url: https://environment.data.gov.uk/dataset/692eaecf-d465-11e4-ac2e-f0def148f590
     link-text: Landfill sites
-api:
-dataset:
-  url: https://environment.data.gov.uk/dataset/7a955570-d465-11e4-a37c-f0def148f590
-  link-text: Historic landfill sites
+  - url: https://environment.data.gov.uk/dataset/7a955570-d465-11e4-a37c-f0def148f590
+    link-text: Historic landfill sites
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

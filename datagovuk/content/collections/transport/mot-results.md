@@ -1,10 +1,8 @@
 ---
 title: MOT test results
-websites:
+links:
   - url: https://www.gov.uk/government/statistical-data-sets/mot-testing-data-for-great-britain
     link-text: MOT test results
-api:
-dataset:
 page-last-updated: "2026-06-15"
 visualisation-data: "mot-test-results/mot-tests-and-failures.json"
 contact:

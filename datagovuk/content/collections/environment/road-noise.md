@@ -3,8 +3,6 @@ title: Road noise
 websites:
   - url: https://environment.data.gov.uk/dataset/562c9d56-7c2d-4d42-83bb-578d6e97a517
     link-text: Road noise
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

@@ -1,16 +1,14 @@
 ---
 title: Public transport stations and stops
-websites:
-  - url: https://beta-naptan.dft.gov.uk
-    link-text: NaPTAN and related data
-api:
-    url: https://naptan.api.dft.gov.uk/swagger/index.html
-    link-text: API documentation
-dataset:
-    url: https://www.gov.uk/government/publications/national-public-transport-access-node-schema
-    link-text: Guides and schemas
-page-last-updated: "2026-07-30"
-visualisation-data:
+links:
+- url: https://beta-naptan.dft.gov.uk
+  link-text: NaPTAN and related data
+- url: https://naptan.api.dft.gov.uk/swagger/index.html
+  link-text: API documentation
+- url: https://www.gov.uk/government/publications/national-public-transport-access-node-schema
+  link-text: Guides and schemas
+page-last-updated: '2026-07-30'
+visualisation-data: null
 contact: Naptan.NPTG@dft.gov.uk
 status: for-publication
 ---

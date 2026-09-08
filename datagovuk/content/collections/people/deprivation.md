@@ -1,6 +1,6 @@
 ---
 title: Deprivation
-websites:
+links:
   - url: https://deprivation.communities.gov.uk/
     link-text: Deprivation in England
   - url: https://www.gov.scot/collections/scottish-index-of-multiple-deprivation-2020/
@@ -9,8 +9,6 @@ websites:
     link-text: Deprivation in Wales
   - url: https://www.nisra.gov.uk/statistics/people-and-communities/deprivation
     link-text: Deprivation in Northern Ireland
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

@@ -1,6 +1,6 @@
 ---
 title: Bus statistics
-websites:
+links:
   - url: https://www.gov.uk/government/statistical-data-sets/bus-statistics-data-tables
     link-text: Bus statistics
 api:

@@ -1,10 +1,8 @@
 ---
 title: Contracts finder
-websites:
+links:
   - url: https://www.contractsfinder.service.gov.uk/Search
     link-text: Contracts finder
-api:
-dataset:
 page-last-updated: "2026-07-23"
 visualisation-data: contracts-finder/contracts-awarded-2024-2025.json
 contact:

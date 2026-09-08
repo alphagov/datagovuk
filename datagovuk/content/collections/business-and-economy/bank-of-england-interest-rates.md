@@ -1,13 +1,11 @@
 ---
 title: Bank of England interest rates
-websites:
+links:
   - url: https://www.bankofengland.co.uk/boeapps/database/Bank-Rate.asp
     link-text: Bank Rate history
-api:
-dataset:
-page-last-updated: "2026-03-24"
-visualisation-data:
-contact:
+page-last-updated: '2026-03-24'
+visualisation-data: null
+contact: null
 status: for-publication
 ---
 

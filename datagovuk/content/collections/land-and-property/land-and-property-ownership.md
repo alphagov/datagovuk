@@ -1,6 +1,6 @@
 ---
 title: Land and property ownership
-websites:
+links:
   - url: https://www.gov.uk/search-property-information-land-registry
     link-text: HM Land Registry
   - url: https://use-land-property-data.service.gov.uk
@@ -9,10 +9,8 @@ websites:
     link-text: National Polygon Service
   - url: https://www.ros.gov.uk
     link-text: Registers of Scotland
-api:
-  url: https://use-land-property-data.service.gov.uk/api-information
-  link-text: HM Land Registry API
-dataset:
+  - url: https://use-land-property-data.service.gov.uk/api-information
+    link-text: HM Land Registry API
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

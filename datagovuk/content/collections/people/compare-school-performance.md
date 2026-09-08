@@ -1,12 +1,10 @@
 ---
 title: Compare school performance
-websites:
+links:
   - url: https://www.compare-school-performance.service.gov.uk/
     link-text: Compare school performance
-api:
-dataset:
-  url: https://www.compare-school-performance.service.gov.uk/download-data
-  link-text: Download school performance data
+  - url: https://www.compare-school-performance.service.gov.uk/download-data
+    link-text: Download school performance data
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

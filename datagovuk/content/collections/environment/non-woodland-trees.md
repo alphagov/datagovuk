@@ -1,12 +1,10 @@
 ---
 title: Non-woodland trees
-websites:
+links:
   - url: https://ncea.maps.arcgis.com/apps/instant/sidebar/index.html?appid=cf571f455b444e588aa94bbd22021cd3
     link-text: Trees outside woodland map
-api:
-dataset:
-  url: https://environment.data.gov.uk/dataset/9c41b3c6-2453-44f6-9900-e7821f1a1072
-  link-text: "Trees outside woodland: datasets"
+  - url: https://environment.data.gov.uk/dataset/9c41b3c6-2453-44f6-9900-e7821f1a1072
+    link-text: "Trees outside woodland: datasets"
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

@@ -1,12 +1,10 @@
 ---
 title: Maritime and shipping
-websites:
+links:
   - url: https://maps.dft.gov.uk/maritime-statistics/index.html
     link-text: Maritime statistics dashboard
-api:
-dataset:
-  url: https://www.gov.uk/government/collections/maritime-and-shipping-statistics
-  link-text: Maritime and shipping statistics
+  - url: https://www.gov.uk/government/collections/maritime-and-shipping-statistics
+    link-text: Maritime and shipping statistics
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

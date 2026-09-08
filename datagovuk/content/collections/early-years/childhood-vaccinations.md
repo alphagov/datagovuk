@@ -1,6 +1,6 @@
 ---
 title: Childhood vaccinations
-websites:
+links:
   - link-text: UKHSA childhood vaccination dashboard
     url: https://ukhsa-dashboard.data.gov.uk/cover/childhood-vaccinations
   - link-text: Childhood vaccination - UK and England
@@ -15,8 +15,6 @@ websites:
     url: https://phw.nhs.wales/knowledge-article/cover-national-childhood-immunisation-uptake-data/
   - link-text: Childhood vaccination - Northern Ireland
     url: https://www.publichealth.hscni.net/publications/annual-immunisation-and-vaccine-preventable-diseases-reports
-api:
-dataset:
 page-last-updated: "2026-06-03"
 visualisation-data: childhood-vaccinations/mmr2-coverage-by-nations.json
 contact:

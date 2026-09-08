@@ -1,10 +1,8 @@
 ---
 title: Driving tests
-websites:
+links:
   - url: https://www.gov.uk/government/collections/driving-tests-and-instructors-statistics
     link-text: Driving tests
-api:
-dataset:
 page-last-updated: "2026-06-15"
 visualisation-data: "driving-tests/car-driving-tests-2007-2025-fys.json"
 contact:

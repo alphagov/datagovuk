@@ -1,10 +1,8 @@
 ---
 title: Births
-websites:
+links:
   - url: https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/bulletins/birthsummarytablesenglandandwales/2025
     link-text: Births
-api:
-dataset:
 page-last-updated: "2026-06-09"
 visualisation-data: births/live-births-england-and-wales-1938-2025.json
 contact:

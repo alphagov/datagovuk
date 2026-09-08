@@ -1,10 +1,8 @@
 ---
 title: Climate projections
-websites:
+links:
   - url: https://www.metoffice.gov.uk/research/approach/collaboration/ukcp
     link-text: Climate projections
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

@@ -1,15 +1,13 @@
 ---
 title: Get company information
-websites:
+links:
   - url: https://find-and-update.company-information.service.gov.uk/
     link-text: Get company information
-api:
-  url: https://developer.company-information.service.gov.uk/
-  link-text: Companies House API
-dataset:
-page-last-updated: "2026-03-24"
+  - url: https://developer.company-information.service.gov.uk/
+    link-text: Companies House API
+page-last-updated: '2026-03-24'
 visualisation-data: get-company-information/companies-house-register-headlines.json
-contact:
+contact: null
 status: for-publication
 ---
 

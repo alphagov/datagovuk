@@ -1,10 +1,8 @@
 ---
 title: Deaths
-websites:
+links:
   - url: https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregistrationsummarytables/2024
     link-text: Deaths
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

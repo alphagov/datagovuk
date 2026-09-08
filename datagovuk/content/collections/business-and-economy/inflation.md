@@ -1,13 +1,11 @@
 ---
 title: Inflation
-websites:
+links:
   - url: https://www.ons.gov.uk/economy/inflationandpriceindices
     link-text: Inflation and price indices
-api:
-dataset:
-page-last-updated: "2026-03-25"
+page-last-updated: '2026-03-25'
 visualisation-data: inflation/inflation.json
-contact:
+contact: null
 status: for-publication
 ---
 

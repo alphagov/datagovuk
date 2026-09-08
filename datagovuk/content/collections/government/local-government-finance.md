@@ -1,12 +1,10 @@
 ---
 title: Local government finance
-websites:
+links:
   - url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-local-government-finance
     link-text: Local government finance
-api:
-dataset:
-  url: https://www.gov.uk/government/collections/local-government-finance-statistics-england
-  link-text: Local government finance statistics – England (compendium)
+  - url: https://www.gov.uk/government/collections/local-government-finance-statistics-england
+    link-text: Local government finance statistics – England (compendium)
 page-last-updated: "2026-08-18"
 visualisation-data: local-government-finance/local-gov-finance.json
 contact:

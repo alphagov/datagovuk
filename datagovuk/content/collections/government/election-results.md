@@ -1,10 +1,8 @@
 ---
 title: Election results
-websites:
+links:
   - url: https://electionresults.parliament.uk/
     link-text: Election results
-api:
-dataset:
 page-last-updated: "2026-04-08"
 visualisation-data: election-results/vote-share.json
 contact:

@@ -1,6 +1,6 @@
 ---
 title: Childcare providers
-websites:
+links:
   - url: https://reports.ofsted.gov.uk
     link-text: Find an Ofsted inspection report
   - url: https://www.gov.uk/government/collections/early-years-and-childcare-statistics
@@ -9,8 +9,6 @@ websites:
     link-text: DfE Childcare and early years provider survey reports
   - url: https://www.gov.uk/browse/childcare-parenting/childcare
     link-text: Find childcare
-api:
-dataset:
 page-last-updated: "2026-06-03"
 visualisation-data: childcare-providers/childcare-providers.json
 contact:

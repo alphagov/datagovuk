@@ -1,6 +1,6 @@
 ---
 title: Long-term development, learning and wellbeing studies
-websites:
+links:
   - url: https://children2020s.ipsos.com/
     link-text: Children of the 2020s study website - England
   - url: https://www.gov.uk/government/collections/education-and-outcomes-pathways-studies-eops
@@ -11,8 +11,6 @@ websites:
     link-text: Growing up in Scotland study reports - Scotland
   - url: https://datacatalogue.ukdataservice.ac.uk/series/series/200020#abstract
     link-text: Growing up in Scotland on the UK Data service - Scotland
-api:
-dataset:
 page-last-updated: "2026-06-03"
 visualisation-data:
 contact:

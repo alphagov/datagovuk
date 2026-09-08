@@ -1,10 +1,8 @@
 ---
 title: Transparency data
-websites:
+links:
   - url: https://www.gov.uk/search/transparency-and-freedom-of-information-releases?content_store_document_type=transparency
     link-text: Transparency data
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

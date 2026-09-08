@@ -1,6 +1,6 @@
 ---
 title: Long term flood risk
-websites:
+links:
   - url: https://www.gov.uk/check-long-term-flood-risk
     link-text: Flood risk in England
   - url: https://map.sepa.org.uk/floodmaps
@@ -9,8 +9,6 @@ websites:
     link-text: Flood risk in Wales
   - url: https://www.nidirect.gov.uk/articles/check-risk-flooding-your-area
     link-text: Flood risk in Northern Ireland
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

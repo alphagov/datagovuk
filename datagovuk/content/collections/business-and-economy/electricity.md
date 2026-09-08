@@ -1,13 +1,11 @@
 ---
 title: Electricity
-websites:
+links:
   - url: https://www.gov.uk/government/collections/electricity-statistics
     link-text: Electricity statistics
-api:
-dataset:
-page-last-updated: "2026-07-07"
+page-last-updated: '2026-07-07'
 visualisation-data: electricity-generation/electricity-generation-1996-2024.json
-contact:
+contact: null
 status: for-publication
 ---
 

@@ -1,10 +1,8 @@
 ---
 title: Council tax statistics
-websites:
+links:
   - url: https://www.gov.uk/government/collections/council-tax-statistics
     link-text: Council Tax statistics
-api:
-dataset:
 page-last-updated: "2026-07-23"
 visualisation-data: "council-tax-statistics/council-tax-avg-band-d-2012-2026.json"
 contact:

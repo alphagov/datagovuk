@@ -1,10 +1,8 @@
 ---
 title: LIDAR mapping
-websites:
+links:
   - url: https://environment.data.gov.uk/dataset/13787b9a-26a4-4775-8523-806d13af58fc
     link-text: LIDAR Composite Digital Terrain Model
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

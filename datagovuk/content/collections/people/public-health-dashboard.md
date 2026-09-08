@@ -1,12 +1,10 @@
 ---
 title: Public health dashboard
-websites:
+links:
   - url: https://ukhsa-dashboard.data.gov.uk/
     link-text: UKHSA data dashboard
-api:
-  url: https://ukhsa-dashboard.data.gov.uk/access-our-data
-  link-text: UKHSA data dashboard API
-dataset:
+  - url: https://ukhsa-dashboard.data.gov.uk/access-our-data
+    link-text: UKHSA data dashboard API
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

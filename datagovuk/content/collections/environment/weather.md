@@ -1,14 +1,12 @@
 ---
 title: Weather
-websites:
+links:
   - url: https://www.metoffice.gov.uk
     link-text: Weather forecasts
-api:
-  url: https://datahub.metoffice.gov.uk
-  link-text: Weather DataHub API
-dataset:
-  url: https://climate-themetoffice.hub.arcgis.com
-  link-text: Met Office Climate Data Portal
+  - url: https://datahub.metoffice.gov.uk
+    link-text: Weather DataHub API
+  - url: https://climate-themetoffice.hub.arcgis.com
+    link-text: Met Office Climate Data Portal
 page-last-updated: "2026-03-24"
 visualisation-data: weather/uk-mean-temperature.json
 contact:

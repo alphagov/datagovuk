@@ -1,10 +1,8 @@
 ---
 title: Addresses
-websites:
+links:
   - url: https://www.ordnancesurvey.co.uk/products/os-gb-address
     link-text: Ordnance Survey address database
-api:
-dataset:
 page-last-updated: "2026-03-25"
 visualisation-data:
 contact:

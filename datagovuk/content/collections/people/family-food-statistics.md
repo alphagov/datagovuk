@@ -1,14 +1,12 @@
 ---
 title: Family food statistics
-websites:
+links:
   - url: https://www.gov.uk/government/collections/family-food-statistics
     link-text: Family Food (2011 to present)
   - url: https://webarchive.nationalarchives.gov.uk/ukgwa/20130103031008/http://www.defra.gov.uk/statistics/foodfarm/food/familyfood/
     link-text: Family Food (2002 to 2010) National Archive
-api:
-dataset:
-  url: https://www.gov.uk/government/statistics/family-food-open-data
-  link-text: Family Food (1974 to 2000) dataset
+  - url: https://www.gov.uk/government/statistics/family-food-open-data
+    link-text: Family Food (1974 to 2000) dataset
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

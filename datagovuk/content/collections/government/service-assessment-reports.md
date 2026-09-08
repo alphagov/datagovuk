@@ -1,10 +1,8 @@
 ---
 title: Service assessment reports
-websites:
+links:
   - url: https://www.gov.uk/service-standard-reports
     link-text: Service assessment reports
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

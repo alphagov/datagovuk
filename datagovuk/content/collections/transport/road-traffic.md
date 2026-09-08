@@ -1,14 +1,12 @@
 ---
 title: Road traffic
-websites:
+links:
   - url: https://roadtraffic.dft.gov.uk
     link-text: Road traffic statistics
-api:
-  url: https://roadtraffic.dft.gov.uk/docs/index.html
-  link-text: Road traffic API
-dataset:
-  url: https://roadtraffic.dft.gov.uk/downloads
-  link-text: Road traffic datasets
+  - url: https://roadtraffic.dft.gov.uk/docs/index.html
+    link-text: Road traffic API
+  - url: https://roadtraffic.dft.gov.uk/downloads
+    link-text: Road traffic datasets
 page-last-updated: "2026-07-09"
 visualisation-data: road-traffic/road-traffic-motor-vehicles.json
 contact:

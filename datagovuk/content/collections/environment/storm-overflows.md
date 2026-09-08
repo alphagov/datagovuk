@@ -1,12 +1,10 @@
 ---
 title: Storm overflows
-websites:
+links:
   - url: https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac
     link-text: Storm overflows
-api:
-dataset:
-  url: https://experience.arcgis.com/experience/c9b8f3ba094c429aa30e0e2b6eaf43ac
-  link-text: Storm overflows – map
+  - url: https://experience.arcgis.com/experience/c9b8f3ba094c429aa30e0e2b6eaf43ac
+    link-text: Storm overflows – map
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

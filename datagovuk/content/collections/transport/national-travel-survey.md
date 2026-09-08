@@ -1,12 +1,10 @@
 ---
 title: National Travel Survey
-websites:
+links:
   - url: https://www.gov.uk/government/collections/national-travel-survey-statistics
     link-text: National Travel Survey
-api:
-dataset:
-  url: https://maps.dft.gov.uk/transport-statistics-finder/index.html
-  link-text: Transport Statistics Finder
+  - url: https://maps.dft.gov.uk/transport-statistics-finder/index.html
+    link-text: Transport Statistics Finder
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

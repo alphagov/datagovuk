@@ -1,12 +1,10 @@
 ---
 title: Main rivers
-websites:
+links:
   - url: https://www.arcgis.com/apps/webappviewer/index.html?id=17cd53dfc524433980cc333726a56386
     link-text: Main rivers map
-api:
-dataset:
-  url: https://environment.data.gov.uk/dataset/25dde009-ba7d-40de-8380-c5c3bb32ccdc
-  link-text: "Main rivers map: datasets"
+  - url: https://environment.data.gov.uk/dataset/25dde009-ba7d-40de-8380-c5c3bb32ccdc
+    link-text: "Main rivers map: datasets"
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

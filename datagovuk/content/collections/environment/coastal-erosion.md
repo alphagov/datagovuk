@@ -1,10 +1,8 @@
 ---
 title: Coastal erosion
-websites:
+links:
   - url: https://environment.data.gov.uk/dataset/9fede91f-5acd-4fd2-9bd8-98153fa3c2ff
     link-text: Coastal erosion data
-api:
-dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:
