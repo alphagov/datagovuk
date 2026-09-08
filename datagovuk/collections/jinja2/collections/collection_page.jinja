@@ -74,8 +74,9 @@
               {% endif %}
             {% endif %}
 
-            {% set all_items = (api or []) + ([dataset] if dataset else []) %}
-            {% if api|length == 1 and not websites and not dataset %}
+            {% set api_items = [api] if api is mapping else (api or []) %}
+            {% set all_items = api_items + ([dataset] if dataset else []) %}
+            {% if api_items|length == 1 and not websites and not dataset %}
               {{ cta_button(all_items[0].url, all_items[0].link_text) }}
             {% elif all_items %}
               {{ link_list(all_items) }}
