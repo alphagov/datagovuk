@@ -19,17 +19,16 @@ class TestCollectionPageView:
 
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["title"] == "UK house prices"
-        assert response.context_data["websites"] == [
+        assert response.context_data["links"] == [
             {
                 "url": "https://landregistry.data.gov.uk/app/ukhpi/",
                 "link_text": "Search UK house price index",
             },
+            {
+                "url": "https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-december-2025",
+                "link_text": "Download UK house price index",
+            },
         ]
-        assert response.context_data["api"] is None
-        assert response.context_data["dataset"] == {
-            "url": "https://www.gov.uk/government/statistical-data-sets/uk-house-price-index-data-downloads-december-2025",
-            "link_text": "Download UK house price index",
-        }
         assert response.context_data["page_last_updated"] == date(year=2026, month=3, day=24)
         assert response.context_data["visualisation_data"] == "uk-house-prices/average-house-prices.json"
         assert response.context_data["contact"] is None

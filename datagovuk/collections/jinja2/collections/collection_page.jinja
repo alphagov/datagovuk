@@ -66,18 +66,10 @@
         <section class="datagovuk-link datagovuk-section" aria-label="Get the data links">
           <section class="datagovuk-section">
             <h3 class="govuk-heading-m datagovuk-heading-m">Get the data</h3>
-            {% if websites %}
-              {% if websites|length == 1 %}
-                {{ cta_button(websites[0].url, websites[0].link_text) }}
-              {% elif websites|length > 1 %}
-                {{ link_list(websites) }}
-              {% endif %}
-            {% endif %}
+            {% if links %}
+              {{ cta_button(links[0].url, links[0].link_text) }}
 
-            {% if api and not websites and not dataset %}
-              {{ cta_button(api.url, api.link_text) }}
-            {% elif api or dataset %}
-              {{ link_list([api, dataset]) }}
+              {% if links|length > 1 %}{{ link_list(links[1:]) }}{% endif %}
             {% endif %}
           </section>
           <section class="datagovuk-section">
