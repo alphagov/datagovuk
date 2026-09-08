@@ -34,9 +34,11 @@ def setup_suite(tmp_path_factory):
         # Don't bother with any fixture creation if we are running E2E tests against
         # a remote environment
         return
-    # get the temp directory shared by all workers
-    root_tmp_dir = tmp_path_factory.getbasetemp().parent
 
+    # Ensure that end to end fixture data is created by one - and only one - pytest
+    # worker thread.
+    root_tmp_dir = tmp_path_factory.getbasetemp().parent
+    # We use file lock as suggested in pytest-xdist docs here; https://pytest-xdist.readthedocs.io/en/stable/how-to.html#making-session-scoped-fixtures-execute-only-once
     lock_file = root_tmp_dir / "e2e_fixture"
     with FileLock(str(lock_file) + ".lock"):
         if not lock_file.is_file():

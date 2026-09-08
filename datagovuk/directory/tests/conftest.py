@@ -28,6 +28,9 @@ def solr_client(solr_url):
     pysolr Client connected to the container.
     Wipes all Solr data before and after each test for test isolation.
     """
+    # Create a solr core (index) for the given SOLR url.  When running using
+    # pytest-xdist, we will have one solr core per thread running tests - to keep
+    # tests isolated
     solr_base_url_end = solr_url.rfind("/solr") + 5
     solr_base_url = solr_url[:solr_base_url_end]
     solr_core_name = solr_url[solr_base_url_end + 1 :]
@@ -45,6 +48,7 @@ def solr_client(solr_url):
     yield client
     client.delete(q="*:*")
 
+    # Delete the solr core (index) at the end of the test case
     params = {
         "action": "UNLOAD",
         "core": solr_core_name,
