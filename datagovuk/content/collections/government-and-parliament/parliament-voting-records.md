@@ -3,8 +3,6 @@ title: Parliament voting records
 websites:
   - url: https://votes.parliament.uk/
     link-text: Browse voting records
-  - url: https://explore.data.parliament.uk/
-    link-text: Data explorer
 api:
   - url: https://commonsvotes-api.parliament.uk/swagger/ui/index
     link-text: Commons Votes API
