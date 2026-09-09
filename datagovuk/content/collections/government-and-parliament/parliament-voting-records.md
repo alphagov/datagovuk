@@ -9,8 +9,8 @@ api:
   - url: https://lordsvotes-api.parliament.uk/index.html
     link-text: Lords Votes API
 dataset:
-    - url: https://explore.data.parliament.uk/
-    link-text: Data explorer
+  url: https://explore.data.parliament.uk/
+  link-text: Data explorer
 page-last-updated: "2026-09-04"
 visualisation-data:
 contact:
