@@ -7,7 +7,7 @@ links:
     link-text: "Connectivity Tool: guidance for built environment professionals"
   - url: https://www.gov.uk/government/publications/transport-connectivity-metric
     link-text: Transport connectivity metric
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

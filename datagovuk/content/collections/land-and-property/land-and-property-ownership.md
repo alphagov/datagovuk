@@ -11,7 +11,7 @@ links:
     link-text: Registers of Scotland
   - url: https://use-land-property-data.service.gov.uk/api-information
     link-text: HM Land Registry API
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

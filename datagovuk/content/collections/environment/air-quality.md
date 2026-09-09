@@ -5,7 +5,7 @@ links:
     link-text: Check air quality
   - url: https://get-air-pollution-data.service.gov.uk/
     link-text: Get air pollution data
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-03-24"
 visualisation-data: air-quality/air-quality.json
 contact:

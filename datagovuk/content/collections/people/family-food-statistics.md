@@ -7,7 +7,7 @@ links:
     link-text: Family Food (2002 to 2010) National Archive
   - url: https://www.gov.uk/government/statistics/family-food-open-data
     link-text: Family Food (1974 to 2000) dataset
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

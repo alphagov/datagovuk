@@ -8,7 +8,7 @@ links:
   - url: https://api.education.gov.uk/statistics/docs
     link-text:  Education statistics explorer (API)
 dataset:
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

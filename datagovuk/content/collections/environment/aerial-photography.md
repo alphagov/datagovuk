@@ -5,7 +5,7 @@ links:
     link-text: Oblique aerial photography
   - url: https://environment.data.gov.uk/dataset/dae203a8-ba24-4c54-bab0-866b9faadb58
     link-text: Vertical aerial photography
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

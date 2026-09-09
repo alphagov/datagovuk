@@ -67,7 +67,7 @@
           <section class="datagovuk-section">
             <h3 class="govuk-heading-m datagovuk-heading-m">Get the data</h3>
             {% if links %}
-              {% if primary_button == false %}
+              {% if links_primary_button == false %}
                 {{ link_list(links) }}
               {% else %}
                 {{ cta_button(links[0].url, links[0].link_text) }}

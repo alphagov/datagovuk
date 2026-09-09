@@ -7,7 +7,7 @@ links:
     url: https://publichealthscotland.scot/publications/show-all-releases?id=20569
   - link-text: Early years development open data - Scotland
     url: https://www.opendata.nhs.scot/group/early-child-development
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-06-03"
 visualisation-data:
 contact:

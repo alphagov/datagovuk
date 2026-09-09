@@ -11,7 +11,7 @@ links:
     link-text: Growing up in Scotland study reports - Scotland
   - url: https://datacatalogue.ukdataservice.ac.uk/series/series/200020#abstract
     link-text: Growing up in Scotland on the UK Data service - Scotland
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-06-03"
 visualisation-data:
 contact:

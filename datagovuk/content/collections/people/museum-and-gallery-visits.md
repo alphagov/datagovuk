@@ -5,7 +5,7 @@ links:
     link-text: Museums and galleries annual performance indicators 2024/25
   - url: https://www.gov.uk/government/statistical-data-sets/museums-and-galleries-monthly-visits
     link-text: Museum and gallery visits (monthly)
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-06-09"
 visualisation-data:
 contact:

@@ -11,7 +11,7 @@ links:
     link-text: Education statistics - Wales
   - url: https://www.education-ni.gov.uk/topics/statistics-education
     link-text: Education statistics - Northern Ireland
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-06-03"
 visualisation-data: education-statistics/early-years-foundation-stage-profile-results.json
 contact:

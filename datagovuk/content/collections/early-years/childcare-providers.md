@@ -9,7 +9,7 @@ links:
     link-text: DfE Childcare and early years provider survey reports
   - url: https://www.gov.uk/browse/childcare-parenting/childcare
     link-text: Find childcare
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-06-03"
 visualisation-data: childcare-providers/childcare-providers.json
 contact:

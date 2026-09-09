@@ -15,7 +15,7 @@ links:
     url: https://publichealthwales.shinyapps.io/ChildMeasurementProgrammeDashboard/
   - link-text: Statistical profile of children's health - Northern Ireland
     url: https://www.publichealth.hscni.net/publications?keys=statistical+profile+of+children%27s+health
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-06-03"
 visualisation-data:
 contact:

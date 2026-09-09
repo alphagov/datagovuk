@@ -13,7 +13,7 @@ links:
     url: https://phw.nhs.wales/
   - link-text: Health review statistics for pre-school children - Northern Ireland
     url: https://www.health-ni.gov.uk/articles/health-review-statistics-pre-school-children
-primary-button: false
+links-primary-button: false
 page-last-updated: "2026-06-03"
 visualisation-data:
 contact:
