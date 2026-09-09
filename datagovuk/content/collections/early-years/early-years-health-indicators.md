@@ -3,6 +3,7 @@ title: Early years health indicators
 links:
   - link-text: Fingertips health trends - England
     url: https://fingertips.phe.org.uk/static-reports/health-trends-in-england/England/overview.html
+    primary-button: false
   - link-text: Fingertips profiles - England
     url: https://fingertips.phe.org.uk/profiles
   - link-text: Fingertips API - England

@@ -110,6 +110,16 @@ class TestCollectionPageView:
         assert response.status_code == HTTPStatus.OK
         assert "chart" not in response.context_data
 
+    def test_view_primary_button_false_passes_through_in_context(self, client):
+        url = reverse(
+            "collections:collection_page",
+            kwargs={"collection_name": "environment", "collection_page_name": "aerial-photography"},
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["links"][0]["primary_button"] is False
+
     @pytest.mark.parametrize(
         ("collection_name", "collection_page_name"),
         [

@@ -3,6 +3,7 @@ title: Early years development review
 links:
   - link-text: Early years development - England
     url: https://www.gov.uk/government/collections/child-and-maternal-health-statistics#child-development-outcomes-at-2-to-2-and-a-half-years
+    primary-button: false
   - link-text: Early years development statistics - Scotland
     url: https://publichealthscotland.scot/publications/show-all-releases?id=20569
   - link-text: Early years development open data - Scotland

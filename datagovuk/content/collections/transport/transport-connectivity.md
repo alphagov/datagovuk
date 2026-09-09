@@ -3,6 +3,7 @@ title: Transport connectivity
 links:
   - url: https://connectivity-tool-lite.dft.gov.uk/index
     link-text: Connectivity Tool Lite
+    primary-button: false
   - url: https://www.gov.uk/guidance/connectivity-tool
     link-text: "Connectivity Tool: guidance for built environment professionals"
   - url: https://www.gov.uk/government/publications/transport-connectivity-metric

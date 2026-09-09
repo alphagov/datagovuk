@@ -3,6 +3,7 @@ title: Childcare providers
 links:
   - url: https://reports.ofsted.gov.uk
     link-text: Find an Ofsted inspection report
+    primary-button: false
   - url: https://www.gov.uk/government/collections/early-years-and-childcare-statistics
     link-text: Ofsted Childcare providers and inspections statistics
   - url: https://explore-education-statistics.service.gov.uk/find-statistics/childcare-and-early-years-provider-survey/releases

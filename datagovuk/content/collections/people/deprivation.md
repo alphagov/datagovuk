@@ -3,6 +3,7 @@ title: Deprivation
 links:
   - url: https://deprivation.communities.gov.uk/
     link-text: Deprivation in England
+    primary-button: false
   - url: https://www.gov.scot/collections/scottish-index-of-multiple-deprivation-2020/
     link-text: Deprivation in Scotland
   - url: https://www.gov.wales/welsh-index-multiple-deprivation-2025-series

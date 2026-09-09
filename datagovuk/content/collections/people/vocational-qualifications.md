@@ -3,6 +3,7 @@ title: Vocational qualifications
 links:
   - url: https://www.gov.uk/government/collections/statistics-vocational-qualifications
     link-text: Vocational qualifications
+    primary-button: false
   - url: https://www.gov.uk/government/collections/statistics-vocational-qualifications
     link-text: 'Vocational and other qualifications: quarterly releases'
 page-last-updated: "2026-03-24"

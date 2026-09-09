@@ -3,6 +3,7 @@ title: Air quality
 links:
   - url: https://check-air-quality.service.gov.uk/
     link-text: Check air quality
+    primary-button: false
   - url: https://get-air-pollution-data.service.gov.uk/
     link-text: Get air pollution data
 page-last-updated: "2026-03-24"

@@ -67,9 +67,12 @@
           <section class="datagovuk-section">
             <h3 class="govuk-heading-m datagovuk-heading-m">Get the data</h3>
             {% if links %}
-              {{ cta_button(links[0].url, links[0].link_text) }}
-
-              {% if links|length > 1 %}{{ link_list(links[1:]) }}{% endif %}
+              {% if links[0].primary_button == false %}
+                {{ link_list(links) }}
+              {% else %}
+                {{ cta_button(links[0].url, links[0].link_text) }}
+                {% if links|length > 1 %}{{ link_list(links[1:]) }}{% endif %}
+              {% endif %}
             {% endif %}
           </section>
           <section class="datagovuk-section">

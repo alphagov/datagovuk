@@ -3,6 +3,7 @@ title: Long term flood risk
 links:
   - url: https://www.gov.uk/check-long-term-flood-risk
     link-text: Flood risk in England
+    primary-button: false
   - url: https://map.sepa.org.uk/floodmaps
     link-text: Flood risk in Scotland
   - url: https://naturalresources.wales/splash?orig=%2fflooding%2fcheck-your-flood-risk-by-postcode%2f
