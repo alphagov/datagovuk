@@ -74,16 +74,12 @@
               {% endif %}
             {% endif %}
 
-            {% if api and not websites and not dataset %}
-              {% if api is mapping %}
-                {{ cta_button(api.url, api.link_text) }}
-              {% else %}
-                {{ link_list(api) }}
-              {% endif %}
-            {% elif api or dataset %}
-              {% set api_items = [api] if api is mapping else (api or []) %}
-              {% set dataset_items = [dataset] if dataset else [] %}
-              {{ link_list(api_items + dataset_items) }}
+            {% set api_items = api or [] %}
+            {% set all_items = api_items + ([dataset] if dataset else []) %}
+            {% if api_items|length == 1 and not websites and not dataset %}
+              {{ cta_button(api_items[0].url, api_items[0].link_text) }}
+            {% elif all_items %}
+              {{ link_list(all_items) }}
             {% endif %}
           </section>
           <section class="datagovuk-section">
