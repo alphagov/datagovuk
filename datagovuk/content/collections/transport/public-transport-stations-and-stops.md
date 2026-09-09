@@ -4,7 +4,7 @@ websites:
   - url: https://beta-naptan.dft.gov.uk
     link-text: NaPTAN and related data
 api:
-    url: https://naptan.api.dft.gov.uk/swagger/index.html
+  - url: https://naptan.api.dft.gov.uk/swagger/index.html
     link-text: API documentation
 dataset:
     url: https://www.gov.uk/government/publications/national-public-transport-access-node-schema

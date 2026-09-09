@@ -10,8 +10,8 @@ websites:
   - url: https://www.ros.gov.uk
     link-text: Registers of Scotland
 api:
-  url: https://use-land-property-data.service.gov.uk/api-information
-  link-text: HM Land Registry API
+  - url: https://use-land-property-data.service.gov.uk/api-information
+    link-text: HM Land Registry API
 dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:

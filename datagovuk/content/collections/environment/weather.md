@@ -4,8 +4,8 @@ websites:
   - url: https://www.metoffice.gov.uk
     link-text: Weather forecasts
 api:
-  url: https://datahub.metoffice.gov.uk
-  link-text: Weather DataHub API
+  - url: https://datahub.metoffice.gov.uk
+    link-text: Weather DataHub API
 dataset:
   url: https://climate-themetoffice.hub.arcgis.com
   link-text: Met Office Climate Data Portal
