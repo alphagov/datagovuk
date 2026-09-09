@@ -56,6 +56,28 @@ class TestCollectionPageView:
             "url": "/collections/land-and-property/uk-house-prices",
         }
 
+    def test_view_contains_multiple_api_links(self, client):
+        url = reverse(
+            "collections:collection_page",
+            kwargs={
+                "collection_name": "government-and-parliament",
+                "collection_page_name": "parliament-voting-records",
+            },
+        )
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["api"] == [
+            {
+                "url": "https://commonsvotes-api.parliament.uk/swagger/ui/index",
+                "link_text": "Commons Votes API",
+            },
+            {
+                "url": "https://lordsvotes-api.parliament.uk/index.html",
+                "link_text": "Lords Votes API",
+            },
+        ]
+
     def test_view_second_collection_item_success(self, client):
         url = reverse(
             "collections:collection_page",
@@ -154,7 +176,7 @@ class TestCollectionView:
         [
             ("business-and-economy", "uk-trade"),
             ("environment", "weather"),
-            ("government", "election-results"),
+            ("government-and-parliament", "election-results"),
             ("land-and-property", "uk-house-prices"),
             ("people", "births"),
             ("transport", "road-traffic"),
@@ -197,6 +219,33 @@ class TestCollectionView:
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.NOT_FOUND
+
+
+class TestGovernmentCollectionRedirects:
+    def test_collection_redirects_to_government_and_parliament(self, client):
+        response = client.get("/collections/government")
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response.url == "/collections/government-and-parliament"
+
+    @pytest.mark.parametrize(
+        "collection_page_name",
+        [
+            "election-results",
+            "legislation",
+            "service-assessment-reports",
+            "local-government-finance",
+            "council-tax-statistics",
+            "contracts-finder",
+            "transparency-data",
+            "parliament-voting-records",
+        ],
+    )
+    def test_collection_page_redirects_to_government_and_parliament(self, client, collection_page_name):
+        response = client.get(f"/collections/government/{collection_page_name}")
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response.url == f"/collections/government-and-parliament/{collection_page_name}"
 
 
 class TestCollectionDownloadView:

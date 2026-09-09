@@ -74,10 +74,12 @@
               {% endif %}
             {% endif %}
 
-            {% if api and not websites and not dataset %}
-              {{ cta_button(api.url, api.link_text) }}
-            {% elif api or dataset %}
-              {{ link_list([api, dataset]) }}
+            {% set api_items = api or [] %}
+            {% set all_items = api_items + ([dataset] if dataset else []) %}
+            {% if api_items|length == 1 and not websites and not dataset %}
+              {{ cta_button(api_items[0].url, api_items[0].link_text) }}
+            {% elif all_items %}
+              {{ link_list(all_items) }}
             {% endif %}
           </section>
           <section class="datagovuk-section">
