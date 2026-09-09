@@ -42,18 +42,18 @@ BASE_COLLECTIONS = [
         ],
     },
     {
-        "title": "Government and parliament",
+        "title": "Government and Parliament",
         "slug": "government-and-parliament",
         "description": "Elections and legislation, finance and performance, Council Tax",
         "topics": [
             {"title": "Election results", "slug": "election-results"},
+            {"title": "Parliament voting records", "slug": "parliament-voting-records"},
             {"title": "Legislation", "slug": "legislation"},
             {"title": "Service assessment reports", "slug": "service-assessment-reports"},
             {"title": "Local government finance", "slug": "local-government-finance"},
             {"title": "Council tax statistics", "slug": "council-tax-statistics"},
             {"title": "Contracts finder", "slug": "contracts-finder"},
             {"title": "Transparency data", "slug": "transparency-data"},
-            {"title": "Parliament voting records", "slug": "parliament-voting-records"},
         ],
     },
     {

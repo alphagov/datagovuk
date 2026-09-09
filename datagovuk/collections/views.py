@@ -47,7 +47,8 @@ class CollectionPageView(RenderedMarkdownView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["slug"] = self.kwargs["collection_page_name"]
-        context["collection"] = self.kwargs["collection_name"].replace("-", " ").capitalize()
+        collection = get_collections_by_slug().get(self.kwargs["collection_name"])
+        context["collection_title"] = collection.get("title") if collection else None
         context["collection_slug"] = self.kwargs["collection_name"]
         context["page_last_updated"] = date.strptime(context["page_last_updated"], "%Y-%m-%d")
         collection_pages, selected_index = self.collection_pages
