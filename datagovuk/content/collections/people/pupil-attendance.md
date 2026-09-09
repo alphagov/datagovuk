@@ -3,12 +3,12 @@ title: Pupil attendance
 links:
   - url: https://www.gov.uk/government/collections/statistics-pupil-absence
     link-text: Pupil attendance and absence
-    primary-button: false
   - url: https://explore-education-statistics.service.gov.uk
     link-text: Education statistics explorer
   - url: https://api.education.gov.uk/statistics/docs
     link-text:  Education statistics explorer (API)
 dataset:
+primary-button: false
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

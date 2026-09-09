@@ -3,9 +3,9 @@ title: Museum and gallery visits
 links:
   - url: https://www.gov.uk/government/statistics/dcms-sponsored-museums-and-galleries-annual-performance-indicators-202425/dcms-sponsored-museums-and-galleries-annual-performance-indicators-202425-headline-release
     link-text: Museums and galleries annual performance indicators 2024/25
-    primary-button: false
   - url: https://www.gov.uk/government/statistical-data-sets/museums-and-galleries-monthly-visits
     link-text: Museum and gallery visits (monthly)
+primary-button: false
 page-last-updated: "2026-06-09"
 visualisation-data:
 contact:

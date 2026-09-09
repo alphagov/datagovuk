@@ -3,7 +3,6 @@ title: Child height and weight
 links:
   - link-text: Child height and weight statistics 2024/25 - England
     url: https://fingertips.phe.org.uk/static-reports/obesity-physical-activity-nutrition/national-child-measurement-programme-2024-2025-academic-year.html
-    primary-button: false
   - link-text: Child height and weight statistics 2006/07 to 2023/24 - England
     url: https://digital.nhs.uk/data-and-information/publications/statistical/national-child-measurement-programme
   - link-text: Child height and weight statistics - Scotland
@@ -16,6 +15,7 @@ links:
     url: https://publichealthwales.shinyapps.io/ChildMeasurementProgrammeDashboard/
   - link-text: Statistical profile of children's health - Northern Ireland
     url: https://www.publichealth.hscni.net/publications?keys=statistical+profile+of+children%27s+health
+primary-button: false
 page-last-updated: "2026-06-03"
 visualisation-data:
 contact:

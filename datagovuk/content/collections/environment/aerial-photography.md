@@ -3,9 +3,9 @@ title: Aerial photography mapping
 links:
   - url: https://environment.data.gov.uk/dataset/32e2ff04-0c14-4544-b107-baa1552d0eee
     link-text: Oblique aerial photography
-    primary-button: false
   - url: https://environment.data.gov.uk/dataset/dae203a8-ba24-4c54-bab0-866b9faadb58
     link-text: Vertical aerial photography
+primary-button: false
 page-last-updated: "2026-03-24"
 visualisation-data:
 contact:

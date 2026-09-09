@@ -3,7 +3,6 @@ title: Childhood vaccinations
 links:
   - link-text: UKHSA childhood vaccination dashboard
     url: https://ukhsa-dashboard.data.gov.uk/cover/childhood-vaccinations
-    primary-button: false
   - link-text: Childhood vaccination - UK and England
     url: https://www.gov.uk/government/collections/vaccine-uptake#cover-of-vaccination-evaluated-rapidly-programme
   - link-text: Childhood vaccination - Scotland
@@ -16,6 +15,7 @@ links:
     url: https://phw.nhs.wales/knowledge-article/cover-national-childhood-immunisation-uptake-data/
   - link-text: Childhood vaccination - Northern Ireland
     url: https://www.publichealth.hscni.net/publications/annual-immunisation-and-vaccine-preventable-diseases-reports
+primary-button: false
 page-last-updated: "2026-06-03"
 visualisation-data: childhood-vaccinations/mmr2-coverage-by-nations.json
 contact:

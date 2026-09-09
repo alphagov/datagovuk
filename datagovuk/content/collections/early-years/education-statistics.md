@@ -3,7 +3,6 @@ title: Education statistics
 links:
   - url: https://explore-education-statistics.service.gov.uk/find-statistics?themeId=e6e31160-fe79-4556-f3a9-08d86094b9e8&sortBy=newest
     link-text: Early years statistics - England
-    primary-button: false
   - url: https://api.education.gov.uk/statistics/docs/
     link-text: Explore education statistics API
   - url: https://www.gov.scot/collections/early-learning-and-childcare-statistics/
@@ -12,6 +11,7 @@ links:
     link-text: Education statistics - Wales
   - url: https://www.education-ni.gov.uk/topics/statistics-education
     link-text: Education statistics - Northern Ireland
+primary-button: false
 page-last-updated: "2026-06-03"
 visualisation-data: education-statistics/early-years-foundation-stage-profile-results.json
 contact:

@@ -3,7 +3,6 @@ title: Early years health indicators
 links:
   - link-text: Fingertips health trends - England
     url: https://fingertips.phe.org.uk/static-reports/health-trends-in-england/England/overview.html
-    primary-button: false
   - link-text: Fingertips profiles - England
     url: https://fingertips.phe.org.uk/profiles
   - link-text: Fingertips API - England
@@ -14,6 +13,7 @@ links:
     url: https://phw.nhs.wales/
   - link-text: Health review statistics for pre-school children - Northern Ireland
     url: https://www.health-ni.gov.uk/articles/health-review-statistics-pre-school-children
+primary-button: false
 page-last-updated: "2026-06-03"
 visualisation-data:
 contact:

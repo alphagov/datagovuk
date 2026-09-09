@@ -118,7 +118,7 @@ class TestCollectionPageView:
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.OK
-        assert response.context_data["links"][0]["primary_button"] is False
+        assert response.context_data["primary_button"] is False
 
     @pytest.mark.parametrize(
         ("collection_name", "collection_page_name"),
