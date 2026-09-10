@@ -40,7 +40,7 @@ class TestCollectionPageView:
         assert visualisation["title"] == "Average house price"
         assert visualisation["type"] == "line"
         assert response.context_data["slug"] == "uk-house-prices"
-        assert response.context_data["collection"] == "Land and property"
+        assert response.context_data["collection_title"] == "Land and property"
         assert response.context_data["collection_slug"] == "land-and-property"
         assert "previous_page" not in response.context_data
         assert response.context_data["next_page"] == {
@@ -67,6 +67,7 @@ class TestCollectionPageView:
         response = client.get(url)
 
         assert response.status_code == HTTPStatus.OK
+        assert response.context_data["collection_title"] == "Government and Parliament"
         assert response.context_data["api"] == [
             {
                 "url": "https://commonsvotes-api.parliament.uk/swagger/ui/index",
@@ -232,13 +233,13 @@ class TestGovernmentCollectionRedirects:
         "collection_page_name",
         [
             "election-results",
+            "parliament-voting-records",
             "legislation",
             "service-assessment-reports",
             "local-government-finance",
             "council-tax-statistics",
             "contracts-finder",
             "transparency-data",
-            "parliament-voting-records",
         ],
     )
     def test_collection_page_redirects_to_government_and_parliament(self, client, collection_page_name):
