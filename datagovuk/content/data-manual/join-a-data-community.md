@@ -36,7 +36,7 @@ This community explores how AI can help understand, manage and make better use o
 ## [Data and AI ethics community](https://www.gov.uk/service-manual/communities/data-and-artificial-intelligence-ethics-community)
 A community for public sector workers interested in the ethical use of data, AI and technology in government. Members share knowledge, discuss challenges, and help shape policy and best practice. Events cover topics such as transparency, trust and fairness. Speakers from government, academia and industry share research, real-world projects and practical experience. Contact community_dataaiethics@dsit.gov.uk to join.
 
-## The AI and Data Ethics Journal Club 
+## The AI and Data Ethics Journal Club
 The AI & Data Ethics Journal Club is a cross-government learning community that explores the latest in data ethics, AI and new technologies. Members meet regularly to discuss a chosen paper, share insights and consider how new ideas can be used in the public sector. They discuss many topics, including responsible AI, and the impact of technology on society. To join, contact benjamin.gilburt@dsit.gov.uk.
 
 ## [Data engineering community](https://www.gov.uk/service-manual/communities/data-engineering-community)
