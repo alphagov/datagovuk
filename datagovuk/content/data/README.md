@@ -183,6 +183,9 @@ The file [weather/uk-monthly-max-temperature.json](weather/uk-monthly-max-temper
 
 **Note:** Individual years can be anomalous, so a more robust approach would be to use decade averages (e.g. 1900s, 1920s, 1940s, etc.) rather than single-year snapshots. Worth exploring if there's interest.
 
+### Water quality
+Source: [https://www.gov.uk/government/statistics/bathing-water-quality-statistics](https://www.gov.uk/government/statistics/bathing-water-quality-statistics)
+Copy 'latest results' at the bottom of the page into a .csv and chart the percentages.
 
 ### Woodland area
 
