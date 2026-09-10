@@ -46,7 +46,7 @@ dev = [
   "django-extensions==4.1",
   "django-stubs[compatible-mypy]==6.1.0",
   "djlint==1.44.2",
-  "filelock==3.25.2",
+  "filelock==3.32.4",
   "ipdb==0.13.13",
   "mypy==2.3.1",
   "playwright==1.62.0",
@@ -57,7 +57,7 @@ dev = [
   "pytest-rerunfailures==16.6",
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
-  "responses==0.26.2",
+  "responses==0.26.3",
   "ruff==0.16.4",
   "werkzeug[watchdog]==3.1.8",
 ]
