@@ -2,7 +2,7 @@
 title: Addresses
 websites:
   - url: https://www.ordnancesurvey.co.uk/products/os-gb-address
-    link-text: Ordnance Survey address database
+    link-text: Ordnance Survey address dataset
 api:
   - url: https://www.ordnancesurvey.co.uk/products/os-places-api
     link-text: OS Places API
