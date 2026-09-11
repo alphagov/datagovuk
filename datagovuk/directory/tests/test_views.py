@@ -539,6 +539,30 @@ class TestDatasetView:
         assert response.context_data["doc"].title == "Dataset With Resources"
         assert len(response.context_data["doc"].datafiles) == 0
 
+    def test_dataset_with_no_resources_has_noindex_meta_tag(self, client, solr_doc_factory):
+        doc = solr_doc_factory(resources=[])
+        url = reverse("directory:dataset", kwargs={"uuid": doc["id"], "slug": doc["name"]})
+        response = client.get(url)
+        assert '<meta name="robots" content="noindex" />' in response.rendered_content
+
+    def test_dataset_with_only_supporting_docs_has_no_noindex_meta_tag(self, client, solr_doc_factory):
+        doc = solr_doc_factory(
+            resources=[{"resource-type": "supporting-document", "url": "http://example.com/doc.pdf", "format": "PDF"}],
+        )
+        url = reverse("directory:dataset", kwargs={"uuid": doc["id"], "slug": doc["name"]})
+        response = client.get(url)
+        assert '<meta name="robots" content="noindex" />' not in response.rendered_content
+
+    def test_dataset_with_datafiles_has_no_noindex_meta_tag(self, client, solr_doc_factory):
+        doc = solr_doc_factory(
+            resources=[
+                {"id": "770e8400-e29b-41d4-a716-446655440099", "url": "http://example.com/data.csv", "format": "CSV"},
+            ],
+        )
+        url = reverse("directory:dataset", kwargs={"uuid": doc["id"], "slug": doc["name"]})
+        response = client.get(url)
+        assert '<meta name="robots" content="noindex" />' not in response.rendered_content
+
     def test_view_nonexistent_dataset_returns_404(self, client, solr_doc_factory):
         test_uuid = "00000000-0000-0000-0000-000000000000"
         url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "nonexistent"})
