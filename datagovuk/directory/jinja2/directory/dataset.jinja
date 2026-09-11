@@ -50,6 +50,7 @@
   <meta name="dc:date" content="{{ doc.public_updated_at|date('Y-m-d') }}" />
 
   {% if doc.licence_title %}<meta name="dc:rights" content="{{ doc.licence_title }}" />{% endif %}
+  {% if not doc.datafiles and not doc.docs %}<meta name="robots" content="noindex" />{% endif %}
 {% endblock extra_head %}
 
 {% block search_main %}
