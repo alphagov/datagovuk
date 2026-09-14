@@ -176,11 +176,30 @@ class TestSearchView:
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
-    def test_view_filter_topic(self, client, solr_doc_factory, search_url):
-        matching_doc = solr_doc_factory(topic="environment")
+    @pytest.mark.parametrize(
+        ("topic", "readable_topic"),
+        [
+            ("business and economy", "Business and economy"),
+            ("crime and justice", "Crime and justice"),
+            ("defence", "Defence"),
+            ("digital services performance", "Digital services performance"),
+            ("education", "Education"),
+            ("environment", "Environment"),
+            ("government", "Government"),
+            ("government reference data", "Government reference data"),
+            ("government spending", "Government spending"),
+            ("health", "Health"),
+            ("mapping", "Mapping"),
+            ("society", "Society"),
+            ("towns and cities", "Towns and cities"),
+            ("transport", "Transport"),
+        ],
+    )
+    def test_view_filter_topic(self, topic, readable_topic, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(topic=topic)
         solr_doc_factory()
 
-        response = client.get(search_url, {"q": "dataset", "topic": "Environment"})
+        response = client.get(search_url, {"q": "dataset", "topic": readable_topic})
 
         assert response.status_code == HTTPStatus.OK
         expected_ids = [matching_doc["id"]]
