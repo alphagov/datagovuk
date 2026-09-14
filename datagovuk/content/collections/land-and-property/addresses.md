@@ -7,7 +7,7 @@ api:
   - url: https://www.ordnancesurvey.co.uk/products/os-places-api
     link-text: OS Places API
 dataset:
-page-last-updated: "2026-09-10"
+page-last-updated: "2026-09-14"
 visualisation-data:
 contact:
 status: for-publication
