@@ -240,7 +240,7 @@ class TestSearchView:
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
-    def test_search_view_returns_error_if_form_invalid(self, client, search_url):
+    def test_search_view_returns_error_if_form_invalid(self, client, solr_client, search_url):
         response = client.get(search_url, {"q": "multi" * 200})
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["form"].errors["query"] == [
