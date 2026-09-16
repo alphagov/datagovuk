@@ -403,7 +403,7 @@ class SolrDataset:
             public_updated_at=public_updated_at,
             topic=topic,
             licence_title=dataset_dict.get("license_title", ""),
-            licence_url=dataset_dict.get("license_url", ""),
+            licence_url=dataset_dict.get("license_url", "").strip(),
             licence_code=dataset_dict.get("license_id", ""),
             licence_custom=licence_custom,
             contact_email=dataset_dict.get("contact-email", "").strip(),
