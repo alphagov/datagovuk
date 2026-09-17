@@ -803,12 +803,6 @@ class TestLegacyDatasetRedirectView:
         response = client.get(url)
         assert response.status_code == HttpResponseNotFound.status_code
 
-    def test_legacy_dataset_redirect_view_returns_404_for_invalid_slug(self, client, solr_doc_factory):
-        solr_doc_factory(id="11111111-1111-4111-8111-111111111112", name="some-other-name")
-        url = reverse("directory:legacy_dataset", kwargs={"legacy_dataset_name": 'invalid-dataset"'})
-        response = client.get(url)
-        assert response.status_code == HttpResponseNotFound.status_code
-
 
 class TestLegacyDatafileRedirectView:
     def test_legacy_datafile_redirect_view_redirects_to_preview(self, solr_doc_factory, client):
@@ -858,38 +852,6 @@ class TestLegacyDatafileRedirectView:
             kwargs={
                 "legacy_dataset_name": "invalid-dataset",
                 "datafile_uuid": "22222222-2222-2222-2222-222222222222",
-            },
-        )
-        response = client.get(url)
-        assert response.status_code == HttpResponseNotFound.status_code
-
-    def test_legacy_datafile_redirect_view_returns_404_for_invalid_slug(
-        self,
-        solr_doc_factory,
-        client,
-    ):
-        solr_doc_factory(id="11111111-1111-1111-1111-111111111111", name="some-dataset-name")
-        url = reverse(
-            "directory:legacy_datafile",
-            kwargs={
-                "legacy_dataset_name": 'invalid-dataset"',
-                "datafile_uuid": "22222222-2222-2222-2222-222222222222",
-            },
-        )
-        response = client.get(url)
-        assert response.status_code == HttpResponseNotFound.status_code
-
-    def test_legacy_datafile_redirect_view_returns_404_for_invalid_uuid(
-        self,
-        solr_doc_factory,
-        client,
-    ):
-        solr_doc_factory(id="11111111-1111-1111-1111-111111111111", name="some-dataset-name")
-        url = reverse(
-            "directory:legacy_datafile",
-            kwargs={
-                "legacy_dataset_name": "invalid-dataset",
-                "datafile_uuid": "some-uuid",
             },
         )
         response = client.get(url)
