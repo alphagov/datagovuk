@@ -1,0 +1,29 @@
+{
+  "title": "Flood Alerts in England",
+  "visualisation_type": "line",
+  "source": "https://environment.data.gov.uk/dataset/88bed270-d465-11e4-8669-f0def148f590",
+  "download": "flood_alerts_2011-2025.csv",
+  "publisher": "Department for Environment, Food & Rural Affairs",
+  "series": [
+    {
+      "color": "#C27A9A",
+      "data": {
+        "2011": 1088,
+        "2012": 3701,
+        "2013": 2646,
+        "2014": 3514,
+        "2015": 2507,
+        "2016": 3139,
+        "2017": 1897,
+        "2018": 2317,
+        "2019": 3437,
+        "2020": 3536,
+        "2021": 2624,
+        "2022": 2128,
+        "2023": 2065,
+        "2024": 5110,
+        "2025": 2931
+      }
+    }
+  ]
+}

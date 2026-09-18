@@ -96,6 +96,14 @@ Removed the references to notes, transposed data with the years, and saved to [e
 Source: [https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics](https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics)
 Average annual domestic energy bills
 
+### Flood alerts
+Source: [https://environment.data.gov.uk/dataset/88bed270-d465-11e4-8669-f0def148f590](https://environment.data.gov.uk/dataset/88bed270-d465-11e4-8669-f0def148f590)
+Load into Excel. Filter TYPE to Flood Alert. Make a new column for year and populate it with the Excel formula YEAR(date_column).
+
+Make a new sheet with one column for year and another for flood alert count.
+Year goes from 2011 (2010 is partial) to latest year for which there is complete data.
+Use =COUNTIF() in the flood alert count column to count the number of occurances there is for each year value in the year column on the first sheet.
+Download as .csv.
 
 ### Fuel and oil prices
 
