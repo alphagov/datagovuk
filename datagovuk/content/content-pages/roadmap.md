@@ -39,7 +39,7 @@ We’re testing how we present these curated data pages, including what informat
 and design help users understand and use the data. We welcome your input on what
 works well, and suggestions for what we can improve.
 
-You can [see and comment on upcoming data pages on our Github repository](https://github.com/alphagov/datagovuk_find/issues). The repository is open but you will need to create a Github account to comment.
+You can [see and comment on upcoming data pages on our GitHub repository](https://github.com/alphagov/datagovuk/issues). The repository is open but you will need to create a GitHub account to comment.
 
 [Complete the feedback form](https://forms.office.com/e/9V26PNFQaR).
 
@@ -80,7 +80,7 @@ We are testing the curated data listings with users and planning improvements ba
 feedback. We’ll also add more data listings and streamline the data manual by
 experimenting with how we best present the information.
 
-You can [see and comment on upcoming data pages on our Github repository](https://github.com/alphagov/datagovuk_find/issues). The repository is open but you will need to create a Github account to comment.
+You can [see and comment on upcoming data pages on our GitHub repository](https://github.com/alphagov/datagovuk/issues). The repository is open but you will need to create a GitHub account to comment.
 
 #### Improving discovery
 

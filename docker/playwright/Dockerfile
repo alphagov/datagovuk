@@ -5,7 +5,7 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system playwright
+    uv pip install --system $(grep -i '"playwright' pyproject.toml | tr -d '",')
 
 RUN playwright install --with-deps chromium
 

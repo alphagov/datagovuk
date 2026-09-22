@@ -4,7 +4,7 @@ websites:
   - url: https://ratings.food.gov.uk/
     link-text: Food hygiene ratings
 api:
-    url: https://api.ratings.food.gov.uk/Help
+  - url: https://api.ratings.food.gov.uk/Help
     link-text: Food hygiene rating API
 dataset:
 page-last-updated: "2026-03-24"

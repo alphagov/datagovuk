@@ -237,7 +237,7 @@ class LegacyDatafileRedirectView(View):
         dataset = get_dataset_by_legacy_name(legacy_dataset_name)
         if not dataset:
             raise Http404
-        if not any(datafile.uuid == datafile_uuid for datafile in dataset.datafiles):
+        if not any(datafile.uuid == str(datafile_uuid) for datafile in dataset.datafiles):
             raise Http404
         try:
             return HttpResponsePermanentRedirect(

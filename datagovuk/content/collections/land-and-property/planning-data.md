@@ -4,8 +4,8 @@ websites:
   - url: https://www.planning.data.gov.uk
     link-text: Planning and housing data
 api:
-  url: https://www.planning.data.gov.uk/docs
-  link-text: Planning Data API
+  - url: https://www.planning.data.gov.uk/docs
+    link-text: Planning Data API
 dataset:
   url: https://www.planning.data.gov.uk/dataset/
   link-text: Planning data datasets

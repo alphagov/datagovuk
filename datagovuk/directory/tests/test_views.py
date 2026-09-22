@@ -158,11 +158,48 @@ class TestSearchView:
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
-    def test_view_filter_topic(self, client, solr_doc_factory, search_url):
-        matching_doc = solr_doc_factory(topic="environment")
+    def test_view_filter_include_datasets_with_no_links(self, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory()
+        doc_missing_links = solr_doc_factory(res_url=[])
+
+        response = client.get(search_url, {"q": "dataset"})
+
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_doc["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
+        response = client.get(search_url, {"q": "dataset", "include_datasets_with_no_links": "on"})
+
+        assert response.status_code == HTTPStatus.OK
+        expected_ids = [matching_doc["id"], doc_missing_links["id"]]
+        actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
+        assert actual_ids == expected_ids
+
+    @pytest.mark.parametrize(
+        ("topic", "readable_topic"),
+        [
+            ("business and economy", "Business and economy"),
+            ("crime and justice", "Crime and justice"),
+            ("defence", "Defence"),
+            ("digital services performance", "Digital services performance"),
+            ("education", "Education"),
+            ("environment", "Environment"),
+            ("government", "Government"),
+            ("government reference data", "Government reference data"),
+            ("government spending", "Government spending"),
+            ("health", "Health"),
+            ("mapping", "Mapping"),
+            ("society", "Society"),
+            ("towns and cities", "Towns and cities"),
+            ("transport", "Transport"),
+        ],
+    )
+    def test_view_filter_topic(self, topic, readable_topic, client, solr_doc_factory, search_url):
+        matching_doc = solr_doc_factory(topic=topic)
         solr_doc_factory()
 
-        response = client.get(search_url, {"q": "dataset", "topic": "Environment"})
+        response = client.get(search_url, {"q": "dataset", "topic": readable_topic})
 
         assert response.status_code == HTTPStatus.OK
         expected_ids = [matching_doc["id"]]
@@ -203,7 +240,7 @@ class TestSearchView:
         actual_ids = [doc["id"] for doc in response.context_data["results"].docs]
         assert actual_ids == expected_ids
 
-    def test_search_view_returns_error_if_form_invalid(self, client, search_url):
+    def test_search_view_returns_error_if_form_invalid(self, client, solr_client, search_url):
         response = client.get(search_url, {"q": "multi" * 200})
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["form"].errors["query"] == [
@@ -494,6 +531,56 @@ class TestDatasetView:
         assert response.context_data["doc"].title == "Dataset With Resources"
         assert len(response.context_data["doc"].datafiles) == 1
         assert response.context_data["doc"].datafiles[0].name == "Data file"
+
+    def test_view_existing_dataset_with_no_resources(self, client, solr_doc_factory):
+        test_uuid = "550e8400-e29b-41d4-a716-446655440001"
+        solr_doc_factory(
+            id=test_uuid,
+            name="dataset-with-resources",
+            title="Dataset With Resources",
+            notes="Has resources",
+            metadata_modified="2026-02-20T15:30:00Z",
+            organization="publishing-org",
+            res_url=[],
+            validated_data_dict=json.dumps(
+                {
+                    "name": "dataset-with-resources",
+                    "id": test_uuid,
+                    "organization": {"title": "Publishing Org"},
+                },
+            ),
+        )
+
+        url = reverse("directory:dataset", kwargs={"uuid": test_uuid, "slug": "dataset-with-resources"})
+        response = client.get(url)
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["doc"].title == "Dataset With Resources"
+        assert len(response.context_data["doc"].datafiles) == 0
+
+    def test_dataset_with_no_resources_has_noindex_meta_tag(self, client, solr_doc_factory):
+        doc = solr_doc_factory(resources=[])
+        url = reverse("directory:dataset", kwargs={"uuid": doc["id"], "slug": doc["name"]})
+        response = client.get(url)
+        assert '<meta name="robots" content="noindex" />' in response.rendered_content
+
+    def test_dataset_with_only_supporting_docs_has_no_noindex_meta_tag(self, client, solr_doc_factory):
+        doc = solr_doc_factory(
+            resources=[{"resource-type": "supporting-document", "url": "http://example.com/doc.pdf", "format": "PDF"}],
+        )
+        url = reverse("directory:dataset", kwargs={"uuid": doc["id"], "slug": doc["name"]})
+        response = client.get(url)
+        assert '<meta name="robots" content="noindex" />' not in response.rendered_content
+
+    def test_dataset_with_datafiles_has_no_noindex_meta_tag(self, client, solr_doc_factory):
+        doc = solr_doc_factory(
+            resources=[
+                {"id": "770e8400-e29b-41d4-a716-446655440099", "url": "http://example.com/data.csv", "format": "CSV"},
+            ],
+        )
+        url = reverse("directory:dataset", kwargs={"uuid": doc["id"], "slug": doc["name"]})
+        response = client.get(url)
+        assert '<meta name="robots" content="noindex" />' not in response.rendered_content
 
     def test_view_nonexistent_dataset_returns_404(self, client, solr_doc_factory):
         test_uuid = "00000000-0000-0000-0000-000000000000"
