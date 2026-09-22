@@ -2,13 +2,13 @@
     "title": "Dwelling stock in England",
     "visualisation_type": "line",
     "source": "https://www.gov.uk/government/statistical-data-sets/live-tables-on-dwelling-stock-including-vacants",
-    "download": "dwelling-stock-2009-2025.csv",
+    "download": "dwelling-stock-2009-2025-private-public.csv",
       "visualisation_suffix": "m",
     "publisher": "Ministry of Housing, Communities and Local Government",
     "series": [
       {
         "name": "Total",
-        "color": "#000000",
+        "color": "#C27A9A",
         "data": {
             "2009": 22.69,
             "2010": 22.84,
@@ -31,7 +31,7 @@
       },
       {
         "name": "Private sector",
-        "color": "#C27A9A",
+        "color": "#00890B",
         "data": {
         "2009": 18.61,
         "2010": 18.74,
@@ -50,6 +50,29 @@
         "2023": 21.15,
         "2024": 21.34,
         "2025": 21.53
+        }
+      },
+      {
+        "name": "Public sector and housing associations",
+        "color": "#333333",
+        "data": {
+        "2009": 4.09,
+        "2010": 4.09,
+        "2011": 4.11,
+        "2012": 4.13,
+        "2013": 4.14,
+        "2014": 4.14,
+        "2015": 4.15,
+        "2016": 4.16,
+        "2017": 4.17,
+        "2018": 4.17,
+        "2019": 4.19,
+        "2020": 4.20,
+        "2021": 4.21,
+        "2022": 4.23,
+        "2023": 4.25,
+        "2024": 4.28,
+        "2025": 4.30
         }
       }
     ]
