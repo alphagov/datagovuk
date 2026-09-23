@@ -17,4 +17,4 @@ Use the Check for flooding service to see flood alerts and warnings by searching
 
 The page for an area at risk provides detailed commentary about the situation, action to take and when the message will next be updated.
 
-Historic floor warnings provides a listing of Severe Flood Warnings, Flood Warnings and Flood Alerts issued since the flood warning system went live on January 26th 2006.
+Historic flood warnings provides a listing of Severe Flood Warnings, Flood Warnings and Flood Alerts issued since the flood warning system went live on January 26th 2006.
