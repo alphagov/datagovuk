@@ -105,6 +105,8 @@ Year goes from 2011 (2010 is partial) to latest year for which there is complete
 Use =COUNTIF() in the flood alert count column to count the number of occurances there is for each year value in the year column on the first sheet.
 Download as .csv.
 
+Make as a bar chart for the most recent 10 years of data with most recent data at the top.
+
 ### Fuel and oil prices
 
 The source webpage for the data is [https://www.gov.uk/government/statistical-data-sets/oil-and-petroleum-products-monthly-statistics](https://www.gov.uk/government/statistical-data-sets/oil-and-petroleum-products-monthly-statistics)
