@@ -1,5 +1,5 @@
 {
-  "title": "Flood Alerts in England",
+  "title": "Flood alerts in England",
   "visualisation_type": "bar",
   "source": "https://environment.data.gov.uk/dataset/88bed270-d465-11e4-8669-f0def148f590",
   "download": "flood_alerts_2011-2025.csv",
