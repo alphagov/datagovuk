@@ -157,7 +157,7 @@ columns for 'Year' and 'All motor vehicles' to [road-traffic/road-traffic-mileag
 Source: [https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac](https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac)
 Table: EDM Storm Overflow Annual Return - Long-term Trends.zip
 
-Copy the years and 'total number of storm overflows listed' rows, transposing these into columns in a new sheet.
+Copy the year and storm overflows rows, transposing these into columns in a new sheet.
 Rename the years column to years. Remove the years for which there is no data (chart starts at 2021).
 
 
