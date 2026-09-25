@@ -4,9 +4,10 @@
   "source": "https://www.data.gov.uk/collections/environment/storm-overflows",
   "download": "storm_overflows-2021-2025.csv",
   "visualisation_type": "line",
+  "min_value": 12000,
   "series": [
     {
-      "name": "England",
+      "name": "Total overflows",
       "color": "#C27A9A",
       "data": {
         "2021": 14470,
@@ -14,6 +15,28 @@
         "2023": 14530,
         "2024": 14285,
         "2025": 14303
+      }
+    },
+    {
+      "name": "Overflows with EDM",
+      "color": "#00890B",
+      "data": {
+        "2021": 12707,
+        "2022": 13323,
+        "2023": 14241,
+        "2024": 14254,
+        "2025": 14272
+      }
+    },
+    {
+      "name": "Overflows with data",
+      "color": "#333333",
+      "data": {
+        "2021": 12393,
+        "2022": 13080,
+        "2023": 14031,
+        "2024": 14182,
+        "2025": 14239
       }
     }
   ]
