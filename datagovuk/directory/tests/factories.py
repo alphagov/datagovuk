@@ -32,6 +32,7 @@ class SolrDocumentFactory(factory.DictFactory):
     license_id = ""
     topic = ""
     res_format = []
+    res_url = ["http://www.example.net/data"]
 
     class Meta:
         rename = {

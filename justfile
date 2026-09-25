@@ -81,17 +81,21 @@ run +args:
 
 # test: Run pytest
 test *args:
+    @docker compose exec django pytest -n auto {{args}}
+
+test-sync *args:
     @docker compose exec django pytest {{args}}
 
 test-unit *args:
     @docker compose exec django pytest datagovuk/ {{args}}
 
 test-e2e *args:
-    @docker compose exec django pytest tests/e2e/ {{args}}
+    @docker compose exec django pytest -n auto tests/e2e/ {{args}}
 
 coverage:
     @docker compose exec django coverage run -m pytest datagovuk/
     @docker compose exec django coverage html
+    open htmlcov/index.html
 
 # e2e-install-playwright: Install playwright locally
 e2e-install-playwright:

@@ -1,0 +1,16 @@
+name: 'Setup Docker Stack'
+description: 'Check out code, set up Buildx, build Bake cache, and start Docker Compose'
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4.3.0
+
+    - name: Bring up docker-compose stack
+      shell: bash
+      env:
+        COMPOSE_DOCKER_CLI_BUILD: 1
+        DOCKER_BUILDKIT: 1
+      run: |
+        docker compose -f docker-compose.local.yml build
+        docker compose -f docker-compose.local.yml up -d

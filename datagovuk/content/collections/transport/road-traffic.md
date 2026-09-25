@@ -4,8 +4,8 @@ websites:
   - url: https://roadtraffic.dft.gov.uk
     link-text: Road traffic statistics
 api:
-  url: https://roadtraffic.dft.gov.uk/docs/index.html
-  link-text: Road traffic API
+  - url: https://roadtraffic.dft.gov.uk/docs/index.html
+    link-text: Road traffic API
 dataset:
   url: https://roadtraffic.dft.gov.uk/downloads
   link-text: Road traffic datasets

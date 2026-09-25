@@ -4,7 +4,7 @@ websites:
   - url: https://www.legislation.gov.uk/
     link-text: Search legislation
 api:
-    url: https://legislation.github.io/data-documentation/api/overview.html
+  - url: https://legislation.github.io/data-documentation/api/overview.html
     link-text: Legislation API documentation
 dataset:
 page-last-updated: "2026-07-28"

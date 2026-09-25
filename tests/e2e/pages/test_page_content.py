@@ -32,7 +32,15 @@ def test_accessibility_page_content(page, live_server_url):
     )
 
 
-# TODO: reenable the support page test once the new support page is implemented in all environments
+@pytest.mark.smoke
+def test_support_page_content(page, live_server_url):
+    page.goto(live_server_url + "/support/")
+    expect(page.get_by_role("heading", level=1)).to_have_text("Contact National Data Library")
+    expect(page.get_by_label("What are the details")).to_be_visible()
+    expect(page.get_by_role("link", name="Join the National Data Library on Slack")).to_have_attribute(
+        "href",
+        "https://ukgovernmentdigital.slack.com/archives/C037J3GTE4T",
+    )
 
 
 def test_team_page_content(page, live_server_url):

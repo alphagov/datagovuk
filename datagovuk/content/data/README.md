@@ -96,6 +96,16 @@ Removed the references to notes, transposed data with the years, and saved to [e
 Source: [https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics](https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics)
 Average annual domestic energy bills
 
+### Flood alerts
+Source: [https://environment.data.gov.uk/dataset/88bed270-d465-11e4-8669-f0def148f590](https://environment.data.gov.uk/dataset/88bed270-d465-11e4-8669-f0def148f590)
+Load into Excel. Filter TYPE to Flood Alert. Make a new column for year and populate it with the Excel formula YEAR(date_column).
+
+Make a new sheet with one column for year and another for flood alert count.
+Year goes from 2011 (2010 is partial) to latest year for which there is complete data.
+Use =COUNTIF() in the flood alert count column to count the number of occurances there is for each year value in the year column on the first sheet.
+Download as .csv.
+
+Make as a bar chart for the most recent 10 years of data with most recent data at the top.
 
 ### Fuel and oil prices
 
@@ -141,6 +151,10 @@ Invert financial year to be most recent at the bottom.
 Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
 Remove the second year in finanial year to make the axis labels neater.
 
+### Rents
+Source: https://www.data.gov.uk/collections/land-and-property/rents-lettings-and-tenancies
+Table: 602
+Sheet: England data
 
 ### Road traffic mileage
 
@@ -148,6 +162,20 @@ Source: https://roadtraffic.dft.gov.uk/
 
 Copied the dropdown table under 'Road traffic by vehicle type from 1993 to 2025'. Extracted
 columns for 'Year' and 'All motor vehicles' to [road-traffic/road-traffic-mileage.csv](road-traffic/road-traffic-mileage.csv).
+
+### Social mobility
+
+The source webpage for the data is [https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/latest](https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/latest)
+
+The visualisation data was from a CSV download file on the page above:
+
+[https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/3.0/IN32-3.0-unemployment--by-SEB--table-format.csv](https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/3.0/IN32-3.0-unemployment--by-SEB--table-format.csv)
+
+The data was save here as a csv file:
+
+[social-mobility/unemployment-by-socio-ecomomic-background.csv](social-mobility/unemployment-by-socio-ecomomic-background.csv)
+
+
 
 ### Storm overflows
 
@@ -183,20 +211,6 @@ The file [weather/uk-monthly-max-temperature.json](weather/uk-monthly-max-temper
 
 **Note:** Individual years can be anomalous, so a more robust approach would be to use decade averages (e.g. 1900s, 1920s, 1940s, etc.) rather than single-year snapshots. Worth exploring if there's interest.
 
-
-### Woodland area
-
-The source webpage for the data is [https://www.forestresearch.gov.uk/tools-and-resources/statistics/data-downloads/](https://www.forestresearch.gov.uk/tools-and-resources/statistics/data-downloads/)
-
-The visualisation data was downloaded from there (woodland area statistics).
-
-The `Year` and `UK total (thousand hectares)` columns were extracted for years 2005 to 2025 to create [forest-and-woodlands/woodland-area.csv](forest-and-woodlands/woodland-area.csv).
-
-Values represent the cumulative total woodland area in the UK at each year, **not new** woodland planted that year.
-
-The file [forest-and-woodlands/woodland-area.json](forest-and-woodlands/woodland-area.json) uses the data from the csv file as its `series.data` object.
-
-
 ### UK Trade
 
 The source webpage for the data is [https://www.gov.uk/government/statistics/uk-trade-in-numbers/uk-trade-in-numbers-web-version](https://www.gov.uk/government/statistics/uk-trade-in-numbers/uk-trade-in-numbers-web-version)
@@ -214,20 +228,19 @@ the graph itself this was divided by the number base 1000 to give the number in 
 
 The file [uk-trade/total-uk-imports-exports-2010-2025.json](uk-trade/total-uk-imports-exports-2010-2025.json) uses the data from the csv file as its two `series` objects.
 
-### Social mobility
-
-The source webpage for the data is [https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/latest](https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/latest)
-
-The visualisation data was from a CSV download file on the page above:
-
-[https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/3.0/IN32-3.0-unemployment--by-SEB--table-format.csv](https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/3.0/IN32-3.0-unemployment--by-SEB--table-format.csv)
-
-The data was save here as a csv file:
-
-[social-mobility/unemployment-by-socio-ecomomic-background.csv](social-mobility/unemployment-by-socio-ecomomic-background.csv)
-
-
 The file [social-mobility/unemployment-by-socio-ecomomic-background.json](social-mobility/unemployment-by-socio-ecomomic-background.json) uses the data from the csv file as its data object for a bar chart.
+
+### Woodland area
+
+The source webpage for the data is [https://www.forestresearch.gov.uk/tools-and-resources/statistics/data-downloads/](https://www.forestresearch.gov.uk/tools-and-resources/statistics/data-downloads/)
+
+The visualisation data was downloaded from there (woodland area statistics).
+
+The `Year` and `UK total (thousand hectares)` columns were extracted for years 2005 to 2025 to create [forest-and-woodlands/woodland-area.csv](forest-and-woodlands/woodland-area.csv).
+
+Values represent the cumulative total woodland area in the UK at each year, **not new** woodland planted that year.
+
+The file [forest-and-woodlands/woodland-area.json](forest-and-woodlands/woodland-area.json) uses the data from the csv file as its `series.data` object.
 
 ***
 

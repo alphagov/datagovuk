@@ -81,16 +81,6 @@ def test_accessibility(client):
     assert "Accessibility statement for the National Data Library" in response_content
 
 
-def test_support(client):
-    url = reverse("pages:support")
-    response = client.get(url)
-    response_content = response.content.decode()
-
-    assert response.status_code == HTTPStatus.OK
-    assert "Support - National Data Library" in response_content
-    assert "If you’re a civil servant" in response_content  # noqa: RUF001
-
-
 def test_team(client):
     response = client.get(reverse("pages:team"))
     response_content = response.content.decode()
