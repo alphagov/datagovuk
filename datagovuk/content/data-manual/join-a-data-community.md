@@ -4,7 +4,9 @@ Find Slack channels, events and other ways to connect with
 data practitioners.
 
 ## [Data communities newsletter](https://mailchi.mp/dsit.gov.uk/data-newsletter)
-Data Community Download is a monthly newsletter for data professionals in the public sector. Discover news, events, learning opportunities and community updates from the government data community. [Sign up for the Data communities newsletter](https://mailchi.mp/dsit.gov.uk/data-newsletter) to learn from best practice and connect with others working in data. Teams and organisations across the public sector can contribute news, updates and case studies to the newsletter by emailing [datacommunities@dsit.gov.uk](mailto:V).
+Data Community Download is a monthly newsletter for data professionals in the public sector. Discover news, events, learning opportunities and community updates from the government data community. 
+
+[Sign up for the Data communities newsletter](https://mailchi.mp/dsit.gov.uk/data-newsletter) to learn from best practice and connect with others working in data. Teams and organisations across the public sector can contribute news, updates and case studies to the newsletter by emailing [datacommunities@dsit.gov.uk](mailto:V).
 
 ## Data management community
 The Data Management Community is a cross-government network of data management practitioners. Members share best practice on data quality, metadata, data governance and data catalogues. The community also looks after the Data Asset Management Policy, which helps government departments improve data quality, accountability and the value of data. You can [join the data management community](https://khub.net/welcome?p_p_state=maximized&p_p_mode=view&refererPlid=721321912&_com_liferay_login_web_portlet_LoginPortlet_mvcRenderCommandName=%2Flogin%2Flogin&saveLastPath=false&p_p_id=com_liferay_login_web_portlet_LoginPortlet&p_p_lifecycle=0&_com_liferay_login_web_portlet_LoginPortlet_redirect=%2Fweb%2Fcross-government-reference-master-data-working-group%2Fabout) via the knowledge hub, or contact [hiba.jama@dsit.gov.uk](mailto:hiba.jama@dsit.gov.uk).
