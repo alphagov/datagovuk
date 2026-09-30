@@ -4,7 +4,7 @@ Find Slack channels, events and other ways to connect with
 data practitioners.
 
 ## [Data communities newsletter](https://mailchi.mp/dsit.gov.uk/data-newsletter)
-Data Community Download is a monthly newsletter for data professionals in the public sector. Discover news, events, learning opportunities and community updates from the government data community. 
+Data Community Download is a monthly newsletter for data professionals in the public sector. Discover news, events, learning opportunities and community updates from the government data community.
 
 [Sign up for the Data communities newsletter](https://mailchi.mp/dsit.gov.uk/data-newsletter) to learn from best practice and connect with others working in data. Teams and organisations across the public sector can contribute news, updates and case studies to the newsletter by emailing [datacommunities@dsit.gov.uk](mailto:V).
 
