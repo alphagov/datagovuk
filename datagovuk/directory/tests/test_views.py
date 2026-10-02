@@ -6,6 +6,8 @@ import pytest
 from django.http import HttpResponseNotFound, HttpResponsePermanentRedirect
 from django.urls import NoReverseMatch, reverse
 
+from datagovuk.directory.views import SearchView
+
 
 @pytest.fixture
 def mock_solr_results_factory():
@@ -409,6 +411,26 @@ class TestSearchView:
         response = client.get(search_url, {"q": "test", "page": "-5"})
 
         assert response.status_code == HTTPStatus.OK
+
+    def test_search_page_one_has_no_noindex(self, client, solr_doc_factory, search_url):
+        solr_doc_factory(title="test")
+
+        response = client.get(search_url, {"q": "test"})
+
+        assert '<meta name="robots" content="noindex, follow" />' not in response.rendered_content
+
+    def test_search_page_two_has_noindex(self, client, solr_doc_factory, search_url):
+        for _ in range(SearchView.rows_per_page + 1):
+            solr_doc_factory(title="test")
+
+        response = client.get(search_url, {"q": "test", "page": "2"})
+
+        assert '<meta name="robots" content="noindex, follow" />' in response.rendered_content
+
+    def test_search_no_query_has_no_noindex(self, client, solr_doc_factory, search_url):
+        response = client.get(search_url)
+
+        assert '<meta name="robots" content="noindex, follow" />' not in response.rendered_content
 
 
 class TestDatasetView:
