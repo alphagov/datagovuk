@@ -65,3 +65,31 @@ custom feature flags and other settings (e.g. `GOOGLE_TAG_MANAGER_ID`, `ALLOWED_
 ## Docs
 
 Developer docs are located in `docs/`.
+
+## Related repositories
+
+There are a number of other github repositories in use by the datagovuk team, including;
+
+### Application
+
+| Repository | Description |
+| --- | --- |
+| [ckanext-datagovuk](https://github.com/alphagov/ckanext-datagovuk) | The CKAN extension for data.gov.uk |
+| [datagovuk-indexer](https://github.com/alphagov/datagovuk-indexer) | data.gov.uk opensearch indexer. |
+
+### Infrastructure
+
+| Repository | Description |
+| --- | --- |
+| [govuk-dgu-charts](https://github.com/alphagov/govuk-dgu-charts) | Helm charts for data.gov.uk's EKS deployment. |
+| [govuk-fastly](https://github.com/alphagov/govuk-fastly/tree/main/datagovuk) | Fastly configs for gov.uk (including data.gov.uk) |
+| [datagovuk-infrastructure](https://github.com/alphagov/datagovuk-infrastructure) | Terraform infrastructure-as-code for data.gov.uk AWS environments. Building to supersede govuk-dgu-charts. |
+
+### Other
+
+| Repository | Description |
+| --- | --- |
+| [datagovuk-scripts](https://github.com/alphagov/datagovuk-scripts) | A collection of datagovuk scripts that are run ad-hoc on local machines or on a container. |
+| [datagovuk-experiments](https://github.com/alphagov/datagovuk-experiments) | A repository for experiments relating to data.gov.uk. |
+| [datagovuk-sandbox](https://github.com/alphagov/datagovuk-sandbox) | A Flask prototyping app for data.gov.uk ideas. |
+| [datagovuk-support](https://github.com/alphagov/datagovuk-support) | A repository to record one-off support tasks for data.gov.uk and related services. |
