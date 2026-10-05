@@ -7,10 +7,6 @@ data.gov.uk website.
 
 License: MIT
 
-## Settings
-
-Moved to [settings](https://cookiecutter-django.readthedocs.io/en/latest/1-getting-started/settings.html).
-
 ## Running locally
 
 
@@ -69,20 +65,3 @@ custom feature flags and other settings (e.g. `GOOGLE_TAG_MANAGER_ID`, `ALLOWED_
 ## Docs
 
 Developer docs are located in `docs/`.
-
-## Running on Heroku
-
-This app is deployable on Heroku with the Procfile included from the Cookiecutter (with db migrations commented out)
-
-The settings file to use is: [config/settings/heroku.py](config/settings/heroku.py) and the following environment variables should be set using `heroku config:set` or the Heroku dashboard.
-
-| Key | Value |
-|----------------------|-----|
-| DJANGO_DEBUG | False |
-| DJANGO_SETTINGS_MODULE| config.settings.heroku |
-| DJANGO_SECRET_KEY| something random |
-| BASIC_AUTH_USERNAME| someone |
-| BASIC_AUTH_PASSWORD| something |
-| DISABLE_COLLECT_STATIC| 1 |
-
-Disabling collect static allows `bin/post_compile` to handle that concern and so that Heroku buildpack doesn't run it, which it would by default.
