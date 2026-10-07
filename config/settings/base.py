@@ -158,7 +158,7 @@ SECURE_CSP = {
         "*.google-analytics.com",
         "*.googletagmanager.com",
     ],
-    "style-src": [CSP.SELF, CSP.UNSAFE_INLINE],
+    "style-src": [CSP.SELF],
 }
 
 # STATIC
