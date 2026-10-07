@@ -146,6 +146,8 @@ SECURE_CSP = {
         "ckan.publishing.service.gov.uk",
     ],
     "font-src": [CSP.SELF],
+    "frame-ancestors": [CSP.SELF],
+    "form-action": [CSP.SELF],
     "img-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com"],
     "manifest-src": [CSP.SELF],
     "media-src": [CSP.SELF],
