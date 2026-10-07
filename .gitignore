@@ -288,3 +288,5 @@ datagovuk/media/
 
 # pem files..
 *.pem
+
+pentest/**
