@@ -143,6 +143,6 @@ prod-down *args:
     docker compose -f docker-compose.production.yml down {{args}}
 
 pentest:
-    #just prod-build
+    just prod-build
     just prod-up
     docker compose -f docker-compose.production.yml run --rm zap zap-baseline.py -t http://django:8000 -r zap-report.html
