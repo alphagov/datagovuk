@@ -13,7 +13,6 @@ services:
         required: true
     ports:
       - '8001:8000'
-      - '9394:9394'
     command: /start
   zap:
     image: zaproxy/zap-stable
