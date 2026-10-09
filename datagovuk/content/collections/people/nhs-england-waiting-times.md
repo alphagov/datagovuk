@@ -21,15 +21,15 @@ contact:
 status: for-publication
 ---
 
-Find waiting times data for NHS England. 
+Find waiting times data for NHS England.
 You can view online publications or access data in PDF reports and Excel files.
 
-Data may include waiting times for: 
+Data may include waiting times for:
 
-- referral to treatment (RTT) 
-- diagnostic tests 
-- cancer services 
-- ambulance response times 
+- referral to treatment (RTT)
+- diagnostic tests
+- cancer services
+- ambulance response times
 - accident and emergency
 
-NHS England provides a Referral to Treatment Waiting Times Dashboard and a Cancer Wait Times Dashboard. The RTT dashboard shows the size of the waiting list by length of wait, area and treatment. The Cancer Wait Times Dashboard lets you explore cancer waiting times by tumour type and healthcare provider. It reports whether these cancer waiting times are meeting set standards. NHS England also publishes the Waiting List Minimum Dataset (WLMDS) which breaks down RTT waiting times data by age, sex, ethnicity and deprivation.  
+NHS England provides a Referral to Treatment Waiting Times Dashboard and a Cancer Wait Times Dashboard. The RTT dashboard shows the size of the waiting list by length of wait, area and treatment. The Cancer Wait Times Dashboard lets you explore cancer waiting times by tumour type and healthcare provider. It reports whether these cancer waiting times are meeting set standards. NHS England also publishes the Waiting List Minimum Dataset (WLMDS) which breaks down RTT waiting times data by age, sex, ethnicity and deprivation.
