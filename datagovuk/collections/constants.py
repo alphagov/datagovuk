@@ -82,6 +82,7 @@ BASE_COLLECTIONS = [
             {"title": "Births", "slug": "births"},
             {"title": "Deaths", "slug": "deaths"},
             {"title": "Public health dashboard", "slug": "public-health-dashboard"},
+            {"title": "NHS England waiting times", "slug": "nhs-england-waiting-times"},
             {"title": "Population estimates", "slug": "population-estimates"},
             {"title": "Immigration", "slug": "immigration"},
             {"title": "Social mobility", "slug": "social-mobility"},
