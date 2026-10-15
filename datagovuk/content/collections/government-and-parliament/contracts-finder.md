@@ -1,4 +1,5 @@
 ---
+uuid: b3bcdf8b-9972-4f97-8543-553900d0b855
 title: Contracts finder
 websites:
   - url: https://www.contractsfinder.service.gov.uk/Search

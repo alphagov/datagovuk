@@ -1,4 +1,5 @@
 ---
+uuid: 1203435e-6f68-4d69-8969-2e11b6515720
 title: Public transport stations and stops
 websites:
   - url: https://beta-naptan.dft.gov.uk

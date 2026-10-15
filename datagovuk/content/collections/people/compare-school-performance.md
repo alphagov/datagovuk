@@ -1,4 +1,5 @@
 ---
+uuid: 52cac0d0-b178-45fb-9a1b-81bea4ea8e95
 title: Compare school performance
 websites:
   - url: https://www.compare-school-performance.service.gov.uk/

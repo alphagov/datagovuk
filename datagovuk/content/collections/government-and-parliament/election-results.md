@@ -1,4 +1,5 @@
 ---
+uuid: 83554f44-a57e-4aae-9615-6c2760e2d289
 title: Election results
 websites:
   - url: https://electionresults.parliament.uk/

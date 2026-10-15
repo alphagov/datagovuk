@@ -1,4 +1,5 @@
 ---
+uuid: 635a1f4c-dfe3-4291-8738-4c962377e95b
 title: Environmental public registers
 websites:
   - url: https://environment.data.gov.uk/public-register/view/index

@@ -1,4 +1,5 @@
 ---
+uuid: de9bf6bd-1365-4cce-a4db-da4340f81f34
 title: Vocational qualifications
 websites:
   - url: https://www.gov.uk/government/collections/statistics-vocational-qualifications

@@ -1,4 +1,5 @@
 ---
+uuid: b309be7a-d474-4896-a935-29ad01959a96
 title: Births
 websites:
   - url: https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/bulletins/birthsummarytablesenglandandwales/2025

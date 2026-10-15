@@ -1,4 +1,5 @@
 ---
+uuid: 01b726c6-e940-4d64-b18a-bf743f66f954
 title: Flood alerts
 websites:
   - url: https://check-for-flooding.service.gov.uk/alerts-and-warnings

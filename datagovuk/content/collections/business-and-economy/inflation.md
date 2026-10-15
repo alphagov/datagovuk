@@ -1,4 +1,5 @@
 ---
+uuid: 0c1a50db-143b-4fb3-9d96-060879840001
 title: Inflation
 websites:
   - url: https://www.ons.gov.uk/economy/inflationandpriceindices

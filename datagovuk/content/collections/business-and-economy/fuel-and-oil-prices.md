@@ -1,4 +1,5 @@
 ---
+uuid: 0079794c-40a6-4b7c-b319-4bd992229477
 title: Fuel and oil prices
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/oil-and-petroleum-products-monthly-statistics

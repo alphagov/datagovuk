@@ -1,4 +1,5 @@
 ---
+uuid: 7fe3d991-b0db-4b1b-bfd0-58d593f32512
 title: Electricity
 websites:
   - url: https://www.gov.uk/government/collections/electricity-statistics

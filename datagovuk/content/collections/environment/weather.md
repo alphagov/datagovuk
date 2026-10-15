@@ -1,4 +1,5 @@
 ---
+uuid: 1242f25e-1a94-48c3-9b54-e1526f645402
 title: Weather
 websites:
   - url: https://www.metoffice.gov.uk

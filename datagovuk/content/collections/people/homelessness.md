@@ -1,4 +1,5 @@
 ---
+uuid: 69e151a9-d075-41a7-b533-a6dad6cf655d
 title: Homelessness
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-homelessness

@@ -1,4 +1,5 @@
 ---
+uuid: 55c61c6a-ca78-4bad-b050-182346362630
 title: Get company information
 websites:
   - url: https://find-and-update.company-information.service.gov.uk/

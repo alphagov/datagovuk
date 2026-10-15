@@ -1,4 +1,5 @@
 ---
+uuid: 725cea8e-57fe-467e-a9d8-63592cd4bc78
 title: Dwelling stock (including vacancies)
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-dwelling-stock-including-vacants

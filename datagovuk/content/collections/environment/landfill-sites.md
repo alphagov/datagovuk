@@ -1,4 +1,5 @@
 ---
+uuid: e501b03d-b8f2-491f-88d9-064921e131fd
 title: Landfill sites
 websites:
   - url: https://environment.data.gov.uk/dataset/692eaecf-d465-11e4-ac2e-f0def148f590

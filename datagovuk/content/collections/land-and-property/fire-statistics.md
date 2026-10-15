@@ -1,4 +1,5 @@
 ---
+uuid: eabd6da5-c253-46de-bbd2-ca65eafb56cc
 title: Fire statistics
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/fire-statistics-data-tables

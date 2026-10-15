@@ -1,4 +1,5 @@
 ---
+uuid: cd887836-ce42-4754-a996-9cac2bb0d03b
 title: UK trade
 websites:
   - url: https://www.gov.uk/government/statistics/uk-trade-in-numbers/uk-trade-in-numbers-web-version

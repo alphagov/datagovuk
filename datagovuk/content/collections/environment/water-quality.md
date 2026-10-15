@@ -1,4 +1,5 @@
 ---
+uuid: 08b25455-4cdb-4f23-b5c4-28eaba16345e
 title: Water quality
 websites:
   - url: https://environment.data.gov.uk/water-quality

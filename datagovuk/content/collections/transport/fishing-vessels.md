@@ -1,4 +1,5 @@
 ---
+uuid: 87826f68-8a6e-46af-8bed-754531e6882e
 title: Fishing vessels
 websites:
   - url: https://www.gov.uk/government/collections/uk-vessel-lists
