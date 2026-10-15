@@ -12,6 +12,15 @@ Blue: #026BDB
 
 ## Line and bar charts
 
+### A&E Waiting Times
+Source: (NHS England)[https://www.england.nhs.uk/statistics/statistical-work-areas/ae-waiting-times-and-activity/]
+Table: Monthly A&E Time Series September 2026
+Sheet: Performance
+
+Copy months and totals for <4 hours and >4 hours into a new sheet.
+Rename the columns to replace < and > symbols with 'less than' and 'greater than' respectively.
+Save the .csv.
+
 ### Agricultural commodities: milk prices
 Source: [https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk](https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk)
 Table: United Kingdom milk prices and composition of milk - dataset
