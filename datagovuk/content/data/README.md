@@ -21,9 +21,20 @@ Sheet: Performance
 
 Copy months and totals for <4 hours and >4 hours into a new sheet.
 Rename the columns to replace < and > symbols with 'less than' and 'greater than' respectively.
-Reformat the month.
+Reformat the month to YYYY-MM-DD, e.g. 2016-10-15.
 Save the .csv.
 
+#### Cancer
+Source: (NHS England)[https://www.england.nhs.uk/statistics/statistical-work-areas/cancer-waiting-times/]
+Table: CWT CRS – National Time Series Oct 2009 – Aug 2026 with Revisions
+Sheet: Monthly performance
+
+Select the group of columns corresponding to the stat to display (e.g. 28-days wait, 31-days wait).
+Copy to new sheet.
+Rename Monthly to Month.
+Reformat the month to YYYY-MM-DD, e.g. 2016-10-15.
+Reformat the numbers to have no commas.
+Save the .csv.
 
 ### Agricultural commodities: milk prices
 Source: [https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk](https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk)
