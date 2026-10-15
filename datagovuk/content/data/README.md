@@ -24,6 +24,17 @@ Rename the columns to replace < and > symbols with 'less than' and 'greater than
 Reformat the month to YYYY-MM-DD, e.g. 2016-10-15.
 Save the .csv.
 
+#### Ambulance response times
+Source: (NHS England)[https://www.england.nhs.uk/statistics/statistical-work-areas/ambulance-quality-indicators/]
+Table: AmbSYS time series to September 2026
+Sheet: Response times
+
+Copy the month/year columns and the columns for mean C1 responses (Category 1 - most serious, life threatening).
+Format the month to YYYY-MM-DD, e.g. 2016-10-15.
+Format the time into a number so 7:30 becomes 7.5 for the chart (as we can't handle times).
+Save the .csv with columns for month and year, and the original time values (e.g. 7:30) under the heading of "Mean category 1 response time (min:sec)" or similar.
+
+
 #### Cancer
 Source: (NHS England)[https://www.england.nhs.uk/statistics/statistical-work-areas/cancer-waiting-times/]
 Table: CWT CRS – National Time Series Oct 2009 – Aug 2026 with Revisions
