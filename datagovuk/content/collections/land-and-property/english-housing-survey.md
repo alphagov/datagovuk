@@ -1,4 +1,5 @@
 ---
+uuid: ef5182de-917b-4e18-9589-114e51da5815
 title: English Housing Survey
 websites:
   - url: https://www.gov.uk/government/collections/english-housing-survey-live-tables

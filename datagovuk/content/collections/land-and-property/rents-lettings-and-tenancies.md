@@ -1,4 +1,5 @@
 ---
+uuid: f4b216f1-c8a0-4601-a1c1-983e07c42dfb
 title: Rents, lettings and tenancies
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-rents-lettings-and-tenancies

@@ -1,4 +1,5 @@
 ---
+uuid: aabc91ee-b539-4405-95d1-ab1b1245369e
 title: Driving tests
 websites:
   - url: https://www.gov.uk/government/collections/driving-tests-and-instructors-statistics

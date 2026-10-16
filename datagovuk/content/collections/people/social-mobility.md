@@ -1,4 +1,5 @@
 ---
+uuid: 27b0e3d1-4677-4f72-a74b-ea81b32faceb
 title: Social mobility
 websites:
   - url: https://social-mobility.data.gov.uk/

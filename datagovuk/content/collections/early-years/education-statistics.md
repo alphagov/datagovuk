@@ -1,4 +1,5 @@
 ---
+uuid: 009a19f8-a276-4a14-b36d-c85baee2befa
 title: Education statistics
 websites:
   - url: https://explore-education-statistics.service.gov.uk/find-statistics?themeId=e6e31160-fe79-4556-f3a9-08d86094b9e8&sortBy=newest

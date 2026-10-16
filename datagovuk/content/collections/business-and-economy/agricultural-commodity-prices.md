@@ -1,4 +1,5 @@
 ---
+uuid: 648b0aa8-9b5d-47b9-a896-1c859cd48ea7
 title: Agricultural commodity prices
 websites:
   - url: https://www.gov.uk/government/collections/commodity-prices

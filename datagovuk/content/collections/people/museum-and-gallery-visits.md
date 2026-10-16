@@ -1,4 +1,5 @@
 ---
+uuid: 109d981a-8cc1-4cb1-a21a-467c33b9e0be
 title: Museum and gallery visits
 websites:
   - url: https://www.gov.uk/government/statistics/dcms-sponsored-museums-and-galleries-annual-performance-indicators-202425/dcms-sponsored-museums-and-galleries-annual-performance-indicators-202425-headline-release

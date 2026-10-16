@@ -1,4 +1,5 @@
 ---
+uuid: 34016a0a-f3d0-4fd7-82dd-eeef8b88f47a
 title: Deprivation
 websites:
   - url: https://deprivation.communities.gov.uk/

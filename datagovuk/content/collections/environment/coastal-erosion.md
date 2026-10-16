@@ -1,4 +1,5 @@
 ---
+uuid: 79ed2414-e49a-44e5-bf93-2210a899da81
 title: Coastal erosion
 websites:
   - url: https://environment.data.gov.uk/dataset/9fede91f-5acd-4fd2-9bd8-98153fa3c2ff

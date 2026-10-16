@@ -1,4 +1,5 @@
 ---
+uuid: f23633f2-257b-4648-8414-0c999bbc64db
 title: Energy performance of buildings
 websites:
   - url: https://www.gov.uk/government/collections/energy-performance-of-buildings-certificates

@@ -1,4 +1,5 @@
 ---
+uuid: 725c61ac-de51-43a3-94f5-efbb5a11d52b
 title: Get charity information
 websites:
   - url: https://register-of-charities.charitycommission.gov.uk/en/charity-search

@@ -1,4 +1,5 @@
 ---
+uuid: 29ff0539-bf60-4c38-b37a-347c9d933e1e
 title: Food hygiene ratings
 websites:
   - url: https://ratings.food.gov.uk/

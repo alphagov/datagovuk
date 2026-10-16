@@ -1,4 +1,5 @@
 ---
+uuid: daa2a6b8-2422-47e6-8481-5197cb61fea6
 title: Council tax statistics
 websites:
   - url: https://www.gov.uk/government/collections/council-tax-statistics

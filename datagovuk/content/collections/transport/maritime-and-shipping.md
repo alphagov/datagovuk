@@ -1,4 +1,5 @@
 ---
+uuid: 46b63e1f-7854-434d-b589-2c76c725b1e3
 title: Maritime and shipping
 websites:
   - url: https://maps.dft.gov.uk/maritime-statistics/index.html

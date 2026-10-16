@@ -1,4 +1,5 @@
 ---
+uuid: 1ae61127-f588-4e09-82a6-8114845daf2f
 title: State-funded schools inspections and outcomes
 websites:
   - url: https://www.gov.uk/government/collections/maintained-schools-and-academies-inspections-and-outcomes-official-statistics

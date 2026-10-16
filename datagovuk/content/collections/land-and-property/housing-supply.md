@@ -1,4 +1,5 @@
 ---
+uuid: 63ea7f0b-71d3-4396-8958-d67903c60562
 title: Housing supply
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-house-building

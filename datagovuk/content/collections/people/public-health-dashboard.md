@@ -1,4 +1,5 @@
 ---
+uuid: b3609d06-e056-4259-9c20-28dbd3a657b4
 title: Public health dashboard
 websites:
   - url: https://ukhsa-dashboard.data.gov.uk/

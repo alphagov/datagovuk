@@ -1,4 +1,5 @@
 ---
+uuid: a166b892-83ee-4d8c-9410-89908819a150
 title: Addresses
 websites:
   - url: https://www.ordnancesurvey.co.uk/products/os-gb-address

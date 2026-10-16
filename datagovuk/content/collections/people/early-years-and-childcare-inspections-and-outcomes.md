@@ -1,4 +1,5 @@
 ---
+uuid: 5de72763-656f-4094-92e8-c26bb2ca1ec9
 title: Early years and childcare inspections and outcomes
 websites:
   - url: https://www.gov.uk/government/collections/early-years-and-childcare-statistics

@@ -1,4 +1,5 @@
 ---
+uuid: 253e2731-8438-48b3-bd0c-84908ad43fe6
 title: Deaths
 websites:
   - url: https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregistrationsummarytables/2024

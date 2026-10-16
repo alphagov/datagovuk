@@ -1,4 +1,5 @@
 ---
+uuid: 8a800a55-2ddb-4b7a-b768-08242f9b8202
 title: Service assessment reports
 websites:
   - url: https://www.gov.uk/service-standard-reports

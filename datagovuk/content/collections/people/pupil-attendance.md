@@ -1,4 +1,5 @@
 ---
+uuid: a20545e2-2b4e-486a-a6aa-1d05fa926b5e
 title: Pupil attendance
 websites:
   - url: https://www.gov.uk/government/collections/statistics-pupil-absence

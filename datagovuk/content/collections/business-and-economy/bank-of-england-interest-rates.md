@@ -1,4 +1,5 @@
 ---
+uuid: 855d808f-ba59-453c-b242-1445b1dcb517
 title: Bank of England interest rates
 websites:
   - url: https://www.bankofengland.co.uk/boeapps/database/Bank-Rate.asp

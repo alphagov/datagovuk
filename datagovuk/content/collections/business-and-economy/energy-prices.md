@@ -1,4 +1,5 @@
 ---
+uuid: 7fea5266-606d-472a-8b98-d159c9f9e223
 title: Energy prices
 websites:
   - url: https://www.gov.uk/government/collections/quarterly-energy-prices
