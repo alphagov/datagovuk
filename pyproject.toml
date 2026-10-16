@@ -19,7 +19,7 @@ dependencies = [
   "django-cache-memoize==0.2.1",
   "django-compressor==4.6.0",
   "django-environ==0.14.0",
-  "django-health-check==4.7.1",
+  "django-health-check==4.7.2",
   "django-libsass==0.9",
   "django-prometheus==2.5.0",
   "factory-boy==3.3.3",
@@ -46,7 +46,7 @@ dev = [
   "django-extensions==4.1",
   "django-stubs[compatible-mypy]==6.1.1",
   "djlint==1.46.4",
-  "filelock==4.0.8",
+  "filelock==4.0.9",
   "ipdb==0.13.13",
   "mypy==2.3.1",
   "playwright==1.63.0",
@@ -58,7 +58,7 @@ dev = [
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
   "responses==0.26.3",
-  "ruff==0.16.9",
+  "ruff==0.16.10",
   "werkzeug[watchdog]==3.1.9",
 ]
 
