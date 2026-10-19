@@ -1,7 +1,10 @@
+from django.http import Http404
+from django.views.generic import TemplateView
+
 from datagovuk.core.views import GETFormView
 
 from .forms import SearchForm
-from .opensearch import search
+from .opensearch import get_document_by_slug, search
 
 
 class SearchView(GETFormView):
@@ -23,4 +26,18 @@ class SearchView(GETFormView):
             context["results"] = results
             context["docs"] = docs
             context["search_made"] = True
+        return context
+
+
+class DatasetView(TemplateView):
+    template_name = "search/dataset.jinja"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        dataset_slug = self.kwargs["slug"]
+        document = get_document_by_slug(dataset_slug)
+        if not document:
+            message = f"Active dataset {dataset_slug} not found"
+            raise Http404(message)
+        context["doc"] = document
         return context
