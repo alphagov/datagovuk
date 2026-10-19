@@ -21,6 +21,10 @@ class Dataset(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+    @property
+    def organisation(self):
+        return self.organisations[0]
+
 
 def get_opensearch_client():
     return OpenSearch(
@@ -51,3 +55,19 @@ def search(query):
     )
     documents = [Dataset(**hit["_source"]) for hit in response["hits"]["hits"]]
     return response, documents
+
+
+def get_document_by_slug(slug):
+    client = get_opensearch_client()
+
+    query_body = {"query": {"term": {"slug": slug}}, "size": 1}
+
+    response = client.search(index="datasets", body=query_body)
+
+    hits = response["hits"]["hits"]
+    if not hits:
+        return None  # Document not found
+
+    source_data = hits[0]["_source"]
+
+    return Dataset(**source_data)
