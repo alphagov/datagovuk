@@ -36,19 +36,28 @@ def get_opensearch_client():
 
 def search(query):
     client = get_opensearch_client()
+    if query and query.strip():
+        search_clause = {
+            "multi_match": {
+                "query": query,
+                "fields": [
+                    "title^3",  # High relevance for exact/standard title matches
+                    "title.english^2",  # Medium relevance for stemmed English title matches
+                    "description",
+                    "description.english",
+                ],
+                "type": "best_fields",
+            },
+        }
+    else:
+        search_clause = {"match_all": {}}
+
     response = client.search(
         index="datasets",
         body={
             "query": {
                 "bool": {
-                    "must": [
-                        {
-                            "multi_match": {
-                                "query": query,
-                                "fields": ["title.english^2", "description.english"],
-                            },
-                        },
-                    ],
+                    "must": [search_clause],
                 },
             },
         },
