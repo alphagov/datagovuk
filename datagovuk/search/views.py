@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from datagovuk.core.views import GETFormView
 
 from .forms import SearchForm
-from .opensearch import get_document_by_slug, search
+from .opensearch import get_ckan_document_by_slug, search_ckan
 
 
 class SearchView(GETFormView):
@@ -15,7 +15,7 @@ class SearchView(GETFormView):
     def form_valid(self, form):
         query = form.cleaned_data["query"]
 
-        results, docs = search(query)
+        results, docs = search_ckan(query)
         context = self.get_context_data(query=query, search_result=results, docs=docs)
         return self.render_to_response(context)
 
@@ -35,7 +35,7 @@ class DatasetView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         dataset_slug = self.kwargs["slug"]
-        document = get_document_by_slug(dataset_slug)
+        document = get_ckan_document_by_slug(dataset_slug)
         if not document:
             message = f"Active dataset {dataset_slug} not found"
             raise Http404(message)
