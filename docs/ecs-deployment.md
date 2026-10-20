@@ -24,16 +24,16 @@ Manual workflow dispatch in GitHub Actions. Provide the full git SHA of the imag
 
 ## Future Direction
 
-Moving to ECR-only approach. Will need to:
-- Recreate the tagging and release process
-- Manage task definitions and tagged artifacts consistently
+In the near future, we will move to an ECR-only workflow. This means:
+- Tagging and release process will be recreated
+- Managing task definitions and tagged artifacts consistently across environments
 
-This is part of a series. Eventually:
-- Deployments to integration will trigger smoke tests
-- Full CI/CD pipeline will manage task definitions and tagged artifacts
-- Deployment strategy across integration, staging, and production will be unified
+This is a starting point focusing on integration. Once we have integration working well with smoke tests, we'll introduce staging and production in a deliberate fashion.
 
-For now this is a manual dispatch starting point.
+Eventually the goal is:
+- Deployments to integration trigger smoke tests
+- Full CI/CD pipeline manages task definitions and tagged artifacts
+- Unified deployment strategy across integration, staging, and production
 
 ## Monitoring Deployment
 
