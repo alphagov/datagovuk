@@ -34,7 +34,7 @@ def get_opensearch_client():
     )
 
 
-def search(query):
+def search_ckan(query):
     client = get_opensearch_client()
     if query and query.strip():
         search_clause = {
@@ -58,6 +58,9 @@ def search(query):
             "query": {
                 "bool": {
                     "must": [search_clause],
+                    "filter": [
+                        {"term": {"source": "ckan"}},
+                    ],
                 },
             },
         },
@@ -66,10 +69,20 @@ def search(query):
     return response, documents
 
 
-def get_document_by_slug(slug):
+def get_ckan_document_by_slug(slug):
     client = get_opensearch_client()
 
-    query_body = {"query": {"term": {"slug": slug}}, "size": 1}
+    query_body = {
+        "query": {
+            "bool": {
+                "filter": [
+                    {"term": {"slug": slug}},
+                    {"term": {"source": "ckan"}},
+                ],
+            },
+        },
+        "size": 1,
+    }
 
     response = client.search(index="datasets", body=query_body)
 
