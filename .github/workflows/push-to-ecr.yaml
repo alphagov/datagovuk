@@ -74,6 +74,7 @@ jobs:
           image: ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ steps.resolve-sha.outputs.image_sha }}
 
       - name: Deploy to integration ECS
+        if: github.event_name == 'workflow_dispatch'
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.render-task-def.outputs.task-definition }}
