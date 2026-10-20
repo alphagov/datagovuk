@@ -1,16 +1,10 @@
 name: Push to ECR and promote
 
 on:
-  workflow_run:
-    workflows: ["Build and push multi-arch images"]
-    types:
-      - completed
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       image_sha:
-        description: Full git SHA of the image to push/promote (must already be in GHCR)
+        description: 'Full git SHA (40 hex characters) of the image to push/promote. Must already exist in GHCR.'
         required: true
         type: string
 
@@ -24,17 +18,21 @@ jobs:
   push_to_integration:
     name: Push to integration ECR
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    environment: integration
     permissions:
       id-token: write
       contents: read
     outputs:
       image_sha: ${{ steps.resolve-sha.outputs.image_sha }}
     steps:
-      - name: Resolve image SHA
+      - name: Validate and resolve image SHA
         id: resolve-sha
         run: |
-          SHA="${{ github.event.workflow_run.head_sha || inputs.image_sha }}"
+          SHA="${{ inputs.image_sha }}"
+          if [[ ! $SHA =~ ^[a-f0-9]{40}$ ]]; then
+            echo "Error: Invalid SHA format. Must be 40 hex characters."
+            exit 1
+          fi
           echo "image_sha=${SHA}" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS credentials (integration)

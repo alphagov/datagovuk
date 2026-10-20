@@ -4,9 +4,11 @@ Interim documentation. This is a first step towards full CI/CD deployment manage
 
 ## Current State
 
-This workflow is **manually dispatched**. It does not automatically deploy on every push to main.
+This workflow is **manually dispatched only**. You trigger it manually and provide a git SHA. No automatic deploys.
 
 The workflow copies the Docker image from GitHub Container Registry to the integration AWS account ECR, then updates the ECS task definition and deploys to the integration cluster with rolling restart.
+
+Requires valid 40-character git SHA of an image already in GHCR.
 
 ## What This Does
 
@@ -20,14 +22,18 @@ The workflow copies the Docker image from GitHub Container Registry to the integ
 
 Manual workflow dispatch in GitHub Actions. Provide the full git SHA of the image you want to deploy.
 
-## Next Steps
+## Future Direction
+
+Moving to ECR-only approach. Will need to:
+- Recreate the tagging and release process
+- Manage task definitions and tagged artifacts consistently
 
 This is part of a series. Eventually:
 - Deployments to integration will trigger smoke tests
 - Full CI/CD pipeline will manage task definitions and tagged artifacts
-- Deployment strategy across test, integration, staging, and production will be unified
+- Deployment strategy across integration, staging, and production will be unified
 
-For now this is a starting point and manual trigger only.
+For now this is a manual dispatch starting point.
 
 ## Monitoring Deployment
 
