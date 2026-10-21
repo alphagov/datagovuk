@@ -120,7 +120,6 @@ class CollectionsAPIView(View):
             with markdown.open() as f:
                 collection = frontmatter.load(f)
 
-            # the indexer will create a uuid hash from collection + slug.
             collections.append(
                 {
                     "collection": markdown.parent.name,
