@@ -19,10 +19,25 @@
 
     <div class="govuk-grid-column-two-thirds">
       {% if search_made %}
-        {% if results.hits.total.value > 0 %}
-          <div class="datagovuk-search__results-header"></div>
+        {% if collection_results.hits.total.value > 0 %}
+          <h2 class="govuk-heading-m datagovuk-heading-m">Curated data</h2>
+          <p class="govuk-body datagovuk-body">Selected by the National Data Library team</p>
           <ul class="datagovuk-search-results">
-            {% for doc in docs %}
+            {% for doc in collection_docs %}
+              <li class="datagovuk-search-results__item">
+                <h2 class="govuk-body datagovuk-body">
+                  <a href="{{ url('collections:collection_page', kwargs={'collection_name': doc.collection, 'collection_page_name': doc.slug}) }}"
+                     class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.title }}</a>
+                </h2>
+                <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.description | truncate(50) }}</div>
+              </li>
+            {% endfor %}
+          </ul>
+          <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+        {% endif %}
+        {% if directory_results.hits.total.value > 0 %}
+          <ul class="datagovuk-search-results">
+            {% for doc in directory_docs %}
               <li class="datagovuk-search-results__item">
                 <h2 class="govuk-body datagovuk-body">
                   <a href="{{ url('search:dataset', kwargs={'slug': doc.slug}) }}"
