@@ -13,4 +13,5 @@ runs:
         DOCKER_BUILDKIT: 1
       run: |
         docker compose -f docker-compose.local.yml build
+        docker network create datagovuk
         docker compose -f docker-compose.local.yml up -d
