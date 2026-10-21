@@ -120,12 +120,13 @@ class CollectionsAPIView(View):
             with markdown.open() as f:
                 collection = frontmatter.load(f)
 
+            # TODO: Add 'keywords' to collection markdowns frontmatter
             collections.append(
                 {
                     "collection": markdown.parent.name,
                     "slug": markdown.stem,
                     "title": collection.get("title"),
-                    "keywords": ["test-keyword"],
+                    "keywords": collection.get("keywords", []),
                 },
             )
         return JsonResponse({"collections": collections})
