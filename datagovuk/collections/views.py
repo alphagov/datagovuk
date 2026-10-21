@@ -128,7 +128,7 @@ class CollectionsAPIView(View):
                     "title": collection.get("title"),
                     "description": collection.content,
                     "keywords": collection.get("keywords", []),
-                    "page_last_updated": collection.get("page-last-updated", None),
+                    "page-last-updated": collection.get("page-last-updated", None),
                 },
             )
         return JsonResponse({"collections": collections})
