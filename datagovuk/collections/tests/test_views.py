@@ -226,7 +226,7 @@ class TestCollectionsAPIView:
     def test_api_route_returns_collections(self, client, settings):
         settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT = "datagovuk/collections/tests/content/"
 
-        response = client.get(reverse("collections_api"))
+        response = client.get(reverse("collections_json"))
 
         assert response.status_code == HTTPStatus.OK
         collections = response.json()["collections"]
