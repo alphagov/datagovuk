@@ -126,6 +126,7 @@ class CollectionsAPIView(View):
                     "collection": markdown.parent.name,
                     "slug": markdown.stem,
                     "title": collection.get("title"),
+                    "description": collection.content,
                     "keywords": collection.get("keywords", []),
                     "page_last_updated": collection.get("page-last-updated", None),
                 },

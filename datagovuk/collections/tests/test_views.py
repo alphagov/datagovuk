@@ -236,6 +236,7 @@ class TestCollectionsAPIView:
         assert collections[0]["slug"] == "sample-page"
         assert collections[0]["keywords"] == ["test-keyword"]
         assert collections[0]["page_last_updated"] == "2026-03-24"
+        assert collections[0]["description"] == "Some existing markdown."
 
 
 class TestGovernmentCollectionRedirects:
