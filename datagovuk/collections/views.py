@@ -1,7 +1,9 @@
 from datetime import date
+from pathlib import Path
 
+import frontmatter
 from django.conf import settings
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, JsonResponse
 from django.urls import reverse
 from django.views.generic.base import RedirectView, View
 
@@ -108,3 +110,23 @@ class CollectionView(RedirectView):
                 "collection_page_name": collection_page_name,
             },
         )
+
+
+class CollectionsAPIView(View):
+    def get(self, request):
+        collections_path = Path(settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT)
+        collections = []
+        for markdown in sorted(collections_path.rglob("*.md")):
+            with markdown.open() as f:
+                collection = frontmatter.load(f)
+
+            # the indexer will create a uuid hash from collection + slug.
+            collections.append(
+                {
+                    "collection": markdown.parent.name,
+                    "slug": markdown.stem,
+                    "title": collection.get("title"),
+                    "keywords": ["test-keyword"],
+                },
+            )
+        return JsonResponse({"collections": collections})
