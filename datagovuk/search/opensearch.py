@@ -14,6 +14,7 @@ class Organisation(BaseModel):
 class Dataset(BaseModel):
     uuid: str
     slug: str
+    collection: str | None = None
     title: str
     description_raw: str
     description: str
@@ -34,7 +35,41 @@ def get_opensearch_client():
     )
 
 
-def search_ckan(query):
+def search_collections(query):
+    client = get_opensearch_client()
+    if query and query.strip():
+        search_clause = {
+            "multi_match": {
+                "query": query,
+                "fields": [
+                    "title^3",  # High relevance for exact/standard title matches
+                    "title.english^2",  # Medium relevance for stemmed English title matches
+                ],
+                "type": "best_fields",
+            },
+        }
+    else:
+        search_clause = {"match_all": {}}
+
+    response = client.search(
+        index="datasets",
+        body={
+            "query": {
+                "bool": {
+                    "must": [search_clause],
+                    "filter": [
+                        {"term": {"source": "collection"}},
+                    ],
+                },
+            },
+            "size": 2,
+        },
+    )
+    documents = [Dataset(**hit["_source"]) for hit in response["hits"]["hits"]]
+    return response, documents
+
+
+def search_directory(query):
     client = get_opensearch_client()
     if query and query.strip():
         search_clause = {
@@ -63,13 +98,14 @@ def search_ckan(query):
                     ],
                 },
             },
+            "size": 20,
         },
     )
     documents = [Dataset(**hit["_source"]) for hit in response["hits"]["hits"]]
     return response, documents
 
 
-def get_ckan_document_by_slug(slug):
+def get_directory_document_by_slug(slug):
     client = get_opensearch_client()
 
     query_body = {
