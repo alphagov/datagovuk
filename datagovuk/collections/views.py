@@ -127,6 +127,7 @@ class CollectionsAPIView(View):
                     "slug": markdown.stem,
                     "title": collection.get("title"),
                     "keywords": collection.get("keywords", []),
+                    "page_last_updated": collection.get("page-last-updated", None),
                 },
             )
         return JsonResponse({"collections": collections})
