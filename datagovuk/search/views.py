@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from datagovuk.core.views import GETFormView
 
 from .forms import SearchForm
-from .opensearch import get_ckan_document_by_slug, search_ckan
+from .opensearch import get_directory_document_by_slug, search_collections, search_directory
 
 
 class SearchView(GETFormView):
@@ -15,17 +15,33 @@ class SearchView(GETFormView):
     def form_valid(self, form):
         query = form.cleaned_data["query"]
 
-        results, docs = search_ckan(query)
-        context = self.get_context_data(query=query, search_result=results, docs=docs)
+        directory_results, directory_docs = search_directory(query)
+        collection_results, collection_docs = search_collections(query)
+        context = self.get_context_data(
+            query=query,
+            directory_results=directory_results,
+            directory_docs=directory_docs,
+            collection_results=collection_results,
+            collection_docs=collection_docs,
+        )
         return self.render_to_response(context)
 
-    def get_context_data(self, query=None, search_result=None, docs=None, **kwargs):
+    def get_context_data(
+        self,
+        query=None,
+        directory_results=None,
+        directory_docs=None,
+        collection_results=None,
+        collection_docs=None,
+        **kwargs,
+    ):
         context = super().get_context_data(**kwargs)
         if query is not None:
-            results = search_result
-            context["results"] = results
-            context["docs"] = docs
             context["search_made"] = True
+            context["collection_results"] = collection_results
+            context["collection_docs"] = collection_docs
+            context["directory_results"] = directory_results
+            context["directory_docs"] = directory_docs
         return context
 
 
@@ -35,7 +51,7 @@ class DatasetView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         dataset_slug = self.kwargs["slug"]
-        document = get_ckan_document_by_slug(dataset_slug)
+        document = get_directory_document_by_slug(dataset_slug)
         if not document:
             message = f"Active dataset {dataset_slug} not found"
             raise Http404(message)
