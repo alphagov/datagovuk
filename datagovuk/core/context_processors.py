@@ -2,7 +2,6 @@ from django.conf import settings
 
 from datagovuk.collections.constants import get_collections
 from datagovuk.data_manual.constants import DATA_MANUAL_PAGES
-from datagovuk.help.constants import HELP_PAGES
 
 
 def collections(request):
@@ -35,10 +34,6 @@ def data_manual_menu_items(request):
             },
         ],
     }
-
-
-def help_items(request):
-    return {"help_items": HELP_PAGES}
 
 
 def google_tag_manager(request):
