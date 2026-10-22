@@ -9,6 +9,7 @@ urlpatterns = [
     path("", include("datagovuk.pages.urls", namespace="pages")),
     path("", include("datagovuk.core.urls", namespace="core")),
     path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
+    path("", include("datagovuk.help.urls", namespace="help")),
     path("collections/", include("datagovuk.collections.urls", namespace="collections")),
     path("", include("datagovuk.directory.urls", namespace="directory")),
     path("", include("datagovuk.support.urls", namespace="support")),
