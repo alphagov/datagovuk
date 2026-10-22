@@ -83,9 +83,9 @@ jobs:
 
   # Smoke tests against integration will need to added here (e.g. call ./.github/workflows/smoke-tests.yml)
   # (but first some jiggery pokery to think through about urls/make sure test is againts right env etc.)
-  # right now, as step one to get the dots joined, the same image that reaches to service stable from
-  # integration will auto promote to staging, and for Monday 26th October to production (but remember not
-  # production of a live service yet)
+  # right now, as step one to get the dots joined, the same image that reaches service stable on
+  # integration will auto promote to staging, and for Monday 26th October to production (but remember
+  # production not a live service yet)
 
   push_to_staging:
     name: Push to staging ECR
