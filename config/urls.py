@@ -5,13 +5,21 @@ from django.views.decorators.cache import never_cache
 from django_prometheus import exports as prometheus_views
 from health_check.views import HealthCheckView
 
+from datagovuk.core.feature_flags import is_feature_flag_enabled
+
+search_v2_urlpatterns = (
+    [path("v2/", include("datagovuk.search.urls", namespace="search"))]
+    if is_feature_flag_enabled(settings.FEATURE_FLAGS.SEARCH_V2)
+    else []
+)
+
 urlpatterns = [
     path("", include("datagovuk.pages.urls", namespace="pages")),
     path("", include("datagovuk.core.urls", namespace="core")),
     path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
     path("collections/", include("datagovuk.collections.urls", namespace="collections")),
     path("", include("datagovuk.directory.urls", namespace="directory")),
-    path("v2/", include("datagovuk.search.urls", namespace="search")),
+    *search_v2_urlpatterns,
     path("", include("datagovuk.support.urls", namespace="support")),
     path(
         "health/",

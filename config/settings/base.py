@@ -320,6 +320,7 @@ DATAGOVUK_GIT_SHA = env("GIT_SHA", default=None)
 
 class FEATURE_FLAGS(Enum):  # noqa: N801
     TEST_FEATURE_FLAG = "test-feature-flag"
+    SEARCH_V2 = "search-v2"
 
 
 FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
