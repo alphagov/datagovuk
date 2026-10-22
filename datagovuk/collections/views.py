@@ -116,19 +116,34 @@ class CollectionsAPIView(View):
     def get(self, request):
         collections_path = Path(settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT)
         collections = []
-        for markdown in sorted(collections_path.rglob("*.md")):
-            with markdown.open() as f:
-                collection = frontmatter.load(f)
+        topics = []
 
-            # TODO: Add 'keywords' to collection markdowns frontmatter
+        for collection in sorted(collections_path.iterdir()):
+            collection_name = collection.name
+            topics = self.get_topics_from_collection(collection)
             collections.append(
                 {
-                    "name": markdown.parent.name,
-                    "slug": markdown.stem,
-                    "title": collection.get("title"),
-                    "description": collection.content,
-                    "keywords": collection.get("keywords", []),
-                    "page-last-updated": collection.get("page-last-updated", ""),
+                    "name": collection_name,
+                    "topics": topics,
                 },
             )
+
         return JsonResponse({"collections": collections})
+
+    def get_topics_from_collection(self, collection):
+        topics = []
+        for topic_markdown in sorted(collection.rglob("*.md")):
+            with topic_markdown.open() as f:
+                topic = frontmatter.load(f)
+
+            # TODO: Add 'keywords' to collection markdowns frontmatter
+            topics.append(
+                {
+                    "slug": topic_markdown.stem,
+                    "title": topic.get("title"),
+                    "description": topic.content,
+                    "keywords": topic.get("keywords", []),
+                    "page-last-updated": topic.get("page-last-updated", ""),
+                },
+            )
+        return topics
