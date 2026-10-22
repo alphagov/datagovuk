@@ -1,5 +1,5 @@
 {
- "title": "Time spent in A&E before admission, transfer, or discharge (England)",
+ "title": "Time waits in A&E before admission, transfer, or discharge (England, %)",
  "visualisation_type": "line",
  "source": "https: //www.england.nhs.uk/statistics/statistical-work-areas/ae-waiting-times-and-activity/",
  "download": "data/a-and-e-waiting-times-upto-sept26.csv",
