@@ -43,6 +43,17 @@ def test_about(client):
     assert "About the National Data Library" in response_content
 
 
+def test_help(client):
+    url = reverse("pages:help")
+    response = client.get(url)
+    response_content = response.content.decode()
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.headers["Cache-Control"] == "max-age=1800, public"
+    assert "Help" in response_content
+    assert "Test feature flag enabled" not in response_content
+
+
 def test_data_curation(client):
     url = reverse("pages:data_curation")
     response = client.get(url)
