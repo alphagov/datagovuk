@@ -99,8 +99,20 @@ coverage:
 
 # e2e-install-playwright: Install playwright locally
 e2e-install-playwright:
-    uv sync
-    uv run playwright install --with-deps
+    SSL_CERT_FILE="" uv sync --system-certs
+    uv run playwright install --with-deps || { \
+        echo ""; \
+        echo "Playwright browser download failed."; \
+        echo "If the error was 'Request to ... timed out', your network may have broken IPv6 connectivity"; \
+        echo "(Playwright tries IPv6 first and the connection hangs; check with: curl -6 -m 10 https://www.google.com)."; \
+        echo "Disable IPv6 temporarily and retry:"; \
+        echo ""; \
+        echo "  sudo networksetup -setv6off Wi-Fi"; \
+        echo "  just e2e-install-playwright"; \
+        echo "  sudo networksetup -setv6automatic Wi-Fi"; \
+        echo ""; \
+        exit 1; \
+    }
 
 # e2e-codegen: Generate a new end to end test with playwright recorder
 e2e-codegen +args:
