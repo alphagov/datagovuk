@@ -13,6 +13,7 @@ env:
   AWS_REGION: eu-west-2
   GHCR_IMAGE: ghcr.io/alphagov/datagovuk
   ECS_CLUSTER_INTEGRATION: integration
+  ECS_CLUSTER_STAGING: staging
 
 jobs:
   push_to_integration:
@@ -22,6 +23,8 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    outputs:
+      image_sha: ${{ steps.resolve-sha.outputs.image_sha }}
     steps:
       - name: Validate and resolve image SHA
         id: resolve-sha
@@ -76,4 +79,65 @@ jobs:
           task-definition: ${{ steps.render-task-def.outputs.task-definition }}
           service: ${{ env.APP_NAME }}
           cluster: ${{ env.ECS_CLUSTER_INTEGRATION }}
+          wait-for-service-stability: true
+
+  # Smoke tests against integration will need to added here (e.g. call ./.github/workflows/smoke-tests.yml)
+  # (but first some jiggery pokery to think through about urls/make sure test is againts right env etc.)
+  # right now, as step one to get the dots joined, the same image that reaches to service stable from
+  # integration will auto promote to staging, and for Monday 26th October to production (but remember not
+  # production of a live service yet)
+
+  push_to_staging:
+    name: Push to staging ECR
+    needs: push_to_integration
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      IMAGE_SHA: ${{ needs.push_to_integration.outputs.image_sha }}
+    steps:
+      - name: Configure AWS credentials (staging)
+        uses: aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          role-to-assume: ${{ secrets.STAGING_DEPLOYER_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR (staging)
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Install crane
+        uses: imjasonh/setup-crane@v0.7
+
+      - name: Copy image from GHCR to staging ECR
+        run: |
+          crane copy \
+            ${{ env.GHCR_IMAGE }}:${{ env.IMAGE_SHA }} \
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ env.IMAGE_SHA }}
+
+      - name: Download current task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition ${{ env.APP_NAME }} \
+            --region ${{ env.AWS_REGION }} \
+            --query 'taskDefinition' \
+            --output json > /tmp/td.json
+          jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .deregisteredAt)' /tmp/td.json > task-definition.json
+
+      - name: Update task definition with new image
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: app
+          image: ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ env.IMAGE_SHA }}
+
+      - name: Deploy to staging ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
+          service: ${{ env.APP_NAME }}
+          cluster: ${{ env.ECS_CLUSTER_STAGING }}
           wait-for-service-stability: true
