@@ -8,7 +8,7 @@ All project commands use `just` (install with `brew install just`). Run `just` a
 
 ```bash
 just init          # First-time setup: installs uv, pre-commit, copies envfile
-just up            # Start Docker containers (app at http://localhost:8000)
+just up            # Start Docker containers (app at )
 just down          # Stop containers
 just build         # Rebuild Docker image
 just logs          # Tail container logs
