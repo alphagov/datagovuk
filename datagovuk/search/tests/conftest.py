@@ -1,6 +1,10 @@
+import importlib
 from unittest.mock import MagicMock, patch
 
 import pytest
+from django.urls import clear_url_caches
+
+import config.urls
 
 
 def _filter_value(body, field):
@@ -11,6 +15,27 @@ def _filter_value(body, field):
         if field in clause.get("term", {}):
             return clause["term"][field]
     return None
+
+
+@pytest.fixture
+def set_search_v2_flag(settings):
+    original_flags = settings.FEATURE_FLAGS_ENABLED
+
+    def _set(enabled):
+        settings.FEATURE_FLAGS_ENABLED = ["search-v2"] if enabled else []
+        clear_url_caches()
+        importlib.reload(config.urls)
+
+    yield _set
+
+    settings.FEATURE_FLAGS_ENABLED = original_flags
+    clear_url_caches()
+    importlib.reload(config.urls)
+
+
+@pytest.fixture(autouse=True)
+def search_v2_flag_enabled(set_search_v2_flag):
+    set_search_v2_flag(enabled=True)
 
 
 @pytest.fixture(autouse=True)
@@ -36,11 +61,6 @@ def mock_opensearch_client(mock_opensearch_class):
 def opensearch_documents(mock_opensearch_client):
     """
     Factory fixture which loads documents into an in-memory stand in for the `datasets` index.
-
-    Documents are given as `_source` dicts (see `DatasetFactory`). The stand in applies the
-    `source` and `slug` term filters and the `size` of a search request and returns an
-    OpenSearch shaped response. It does no text matching or scoring - tests of how the query
-    is built should assert on the body passed to `mock_opensearch_client.search`.
     """
 
     def _load(documents):
