@@ -123,7 +123,7 @@ class CollectionsAPIView(View):
             # TODO: Add 'keywords' to collection markdowns frontmatter
             collections.append(
                 {
-                    "collection": markdown.parent.name,
+                    "name": markdown.parent.name,
                     "slug": markdown.stem,
                     "title": collection.get("title"),
                     "description": collection.content,
