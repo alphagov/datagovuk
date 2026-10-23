@@ -62,4 +62,9 @@ urlpatterns = [
         TemplateView.as_view(template_name="pages/publishers.jinja"),
         name="publishers",
     ),
+    path(
+        "help/",
+        views.HelpView.as_view(),
+        name="help",
+    ),
 ]
