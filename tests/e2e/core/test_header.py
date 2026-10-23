@@ -2,6 +2,23 @@ import pytest
 from playwright.sync_api import expect
 
 
+def _test_links_work(page, live_server_url, click_menu) -> None:
+    # Ensure directory link works
+    page.get_by_role("banner").get_by_role("link", name="Directory").click()
+
+    expect(page).to_have_url(live_server_url + "/search")
+    page.goto(live_server_url)
+
+    # Ensure Help works
+    if click_menu:
+        page.get_by_role("button", name="Menu").click()
+
+    page.get_by_role("banner").get_by_role("link", name="Help").click()
+
+    expect(page).to_have_url(live_server_url + "/help/")
+    page.goto(live_server_url)
+
+
 @pytest.mark.smoke
 @pytest.mark.devices(["desktop"])
 def test_header(page, live_server_url) -> None:
@@ -31,11 +48,7 @@ def test_header(page, live_server_url) -> None:
         expect(page.get_by_role("heading", name=collection_label)).to_be_visible()
         page.goto(live_server_url)
 
-    # Ensure directory link works
-    page.get_by_role("banner").get_by_role("link", name="Directory").click()
-
-    expect(page).to_have_url(live_server_url + "/search")
-    page.goto(live_server_url)
+    _test_links_work(page, live_server_url, click_menu=False)
 
 
 @pytest.mark.smoke
@@ -52,8 +65,5 @@ def test_header_mobile(page, live_server_url) -> None:
     expect(
         page.locator("#datagovuk-menu-collections").get_by_role("link", name="Business and economy"),
     ).to_be_visible()
-    # Ensure directory link works
-    page.get_by_role("banner").get_by_role("link", name="Directory").click()
 
-    expect(page).to_have_url(live_server_url + "/search")
-    page.goto(live_server_url)
+    _test_links_work(page, live_server_url, click_menu=True)
