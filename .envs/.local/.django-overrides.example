@@ -1,5 +1,6 @@
 # For testing GTM integration, uncomment the below
 #GOOGLE_TAG_MANAGER_ID=GTM-5WRWCH8X
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,find.eks.test.govuk.digital,django
 FEATURE_FLAGS_ENABLED=test-feature-flag
 ZENDESK_API_KEY=your-secret-key
 ZENDESK_TICKET_URL=https://test.zendesk.com/api/v2/tickets.json
