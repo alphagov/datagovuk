@@ -14,6 +14,7 @@ env:
   GHCR_IMAGE: ghcr.io/alphagov/datagovuk
   ECS_CLUSTER_INTEGRATION: integration
   ECS_CLUSTER_STAGING: staging
+  ECS_CLUSTER_PRODUCTION: production
 
 jobs:
   push_to_integration:
@@ -140,4 +141,59 @@ jobs:
           task-definition: ${{ steps.render-task-def.outputs.task-definition }}
           service: ${{ env.APP_NAME }}
           cluster: ${{ env.ECS_CLUSTER_STAGING }}
+          wait-for-service-stability: true
+
+  push_to_production:
+    name: Push to production ECR
+    needs: push_to_staging
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      IMAGE_SHA: ${{ needs.push_to_integration.outputs.image_sha }}
+    steps:
+      - name: Configure AWS credentials (production)
+        uses: aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          role-to-assume: ${{ secrets.PRODUCTION_DEPLOYER_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR (production)
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Install crane
+        uses: imjasonh/setup-crane@v0.7
+
+      - name: Copy image from GHCR to production ECR
+        run: |
+          crane copy \
+            ${{ env.GHCR_IMAGE }}:${{ env.IMAGE_SHA }} \
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ env.IMAGE_SHA }}
+
+      - name: Download current task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition ${{ env.APP_NAME }} \
+            --region ${{ env.AWS_REGION }} \
+            --query 'taskDefinition' \
+            --output json > /tmp/td.json
+          jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .deregisteredAt)' /tmp/td.json > task-definition.json
+
+      - name: Update task definition with new image
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: app
+          image: ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ env.IMAGE_SHA }}
+
+      - name: Deploy to production ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
+          service: ${{ env.APP_NAME }}
+          cluster: ${{ env.ECS_CLUSTER_PRODUCTION }}
           wait-for-service-stability: true
