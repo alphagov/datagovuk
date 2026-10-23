@@ -1,9 +1,8 @@
 from django.conf import settings
-from django.views.generic import TemplateView
 from django.urls import reverse_lazy
+from django.views.generic import TemplateView
 
 from datagovuk.core.views import RenderedMarkdownView
-
 
 HELP_PAGES = [
     {
@@ -51,6 +50,7 @@ class HelpView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["help_items"] = HELP_PAGES
+        context["help_items_1"] = HELP_PAGES[0:3]
+        context["help_items_2"] = HELP_PAGES[3:6]
 
         return context
