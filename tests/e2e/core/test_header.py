@@ -37,6 +37,12 @@ def test_header(page, live_server_url) -> None:
     expect(page).to_have_url(live_server_url + "/search")
     page.goto(live_server_url)
 
+    # Ensure Help works
+    page.get_by_role("banner").get_by_role("link", name="Help").click()
+
+    expect(page).to_have_url(live_server_url + "/help/")
+    page.goto(live_server_url)
+
 
 @pytest.mark.smoke
 @pytest.mark.devices(["mobile"])
@@ -52,8 +58,17 @@ def test_header_mobile(page, live_server_url) -> None:
     expect(
         page.locator("#datagovuk-menu-collections").get_by_role("link", name="Business and economy"),
     ).to_be_visible()
+
     # Ensure directory link works
     page.get_by_role("banner").get_by_role("link", name="Directory").click()
 
     expect(page).to_have_url(live_server_url + "/search")
+    page.goto(live_server_url)
+
+    # Ensure Help works
+    page.get_by_role("button", name="Menu").click()
+
+    page.get_by_role("banner").get_by_role("link", name="Help").click()
+
+    expect(page).to_have_url(live_server_url + "/help/")
     page.goto(live_server_url)
