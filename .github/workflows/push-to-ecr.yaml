@@ -96,6 +96,8 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    outputs:
+      image_sha: ${{ needs.push_to_integration.outputs.image_sha }}
     env:
       IMAGE_SHA: ${{ needs.push_to_integration.outputs.image_sha }}
     steps:
@@ -152,7 +154,7 @@ jobs:
       id-token: write
       contents: read
     env:
-      IMAGE_SHA: ${{ needs.push_to_integration.outputs.image_sha }}
+      IMAGE_SHA: ${{ needs.push_to_staging.outputs.image_sha }}
     steps:
       - name: Configure AWS credentials (production)
         uses: aws-actions/configure-aws-credentials@v6.3.0
