@@ -85,6 +85,7 @@ LOCAL_APPS = [
     "datagovuk.directory",
     "datagovuk.ckan_redirect",
     "datagovuk.support",
+    "datagovuk.search",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -319,12 +320,14 @@ DATAGOVUK_GIT_SHA = env("GIT_SHA", default=None)
 
 class FEATURE_FLAGS(Enum):  # noqa: N801
     TEST_FEATURE_FLAG = "test-feature-flag"
+    SEARCH_V2 = "search-v2"
 
 
 FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
 
 
 SOLR_URL = env("SOLR_URL", default=None)
+OPENSEARCH_URL = env("OPENSEARCH_URL", default=None)
 
 MONKEYPATCH_ZSCALER_SSL = env.bool("MONKEYPATCH_ZSCALER_SSL", False)
 

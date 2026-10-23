@@ -1,0 +1,71 @@
+{% extends "search/base.jinja" %}
+
+{% set page_title = "Search" %}
+
+{% block extra_head %}
+  {% if pagination and pagination.page > 1 %}<meta name="robots" content="noindex, follow" />{% endif %}
+{% endblock extra_head %}
+{% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
+{% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect -%}
+{% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes -%}
+{% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination -%}
+
+{% block search_main %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
+      {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button datagovuk-button--secondary"}) }}
+    </div>
+
+    <div class="govuk-grid-column-two-thirds">
+      {% if search_made %}
+        {% if collection_results.hits.total.value > 0 %}
+          <h2 class="govuk-heading-m datagovuk-heading-m">Curated data</h2>
+          <p class="govuk-body datagovuk-body">Selected by the National Data Library team</p>
+          <ul class="datagovuk-search-results">
+            {% for doc in collection_docs %}
+              <li class="datagovuk-search-results__item">
+                <h2 class="govuk-body datagovuk-body">
+                  <a href="{{ url('collections:collection_page', kwargs={'collection_name': doc.collection, 'collection_page_name': doc.slug}) }}"
+                     class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.title }}</a>
+                </h2>
+                <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.description | truncate(200) }}</div>
+              </li>
+            {% endfor %}
+          </ul>
+          <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
+        {% endif %}
+        {% if directory_results.hits.total.value > 0 %}
+          <ul class="datagovuk-search-results">
+            {% for doc in directory_docs %}
+              <li class="datagovuk-search-results__item">
+                <h2 class="govuk-body datagovuk-body">
+                  <a href="{{ url('search:dataset', kwargs={'slug': doc.slug}) }}"
+                     class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.title }}</a>
+                </h2>
+                <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
+                  <div class="datagovuk-search-results__item-label">Publisher</div>
+                  <div class="datagovuk-search-results__item-value">{{ doc.organisations[0].name }}</div>
+                </div>
+                <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
+                  <div class="datagovuk-search-results__item-label">Updated</div>
+                  <div class="datagovuk-search-results__item-value">{{ doc.updated_at.date() |date("j F Y") }}</div>
+                </div>
+                <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.description | truncate(200) }}</div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="govuk-body datagovuk-body">0 results found</p>
+          <p class="govuk-body datagovuk-body">Improve your search results by:</p>
+          <ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body">
+            <li>removing filters</li>
+            <li>double-checking your spelling</li>
+            <li>using fewer keywords</li>
+            <li>searching for something less specific</li>
+          </ul>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock search_main %}
