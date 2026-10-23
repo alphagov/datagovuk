@@ -18,7 +18,7 @@ HELP_PAGES = [
     {
         "title": "Help for publishers",
         "url": "https://guidance.data.gov.uk/publish_and_manage_data/",
-        "description": "How too add, update and maintain datasets in the directory.",
+        "description": "How to add, update and maintain datasets in the directory.",
     },
     {
         "title": "API documentation",
