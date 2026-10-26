@@ -2,19 +2,13 @@
 title: The National Data Library roadmap
 ---
 
-This roadmap sets out our priorities and direction for the National Data Library as of October 2026. Our roadmap is split into:
+Our roadmap is split into:
 
 - 'Now' for work that's underway
 - 'Next' for areas we plan to explore once current work is near complete
 - 'Later' for our long-term direction - at this stage, these are aims rather than confirmed commitments
 
 Our priorities may change as we learn more about what our users need. We've included a feedback form across the website where you can [tell us what you think and inform our future plans](https://forms.office.com/e/9V26PNFQaR).
-
-We began transforming data.gov.uk into the National Data Library in February 2026. You can read about [what we've delivered so far](#done) at the end of this page.
-
-You can also see and comment on upcoming curated data pages on our [GitHub repository](https://github.com/alphagov/datagovuk/issues). The repository is open, but you will need a GitHub account to comment.
-
-We'll update this roadmap at least every 6 months as part of our commitment to working in the open.
 
 ## Now
 
@@ -38,6 +32,7 @@ We're moving to a modern and reliable technical platform. For you, this means a 
 
 We continue to add new data and visualisations to curated collections. We also continue to improve existing pages based on user feedback. You can help us by [suggesting data which meets our data curation principles](https://www.data.gov.uk/data-curation/).
 
+You can also see and comment on upcoming curated data pages on our [GitHub repository](https://github.com/alphagov/datagovuk/issues). The repository is open, but you will need a GitHub account to comment.
 
 ### Automated publisher experience
 
