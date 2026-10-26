@@ -16,17 +16,17 @@ You can also see and comment on upcoming curated data pages on our [GitHub repos
 
 We'll update this roadmap at least every 6 months as part of our commitment to working in the open.
 
-# Now
+## Now
 
 Evidence over the last 6 months shows that users find the new curated collections a useful starting point for exploring public sector data. The next step is to build on their success and make sure the service works well at a larger scale.
 
 The current platform is over 10 years old and its technology limits what we can offer. We're setting up a modern, sustainable service that makes data easy to find and use.
 
-## Search
+### Search
 
 We're rebuilding the website's search so that it helps you find the most useful and up-to-date data for your needs across all the data on the website.  We are making sure our new search matches how people look for data: by topic, location, time period or format.
 
-## A more reliable platform
+### A more reliable platform
 
 We're moving to a modern and reliable technical platform. For you, this means a faster, more stable service. For us, it means we can add new features and fix problems quickly. To make our service more reliable, we are:
 
@@ -34,12 +34,12 @@ We're moving to a modern and reliable technical platform. For you, this means a 
 - running security and performance testing to find and reduce errors
 - upgrading the systems that store and serve data
 
-## Growing curated content
+### Growing curated content
 
 We continue to add new data and visualisations to curated collections. We also continue to improve existing pages based on user feedback. You can help us by [suggesting data which meets our data curation principles](https://www.data.gov.uk/data-curation/).
 
 
-## Automated publisher experience
+### Automated publisher experience
 
 We want to make it easier and more reliable for our data publishers to publish data on the service. We're redesigning how data gets added and updated, with the aim of providing richer information about the data published to users.
 
@@ -47,38 +47,38 @@ We are currently focusing on data published in an automated way via harvesters. 
 
 Harvesting through CKAN has limited the accurate metadata we can collect from publishers, which in turn can make data harder to find for users. We are testing new ways to automate publishing which are easy for publishers to use and can collect rich metadata to help users find the right data.
 
-## Accessibility
+### Accessibility
 
 We want the service to work well for everyone. We completed a full external accessibility review in September. We are now fixing the issues we found.
 
-# Next
+## Next
 
-## Extending curated collection structures
+### Extending curated collection structures
 
 As we add more curated data, we need to make sure collections are still easy to browse. We're designing how the pages and their components, such as individual datasets and APIs, remain easy to navigate. this includes improving links to related data as the volume of curated data grows. 
 
-## How APIs are presented
+### How APIs are presented
 
 Some datasets are available through APIs and more are being added. Our user reserach shows many users want to access data via APIs. It also shows our service makes data APIs hard to find. We plan to make it easy to find and understand how to use data APIs.
 
-## Other parts of the publisher experience
+### Other parts of the publisher experience
 
 We aim to improve the manual publishing experience and overall end-to-end journeys for publishers. The aim is to make it easier for publishers to share rich information and for users to find data.
 
-## Data manual improvements
+### Data manual improvements
 
 We want to test a new version of the data manual. We want to go beyond listing important guidance and frameworks, and create an easy-to-read guide to how the public sector does data.
 
-# Later
+## Later
 
-## Becoming the trusted gateway to high-quality public sector data
+### Becoming the trusted gateway to high-quality public sector data
 As the trusted gateway to public sector data, we'd like to:
 
 - help users navigate different types of public sector data, beyond open data
 - find out what data is in demand and how we might help make it available
 - make relationships between datasets clearer - this may include enriching metadata and experimenting with user-generated metadata
 
-## Stronger foundations for reuse
+### Stronger foundations for reuse
 Finding data is only the first step. We'd like to:
 
 - explore interoperability with other data services
@@ -86,7 +86,7 @@ Finding data is only the first step. We'd like to:
 - run community challenges that bring people together to solve real problems with data
 
 
-# Out of scope
+## Out of scope
 The following are not part of the scope of this work at the moment:
 
 - Replacing specialist or departmental data services
@@ -94,21 +94,21 @@ The following are not part of the scope of this work at the moment:
 - Providing data exchange tools
 - Providing a data hosting solution
 
-# Done
+## Done
 
 From February to August 2026, we started the service redesign  testing new features and fixing the most pressing problems with the existing service.
 
-## Introducing curated data collections
+### Introducing curated data collections
 
 We selected some of the UK's most widely used public datasets and organised them into themed collection pages. Each page explains what the data covers, who publishes it and how to access it. You can read more about [the criteria we consider when curating data](/data-curation) for the collections. 
 
 We published over 70 collection pages across 7 themes, including environment, business and economy, transport and land and property. We also tested and iterated data visualisations to help service users understand the data at a glance.
 
-## Introducing the data manual
+### Introducing the data manual
 
 We brought together guidance on managing, sharing and using public sector data into a single place called the 'data manual'.
 
-## Directory improvements
+### Directory improvements
 
 The original data directory went without regular maintenance for several years. This led to broken links and out-of-date content. We identified the most significant problems and:
 
@@ -117,7 +117,7 @@ The original data directory went without regular maintenance for several years. 
 - resolved errors with automatic harvesters from key other services
 - fixed backend errors to make the service faster and more stable
 
-## Working in the open
+### Working in the open
 
 We started sharing our plans and progress publicly. This is so that you can see what we're doing and tell us what you think. To work in the open, we have:
 
