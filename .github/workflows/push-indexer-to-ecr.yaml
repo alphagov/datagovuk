@@ -62,17 +62,13 @@ jobs:
           jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .deregisteredAt)' /tmp/td.json > task-definition.json
 
       - name: Update task definition with new image
-        id: render-task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: task-definition.json
-          container-name: indexer
-          image: ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ steps.resolve-sha.outputs.image_sha }}
+        run: |
+          jq --arg image "${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ steps.resolve-sha.outputs.image_sha }}" \
+            '.containerDefinitions[0].image = $image' \
+            task-definition.json > task-definition-updated.json
 
-      - name: Deploy to integration ECS
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
-          service: ${{ env.APP_NAME }}
-          cluster: ${{ env.ECS_CLUSTER_INTEGRATION }}
-          wait-for-service-stability: true
+      - name: Register new task definition
+        run: |
+          aws ecs register-task-definition \
+            --cli-input-json file://task-definition-updated.json \
+            --region ${{ env.AWS_REGION }}
