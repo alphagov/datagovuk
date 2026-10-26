@@ -1,6 +1,7 @@
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
 DJANGO_SETTINGS_MODULE=config.settings.local
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,find.eks.test.govuk.digital,django
 PLAYWRIGHT_HOST=playwright
 SOLR_URL=http://solr:8983/solr/ckan
 OPENSEARCH_URL=http://opensearch:9200
