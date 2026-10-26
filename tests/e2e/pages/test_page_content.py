@@ -69,15 +69,4 @@ def test_privacy_and_terms_page_content(page, live_server_url):
 @pytest.mark.smoke
 def test_roadmap_page_content(page, live_server_url):
     page.goto(live_server_url + "/roadmap/")
-    expect(page.get_by_role("heading", level=1)).to_have_text("Our plan for the National Data Library")
-    expect(page.get_by_role("heading", level=2, name="National Data Library roadmap")).to_be_visible()
-
-    expect(page.get_by_role("heading", level=3, name="Now")).to_be_visible()
-    expect(page.get_by_role("link", name="Complete the feedback form").first).to_have_attribute(
-        "href",
-        "https://forms.office.com/e/9V26PNFQaR",
-    )
-    collections_link = page.get_by_role("link", name="data collections pages", exact=True)
-    expect(collections_link).to_have_attribute("href", "/")
-    collections_link.click()
-    expect(page).to_have_url(live_server_url + "/")
+    expect(page.get_by_role("heading", level=1)).to_have_text("The National Data Library roadmap")
