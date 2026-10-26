@@ -38,7 +38,7 @@ You can also see and comment on upcoming curated data pages on our [GitHub repos
 
 We want to make it easier and more reliable for our data publishers to publish data on the service. We're redesigning how data gets added and updated, with the aim of providing richer information about the data published to users.
 
-We are currently focusing on data published in an automated way via harvesters. Harvested data makes up the majority of data on the service. Previously, this was done through an extension of CKAN. CKAN is an the open-source system that manages published data in the background. 
+We are currently focusing on data published in an automated way via harvesters. Harvested data makes up the majority of data on the service. Previously, this was done through an extension of CKAN. CKAN is an the open-source system that manages published data in the background.
 
 Harvesting through CKAN has limited the accurate metadata we can collect from publishers, which in turn can make data harder to find for users. We are testing new ways to automate publishing which are easy for publishers to use and can collect rich metadata to help users find the right data.
 
@@ -50,7 +50,7 @@ We want the service to work well for everyone. We completed a full external acce
 
 ### Extending curated collection structures
 
-As we add more curated data, we need to make sure collections are still easy to browse. We're designing how the pages and their components, such as individual datasets and APIs, remain easy to navigate. this includes improving links to related data as the volume of curated data grows. 
+As we add more curated data, we need to make sure collections are still easy to browse. We're designing how the pages and their components, such as individual datasets and APIs, remain easy to navigate. this includes improving links to related data as the volume of curated data grows.
 
 ### How APIs are presented
 
@@ -77,7 +77,7 @@ As the trusted gateway to public sector data, we'd like to:
 Finding data is only the first step. We'd like to:
 
 - explore interoperability with other data services
-- test way to encourage reuse through real-world examples, reusable tools and code, safe spaces to experiment with data, and AI features 
+- test way to encourage reuse through real-world examples, reusable tools and code, safe spaces to experiment with data, and AI features
 - run community challenges that bring people together to solve real problems with data
 
 
@@ -95,7 +95,7 @@ From February to August 2026, we started the service redesign  testing new featu
 
 ### Introducing curated data collections
 
-We selected some of the UK's most widely used public datasets and organised them into themed collection pages. Each page explains what the data covers, who publishes it and how to access it. You can read more about [the criteria we consider when curating data](/data-curation) for the collections. 
+We selected some of the UK's most widely used public datasets and organised them into themed collection pages. Each page explains what the data covers, who publishes it and how to access it. You can read more about [the criteria we consider when curating data](/data-curation) for the collections.
 
 We published over 70 collection pages across 7 themes, including environment, business and economy, transport and land and property. We also tested and iterated data visualisations to help service users understand the data at a glance.
 
@@ -107,7 +107,7 @@ We brought together guidance on managing, sharing and using public sector data i
 
 The original data directory went without regular maintenance for several years. This led to broken links and out-of-date content. We identified the most significant problems and:
 
-- removed over 60,000 broken links 
+- removed over 60,000 broken links
 - hid pages without data links behind a filter, so that serach results show you data which is available
 - resolved errors with automatic harvesters from key other services
 - fixed backend errors to make the service faster and more stable
