@@ -28,6 +28,8 @@ class Dataset(BaseModel):
 
 
 def get_opensearch_client():
+    # TODO: Switching off SSL/cert verification as this works for local copies only
+    #   We will need something more sophisticated for real AWS environments
     return OpenSearch(
         hosts=[settings.OPENSEARCH_URL],
         use_ssl=False,
