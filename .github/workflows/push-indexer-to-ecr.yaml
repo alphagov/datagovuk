@@ -1,0 +1,78 @@
+name: Push indexer to ECR
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_sha:
+        description: 'Full git SHA (40 hex characters) of the image to push. Must already exist in GHCR.'
+        required: true
+        type: string
+
+env:
+  APP_NAME: datagovuk-indexer
+  AWS_REGION: eu-west-2
+  GHCR_IMAGE: ghcr.io/alphagov/datagovuk
+  ECS_CLUSTER_INTEGRATION: integration
+
+jobs:
+  push_to_integration:
+    name: Push indexer to integration ECR
+    runs-on: ubuntu-latest
+    environment: integration
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Validate image SHA
+        id: resolve-sha
+        run: |
+          SHA="${{ inputs.image_sha }}"
+          if [[ ! $SHA =~ ^[a-f0-9]{40}$ ]]; then
+            echo "Error: Invalid SHA format. Must be 40 hex characters."
+            exit 1
+          fi
+          echo "image_sha=${SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          role-to-assume: ${{ secrets.INTEGRATION_DEPLOYER_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Install crane
+        uses: imjasonh/setup-crane@v0.7
+
+      - name: Copy image from GHCR to integration ECR
+        run: |
+          crane copy \
+            ${{ env.GHCR_IMAGE }}:${{ steps.resolve-sha.outputs.image_sha }} \
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ steps.resolve-sha.outputs.image_sha }}
+
+      - name: Download current task definition
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition ${{ env.APP_NAME }} \
+            --region ${{ env.AWS_REGION }} \
+            --query 'taskDefinition' \
+            --output json > /tmp/td.json
+          jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .deregisteredAt)' /tmp/td.json > task-definition.json
+
+      - name: Update task definition with new image
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: indexer
+          image: ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ steps.resolve-sha.outputs.image_sha }}
+
+      - name: Deploy to integration ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
+          service: ${{ env.APP_NAME }}
+          cluster: ${{ env.ECS_CLUSTER_INTEGRATION }}
+          wait-for-service-stability: true
