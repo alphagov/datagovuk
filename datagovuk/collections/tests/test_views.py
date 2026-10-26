@@ -226,17 +226,25 @@ class TestCollectionsAPIView:
     def test_api_route_returns_collections(self, client, settings):
         settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT = "datagovuk/collections/tests/content/"
 
-        response = client.get(reverse("collections_json"))
+        response = client.get(reverse("collections:collections_json"))
 
         assert response.status_code == HTTPStatus.OK
-        collections = response.json()["collections"]
-        assert len(collections) == 1
-        assert collections[0]["name"] == "sample-collection"
-        assert collections[0]["topics"][0]["slug"] == "sample-page"
-        assert collections[0]["topics"][0]["title"] == "Sample collection page"
-        assert collections[0]["topics"][0]["keywords"] == ["test-keyword"]
-        assert collections[0]["topics"][0]["page-last-updated"] == "2026-03-24"
-        assert collections[0]["topics"][0]["description"] == "Some existing markdown."
+        assert response.json() == {
+            "collections": [
+                {
+                    "name": "sample-collection",
+                    "topics": [
+                        {
+                            "slug": "sample-page",
+                            "title": "Sample collection page",
+                            "description": "Some existing markdown.",
+                            "keywords": ["test-keyword"],
+                            "page-last-updated": "2026-03-24",
+                        },
+                    ],
+                },
+            ],
+        }
 
 
 class TestGovernmentCollectionRedirects:
