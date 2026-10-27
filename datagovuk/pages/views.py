@@ -22,7 +22,7 @@ HELP_PAGES = [
     },
     {
         "title": "API documentation",
-        "url": reverse_lazy("data_manual:data_manual_page", kwargs={"data_manual_name": "apis-and-technical-guidance"}),
+        "url": "https://guidance.data.gov.uk/get_data/api_documentation/",
         "description": "Technical guidance for using the National Data Library directory API.",
     },
     {
