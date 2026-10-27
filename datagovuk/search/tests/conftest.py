@@ -55,12 +55,7 @@ def opensearch_index(opensearch_index_name):
     client.indices.delete(index=opensearch_index_name, ignore=[404])
 
 
-@pytest.fixture(autouse=True)
-def mock_aws_sigv4_auth():
-    with patch("datagovuk.search.opensearch.get_aws_sigv4_auth"):
-        yield
-
-
+@pytest.fixture
 def opensearch_client(settings, opensearch_index):
     """
     Points the search app at this worker's index and removes all documents from it before each test.
