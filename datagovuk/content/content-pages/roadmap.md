@@ -1,124 +1,122 @@
 ---
-title: Our plan for the National Data Library
+title: The National Data Library roadmap
 ---
-## National Data Library roadmap
 
-This roadmap sets out our priorities and direction for the National Data Library, as of June 2026:
+Our roadmap is split into:
 
-- 'Now' covers work that’s underway
-- 'Next' describes areas we expect to explore once current goals are close to being achieved.
-- 'Later' describes our longer-term direction – at this stage, these are aims rather than confirmed commitments.
+- 'Now' for work that's underway
+- 'Next' for areas we plan to explore once current work is near complete
+- 'Later' for our long-term direction - at this stage, these are aims rather than confirmed commitments
 
-Our priorities may change as we learn more about what our users need. We’ve included a feedback form on many of the new pages.
+Our priorities may change as we learn more about what our users need. We've included a feedback form across the website where you can [tell us what you think and inform our future plans](https://forms.office.com/e/9V26PNFQaR).
 
-We’ll update this roadmap at least every 6 months in our commitment to work in the open.
+## Now
 
-### Now
+Evidence over the last 6 months shows that users find the new curated collections a useful starting point for exploring public sector data. The next step is to build on their success and make sure the service works well at a larger scale.
 
-data.gov.uk was designed to help people find and reuse public data, but for many
-reasons the original approach has failed and led to broken links and low usage.
+The current platform is over 10 years old and its technology limits what we can offer. We're setting up a modern, sustainable service that makes data easy to find and use.
 
-We want to change this and create a modern trusted gateway to high-quality UK public data which
-maximises the use of available data to make good decisions, build innovative services, learn and experiment.
+### Search
 
-Our current focus is on setting up the National Data Library foundations on data.gov.uk by:
+We're rebuilding the website's search so that it helps you find the most useful and up-to-date data for your needs across all the data on the website.  We are making sure our new search matches how people look for data: by topic, location, time period or format.
 
-- making it easier to identify and use trusted, useful data across national themes (new data collections pages)
-- creating a data manual - a single space to find clear guidance and best practices on how to use and manage public data
-- fixing significant issues with the original directory
-- setting up channels for feedback and working in the open through this roadmap and user feedback forms
+### A more reliable platform
 
-#### Curated useful data
+We're moving to a modern and reliable technical platform. For you, this means a faster, more stable service. For us, it means we can add new features and fix problems quickly. To make our service more reliable, we are:
 
-We’ve created [data collections pages](/), organised by theme, based on some of the
-UK’s widely used public datasets. We selected datasets which are well maintained,
-reliable and authoritative, with complete information, wide coverage and which are
-often available via API(s). We have published [criteria we consider when curating data for the collections](/data-curation) where you can read more about this.
+- moving to an updated hosting infrastructure
+- running security and performance testing to find and reduce errors
+- upgrading the systems that store and serve data
 
-We’re testing how we present these curated data pages, including what information
-and design help users understand and use the data. We welcome your input on what
-works well, and suggestions for what we can improve.
+### Growing curated content
 
-You can [see and comment on upcoming data pages on our GitHub repository](https://github.com/alphagov/datagovuk/issues). The repository is open but you will need to create a GitHub account to comment.
+We continue to add new data and visualisations to curated collections. We also continue to improve existing pages based on user feedback. You can help us by [suggesting data which meets our data curation principles](https://www.data.gov.uk/data-curation/).
 
-[Complete the feedback form](https://forms.office.com/e/9V26PNFQaR).
+You can also see and comment on upcoming curated data pages on our [GitHub repository](https://github.com/alphagov/datagovuk/issues). The repository is open, but you will need a GitHub account to comment.
 
-#### Data manual with guidance for publishers and users
+### Automated publisher experience
 
-Guidance on creating, managing and using data across the UK public sector is
-available in many places. We’ve started developing a [data manual](/data-manual) that brings
-together the most useful current guidance to make it easier for users to find relevant
-information. We want this to become an authoritative source for ‘how the public
-sector does data’ and how to work with this data.
+We want to make it easier and more reliable for our data publishers to publish data on the service. We're redesigning how data gets added and updated, with the aim of providing richer information about the data published to users.
 
-We welcome your feedback on the data manual – whether you find it helpful, and if
-anything is missing, unclear or inaccurate.
+We are currently focusing on data published in an automated way via harvesters. Harvested data makes up the majority of data on the service. Previously, this was done through an extension of CKAN. CKAN is an the open-source system that manages published data in the background.
 
-[Complete the feedback form](https://forms.office.com/e/9V26PNFQaR).
+Harvesting through CKAN has limited the accurate metadata we can collect from publishers, which in turn can make data harder to find for users. We are testing new ways to automate publishing which are easy for publishers to use and can collect rich metadata to help users find the right data.
 
-#### Critical improvements to the original directory
+### Accessibility
 
-Limited maintenance of the service in the last few years has led to broken features and
-data links. We’re identifying and addressing broken links and outdated datasets, and
-fixing issues with the publishing process in the original [directory](/search).
+We want the service to work well for everyone. We completed a full external accessibility review in September. We are now fixing the issues we found.
 
-Because our primary focus is testing new ways of presenting data through curating
-useful data, for the moment we’ll mainly spend time on fixing the directory’s critical
-issues that affect a lot of users. That means you may still experience issues or see
-data of lesser quality when navigating the directory.
+## Next
 
-You can continue to publish and update your data [following the publisher process](/publishers).
+### Extending curated collection structures
 
-If you think you have data that might be a good candidate for the new, curated data
-pages, [tell us about your data in the feedback form](https://forms.office.com/e/9V26PNFQaR).
+As we add more curated data, we need to make sure collections are still easy to browse. We're designing how the pages and their components, such as individual datasets and APIs, remain easy to navigate. this includes improving links to related data as the volume of curated data grows.
 
-### Next
+### How APIs are presented
 
-#### Growing curated data and streamlining guidance
+Some datasets are available through APIs and more are being added. Our user reserach shows many users want to access data via APIs. It also shows our service makes data APIs hard to find. We plan to make it easy to find and understand how to use data APIs.
 
-We are testing the curated data listings with users and planning improvements based on their
-feedback. We’ll also add more data listings and streamline the data manual by
-experimenting with how we best present the information.
+### Other parts of the publisher experience
 
-You can [see and comment on upcoming data pages on our GitHub repository](https://github.com/alphagov/datagovuk/issues). The repository is open but you will need to create a GitHub account to comment.
+We aim to improve the manual publishing experience and overall end-to-end journeys for publishers. The aim is to make it easier for publishers to share rich information and for users to find data.
 
-#### Improving discovery
+### Data manual improvements
 
-As we increase the amount of curated data on the platform, we’ll focus on how to
-improve search and browsing. We’ll trial different approaches to see what reduces
-effort in finding relevant data, including experimenting with new technologies and
-optimising for machine interactions.
+We want to test a new version of the data manual. We want to go beyond listing important guidance and frameworks, and create an easy-to-read guide to how the public sector does data.
 
-#### Platform redesign
+## Later
 
-Fixing issues and testing new approaches will help us understand the requirements
-that a modern data portal needs to meet. We expect we’ll need to redesign core
-parts of the current service to meet these requirements before more closely linking
-the new data collections and the directory.
-
-### Later
-
-#### A single trusted gateway to high-quality public sector data
-
-We’d like to:
+### Becoming the trusted gateway to high-quality public sector data
+As the trusted gateway to public sector data, we'd like to:
 
 - help users navigate different types of public sector data, beyond open data
-- curate new data, which may not be available anywhere yet
-- make relationships between datasets clearer – this may include enriching metadata and experimenting with user-generated metadata
+- find out what data is in demand and how we might help make it available
+- make relationships between datasets clearer - this may include enriching metadata and experimenting with user-generated metadata
 
-#### Stronger foundations for reuse
-
-We’d like to:
+### Stronger foundations for reuse
+Finding data is only the first step. We'd like to:
 
 - explore interoperability with other data services
-- experiment with options to promote data reuse through best practice use cases, common data service components and gamification
-- develop tools and support for experimentation with government data
+- test way to encourage reuse through real-world examples, reusable tools and code, safe spaces to experiment with data, and AI features
+- run community challenges that bring people together to solve real problems with data
 
-### Out of scope
 
+## Out of scope
 The following are not part of the scope of this work at the moment:
 
-- replacing specialist or departmental data services
-- mandating data publication or standards across government
-- providing data exchange tools
-- providing a data hosting solution
+- Replacing specialist or departmental data services
+- Mandating data publication or standards across government
+- Providing data exchange tools
+- Providing a data hosting solution
+
+## Done
+
+From February to August 2026, we started the service redesign  testing new features and fixing the most pressing problems with the existing service.
+
+### Introducing curated data collections
+
+We selected some of the UK's most widely used public datasets and organised them into themed collection pages. Each page explains what the data covers, who publishes it and how to access it. You can read more about [the criteria we consider when curating data](/data-curation) for the collections.
+
+We published over 70 collection pages across 7 themes, including environment, business and economy, transport and land and property. We also tested and iterated data visualisations to help service users understand the data at a glance.
+
+### Introducing the data manual
+
+We brought together guidance on managing, sharing and using public sector data into a single place called the 'data manual'.
+
+### Directory improvements
+
+The original data directory went without regular maintenance for several years. This led to broken links and out-of-date content. We identified the most significant problems and:
+
+- removed over 60,000 broken links
+- hid pages without data links behind a filter, so that serach results show you data which is available
+- resolved errors with automatic harvesters from key other services
+- fixed backend errors to make the service faster and more stable
+
+### Working in the open
+
+We started sharing our plans and progress publicly. This is so that you can see what we're doing and tell us what you think. To work in the open, we have:
+
+- published this roadmap and our data curation process
+- set up user feedback forms and metrics and effective ways to monitor service performance
+- completed our first baselining survey to understand user experiences priorr to transformation
+- completed benchmarking reserach 6 months after to understand any changes in user satisfaction
