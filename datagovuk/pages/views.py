@@ -8,7 +8,7 @@ HELP_PAGES = [
     {
         "title": "About the National Data Library",
         "url": reverse_lazy("pages:about"),
-        "description": "What the National Data Library is, how it works and plans for the future",
+        "description": "What the National Data Library is, how it works and plans for the future.",
     },
     {
         "title": "Data manual",
@@ -31,7 +31,7 @@ HELP_PAGES = [
         "description": "How we select data for collections and how to suggest additions.",
     },
     {
-        "title": "Support",
+        "title": "Contact",
         "url": reverse_lazy("support:support-form"),
         "description": "Get support, report a problem and provide feedback.",
     },
