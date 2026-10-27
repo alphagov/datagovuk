@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch
+import uuid
 
 import pytest
 from opensearchpy import RequestsHttpConnection
@@ -20,118 +20,89 @@ DIRECTORY_RESULTS = 20
 EXTRA_RESULTS = 3
 
 
-def _request_body(client):
-    client.search.assert_called_once()
-    return client.search.call_args.kwargs["body"]
+def _slugs(documents):
+    return [document.slug for document in documents]
 
 
-@patch("datagovuk.search.opensearch.get_aws_sigv4_auth")
-def test_get_opensearch_client(mock_auth, settings, mock_opensearch_class):
-    settings.OPENSEARCH_URL = "http://opensearch.example.com:9200"
-    settings.AWS_OPENSEARCH_USE_SSL = False
-    settings.AWS_OPENSEARCH_VERIFY_CERTS = False
-    mock_auth.return_value = MagicMock()
-
+def test_get_opensearch_client_connects_to_configured_cluster():
     client = get_opensearch_client()
 
-    assert client == mock_opensearch_class.return_value
-    mock_opensearch_class.assert_called_once_with(
-        hosts=["http://opensearch.example.com:9200"],
-        use_ssl=False,
-        verify_certs=False,
-        connection_class=RequestsHttpConnection,
-        http_auth=mock_auth.return_value,
+    assert client.ping() is True
+
+
+def test_search_collections_matches_on_title(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(source="collection", slug="in-title", title="Rail timetables"),
+            DatasetFactory(source="collection", slug="other", title="Bus routes"),
+        ],
     )
 
-
-@patch("datagovuk.search.opensearch.get_aws_sigv4_auth")
-def test_get_opensearch_client_uses_ssl_settings(mock_auth, settings, mock_opensearch_class):
-    settings.OPENSEARCH_URL = "http://opensearch.example.com:9200"
-    settings.AWS_OPENSEARCH_USE_SSL = True
-    settings.AWS_OPENSEARCH_VERIFY_CERTS = True
-
-    get_opensearch_client()
-
-    opensearch_args = mock_opensearch_class.call_args.kwargs
-    assert opensearch_args["use_ssl"] is True
-    assert opensearch_args["verify_certs"] is True
+    _, results = search_collections("rail")
+    assert _slugs(results) == ["in-title"]
 
 
-@patch("datagovuk.search.opensearch.boto3.Session")
-@patch("datagovuk.search.opensearch.AWSV4SignerAuth")
-def test_get_aws_sigv4_auth(mock_auth_class, mock_session, settings):
-    settings.AWS_REGION = "eu-west-0"
-    mock_credentials = MagicMock()
+def test_search_collections_does_not_match_on_description(opensearch_documents):
+    opensearch_documents(
+        [DatasetFactory(source="collection", title="Bus routes", description="Includes rail replacement services")],
+    )
 
-    mock_session.return_value.get_credentials.return_value = mock_credentials
-    auth = get_aws_sigv4_auth()
+    _, results = search_collections("rail")
 
-    mock_auth_class.assert_called_once_with(mock_credentials, "eu-west-0")
-    assert auth == mock_auth_class.return_value
+    assert results == []
 
 
-def test_search_collections_with_query_uses_multi_match_on_title_fields(mock_opensearch_client):
-    search_collections("rail timetables")
+def test_search_collections_matches_stemmed_title(opensearch_documents):
+    opensearch_documents([DatasetFactory(source="collection", slug="railway", title="Railway stations")])
 
-    must = _request_body(mock_opensearch_client)["query"]["bool"]["must"]
-    assert must == [
-        {
-            "multi_match": {
-                "query": "rail timetables",
-                "fields": ["title^3", "title.english^2"],
-                "type": "best_fields",
-            },
-        },
-    ]
+    _, results = search_collections("railways")
+
+    assert _slugs(results) == ["railway"]
 
 
-def test_search_collections_passes_query_through_unchanged(mock_opensearch_client):
-    search_collections("  rail  ")
+def test_search_collections_with_padded_query_matches(opensearch_documents):
+    opensearch_documents([DatasetFactory(source="collection", slug="rail", title="Rail timetables")])
 
-    must = _request_body(mock_opensearch_client)["query"]["bool"]["must"]
-    assert must[0]["multi_match"]["query"] == "  rail  "
+    _, results = search_collections("  rail  ")
+
+    assert _slugs(results) == ["rail"]
 
 
 @pytest.mark.parametrize("query", [None, "", " ", " \t\n "])
-def test_search_collections_with_blank_query_matches_all(query, mock_opensearch_client):
-    search_collections(query)
+def test_search_collections_with_blank_query_matches_all(query, opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(source="collection", slug="first", title="Rail timetables"),
+            DatasetFactory(source="collection", slug="second", title="Bus routes"),
+        ],
+    )
 
-    must = _request_body(mock_opensearch_client)["query"]["bool"]["must"]
-    assert must == [{"match_all": {}}]
+    _, results = search_collections(query)
 
-
-@pytest.mark.parametrize("query", ["rail", ""])
-def test_search_collections_is_limited_to_collection_source_and_two_hits(query, mock_opensearch_client):
-    search_collections(query)
-
-    call = mock_opensearch_client.search.call_args
-    assert call.kwargs["index"] == "datasets"
-    assert call.kwargs["body"]["query"]["bool"]["filter"] == [{"term": {"source": "collection"}}]
-    assert call.kwargs["body"]["size"] == COLLECTION_RESULTS
+    assert sorted(_slugs(results)) == ["first", "second"]
 
 
-def test_search_collections_returns_raw_response_and_documents_in_hit_order(mock_opensearch_client):
-    hits = [{"_source": DatasetFactory(slug=f"collection-{i}", source="collection")} for i in range(2)]
-    raw_response = {"hits": {"total": {"value": 2}, "hits": hits}}
-    mock_opensearch_client.search.return_value = raw_response
+def test_search_collections_returns_raw_response_and_documents_in_hit_order(opensearch_documents):
+    opensearch_documents([DatasetFactory(source="collection", title=f"Rail collection {i}") for i in range(2)])
 
-    response, results = search_collections("collection")
+    response, results = search_collections("rail")
 
-    assert response is raw_response
     assert all(isinstance(result, Dataset) for result in results)
-    assert [result.slug for result in results] == ["collection-0", "collection-1"]
+    assert _slugs(results) == [hit["_source"]["slug"] for hit in response["hits"]["hits"]]
+    assert len(results) == len(response["hits"]["hits"])
 
 
-def test_search_collections_without_hits_returns_no_documents(mock_opensearch_client):
+def test_search_collections_without_hits_returns_no_documents(opensearch_documents):
+    opensearch_documents([DatasetFactory(source="collection", title="Rail timetables")])
+
     response, results = search_collections("nothing matches")
 
     assert response["hits"]["total"]["value"] == 0
     assert results == []
 
 
-def test_search_collections_with_invalid_hit_raises(mock_opensearch_client):
-    invalid_hit = {"_source": {"slug": "missing-everything-else"}}
-    mock_opensearch_client.search.return_value = {"hits": {"total": {"value": 1}, "hits": [invalid_hit]}}
+def test_search_collections_with_invalid_document_raises(opensearch_documents):
+    opensearch_documents([{"uuid": str(uuid.uuid4()), "slug": "rail", "title": "Rail", "source": "collection"}])
 
     with pytest.raises(ValidationError):
         search_collections("rail")
@@ -147,7 +118,7 @@ def test_search_collections_only_returns_collection_documents(opensearch_documen
 
     _, results = search_collections("")
 
-    assert [result.slug for result in results] == ["from-collection"]
+    assert _slugs(results) == ["from-collection"]
 
 
 def test_search_collections_limits_documents_but_not_total(opensearch_documents):
@@ -159,68 +130,89 @@ def test_search_collections_limits_documents_but_not_total(opensearch_documents)
     assert response["hits"]["total"]["value"] == COLLECTION_RESULTS + EXTRA_RESULTS
 
 
-def test_search_directory_with_query_uses_multi_match_on_title_and_description_fields(mock_opensearch_client):
-    search_directory("rail timetables")
+def test_search_directory_matches_on_title_and_description(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="in-title", title="Rail timetables"),
+            DatasetFactory(slug="in-description", title="Bus routes", description="Includes rail replacement"),
+            DatasetFactory(slug="other", title="Road traffic", description="Counts of vehicles"),
+        ],
+    )
 
-    must = _request_body(mock_opensearch_client)["query"]["bool"]["must"]
-    assert must == [
-        {
-            "multi_match": {
-                "query": "rail timetables",
-                "fields": ["title^3", "title.english^2", "description", "description.english"],
-                "type": "best_fields",
-            },
-        },
-    ]
+    _, results = search_directory("rail")
+
+    assert sorted(_slugs(results)) == ["in-description", "in-title"]
 
 
-def test_search_directory_passes_query_through_unchanged(mock_opensearch_client):
-    search_directory("  rail  ")
+def test_search_directory_ranks_title_matches_above_description_matches(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="in-description", title="Bus routes", description="Includes rail replacement"),
+            DatasetFactory(slug="in-title", title="Rail timetables", description="Timetables for trains"),
+        ],
+    )
 
-    must = _request_body(mock_opensearch_client)["query"]["bool"]["must"]
-    assert must[0]["multi_match"]["query"] == "  rail  "
+    _, results = search_directory("rail")
+
+    assert _slugs(results) == ["in-title", "in-description"]
+
+
+def test_search_directory_matches_stemmed_title_and_description(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="in-title", title="Railway stations"),
+            DatasetFactory(slug="in-description", title="Bus routes", description="Replacement railway services"),
+        ],
+    )
+
+    _, results = search_directory("railways")
+
+    assert sorted(_slugs(results)) == ["in-description", "in-title"]
+
+
+def test_search_directory_with_padded_query_matches(opensearch_documents):
+    opensearch_documents([DatasetFactory(slug="rail", title="Rail timetables")])
+
+    _, results = search_directory("  rail  ")
+
+    assert _slugs(results) == ["rail"]
 
 
 @pytest.mark.parametrize("query", [None, "", " ", " \t\n "])
-def test_search_directory_with_blank_query_matches_all(query, mock_opensearch_client):
-    search_directory(query)
+def test_search_directory_with_blank_query_matches_all(query, opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="first", title="Rail timetables"),
+            DatasetFactory(slug="second", title="Bus routes"),
+        ],
+    )
 
-    must = _request_body(mock_opensearch_client)["query"]["bool"]["must"]
-    assert must == [{"match_all": {}}]
+    _, results = search_directory(query)
 
-
-@pytest.mark.parametrize("query", ["rail", ""])
-def test_search_directory_is_limited_to_ckan_source_and_twenty_hits(query, mock_opensearch_client):
-    search_directory(query)
-
-    call = mock_opensearch_client.search.call_args
-    assert call.kwargs["index"] == "datasets"
-    assert call.kwargs["body"]["query"]["bool"]["filter"] == [{"term": {"source": "ckan"}}]
-    assert call.kwargs["body"]["size"] == DIRECTORY_RESULTS
+    assert sorted(_slugs(results)) == ["first", "second"]
 
 
-def test_search_directory_returns_raw_response_and_documents_in_hit_order(mock_opensearch_client):
-    hits = [{"_source": DatasetFactory(slug=f"dataset-{i}")} for i in range(2)]
-    raw_response = {"hits": {"total": {"value": 2}, "hits": hits}}
-    mock_opensearch_client.search.return_value = raw_response
+def test_search_directory_returns_raw_response_and_documents_in_hit_order(opensearch_documents):
+    opensearch_documents([DatasetFactory(title=f"Rail dataset {i}") for i in range(2)])
 
-    response, results = search_directory("dataset")
+    response, results = search_directory("rail")
 
-    assert response is raw_response
     assert all(isinstance(result, Dataset) for result in results)
-    assert [result.slug for result in results] == ["dataset-0", "dataset-1"]
+    assert _slugs(results) == [hit["_source"]["slug"] for hit in response["hits"]["hits"]]
+    assert len(results) == len(response["hits"]["hits"])
 
 
-def test_search_directory_without_hits_returns_no_documents(mock_opensearch_client):
+def test_search_directory_without_hits_returns_no_documents(opensearch_documents):
+    opensearch_documents([DatasetFactory(title="Rail timetables")])
+
     response, results = search_directory("nothing matches")
 
     assert response["hits"]["total"]["value"] == 0
     assert results == []
 
 
-def test_search_directory_with_invalid_hit_raises(mock_opensearch_client):
-    invalid_hit = {"_source": {"slug": "missing-everything-else"}}
-    mock_opensearch_client.search.return_value = {"hits": {"total": {"value": 1}, "hits": [invalid_hit]}}
+def test_search_directory_with_invalid_document_raises(opensearch_documents):
+    opensearch_documents([{"uuid": str(uuid.uuid4()), "slug": "rail", "title": "Rail", "source": "ckan"}])
 
     with pytest.raises(ValidationError):
         search_directory("rail")
@@ -236,7 +228,7 @@ def test_search_directory_only_returns_ckan_documents(opensearch_documents):
 
     _, results = search_directory("")
 
-    assert [result.slug for result in results] == ["from-ckan"]
+    assert _slugs(results) == ["from-ckan"]
 
 
 def test_search_directory_limits_documents_but_not_total(opensearch_documents):
@@ -264,15 +256,10 @@ def test_get_directory_document_by_slug_not_found(opensearch_documents):
     assert get_directory_document_by_slug("wanted") is None
 
 
-def test_get_directory_document_by_slug_filters_on_slug_and_ckan_source(mock_opensearch_client):
-    get_directory_document_by_slug("wanted")
+def test_get_directory_document_by_slug_requires_exact_match(opensearch_documents):
+    opensearch_documents([DatasetFactory(slug="wanted-dataset")])
 
-    call = mock_opensearch_client.search.call_args
-    assert call.kwargs["index"] == "datasets"
-    assert call.kwargs["body"] == {
-        "query": {"bool": {"filter": [{"term": {"slug": "wanted"}}, {"term": {"source": "ckan"}}]}},
-        "size": 1,
-    }
+    assert get_directory_document_by_slug("wanted") is None
 
 
 def test_get_directory_document_by_slug_ignores_collection_document_with_same_slug(opensearch_documents):
@@ -281,17 +268,8 @@ def test_get_directory_document_by_slug_ignores_collection_document_with_same_sl
     assert get_directory_document_by_slug("wanted") is None
 
 
-def test_get_directory_document_by_slug_uses_first_hit(mock_opensearch_client):
-    hits = [{"_source": DatasetFactory(slug="first")}, {"_source": DatasetFactory(slug="second")}]
-    mock_opensearch_client.search.return_value = {"hits": {"total": {"value": 2}, "hits": hits}}
-
-    document = get_directory_document_by_slug("first")
-
-    assert document.slug == "first"
-
-
-def test_get_directory_document_by_slug_with_invalid_document_raises(mock_opensearch_client):
-    mock_opensearch_client.search.return_value = {"hits": {"total": {"value": 1}, "hits": [{"_source": {}}]}}
+def test_get_directory_document_by_slug_with_invalid_document_raises(opensearch_documents):
+    opensearch_documents([{"uuid": str(uuid.uuid4()), "slug": "wanted", "source": "ckan"}])
 
     with pytest.raises(ValidationError):
         get_directory_document_by_slug("wanted")

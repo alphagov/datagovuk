@@ -36,12 +36,19 @@ def get_aws_sigv4_auth():
 
 
 def get_opensearch_client():
+    if settings.OPENSEARCH_IS_AWS:
+        return OpenSearch(
+            hosts=[settings.OPENSEARCH_URL],
+            use_ssl=True,
+            verify_certs=True,
+            connection_class=RequestsHttpConnection,
+            http_auth=get_aws_sigv4_auth(),
+        )
     return OpenSearch(
         hosts=[settings.OPENSEARCH_URL],
-        use_ssl=settings.AWS_OPENSEARCH_USE_SSL,
-        verify_certs=settings.AWS_OPENSEARCH_VERIFY_CERTS,
+        use_ssl=False,
+        verify_certs=False,
         connection_class=RequestsHttpConnection,
-        http_auth=get_aws_sigv4_auth(),
     )
 
 
