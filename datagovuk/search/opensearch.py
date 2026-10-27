@@ -62,7 +62,7 @@ def search_collections(query):
         search_clause = {"match_all": {}}
 
     response = client.search(
-        index="datasets",
+        index=settings.OPENSEARCH_DATASETS_INDEX,
         body={
             "query": {
                 "bool": {
@@ -98,7 +98,7 @@ def search_directory(query):
         search_clause = {"match_all": {}}
 
     response = client.search(
-        index="datasets",
+        index=settings.OPENSEARCH_DATASETS_INDEX,
         body={
             "query": {
                 "bool": {
@@ -130,7 +130,7 @@ def get_directory_document_by_slug(slug):
         "size": 1,
     }
 
-    response = client.search(index="datasets", body=query_body)
+    response = client.search(index=settings.OPENSEARCH_DATASETS_INDEX, body=query_body)
 
     hits = response["hits"]["hits"]
     if not hits:
