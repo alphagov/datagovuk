@@ -75,6 +75,7 @@ jobs:
 
       - name: Run E2E smoke tests
         run: |
+          docker network create datagovuk
           docker compose -f docker-compose.local.yml up -d
           # --override-ini suppresses --ds=config.settings.test and --reuse-db from the default
           # addopts in pyproject.toml; no local Django instance is needed when BASE_URL is set.
