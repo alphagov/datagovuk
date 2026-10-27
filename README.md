@@ -53,7 +53,7 @@ custom feature flags and other settings (e.g. `GOOGLE_TAG_MANAGER_ID`, `ALLOWED_
 | name  | environment |
 |---|---|
 | DJANGO_SETTINGS_MODULE | All |
-| DJANGO_SECRET_KEY. | Production |
+| DJANGO_SECRET_KEY | Production |
 | SENTRY_DSN | Production |
 | SOLR_URL | All |
 | ZENDESK_TICKET_URL | All |
