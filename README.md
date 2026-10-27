@@ -48,6 +48,19 @@ You can override environment variables for your local copy by editing `.envs/.lo
 This allows developers to customise their local `datagovuk` instance e.g. with
 custom feature flags and other settings (e.g. `GOOGLE_TAG_MANAGER_ID`, `ALLOWED_HOSTS`)
 
+#### Required environment Variables
+
+| name  | environment |
+|---|---|
+| DJANGO_SETTINGS_MODULE | All |
+| DJANGO_SECRET_KEY. | Production |
+| SENTRY_DSN | Production |
+| SOLR_URL | All |
+| ZENDESK_TICKET_URL | All |
+| ZENDESK_API_KEY | All |
+| NDL_ZENDESK_EMAIL | All |
+| NDL_ZENDESK_GROUP_ID | All |
+
 ## Basic Commands
 
 ### Running tests with pytest
