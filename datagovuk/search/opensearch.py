@@ -14,6 +14,21 @@ class Organisation(BaseModel):
 class Dataset(BaseModel):
     uuid: str
     slug: str
+    title: str
+    description_raw: str
+    description: str
+    organisations: list[Organisation] = Field(default_factory=list)
+    created_at: datetime
+    updated_at: datetime
+
+    @property
+    def organisation(self):
+        return self.organisations[0]
+
+
+class Collection(BaseModel):
+    uuid: str
+    slug: str
     collection: str | None = None
     title: str
     description_raw: str
@@ -54,20 +69,17 @@ def search_collections(query):
         search_clause = {"match_all": {}}
 
     response = client.search(
-        index=settings.OPENSEARCH_DATASETS_INDEX,
+        index=settings.OPENSEARCH_COLLECTIONS_INDEX,
         body={
             "query": {
                 "bool": {
                     "must": [search_clause],
-                    "filter": [
-                        {"term": {"source": "collection"}},
-                    ],
                 },
             },
             "size": 2,
         },
     )
-    documents = [Dataset(**hit["_source"]) for hit in response["hits"]["hits"]]
+    documents = [Collection(**hit["_source"]) for hit in response["hits"]["hits"]]
     return response, documents
 
 
@@ -95,9 +107,6 @@ def search_directory(query):
             "query": {
                 "bool": {
                     "must": [search_clause],
-                    "filter": [
-                        {"term": {"source": "ckan"}},
-                    ],
                 },
             },
             "size": 20,
@@ -115,7 +124,6 @@ def get_directory_document_by_slug(slug):
             "bool": {
                 "filter": [
                     {"term": {"slug": slug}},
-                    {"term": {"source": "ckan"}},
                 ],
             },
         },
