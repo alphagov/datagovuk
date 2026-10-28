@@ -4,6 +4,7 @@ import pytest
 from pydantic import ValidationError
 
 from datagovuk.search.opensearch import (
+    Collection,
     Dataset,
     get_directory_document_by_slug,
     get_opensearch_client,
@@ -11,7 +12,7 @@ from datagovuk.search.opensearch import (
     search_directory,
 )
 
-from .factories import DatasetFactory
+from .factories import CollectionFactory, DatasetFactory
 
 COLLECTION_RESULTS = 2
 DIRECTORY_RESULTS = 20
@@ -31,8 +32,8 @@ def test_get_opensearch_client_connects_to_configured_cluster():
 def test_search_collections_matches_on_title(opensearch_documents):
     opensearch_documents(
         [
-            DatasetFactory(source="collection", slug="in-title", title="Rail timetables"),
-            DatasetFactory(source="collection", slug="other", title="Bus routes"),
+            CollectionFactory(slug="in-title", title="Rail timetables"),
+            CollectionFactory(slug="other", title="Bus routes"),
         ],
     )
 
@@ -42,7 +43,7 @@ def test_search_collections_matches_on_title(opensearch_documents):
 
 def test_search_collections_does_not_match_on_description(opensearch_documents):
     opensearch_documents(
-        [DatasetFactory(source="collection", title="Bus routes", description="Includes rail replacement services")],
+        [CollectionFactory(title="Bus routes", description="Includes rail replacement services")],
     )
 
     _, results = search_collections("rail")
@@ -51,7 +52,7 @@ def test_search_collections_does_not_match_on_description(opensearch_documents):
 
 
 def test_search_collections_matches_stemmed_title(opensearch_documents):
-    opensearch_documents([DatasetFactory(source="collection", slug="railway", title="Railway stations")])
+    opensearch_documents([CollectionFactory(slug="railway", title="Railway stations")])
 
     _, results = search_collections("railways")
 
@@ -59,7 +60,7 @@ def test_search_collections_matches_stemmed_title(opensearch_documents):
 
 
 def test_search_collections_with_padded_query_matches(opensearch_documents):
-    opensearch_documents([DatasetFactory(source="collection", slug="rail", title="Rail timetables")])
+    opensearch_documents([CollectionFactory(slug="rail", title="Rail timetables")])
 
     _, results = search_collections("  rail  ")
 
@@ -70,8 +71,8 @@ def test_search_collections_with_padded_query_matches(opensearch_documents):
 def test_search_collections_with_blank_query_matches_all(query, opensearch_documents):
     opensearch_documents(
         [
-            DatasetFactory(source="collection", slug="first", title="Rail timetables"),
-            DatasetFactory(source="collection", slug="second", title="Bus routes"),
+            CollectionFactory(slug="first", title="Rail timetables"),
+            CollectionFactory(slug="second", title="Bus routes"),
         ],
     )
 
@@ -81,17 +82,17 @@ def test_search_collections_with_blank_query_matches_all(query, opensearch_docum
 
 
 def test_search_collections_returns_raw_response_and_documents_in_hit_order(opensearch_documents):
-    opensearch_documents([DatasetFactory(source="collection", title=f"Rail collection {i}") for i in range(2)])
+    opensearch_documents([CollectionFactory(title=f"Rail collection {i}") for i in range(2)])
 
     response, results = search_collections("rail")
 
-    assert all(isinstance(result, Dataset) for result in results)
+    assert all(isinstance(result, Collection) for result in results)
     assert _slugs(results) == [hit["_source"]["slug"] for hit in response["hits"]["hits"]]
     assert len(results) == len(response["hits"]["hits"])
 
 
 def test_search_collections_without_hits_returns_no_documents(opensearch_documents):
-    opensearch_documents([DatasetFactory(source="collection", title="Rail timetables")])
+    opensearch_documents([CollectionFactory(title="Rail timetables")])
 
     response, results = search_collections("nothing matches")
 
@@ -100,7 +101,7 @@ def test_search_collections_without_hits_returns_no_documents(opensearch_documen
 
 
 def test_search_collections_with_invalid_document_raises(opensearch_documents):
-    opensearch_documents([{"uuid": str(uuid.uuid4()), "slug": "rail", "title": "Rail", "source": "collection"}])
+    opensearch_documents([{"uuid": str(uuid.uuid4()), "collection": "foo", "title": "Rail"}])
 
     with pytest.raises(ValidationError):
         search_collections("rail")
@@ -109,8 +110,8 @@ def test_search_collections_with_invalid_document_raises(opensearch_documents):
 def test_search_collections_only_returns_collection_documents(opensearch_documents):
     opensearch_documents(
         [
-            DatasetFactory(source="ckan", slug="from-ckan"),
-            DatasetFactory(source="collection", slug="from-collection"),
+            DatasetFactory(slug="from-ckan"),
+            CollectionFactory(slug="from-collection"),
         ],
     )
 
@@ -120,7 +121,7 @@ def test_search_collections_only_returns_collection_documents(opensearch_documen
 
 
 def test_search_collections_limits_documents_but_not_total(opensearch_documents):
-    opensearch_documents([DatasetFactory(source="collection") for _ in range(COLLECTION_RESULTS + EXTRA_RESULTS)])
+    opensearch_documents([CollectionFactory() for _ in range(COLLECTION_RESULTS + EXTRA_RESULTS)])
 
     response, results = search_collections("")
 
@@ -210,7 +211,7 @@ def test_search_directory_without_hits_returns_no_documents(opensearch_documents
 
 
 def test_search_directory_with_invalid_document_raises(opensearch_documents):
-    opensearch_documents([{"uuid": str(uuid.uuid4()), "slug": "rail", "title": "Rail", "source": "ckan"}])
+    opensearch_documents([{"uuid": str(uuid.uuid4()), "slug": "rail", "title": "Rail"}])
 
     with pytest.raises(ValidationError):
         search_directory("rail")
@@ -219,8 +220,8 @@ def test_search_directory_with_invalid_document_raises(opensearch_documents):
 def test_search_directory_only_returns_ckan_documents(opensearch_documents):
     opensearch_documents(
         [
-            DatasetFactory(source="ckan", slug="from-ckan"),
-            DatasetFactory(source="collection", slug="from-collection"),
+            DatasetFactory(slug="from-ckan"),
+            CollectionFactory(slug="from-collection"),
         ],
     )
 
@@ -230,7 +231,7 @@ def test_search_directory_only_returns_ckan_documents(opensearch_documents):
 
 
 def test_search_directory_limits_documents_but_not_total(opensearch_documents):
-    opensearch_documents([DatasetFactory(source="ckan") for _ in range(DIRECTORY_RESULTS + EXTRA_RESULTS)])
+    opensearch_documents([DatasetFactory() for _ in range(DIRECTORY_RESULTS + EXTRA_RESULTS)])
 
     response, results = search_directory("")
 
@@ -261,13 +262,13 @@ def test_get_directory_document_by_slug_requires_exact_match(opensearch_document
 
 
 def test_get_directory_document_by_slug_ignores_collection_document_with_same_slug(opensearch_documents):
-    opensearch_documents([DatasetFactory(slug="wanted", source="collection")])
+    opensearch_documents([CollectionFactory(slug="wanted")])
 
     assert get_directory_document_by_slug("wanted") is None
 
 
 def test_get_directory_document_by_slug_with_invalid_document_raises(opensearch_documents):
-    opensearch_documents([{"uuid": str(uuid.uuid4()), "slug": "wanted", "source": "ckan"}])
+    opensearch_documents([{"uuid": str(uuid.uuid4()), "slug": "wanted"}])
 
     with pytest.raises(ValidationError):
         get_directory_document_by_slug("wanted")
