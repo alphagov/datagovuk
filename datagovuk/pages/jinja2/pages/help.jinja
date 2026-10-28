@@ -6,12 +6,12 @@
   <div class="govuk-width-container datagovuk-width-container govuk-!-margin-top-9">
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-one-third">
-        <h1 class="govuk-heading-l datagovuk-heading-l">Help</h1>
+        <h1 class="govuk-heading-l datagovuk-heading-l govuk-!-margin-bottom-7">Help</h1>
       </div>
     </div>
     <div class="govuk-grid-row">
       {% for item in help_items_1 %}
-        <div class="govuk-grid-column-one-third">
+        <div class="govuk-grid-column-one-third govuk-!-padding-bottom-6">
           <h2 class="govuk-body datagovuk-body">
             <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="{{ item.url }}">{{ item.title }}</a>
           </h2>
@@ -21,7 +21,7 @@
     </div>
     <div class="govuk-grid-row">
       {% for item in help_items_2 %}
-        <div class="govuk-grid-column-one-third">
+        <div class="govuk-grid-column-one-third govuk-!-padding-bottom-6">
           <h2 class="govuk-body datagovuk-body">
             <a class="govuk-link datagovuk-link datagovuk-link--secondary" href="{{ item.url }}">{{ item.title }}</a>
           </h2>
