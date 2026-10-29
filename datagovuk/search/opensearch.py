@@ -1,7 +1,8 @@
 from datetime import datetime  # noqa: TC003
 
+import boto3
 from django.conf import settings
-from opensearchpy import OpenSearch
+from opensearchpy import AWSV4SignerAuth, OpenSearch, RequestsHttpConnection
 from pydantic import BaseModel, Field
 
 
@@ -27,13 +28,20 @@ class Dataset(BaseModel):
         return self.organisations[0]
 
 
+def get_aws_sigv4_auth():
+    session = boto3.Session()
+    credentials = session.get_credentials()
+    region = settings.AWS_REGION
+    return AWSV4SignerAuth(credentials, region)
+
+
 def get_opensearch_client():
-    # TODO: Switching off SSL/cert verification as this works for local copies only
-    #   We will need something more sophisticated for real AWS environments
     return OpenSearch(
         hosts=[settings.OPENSEARCH_URL],
-        use_ssl=False,
-        verify_certs=False,
+        use_ssl=settings.AWS_OPENSEARCH_USE_SSL,
+        verify_certs=settings.AWS_OPENSEARCH_VERIFY_CERTS,
+        connection_class=RequestsHttpConnection,
+        http_auth=get_aws_sigv4_auth(),
     )
 
 

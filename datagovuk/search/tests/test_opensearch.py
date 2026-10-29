@@ -1,8 +1,12 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
+from opensearchpy import RequestsHttpConnection
 from pydantic import ValidationError
 
 from datagovuk.search.opensearch import (
     Dataset,
+    get_aws_sigv4_auth,
     get_directory_document_by_slug,
     get_opensearch_client,
     search_collections,
@@ -21,17 +25,49 @@ def _request_body(client):
     return client.search.call_args.kwargs["body"]
 
 
-def test_get_opensearch_client(settings, mock_opensearch_class):
-    settings.OPENSEARCH_URL = "http://opensearch.example.net:9200"
+@patch("datagovuk.search.opensearch.get_aws_sigv4_auth")
+def test_get_opensearch_client(mock_auth, settings, mock_opensearch_class):
+    settings.OPENSEARCH_URL = "http://opensearch.example.com:9200"
+    settings.AWS_OPENSEARCH_USE_SSL = False
+    settings.AWS_OPENSEARCH_VERIFY_CERTS = False
+    mock_auth.return_value = MagicMock()
 
     client = get_opensearch_client()
 
     assert client == mock_opensearch_class.return_value
     mock_opensearch_class.assert_called_once_with(
-        hosts=["http://opensearch.example.net:9200"],
+        hosts=["http://opensearch.example.com:9200"],
         use_ssl=False,
         verify_certs=False,
+        connection_class=RequestsHttpConnection,
+        http_auth=mock_auth.return_value,
     )
+
+
+@patch("datagovuk.search.opensearch.get_aws_sigv4_auth")
+def test_get_opensearch_client_uses_ssl_settings(mock_auth, settings, mock_opensearch_class):
+    settings.OPENSEARCH_URL = "http://opensearch.example.com:9200"
+    settings.AWS_OPENSEARCH_USE_SSL = True
+    settings.AWS_OPENSEARCH_VERIFY_CERTS = True
+
+    get_opensearch_client()
+
+    opensearch_args = mock_opensearch_class.call_args.kwargs
+    assert opensearch_args["use_ssl"] is True
+    assert opensearch_args["verify_certs"] is True
+
+
+@patch("datagovuk.search.opensearch.boto3.Session")
+@patch("datagovuk.search.opensearch.AWSV4SignerAuth")
+def test_get_aws_sigv4_auth(mock_auth_class, mock_session, settings):
+    settings.AWS_REGION = "eu-west-0"
+    mock_credentials = MagicMock()
+
+    mock_session.return_value.get_credentials.return_value = mock_credentials
+    auth = get_aws_sigv4_auth()
+
+    mock_auth_class.assert_called_once_with(mock_credentials, "eu-west-0")
+    assert auth == mock_auth_class.return_value
 
 
 def test_search_collections_with_query_uses_multi_match_on_title_fields(mock_opensearch_client):

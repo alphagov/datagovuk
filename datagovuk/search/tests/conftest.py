@@ -39,7 +39,13 @@ def search_v2_flag_enabled(set_search_v2_flag):
 
 
 @pytest.fixture(autouse=True)
-def mock_opensearch_class():
+def mock_aws_sigv4_auth():
+    with patch("datagovuk.search.opensearch.get_aws_sigv4_auth"):
+        yield
+
+
+@pytest.fixture(autouse=True)
+def mock_opensearch_class(mock_aws_sigv4_auth):
     """
     Patches the OpenSearch class for every test so that nothing can reach a real cluster.
     """
