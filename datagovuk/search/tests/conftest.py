@@ -46,8 +46,11 @@ def mock_aws_sigv4_auth():
 
 @pytest.fixture(autouse=True)
 def mock_opensearch_class(mock_aws_sigv4_auth):
-    with patch("datagovuk.search.opensearch.OpenSearch") as mock:
-        yield mock
+    """
+    Patches the OpenSearch class for every test so that nothing can reach a real cluster.
+    """
+    with patch("datagovuk.search.opensearch.OpenSearch") as mock_class:
+        yield mock_class
 
 
 @pytest.fixture
