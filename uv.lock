@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = "==3.14.*"
 
 [[package]]
@@ -400,7 +400,7 @@ requires-dist = [
     { name = "django-cache-memoize", specifier = "==0.2.1" },
     { name = "django-compressor", specifier = "==4.6.0" },
     { name = "django-environ", specifier = "==0.14.0" },
-    { name = "django-health-check", specifier = "==4.11.1" },
+    { name = "django-health-check", specifier = "==4.11.2" },
     { name = "django-libsass", specifier = "==0.9" },
     { name = "django-prometheus", specifier = "==2.5.0" },
     { name = "factory-boy", specifier = "==3.3.3" },
@@ -562,16 +562,16 @@ wheels = [
 
 [[package]]
 name = "django-health-check"
-version = "4.11.1"
+version = "4.11.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
     { name = "dnspython" },
     { name = "httpx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f4/db/3d79faead00da6e97fbef3d5bf11b764418646222de03e02267f19a000a3/django_health_check-4.11.1.tar.gz", hash = "sha256:f66b999a0eeec564d071b0c1da70be36eef1a1b4f444f173670262c52cf70cf8", size = 26951, upload-time = "2026-10-24T18:48:10.413Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3c/07/12190f915eb4bc2a55c3e2d079e60b1d415e2bd92d6477823449b1455d2a/django_health_check-4.11.2.tar.gz", hash = "sha256:c6f89889c47c88c97643374b3e33a0b9dd2a0f662ffa7ea4f5b00f071182d119", size = 27599, upload-time = "2026-10-28T21:10:35.168Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ab/1b/41e825ae672a6c7407adaff0b1caee5ce9a624939955c2e59c12f129255e/django_health_check-4.11.1-py3-none-any.whl", hash = "sha256:520e77ba160fcfe96734646befbfea83459e967cb2f5cdad62bd30749b640306", size = 33559, upload-time = "2026-10-24T18:48:09.118Z" },
+    { url = "https://files.pythonhosted.org/packages/55/05/9a2c153ed58cc15421a74b0c68869e2e2880d1050972133461f8a61d7100/django_health_check-4.11.2-py3-none-any.whl", hash = "sha256:3c0eaa34d218c97dbcc5d844275c425c82414fb98b94e21e740a70f3a5d80aab", size = 34256, upload-time = "2026-10-28T21:10:33.557Z" },
 ]
 
 [[package]]
