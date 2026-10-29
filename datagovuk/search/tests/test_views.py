@@ -3,9 +3,9 @@ from http import HTTPStatus
 import pytest
 from django.urls import reverse
 
-from datagovuk.search.opensearch import Dataset
+from datagovuk.search.opensearch import Collection, Dataset
 
-from .factories import DatasetFactory, OrganisationFactory
+from .factories import CollectionFactory, DatasetFactory, OrganisationFactory
 
 
 @pytest.fixture
@@ -29,10 +29,10 @@ class TestSearchView:
     def test_get_with_query_searches_directory_and_collections(self, client, search_url, opensearch_documents):
         opensearch_documents(
             [
-                DatasetFactory(source="ckan", slug="rail-data"),
-                DatasetFactory(source="ckan", slug="bus-data"),
-                DatasetFactory(source="collection", slug="rail-collection", collection="transport"),
-                DatasetFactory(source="collection", slug="bus-collection", collection="transport"),
+                DatasetFactory(slug="rail-data"),
+                DatasetFactory(slug="bus-data"),
+                CollectionFactory(slug="rail-collection", collection="transport"),
+                CollectionFactory(slug="bus-collection", collection="transport"),
             ],
         )
 
@@ -44,7 +44,8 @@ class TestSearchView:
         assert context["form"].cleaned_data["query"] == "rail"
         assert [doc.slug for doc in context["directory_docs"]] == ["rail-data"]
         assert [doc.slug for doc in context["collection_docs"]] == ["rail-collection"]
-        assert all(isinstance(doc, Dataset) for doc in [*context["directory_docs"], *context["collection_docs"]])
+        assert all(isinstance(doc, Dataset) for doc in context["directory_docs"])
+        assert all(isinstance(doc, Collection) for doc in context["collection_docs"])
         assert context["directory_results"]["hits"]["total"]["value"] == 1
         assert context["collection_results"]["hits"]["total"]["value"] == 1
 
@@ -52,8 +53,8 @@ class TestSearchView:
     def test_get_with_blank_query_matches_all(self, client, search_url, opensearch_documents, query):
         opensearch_documents(
             [
-                DatasetFactory(source="ckan", slug="anything"),
-                DatasetFactory(source="collection", slug="any-collection", collection="transport"),
+                DatasetFactory(slug="anything"),
+                CollectionFactory(slug="any-collection", collection="transport"),
             ],
         )
 
@@ -65,7 +66,7 @@ class TestSearchView:
         assert [doc.slug for doc in response.context_data["collection_docs"]] == ["any-collection"]
 
     def test_get_with_no_results(self, client, search_url, opensearch_documents):
-        opensearch_documents([DatasetFactory(source="ckan"), DatasetFactory(source="collection")])
+        opensearch_documents([DatasetFactory(), CollectionFactory()])
 
         response = client.get(search_url, {"query": "nothing matches"})
 
@@ -77,7 +78,7 @@ class TestSearchView:
         assert response.context_data["collection_results"]["hits"]["total"]["value"] == 0
 
     def test_get_with_only_collection_results(self, client, search_url, opensearch_documents):
-        opensearch_documents([DatasetFactory(source="collection", slug="only-collection", collection="transport")])
+        opensearch_documents([CollectionFactory(slug="only-collection", collection="transport")])
 
         response = client.get(search_url, {"query": "collection"})
 
@@ -86,7 +87,7 @@ class TestSearchView:
         assert [doc.slug for doc in response.context_data["collection_docs"]] == ["only-collection"]
 
     def test_get_with_only_directory_results(self, client, search_url, opensearch_documents):
-        opensearch_documents([DatasetFactory(source="ckan", slug="only-directory")])
+        opensearch_documents([DatasetFactory(slug="only-directory")])
 
         response = client.get(search_url, {"query": "directory"})
 
@@ -140,7 +141,7 @@ class TestDatasetView:
         assert response.status_code == HTTPStatus.NOT_FOUND
 
     def test_get_collection_document_is_not_found(self, client, opensearch_documents):
-        opensearch_documents([DatasetFactory(slug="wanted", source="collection")])
+        opensearch_documents([CollectionFactory(slug="wanted")])
 
         response = client.get(reverse("search:dataset", kwargs={"slug": "wanted"}))
 
