@@ -1,12 +1,10 @@
 import uuid
 
 import pytest
-from opensearchpy import RequestsHttpConnection
 from pydantic import ValidationError
 
 from datagovuk.search.opensearch import (
     Dataset,
-    get_aws_sigv4_auth,
     get_directory_document_by_slug,
     get_opensearch_client,
     search_collections,

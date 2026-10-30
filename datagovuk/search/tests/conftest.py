@@ -1,5 +1,4 @@
 import importlib
-from unittest.mock import patch
 
 import pytest
 from django.urls import clear_url_caches
