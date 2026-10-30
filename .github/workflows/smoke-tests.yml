@@ -44,7 +44,7 @@ jobs:
         uses: docker/setup-buildx-action@v4.4.1
 
       - name: Build and cache local backend
-        uses: docker/bake-action@v7.4.0
+        uses: docker/bake-action@v7.5.0
         with:
           push: false
           load: true
