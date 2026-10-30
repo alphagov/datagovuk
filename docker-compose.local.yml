@@ -28,8 +28,7 @@ services:
       - datagovuk
 
   opensearch:
-    image: ghcr.io/alphagov/datagovuk-indexer-opensearch:latest
-    pull_policy: never   # local image only; remove once you consume the published image
+    image: ghcr.io/alphagov/datagovuk-indexer-opensearch:7ee7e33
     healthcheck:
       test: ["CMD-SHELL", "curl -s -f http://localhost:9200/ || exit 1"]
       interval: 10s
