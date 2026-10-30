@@ -28,6 +28,7 @@ services:
       - datagovuk
 
   opensearch:
+    # We lock to a specific git commit hash of datagovuk-indexer; see https://github.com/alphagov/datagovuk-indexer#publishing-a-pre-populated-opensearch-image
     image: ghcr.io/alphagov/datagovuk-indexer-opensearch:a852209
     healthcheck:
       test: ["CMD-SHELL", "curl -s -f http://localhost:9200/ || exit 1"]
