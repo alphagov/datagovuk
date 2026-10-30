@@ -10,6 +10,7 @@ jobs:
     uses: ./.github/workflows/ci.yml
     permissions:
       contents: read
+      packages: read
 
   trivy-scan:
     uses: ./.github/workflows/trivy-scans.yaml
