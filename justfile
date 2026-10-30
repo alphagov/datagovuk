@@ -22,6 +22,7 @@ init:
     @echo ""
     @echo "datagovuk install is initialised for local development. Bringing up the containers with '$ just up'"
     docker network create datagovuk || true
+    just ghcr-login
     just up
 
 patch-zscaler-ssl:
