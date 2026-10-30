@@ -159,3 +159,6 @@ pentest:
     just prod-build
     just prod-up
     docker compose -f docker-compose.production.yml run --rm zap zap-baseline.py -t http://django:8000 -r zap-report.html
+
+ghcr-login:
+    SSL_CERT_FILE= gh auth token | SSL_CERT_FILE= docker login ghcr.io -u "$(SSL_CERT_FILE= gh api user -q .login)" --password-stdin
