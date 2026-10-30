@@ -1,0 +1,43 @@
+name: Redeploy ECS service
+
+# restarts tasks on the latest/current task definition revision without pushing a new image
+# use after changing secret or SSM values that are only read at task start
+
+on:
+  workflow_dispatch:
+
+env:
+  APP_NAME: datagovuk
+  AWS_REGION: eu-west-2
+  ECS_CLUSTER_INTEGRATION: integration
+
+jobs:
+  redeploy_integration:
+    name: Redeploy integration
+    runs-on: ubuntu-latest
+    environment: integration
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Configure AWS credentials (integration)
+        uses: aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          role-to-assume: ${{ secrets.INTEGRATION_DEPLOYER_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Force new deployment
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER_INTEGRATION }} \
+            --service ${{ env.APP_NAME }} \
+            --task-definition ${{ env.APP_NAME }} \
+            --force-new-deployment \
+            --query 'service.taskDefinition' \
+            --output text
+
+      - name: Wait for service stability
+        run: |
+          aws ecs wait services-stable \
+            --cluster ${{ env.ECS_CLUSTER_INTEGRATION }} \
+            --services ${{ env.APP_NAME }}
