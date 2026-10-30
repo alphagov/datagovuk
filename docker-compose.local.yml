@@ -22,6 +22,20 @@ services:
     depends_on:
       solr:
         condition: service_healthy
+      opensearch:
+        condition: service_healthy
+    networks:
+      - datagovuk
+
+  opensearch:
+    # We lock to a specific git commit hash of datagovuk-indexer; see https://github.com/alphagov/datagovuk-indexer#publishing-a-pre-populated-opensearch-image
+    image: ghcr.io/alphagov/datagovuk-indexer-opensearch:a852209
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -f http://localhost:9200/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     networks:
       - datagovuk
 

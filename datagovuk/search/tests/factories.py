@@ -11,10 +11,10 @@ class OrganisationFactory(factory.DictFactory):
 
 class DatasetFactory(factory.DictFactory):
     """
-    Builds the `_source` of an OpenSearch hit in the `datasets` index.
+    Builds a document for the `datasets` index, as written by the indexer.
 
-    `source` is not part of the `Dataset` model, but it is what OpenSearch filters on, so
-    the in-memory fake in `conftest.py` uses it to decide which search a document belongs to.
+    `source` is not part of the `Dataset` model, but it is what OpenSearch filters on to decide
+    which search ("ckan" or "collection") a document belongs to.
     """
 
     uuid = factory.LazyFunction(lambda: str(uuid.uuid4()))

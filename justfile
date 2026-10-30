@@ -22,6 +22,7 @@ init:
     @echo ""
     @echo "datagovuk install is initialised for local development. Bringing up the containers with '$ just up'"
     docker network create datagovuk || true
+    just ghcr-login
     just up
 
 patch-zscaler-ssl:
@@ -159,3 +160,6 @@ pentest:
     just prod-build
     just prod-up
     docker compose -f docker-compose.production.yml run --rm zap zap-baseline.py -t http://django:8000 -r zap-report.html
+
+ghcr-login:
+    SSL_CERT_FILE= gh auth token | SSL_CERT_FILE= docker login ghcr.io -u "$(SSL_CERT_FILE= gh api user -q .login)" --password-stdin

@@ -1,20 +1,11 @@
 import importlib
-from unittest.mock import MagicMock, patch
 
 import pytest
 from django.urls import clear_url_caches
+from opensearchpy import helpers
 
 import config.urls
-
-
-def _filter_value(body, field):
-    """
-    Returns the value of the `{"term": {field: value}}` clause in the query's bool filter, if any.
-    """
-    for clause in body["query"]["bool"].get("filter", []):
-        if field in clause.get("term", {}):
-            return clause["term"][field]
-    return None
+from datagovuk.search.opensearch import get_opensearch_client
 
 
 @pytest.fixture
@@ -38,49 +29,59 @@ def search_v2_flag_enabled(set_search_v2_flag):
     set_search_v2_flag(enabled=True)
 
 
-@pytest.fixture(autouse=True)
-def mock_aws_sigv4_auth():
-    with patch("datagovuk.search.opensearch.get_aws_sigv4_auth"):
-        yield
+@pytest.fixture(scope="session")
+def opensearch_index_name(worker_id):
+    """
+    One index per pytest-xdist worker (`datasets-test-master` when not running in parallel), so that
+    tests running concurrently cannot see each other's documents.
+    """
+    return f"datasets-test-{worker_id}"
 
 
-@pytest.fixture(autouse=True)
-def mock_opensearch_class(mock_aws_sigv4_auth):
+@pytest.fixture(scope="session")
+def opensearch_index(opensearch_index_name):
     """
-    Patches the OpenSearch class for every test so that nothing can reach a real cluster.
+    Creates this worker's index for the test session. The `datasets-*` index template baked into the
+    opensearch image supplies the same mapping the indexer uses for real indexes.
     """
-    with patch("datagovuk.search.opensearch.OpenSearch") as mock_class:
-        yield mock_class
+    client = get_opensearch_client()
+    # Remove any index left behind by an aborted run
+    client.indices.delete(index=opensearch_index_name, ignore=[404])
+    client.indices.create(index=opensearch_index_name, body={"settings": {"number_of_replicas": 0}})
+
+    yield opensearch_index_name
+
+    client.indices.delete(index=opensearch_index_name, ignore=[404])
 
 
 @pytest.fixture
-def mock_opensearch_client(mock_opensearch_class):
+def opensearch_client(settings, opensearch_index):
     """
-    The client returned by `OpenSearch(...)`. Returns empty results unless `opensearch_documents` is used.
+    Points the search app at this worker's index and removes all documents from it before each test.
     """
-    client = mock_opensearch_class.return_value
-    client.search.return_value = {"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}}
+    settings.OPENSEARCH_DATASETS_INDEX = opensearch_index
+    client = get_opensearch_client()
+    client.delete_by_query(
+        index=opensearch_index,
+        body={"query": {"match_all": {}}},
+        refresh=True,
+        conflicts="proceed",
+    )
     return client
 
 
 @pytest.fixture
-def opensearch_documents(mock_opensearch_client):
+def opensearch_documents(opensearch_client, opensearch_index):
     """
-    Factory fixture which loads documents into an in-memory stand in for the `datasets` index.
+    Factory fixture which indexes documents (e.g. built with `DatasetFactory`) and makes them searchable.
     """
 
     def _load(documents):
-        def _search(index=None, body=None, **kwargs):
-            assert index == "datasets"
-            matching = [
-                doc
-                for doc in documents
-                if all(_filter_value(body, field) in (None, doc.get(field)) for field in ("source", "slug"))
-            ]
-            hits = [{"_source": doc} for doc in matching[: body["size"]]]
-            return {"hits": {"total": {"value": len(matching), "relation": "eq"}, "hits": hits}}
-
-        mock_opensearch_client.search = MagicMock(side_effect=_search)
-        return mock_opensearch_client
+        helpers.bulk(
+            opensearch_client,
+            ({"_index": opensearch_index, "_id": document["uuid"], "_source": document} for document in documents),
+            refresh=True,
+        )
+        return documents
 
     return _load
