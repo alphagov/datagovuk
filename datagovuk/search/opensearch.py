@@ -38,10 +38,6 @@ class Collection(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    @property
-    def organisation(self):
-        return self.organisations[0]
-
 
 def get_aws_sigv4_auth():
     session = boto3.Session()
