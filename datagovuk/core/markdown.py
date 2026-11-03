@@ -1,15 +1,27 @@
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 
 import frontmatter
 import mistune
 from django.conf import settings
 from django.http import Http404
+from django.templatetags.static import static
 
 
 class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
     def link(self, text, url, title=None):
         return f'<a href="{url}" class="govuk-link datagovuk-link datagovuk-link--secondary">{text}</a>'
+
+    def image(self, text, url, title=None):
+        # Images must be static files, given as a path relative to the static folder (e.g.
+        # `images/updates/chart.png`), so they get the same hashed URLs as images in templates. External and
+        # absolute URLs are rejected because our CSP would block them anyway.
+        parsed_url = urlparse(url)
+        if parsed_url.scheme or parsed_url.netloc or url.startswith("/"):
+            error_message = f"Markdown images must be a path relative to the static folder, got: {url}"
+            raise ValueError(error_message)
+        return super().image(text, static(url), title).replace("<img ", '<img class="datagovuk-image" ', 1)
 
     def heading(self, text, level, **kwargs):
         valid_header_sizes = ["xl", "l", "m", "s"]
