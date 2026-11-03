@@ -1,5 +1,7 @@
 import json
+import logging
 from urllib.request import urlopen
+from urllib.parse import urlparse
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -21,11 +23,13 @@ if env("POD_IP", default=""):
 # Read task IP from ECS metadata for ALB health checks
 metadata_uri = env("ECS_CONTAINER_METADATA_URI_V4", default="")
 if metadata_uri:
-    response = urlopen(metadata_uri, timeout=5)
-    metadata = json.loads(response.read().decode())
-    task_ip = metadata.get("Networks", [{}])[0].get("IPv4Addresses", [None])[0]
-    if task_ip:
-        ALLOWED_HOSTS.append(task_ip)
+    parsed = urlparse(metadata_uri)
+    if parsed.scheme in ("http", "https"):
+        response = urlopen(metadata_uri, timeout=5)
+        metadata = json.loads(response.read().decode())
+        task_ip = metadata.get("Networks", [{}])[0].get("IPv4Addresses", [None])[0]
+        if task_ip:
+            ALLOWED_HOSTS.append(task_ip)
 
 # SECURITY
 # ------------------------------------------------------------------------------
