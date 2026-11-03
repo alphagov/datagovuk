@@ -17,6 +17,7 @@ urlpatterns = [
     path("", include("datagovuk.pages.urls", namespace="pages")),
     path("", include("datagovuk.core.urls", namespace="core")),
     path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
+    path("updates/", include("datagovuk.updates.urls", namespace="updates")),
     path("", include("datagovuk.collections.urls", namespace="collections")),
     path("", include("datagovuk.directory.urls", namespace="directory")),
     *search_v2_urlpatterns,
