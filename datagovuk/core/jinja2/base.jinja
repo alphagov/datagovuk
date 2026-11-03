@@ -13,6 +13,9 @@
     </title>
 
     {% if page_description %}<meta name="description" content="{{ page_description }}" />{% endif %}
+    <meta property="og:title" content="{{ title|default('National Data Library') }}" />
+    {% if page_description %}<meta property="og:description" content="{{ page_description }}" />{% endif %}
+    {% if og_image %}<meta property="og:image" content="{{ og_image }}" />{% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#FFFFFF" />
 

@@ -42,6 +42,7 @@ def test_about(client):
     assert response.status_code == HTTPStatus.OK
     assert "About - National Data Library" in response_content
     assert "About the National Data Library" in response_content
+    assert '<meta property="og:title" content="About" />' in response_content
 
 
 def test_help(client):

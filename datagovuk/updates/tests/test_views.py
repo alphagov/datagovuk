@@ -18,6 +18,12 @@ def test_update(client):
     assert 'height="3000"' in response_content
     assert 'alt="An illustration of someone cleaning data"' in response_content
     assert '<meta name="description" content="We will use this section' in response_content
+    assert '<meta property="og:title" content="Welcome to updates" />' in response_content
+    assert '<meta property="og:description" content="We will use this section' in response_content
+    assert (
+        '<meta property="og:image" content="http://testserver/assets/images/updates/cleaning-illustration.png" />'
+        in response_content
+    )
 
 
 def test_update_not_found(client):
@@ -51,4 +57,5 @@ def test_update_without_optional_front_matter(client, tmp_path, settings):
     assert "Minimal" in response_content
     assert "By " not in response_content
     assert "datagovuk-image" not in response_content
+    assert 'property="og:image"' not in response_content
     assert 'name="description"' not in response_content
