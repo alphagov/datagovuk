@@ -19,4 +19,5 @@ class UpdateView(RenderedMarkdownView):
         except ValueError as error:
             error_message = "Invalid date"
             raise Http404(error_message) from error
+        context["page_description"] = context.get("summary")
         return context
