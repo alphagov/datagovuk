@@ -1,5 +1,9 @@
 {% extends "base.jinja" %}
 
+{% if image %}
+  {% set og_image = request.build_absolute_uri(static(image.src)) %}
+{% endif %}
+
 {% block page_title %}
   {{ title }} - Updates - National Data Library
 {% endblock page_title %}
