@@ -74,6 +74,7 @@ jobs:
           image: ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ steps.resolve-sha.outputs.image_sha }}
 
       - name: Deploy to integration ECS
+        id: deploy
         if: github.event_name == 'workflow_dispatch'
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
@@ -81,6 +82,21 @@ jobs:
           service: ${{ env.APP_NAME }}
           cluster: ${{ env.ECS_CLUSTER_INTEGRATION }}
           wait-for-service-stability: true
+
+      # services-stable can show as passed after a circuit breaker rollback
+      - name: Verify integration deployed revision
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          DEPLOYED="${{ steps.deploy.outputs.task-definition-arn }}"
+          CURRENT=$(aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER_INTEGRATION }} \
+            --services ${{ env.APP_NAME }} \
+            --query 'services[0].taskDefinition' \
+            --output text)
+          if [[ "$CURRENT" != "$DEPLOYED" ]]; then
+            echo "Error: Service is on ${CURRENT}, expected ${DEPLOYED} - deployment may have rolled back."
+            exit 1
+          fi
 
   # Smoke tests against integration will need to added here (e.g. call ./.github/workflows/smoke-tests.yml)
   # (but first some jiggery pokery to think through about urls/make sure test is againts right env etc.)
@@ -138,12 +154,26 @@ jobs:
           image: ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ env.IMAGE_SHA }}
 
       - name: Deploy to staging ECS
+        id: deploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.render-task-def.outputs.task-definition }}
           service: ${{ env.APP_NAME }}
           cluster: ${{ env.ECS_CLUSTER_STAGING }}
           wait-for-service-stability: true
+
+      - name: Verify staging deployed revision
+        run: |
+          DEPLOYED="${{ steps.deploy.outputs.task-definition-arn }}"
+          CURRENT=$(aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER_STAGING }} \
+            --services ${{ env.APP_NAME }} \
+            --query 'services[0].taskDefinition' \
+            --output text)
+          if [[ "$CURRENT" != "$DEPLOYED" ]]; then
+            echo "Error: Service is on ${CURRENT}, expected ${DEPLOYED} - deployment may have rolled back."
+            exit 1
+          fi
 
   push_to_production:
     name: Push to production ECR
@@ -193,9 +223,23 @@ jobs:
           image: ${{ steps.ecr-login.outputs.registry }}/${{ env.APP_NAME }}:${{ env.IMAGE_SHA }}
 
       - name: Deploy to production ECS
+        id: deploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.render-task-def.outputs.task-definition }}
           service: ${{ env.APP_NAME }}
           cluster: ${{ env.ECS_CLUSTER_PRODUCTION }}
           wait-for-service-stability: true
+
+      - name: Verify production deployed revision
+        run: |
+          DEPLOYED="${{ steps.deploy.outputs.task-definition-arn }}"
+          CURRENT=$(aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER_PRODUCTION }} \
+            --services ${{ env.APP_NAME }} \
+            --query 'services[0].taskDefinition' \
+            --output text)
+          if [[ "$CURRENT" != "$DEPLOYED" ]]; then
+            echo "Error: Service is on ${CURRENT}, expected ${DEPLOYED} - deployment may have rolled back."
+            exit 1
+          fi

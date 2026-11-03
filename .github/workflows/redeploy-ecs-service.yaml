@@ -1,6 +1,6 @@
 name: Redeploy ECS service
 
-# restarts tasks on the latest/current task definition revision without pushing a new image
+# restarts tasks on the service current task definition revision without pushing a new image
 # use after changing secret or SSM values that are only read at task start
 
 on:
@@ -31,7 +31,6 @@ jobs:
           aws ecs update-service \
             --cluster ${{ env.ECS_CLUSTER_INTEGRATION }} \
             --service ${{ env.APP_NAME }} \
-            --task-definition ${{ env.APP_NAME }} \
             --force-new-deployment \
             --query 'service.taskDefinition' \
             --output text
