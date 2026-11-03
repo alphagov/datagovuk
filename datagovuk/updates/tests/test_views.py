@@ -14,6 +14,8 @@ def test_update(client):
     assert "28 October 2026" in response_content
     assert "By National Data Library team" in response_content
     assert 'src="/assets/images/updates/cleaning-illustration.png"' in response_content
+    assert 'width="4000"' in response_content
+    assert 'height="3000"' in response_content
     assert 'alt="An illustration of someone cleaning data"' in response_content
     assert '<meta name="description" content="We will use this section' in response_content
 

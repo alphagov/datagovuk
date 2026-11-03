@@ -14,7 +14,10 @@
           <time datetime="{{ date.isoformat() }}">{{ date.strftime("%-d %B %Y") }}</time>
         </p>
         {% if image %}
-          <img src="{{ static(image.src) }}" alt="{{ image.alt }}" class="datagovuk-image govuk-!-margin-bottom-6" />
+          <img src="{{ static(image.src) }}"
+               {% if image.width %}width="{{ image.width }}" height="{{ image.height }}"{% endif %}
+               alt="{{ image.alt }}"
+               class="datagovuk-image govuk-!-margin-bottom-6" />
         {% endif %}
         <div class="datagovuk-content">{{ content|safe }}</div>
       </div>

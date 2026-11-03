@@ -3,6 +3,7 @@ import datetime
 from django.conf import settings
 from django.http import Http404
 
+from datagovuk.core.utils import get_image_size
 from datagovuk.core.views import RenderedMarkdownView
 
 
@@ -19,5 +20,7 @@ class UpdateView(RenderedMarkdownView):
         except ValueError as error:
             error_message = "Invalid date"
             raise Http404(error_message) from error
+        if image := context.get("image"):
+            image["width"], image["height"] = get_image_size(image["src"])
         context["page_description"] = context.get("summary")
         return context
