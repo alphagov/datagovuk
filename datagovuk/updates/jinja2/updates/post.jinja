@@ -17,12 +17,20 @@
           {% if authors %}By {{ authors|join(", ") }} ·{% endif %}
           <time datetime="{{ date.isoformat() }}">{{ date.strftime("%-d %B %Y") }}</time>
         </p>
-        {% if image %}
+      </div>
+    </div>
+    {% if image %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
           <img src="{{ static(image.src) }}"
                {% if image.width %}width="{{ image.width }}" height="{{ image.height }}"{% endif %}
                alt="{{ image.alt }}"
                class="datagovuk-image govuk-!-margin-bottom-6" />
-        {% endif %}
+        </div>
+      </div>
+    {% endif %}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds-from-desktop">
         <div class="datagovuk-content">{{ content|safe }}</div>
       </div>
     </div>
