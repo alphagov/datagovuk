@@ -1,5 +1,4 @@
 import json
-import logging
 from urllib.request import urlopen
 
 import sentry_sdk
