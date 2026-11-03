@@ -17,6 +17,11 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["data.gov.uk"])
 if env("POD_IP", default=""):
     ALLOWED_HOSTS.append(env("POD_IP"))
 
+# Add ALB hostname for health checks
+alb_hostname = env("ALB_HOSTNAME", default="")
+if alb_hostname:
+    ALLOWED_HOSTS.append(alb_hostname)
+
 # SECURITY
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-proxy-ssl-header
