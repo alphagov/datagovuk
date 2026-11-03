@@ -81,6 +81,7 @@ LOCAL_APPS = [
     "datagovuk.core",
     "datagovuk.pages",
     "datagovuk.data_manual",
+    "datagovuk.updates",
     "datagovuk.collections",
     "datagovuk.directory",
     "datagovuk.ckan_redirect",
@@ -314,6 +315,7 @@ DATAGOVUK_CONTENT_DATA_ROOT = f"{DATAGOVUK_CONTENT_ROOT}data/"
 DATAGOVUK_CONTENT_COLLECTIONS_ROOT = f"{DATAGOVUK_CONTENT_ROOT}collections/"
 DATAGOVUK_CONTENT_DATA_MANUAL_ROOT = f"{DATAGOVUK_CONTENT_ROOT}data-manual/"
 DATAGOVUK_CONTENT_PAGES_ROOT = f"{DATAGOVUK_CONTENT_ROOT}content-pages/"
+DATAGOVUK_CONTENT_UPDATES_ROOT = f"{DATAGOVUK_CONTENT_ROOT}updates/"
 
 DATAGOVUK_GIT_SHA = env("GIT_SHA", default=None)
 
