@@ -8,6 +8,8 @@ from django.conf import settings
 from django.http import Http404
 from django.templatetags.static import static
 
+from datagovuk.core.utils import get_image_size
+
 
 class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
     def link(self, text, url, title=None):
@@ -21,7 +23,10 @@ class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
         if parsed_url.scheme or parsed_url.netloc or url.startswith("/"):
             error_message = f"Markdown images must be a path relative to the static folder, got: {url}"
             raise ValueError(error_message)
-        return super().image(text, static(url), title).replace("<img ", '<img class="datagovuk-image" ', 1)
+        width, height = get_image_size(url)
+        dimensions = f' width="{width}" height="{height}"' if width else ""
+        attributes = f'<img class="datagovuk-image"{dimensions} loading="lazy" '
+        return super().image(text, static(url), title).replace("<img ", attributes, 1)
 
     def heading(self, text, level, **kwargs):
         valid_header_sizes = ["xl", "l", "m", "s"]
