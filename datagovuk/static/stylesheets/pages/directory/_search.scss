@@ -131,3 +131,64 @@
     flex-grow: 1;
   }
 }
+
+// Borders only go between groups, not after the last one.
+.datagovuk-search-facets-group {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--govuk-border-colour);
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+.datagovuk-search-facets {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+
+// Match the body-s text size. The double class beats .datagovuk-button's own font-size, whatever the load order.
+.datagovuk-button.datagovuk-search-facets__toggle {
+  padding-top: 10px; // slightly less than .datagovuk-button's 14px
+  padding-bottom: 10px;
+  font-size: 18px;
+
+  @media (min-width: $desktop-breakpoint) {
+    font-size: 20px;
+  }
+}
+
+// The left padding leaves room for the selected tick, and keeps wrapped lines aligned with the first.
+.datagovuk-search-facets__item {
+  position: relative;
+  margin-bottom: 5px;
+  padding: 5px 0 5px 22px;
+}
+
+.datagovuk-search-facets__count {
+  color: $datagovuk-grey;
+}
+
+// Selected facets are plain text with a tick to the left, no background or colour.
+.datagovuk-search-facets__item--selected {
+  .datagovuk-search-facets__link {
+    text-decoration: none;
+  }
+
+  // Tick drawn with borders: a box with only its right and bottom edges, rotated.
+  // Absolutely positioned in the item's left padding, level with the first line of text.
+  &::before {
+    content: "";
+    position: absolute;
+    top: calc(5px + 0.7em); // the item's top padding plus half the 140% line height
+    left: 3px; // the rotation makes the tick overhang its box by ~3px, so this puts its left edge at 0
+    box-sizing: border-box;
+    width: 7px;
+    height: 11px;
+    border-right: 3px solid $datagovuk-black;
+    border-bottom: 3px solid $datagovuk-black;
+    transform: translateY(-65%) rotate(45deg);
+  }
+}

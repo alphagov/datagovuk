@@ -42,6 +42,7 @@
 }
 
 .datagovuk-body,
+.datagovuk-body-s,
 .datagovuk-heading-s,
 .datagovuk-heading-m,
 .datagovuk-heading-l,
@@ -53,7 +54,7 @@
 }
 
 .datagovuk-link {
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
 }
 
 .datagovuk-heading-xl {
@@ -83,6 +84,11 @@
 
 .datagovuk-body {
   font-size: 20px;
+  line-height: 140%;
+}
+
+.datagovuk-body-s {
+  font-size: 18px;
   line-height: 140%;
 }
 
@@ -195,6 +201,10 @@
 
   .datagovuk-body {
     font-size: 22px;
+  }
+
+  .datagovuk-body-s {
+    font-size: 20px;
   }
 
   .datagovuk-button {
