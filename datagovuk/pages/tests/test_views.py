@@ -21,7 +21,7 @@ def test_home(client):
     response_content = response.content.decode()
     assert "National Data Library - The home of UK public data - data.gov.uk" in response_content
     assert "Test feature flag enabled" not in response_content
-    assert "/updates/2026-10-28/welcome-to-updates/" in response_content
+    assert "/updates/2026/welcome-to-updates/" in response_content
 
 
 def test_home_test_feature_flag_enabled(client, settings):
