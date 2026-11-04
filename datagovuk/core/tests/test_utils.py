@@ -1,7 +1,9 @@
 import logging
 from unittest.mock import MagicMock
 
-from datagovuk.core.utils import build_table_data, capture_exception, is_numeric
+import pytest
+
+from datagovuk.core.utils import build_table_data, capture_exception, get_image_size, is_numeric
 
 
 def test_capture_exception_sentry_not_initialised(caplog):
@@ -152,3 +154,16 @@ def test_build_table_data_mixed_numeric_column_uses_numeric_format():
     assert headings[0]["format"] == "numeric"
     assert rows[0][0]["format"] == "numeric"
     assert rows[1][0]["format"] == "text"
+
+
+def test_get_image_size_returns_width_and_height():
+    assert get_image_size("images/updates/cleaning-illustration.png") == (4000, 3000)
+
+
+def test_get_image_size_unreadable_format_returns_none_pair():
+    assert get_image_size("images/icons/arrow.svg") == (None, None)
+
+
+def test_get_image_size_missing_file_raises():
+    with pytest.raises(ValueError, match="not found in static files"):
+        get_image_size("images/does-not-exist.png")

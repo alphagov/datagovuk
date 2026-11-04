@@ -1,6 +1,8 @@
 import inspect
 import textwrap
 
+import pytest
+
 from datagovuk.core.markdown import get_template_context_from_markdown, render_markdown
 
 # Allow long lines in this file..
@@ -13,6 +15,32 @@ class TestMarkdownToHTMLRenderer:
         assert rendered_markdown == textwrap.dedent("""\
             <p class="govuk-body-m datagovuk-body"><a href="https://example.net/some-path" class="govuk-link datagovuk-link datagovuk-link--secondary">Some text</a></p>
         """)
+
+    def test_image_relative_path_uses_static_url(self):
+        rendered_markdown = render_markdown("![A chart of datasets](images/updates/cleaning-illustration.png)")
+        assert rendered_markdown == textwrap.dedent("""\
+            <p class="govuk-body-m datagovuk-body"><img class="datagovuk-image" width="4000" height="3000" loading="lazy" src="/assets/images/updates/cleaning-illustration.png" alt="A chart of datasets" /></p>
+        """)
+
+    def test_image_title(self):
+        rendered_markdown = render_markdown('![Alt](images/updates/cleaning-illustration.png "A title")')
+        assert 'src="/assets/images/updates/cleaning-illustration.png" alt="Alt" title="A title"' in rendered_markdown
+
+    def test_image_without_readable_dimensions_omits_them(self):
+        rendered_markdown = render_markdown("![Alt](images/icons/arrow.svg)")
+        assert '<img class="datagovuk-image" loading="lazy" src="/assets/images/icons/arrow.svg"' in rendered_markdown
+
+    def test_image_missing_file_raises(self):
+        with pytest.raises(ValueError, match="not found in static files"):
+            render_markdown("![Alt](images/does-not-exist.png)")
+
+    @pytest.mark.parametrize(
+        "url",
+        ["https://example.net/a.png", "//example.net/a.png", "/assets/images/a.png", "data:image/png;base64,AAAA"],
+    )
+    def test_image_non_static_url_raises(self, url):
+        with pytest.raises(ValueError, match="relative to the static folder"):
+            render_markdown(f"![Alt]({url})")
 
     def test_heading(self):
         markdown = inspect.cleandoc("""
