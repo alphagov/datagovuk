@@ -1,4 +1,7 @@
+import json
 import logging
+from urllib.parse import urlparse
+from urllib.request import urlopen
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -17,10 +20,16 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["data.gov.uk"])
 if env("POD_IP", default=""):
     ALLOWED_HOSTS.append(env("POD_IP"))
 
-# Add ALB hostname for health checks
-alb_hostname = env("ALB_HOSTNAME", default="")
-if alb_hostname:
-    ALLOWED_HOSTS.append(alb_hostname)
+# Read task IP from ECS metadata for ALB health checks
+metadata_uri = env("ECS_CONTAINER_METADATA_URI_V4", default="") or env("ECS_CONTAINER_METADATA_URI", default="")
+if metadata_uri:
+    parsed_uri = urlparse(metadata_uri)
+    if parsed_uri.scheme in ("http", "https"):
+        response = urlopen(metadata_uri, timeout=5)  # noqa: S310
+        metadata = json.loads(response.read().decode())
+        task_ip = metadata.get("Networks", [{}])[0].get("IPv4Addresses", [None])[0]
+        if task_ip:
+            ALLOWED_HOSTS.append(task_ip)
 
 # SECURITY
 # ------------------------------------------------------------------------------
