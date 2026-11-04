@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
@@ -22,7 +21,7 @@ if env("POD_IP", default=""):
     ALLOWED_HOSTS.append(env("POD_IP"))
 
 # Read task IP from ECS metadata for ALB health checks
-metadata_uri = os.environ.get("ECS_CONTAINER_METADATA_URI_V4") or os.environ.get("ECS_CONTAINER_METADATA_URI")
+metadata_uri = env("ECS_CONTAINER_METADATA_URI_V4", default="") or env("ECS_CONTAINER_METADATA_URI", default="")
 if metadata_uri:
     parsed_uri = urlparse(metadata_uri)
     if parsed_uri.scheme in ("http", "https"):
