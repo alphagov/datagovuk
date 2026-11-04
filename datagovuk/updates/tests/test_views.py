@@ -10,15 +10,15 @@ def test_update(client):
 
     assert url == "/updates/2026/welcome-to-updates/"
     assert response.status_code == HTTPStatus.OK
-    assert "Welcome to updates - Updates - National Data Library" in response_content
+    assert "Cleaning up data.gov.uk - Updates - National Data Library" in response_content
     assert "28 October 2026" in response_content
-    assert "By National Data Library team" in response_content
+    assert "By Joe Lanman, Antonia Panayotova" in response_content
     assert 'src="/assets/images/updates/cleaning-illustration-16-9.png"' in response_content
     assert 'width="2400"' in response_content
     assert 'height="1254"' in response_content
     assert 'alt="An illustration of someone cleaning data"' in response_content
     assert '<meta name="description" content="We will use this section' in response_content
-    assert '<meta property="og:title" content="Welcome to updates" />' in response_content
+    assert '<meta property="og:title" content="Cleaning up data.gov.uk" />' in response_content
     assert '<meta property="og:description" content="We will use this section' in response_content
     assert (
         '<meta property="og:image" content="http://testserver/assets/images/updates/cleaning-illustration-16-9.png" />'
