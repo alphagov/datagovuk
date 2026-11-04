@@ -10,11 +10,47 @@
 {% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes -%}
 {% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination -%}
 
+{% macro facet_item(facet) -%}
+  <li class="govuk-body datagovuk-body-s datagovuk-search-facets__item{{ ' datagovuk-search-facets__item--selected' if facet.selected else '' }}">
+    <a href="{{ facet.url }}"
+       class="govuk-link datagovuk-link datagovuk-search-facets__link"
+       {% if facet.selected %}aria-current="true"{% endif %}>
+      {#- No whitespace inside the link, or it gets underlined as part of the link -#}
+      {{- facet.label -}}
+      {%- if facet.selected %}<span class="govuk-visually-hidden">(selected, remove filter)</span>
+    {% endif -%}
+  </a>
+  {% if not facet.selected %}<span class="datagovuk-search-facets__count">{{ facet.count|intcomma }}</span>{% endif %}
+</li>
+{%- endmacro %}
+
 {% block search_main %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
       <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
-      {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button datagovuk-button--secondary"}) }}
+      {% for facet_group in facet_groups %}
+        <div class="datagovuk-search-facets-group">
+          <h3 class="govuk-body datagovuk-body-s">{{ facet_group.label }}</h3>
+          <ul class="datagovuk-search-facets">
+            {% for facet in facet_group.facets[:4] %}{{ facet_item(facet) }}{% endfor %}
+          </ul>
+          {% if facet_group.facets | length > 4 %}
+            {% set rest_id = "facets-rest-" ~ facet_group.key %}
+            <ul id="{{ rest_id }}" class="datagovuk-search-facets">
+              {% for facet in facet_group.facets[4:] %}{{ facet_item(facet) }}{% endfor %}
+            </ul>
+            {{ govukButton({
+                        "text": "Show more",
+                        "type": "button",
+                        "classes": "datagovuk-button datagovuk-button--secondary datagovuk-body-s datagovuk-search-facets__toggle datagovuk-visibility-toggle govuk-!-margin-top-2 govuk-!-margin-bottom-0",
+                        "attributes": {
+                        "aria-controls": rest_id,
+                        "data-hide-text": "Show less"
+                        }
+                        }) }}
+          {% endif %}
+        </div>
+      {% endfor %}
     </div>
 
     <div class="govuk-grid-column-two-thirds">
@@ -69,3 +105,9 @@
     </div>
   </div>
 {% endblock search_main %}
+
+{% block extra_js %}
+  {% compress js %}
+    <script src="{{ static('javascripts/visibility-toggle.js') }}"></script>
+  {% endcompress %}
+{% endblock extra_js %}
