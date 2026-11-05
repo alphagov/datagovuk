@@ -216,13 +216,16 @@ class SolrSupportingDocument:
 
     @staticmethod
     def from_resource(resource: dict):
-        raw_date = resource.get("metadata_modified") or resource.get("created")
+        metadata_modified = resource.get("metadata_modified") or ""
+        created = resource.get("created") or ""
+        last_modified = resource.get("last_modified") or ""
+        most_recent_update = max(metadata_modified, created, last_modified)
         return SolrSupportingDocument(
             name=resource.get("name") or "No name specified",
             url=resource.get("url", ""),
             format=(resource.get("format") or "").strip().upper(),
             file_size=resource.get("size", ""),
-            last_modified=datetime.fromisoformat(raw_date) if raw_date else None,
+            last_modified=datetime.fromisoformat(most_recent_update) if most_recent_update else None,
         )
 
 
@@ -373,6 +376,7 @@ class SolrDataset:
             else:
                 datafiles.append(SolrDatafile.from_resource(resource, dataset_created_at))
         datafiles.sort(reverse=True, key=lambda item: item.created_at)
+        docs.sort(reverse=True, key=lambda item: item.last_modified)
 
         topic = doc.get("extras_theme-primary", "") or ""
         if topic:

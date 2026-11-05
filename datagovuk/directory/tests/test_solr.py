@@ -250,6 +250,33 @@ class TestSolrSupportingDocumentModel:
 
         assert doc.last_modified == datetime.fromisoformat("2022-01-01T00:00:00")
 
+    def test_from_resource_last_modified_from_most_recent_update(self):
+        resource = {
+            "name": "My report",
+            "url": "https://example.com/report.pdf",
+            "format": "PDF",
+            "size": None,
+            "created": "2024-01-01T00:00:00",
+            "metadata_modified": "2026-01-01T00:00:00",
+            "last_modified": "2025-01-01T00:00:00",
+        }
+
+        resource_two = {
+            "name": "My report 2",
+            "url": "https://example.com/report2.pdf",
+            "format": "PDF",
+            "size": None,
+            "created": "2024-01-01T00:00:00",
+            "metadata_modified": None,
+            "last_modified": "2025-01-01T00:00:00",
+        }
+
+        doc = SolrSupportingDocument.from_resource(resource)
+        doc_two = SolrSupportingDocument.from_resource(resource_two)
+
+        assert doc.last_modified == datetime.fromisoformat("2026-01-01T00:00:00")
+        assert doc_two.last_modified == datetime.fromisoformat("2025-01-01T00:00:00")
+
     def test_from_resource_last_updated_none_when_both_absent(self):
         resource = {
             "name": "My report",
