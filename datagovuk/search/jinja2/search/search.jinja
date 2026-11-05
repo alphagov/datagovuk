@@ -62,18 +62,25 @@
               <p class="govuk-visually-hidden" role="status" data-facet-search-live></p>
             </div>
           {% endif %}
-          <ul class="datagovuk-search-facets">
-            {% for facet in facet_group.facets[:4] %}{{ facet_item(facet) }}{% endfor %}
-          </ul>
-          {% if facet_group.facets | length > 4 %}
-            {% set rest_id = "facets-rest-" ~ facet_group.key %}
-            <ul id="{{ rest_id }}" class="datagovuk-search-facets">
-              {% for facet in facet_group.facets[4:] %}{{ facet_item(facet) }}{% endfor %}
+          {% set rest_id = "facets-rest-" ~ facet_group.key %}
+          <div class="datagovuk-search-facets-wrapper" role="group" aria-label="{{ facet_group.label }}">
+            <ul class="datagovuk-search-facets">
+              {% for facet in facet_group.facets[:4] %}{{ facet_item(facet) }}{% endfor %}
             </ul>
+            {% if facet_group.facets | length > 4 %}
+              {# The toggle sets display: block on this div, so the list inside keeps its own display: flex #}
+              <div id="{{ rest_id }}">
+                <ul class="datagovuk-search-facets">
+                  {% for facet in facet_group.facets[4:] %}{{ facet_item(facet) }}{% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+          </div>
+          {% if facet_group.facets | length > 4 %}
             {{ govukButton({
                         "text": "Show more",
                         "type": "button",
-                        "classes": "datagovuk-button datagovuk-button--secondary datagovuk-body-s datagovuk-search-facets__toggle datagovuk-visibility-toggle govuk-!-margin-top-2 govuk-!-margin-bottom-0",
+                        "classes": "datagovuk-button datagovuk-button--secondary datagovuk-body-s datagovuk-search-facets__toggle datagovuk-visibility-toggle",
                         "attributes": {
                         "aria-controls": rest_id,
                         "data-hide-text": "Show less"

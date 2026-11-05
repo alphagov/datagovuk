@@ -13,6 +13,7 @@ class DatagovukFacetSearch {
     this.$items = Array.from($group.querySelectorAll('[data-facet-label]'))
     this.$toggle = $group.querySelector('.datagovuk-visibility-toggle')
     this.$rest = this.$toggle && document.getElementById(this.$toggle.getAttribute('aria-controls'))
+    this.$scroll = $group.querySelector('.datagovuk-search-facets-wrapper')
     this.timer = null
     this.lastCount = null
 
@@ -34,6 +35,8 @@ class DatagovukFacetSearch {
     }
 
     this.setFiltering(true)
+    // Otherwise matches can sit above the visible part of a scrolled list
+    this.$scroll.scrollTop = 0
     let matches = 0
     this.$items.forEach(($item) => {
       const matched = $item.dataset.facetLabel.toLowerCase().includes(term)
