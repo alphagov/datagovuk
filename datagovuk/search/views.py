@@ -119,11 +119,18 @@ class SearchView(GETFormView):
 
     def form_valid(self, form):
         query = form.cleaned_data.pop("query", "")
+        facet_groups = _build_facet_groups(self.request.GET.dict())
         context = self.get_context_data(
             search_made=True,
             search_query=query,
             debug_show_facets=True,
-            facet_groups=_build_facet_groups(self.request.GET.dict()),
+            facet_groups=facet_groups,
+            selected_filters=[
+                {"group": group["label"], "label": facet["label"], "url": facet["url"]}
+                for group in facet_groups
+                for facet in group["facets"]
+                if facet["selected"]
+            ],
             directory_search=search_directory(query, filters=form.cleaned_data),
             collection_search=search_collections(query),
         )
