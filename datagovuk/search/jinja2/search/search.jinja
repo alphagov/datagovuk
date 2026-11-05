@@ -11,7 +11,8 @@
 {% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination -%}
 
 {% macro facet_item(facet) -%}
-  <li class="govuk-body datagovuk-body-s datagovuk-search-facets__item{{ ' datagovuk-search-facets__item--selected' if facet.selected else '' }}">
+  <li class="govuk-body datagovuk-body-s datagovuk-search-facets__item{{ ' datagovuk-search-facets__item--selected' if facet.selected else '' }}"
+      data-facet-label="{{ facet.label }}">
     <a href="{{ facet.url }}"
        class="govuk-link datagovuk-link datagovuk-search-facets__link"
        {% if facet.selected %}aria-current="true"{% endif %}>
@@ -42,8 +43,25 @@
     <div class="govuk-grid-column-one-third">
       <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
       {% for facet_group in facet_groups %}
-        <div class="datagovuk-search-facets-group">
+        <div class="datagovuk-search-facets-group" data-facet-group>
           <h3 class="govuk-body datagovuk-body-s">{{ facet_group.label }}</h3>
+          {% if facet_group.facets | length > 4 %}
+            {# Hidden until facet-search.js reveals it, so there is no dead input without JavaScript #}
+            {% set search_id = "facets-search-" ~ facet_group.key %}
+            <div class="datagovuk-facet-search" data-facet-search hidden>
+              <label class="govuk-visually-hidden" for="{{ search_id }}">Search {{ facet_group.label }}</label>
+              <input type="search"
+                     id="{{ search_id }}"
+                     class="govuk-input datagovuk-facet-search__input"
+                     placeholder="Search"
+                     autocomplete="off"
+                     spellcheck="false" />
+              <p class="govuk-body datagovuk-body-s datagovuk-facet-search__empty" data-facet-search-empty hidden>
+                No matching {{ facet_group.label | lower }}
+              </p>
+              <p class="govuk-visually-hidden" role="status" data-facet-search-live></p>
+            </div>
+          {% endif %}
           <ul class="datagovuk-search-facets">
             {% for facet in facet_group.facets[:4] %}{{ facet_item(facet) }}{% endfor %}
           </ul>
@@ -122,5 +140,6 @@
 {% block extra_js %}
   {% compress js %}
     <script src="{{ static('javascripts/visibility-toggle.js') }}"></script>
+    <script src="{{ static('javascripts/facet-search.js') }}"></script>
   {% endcompress %}
 {% endblock extra_js %}
