@@ -143,10 +143,27 @@
   }
 }
 
+// The gap spaces the items from each other but never after the last one, so the space above the "Show more" button
+// is the same whichever item is last on screen.
 .datagovuk-search-facets {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   padding-left: 0;
   list-style: none;
   margin: 0;
+}
+
+// Wraps all of a group's facet lists (the top few and the "Show more" list). Scrolls once they pass 500px.
+// No padding: content scrolled to the edge would show through it. Link focus styles extend 2px above and 4px below
+// the link, so the 5px top padding on each item covers the first but the last item's can be clipped at the very end.
+// The gap between the top list and the "Show more" div.
+.datagovuk-search-facets-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 // Search box above a facet group's values, styled like the header search: a pill with the icon inside on the right.
@@ -188,6 +205,7 @@
 
 // Match the body-s text size. The double class beats .datagovuk-button's own font-size, whatever the load order.
 .datagovuk-button.datagovuk-search-facets__toggle {
+  margin: 20px 0 0; // gap below the facet list, and no bottom margin (overrides .govuk-button's)
   padding-top: 10px; // slightly less than .datagovuk-button's 14px
   padding-bottom: 10px;
   font-size: 18px;
@@ -200,8 +218,8 @@
 // The left padding leaves room for the selected tick, and keeps wrapped lines aligned with the first.
 .datagovuk-search-facets__item {
   position: relative;
-  margin-bottom: 5px;
-  padding: 5px 0 5px 22px;
+  margin: 0; // overrides govuk-body's bottom margin
+  padding: 5px 0 0 22px;
 }
 
 .datagovuk-search-facets__count {
