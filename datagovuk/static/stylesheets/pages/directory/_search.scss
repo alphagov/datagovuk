@@ -171,9 +171,10 @@
   color: $datagovuk-grey;
 }
 
-// Selected facets are plain text with a tick to the left, no background or colour.
+// Selected facets are bold text with a tick to the left, no background or colour.
 .datagovuk-search-facets__item--selected {
   .datagovuk-search-facets__link {
+    font-weight: bold;
     text-decoration: none;
   }
 
