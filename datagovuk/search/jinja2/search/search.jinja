@@ -25,6 +25,19 @@
 {%- endmacro %}
 
 {% block search_main %}
+  {% if selected_filters %}
+    <ul class="datagovuk-selected-filters" aria-label="Selected filters">
+      {% for filter in selected_filters %}
+        <li>
+          <a href="{{ filter.url }}" class="govuk-link datagovuk-link datagovuk-body-s datagovuk-selected-filters__pill">
+            {{- filter.group }}: {{ filter.label -}}
+            <span class="govuk-visually-hidden">(remove filter)</span>
+            <span class="datagovuk-selected-filters__remove" aria-hidden="true"></span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
       <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
