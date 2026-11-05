@@ -193,3 +193,63 @@
     transform: translateY(-65%) rotate(45deg);
   }
 }
+
+// Selected filter pills above the facets and results. Each links to the current search with that filter removed.
+.datagovuk-selected-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 40px;
+  padding: 0;
+  list-style: none;
+}
+
+.datagovuk-selected-filters__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background-color: $datagovuk-light-grey-hover;
+  color: $datagovuk-black;
+  text-decoration: none;
+
+  &:hover {
+    background-color: darken($datagovuk-light-grey-hover, 6%);
+  }
+
+  // Same focus style as .datagovuk-button: the GOV.UK yellow background (from .govuk-link:focus) with a dark green
+  // outline, and no underline-style box-shadow.
+  &:focus:not(:active):not(:hover) {
+    box-shadow: none;
+    outline: 2px solid $datagovuk-dark-green;
+  }
+}
+
+// A cross drawn with two rotated bars rather than a text glyph, so it is centred exactly whatever the font metrics.
+.datagovuk-selected-filters__remove {
+  position: relative;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    margin-top: -0.5px;
+    background-color: currentcolor;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
+}

@@ -49,6 +49,27 @@ class TestSearchView:
         assert context["directory_results"]["hits"]["total"]["value"] == 1
         assert context["collection_results"]["hits"]["total"]["value"] == 1
 
+    def test_get_with_selected_facets_lists_filters_that_remove_themselves(
+        self,
+        client,
+        search_url,
+        opensearch_documents,
+    ):
+        opensearch_documents([DatasetFactory()])
+
+        response = client.get(search_url, {"query": "rail", "publisher": "ordnance-survey", "page": "2"})
+
+        assert response.context_data["selected_filters"] == [
+            {"group": "Publisher", "label": "Ordnance Survey", "url": "?query=rail"},
+        ]
+
+    def test_get_without_selected_facets_has_no_selected_filters(self, client, search_url, opensearch_documents):
+        opensearch_documents([DatasetFactory()])
+
+        response = client.get(search_url, {"query": "rail"})
+
+        assert response.context_data["selected_filters"] == []
+
     @pytest.mark.parametrize("query", ["", "   "])
     def test_get_with_blank_query_matches_all(self, client, search_url, opensearch_documents, query):
         opensearch_documents(

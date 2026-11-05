@@ -144,7 +144,14 @@ class SearchView(GETFormView):
         context = super().get_context_data(**kwargs)
         if query is not None:
             context["search_made"] = True
-            context["facet_groups"] = _build_facet_groups(self.request.GET.dict())
+            facet_groups = _build_facet_groups(self.request.GET.dict())
+            context["facet_groups"] = facet_groups
+            context["selected_filters"] = [
+                {"group": group["label"], "label": facet["label"], "url": facet["url"]}
+                for group in facet_groups
+                for facet in group["facets"]
+                if facet["selected"]
+            ]
             context["collection_results"] = collection_results
             context["collection_docs"] = collection_docs
             context["directory_results"] = directory_results
