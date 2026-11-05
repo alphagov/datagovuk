@@ -149,6 +149,43 @@
   margin: 0;
 }
 
+// Search box above a facet group's values, styled like the header search: a pill with the icon inside on the right.
+// Revealed by facet-search.js.
+.datagovuk-facet-search {
+  position: relative;
+  margin-bottom: 10px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 5px;
+    width: 44px;
+    height: 44px;
+    background-color: $datagovuk-grey;
+    -webkit-mask: url(static('images/icons/search.svg')) no-repeat center / 26px;
+    mask: url(static('images/icons/search.svg')) no-repeat center / 26px;
+    pointer-events: none;
+  }
+}
+
+.datagovuk-facet-search__input {
+  height: auto; // let the padding set the height, instead of .govuk-input's fixed 2.5rem
+  margin-bottom: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 20px;
+  padding-right: 60px; // keeps text clear of the icon
+  border-width: 1px;
+  border-radius: 999px;
+  border-color: $datagovuk-mid-grey;
+}
+
+.datagovuk-facet-search__empty {
+  margin: 10px 0 0;
+  color: $datagovuk-grey;
+}
+
 // Match the body-s text size. The double class beats .datagovuk-button's own font-size, whatever the load order.
 .datagovuk-button.datagovuk-search-facets__toggle {
   padding-top: 10px; // slightly less than .datagovuk-button's 14px
