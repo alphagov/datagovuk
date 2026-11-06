@@ -60,6 +60,11 @@ custom feature flags and other settings (e.g. `GOOGLE_TAG_MANAGER_ID`, `ALLOWED_
 | ZENDESK_API_KEY | All |
 | NDL_ZENDESK_EMAIL | All |
 | NDL_ZENDESK_GROUP_ID | All |
+| AWS_REGION | All |
+| AWS_ACCESS_KEY_ID | All |
+| AWS_SECRET_ACCESS_KEY | All |
+| AWS_OPENSEARCH_USE_SSL | Integration, Staging, Production |
+| AWS_OPENSEARCH_VERIFY_CERTS | Integration, Staging, Production |
 
 ## Basic Commands
 
