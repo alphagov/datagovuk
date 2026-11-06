@@ -43,16 +43,16 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "coverage==7.16.2",
+  "coverage==7.17.0",
   "django-coverage-plugin==3.2.2",
   "django-debug-toolbar==8.0.0",
   "django-extensions==4.1",
   "django-stubs[compatible-mypy]==6.1.2",
-  "djlint==1.46.6",
+  "djlint==1.47.0",
   "filelock==4.2.4",
   "ipdb==0.13.13",
   "mypy==2.4.0",
-  "playwright==1.64.0",
+  "playwright==1.64.1",
   "pre-commit==4.7.0",
   "pytest==9.1.1",
   "pytest-django==4.14.0",
@@ -61,7 +61,7 @@ dev = [
   "pytest-sugar==1.1.1",
   "pytest-xdist==3.8.0",
   "responses==0.26.3",
-  "ruff==0.17.1",
+  "ruff==0.17.2",
   "werkzeug[watchdog]==3.1.9",
 ]
 
