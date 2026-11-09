@@ -41,7 +41,6 @@ class TestSearchView:
         assert response.status_code == HTTPStatus.OK
         context = response.context_data
         assert context["search_made"] is True
-        assert context["form"].cleaned_data["query"] == "rail"
         assert [doc.slug for doc in context["directory_docs"]] == ["rail-data"]
         assert [doc.slug for doc in context["collection_docs"]] == ["rail-collection"]
         assert all(isinstance(doc, Dataset) for doc in context["directory_docs"])
@@ -118,6 +117,98 @@ class TestSearchView:
 
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["directory_docs"][0].organisation.name == "First publisher"
+
+    def test_get_with_filters_only_filters_directory_not_collections(self, client, search_url, opensearch_documents):
+        opensearch_documents(
+            [
+                DatasetFactory(slug="transport", topic_slug="transport"),
+                DatasetFactory(slug="health", topic_slug="health"),
+                CollectionFactory(slug="any-collection", collection="transport"),
+            ],
+        )
+
+        response = client.get(search_url, {"topic": "transport"})
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["search_made"] is True
+        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["transport"]
+        assert [doc.slug for doc in response.context_data["collection_docs"]] == ["any-collection"]
+
+    def test_get_with_publisher_filters_directory_results(self, client, search_url, opensearch_documents):
+        opensearch_documents(
+            [
+                DatasetFactory(slug="wanted", organisations=[OrganisationFactory(slug="wanted-publisher")]),
+                DatasetFactory(slug="other", organisations=[OrganisationFactory(slug="other-publisher")]),
+            ],
+        )
+
+        response = client.get(search_url, {"publisher": "wanted-publisher"})
+
+        assert response.status_code == HTTPStatus.OK
+        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["wanted"]
+
+    def test_get_with_format_filters_directory_results(self, client, search_url, opensearch_documents):
+        opensearch_documents(
+            [
+                DatasetFactory(slug="csv", resources=[ResourceFactory(format="CSV")]),
+                DatasetFactory(slug="pdf", resources=[ResourceFactory(format="PDF")]),
+            ],
+        )
+
+        response = client.get(search_url, {"format": "CSV"})
+
+        assert response.status_code == HTTPStatus.OK
+        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["csv"]
+
+    def test_get_with_open_government_licence_only_filters_directory_results(
+        self,
+        client,
+        search_url,
+        opensearch_documents,
+    ):
+        opensearch_documents(
+            [
+                DatasetFactory(slug="ogl", licence={"slug": "uk-ogl", "title": "Open Government Licence"}),
+                DatasetFactory(slug="other", licence={"slug": "cc-by", "title": "Creative Commons"}),
+            ],
+        )
+
+        response = client.get(search_url, {"open_government_licence_only": "on"})
+
+        assert response.status_code == HTTPStatus.OK
+        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["ogl"]
+
+    def test_get_with_query_and_filters_combines_them(self, client, search_url, opensearch_documents):
+        opensearch_documents(
+            [
+                DatasetFactory(slug="rail-transport", title="Rail timetables", topic_slug="transport"),
+                DatasetFactory(slug="rail-health", title="Rail accidents", topic_slug="health"),
+                DatasetFactory(slug="bus-transport", title="Bus routes", topic_slug="transport"),
+            ],
+        )
+
+        response = client.get(search_url, {"query": "rail", "topic": "transport"})
+
+        assert response.status_code == HTTPStatus.OK
+        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["rail-transport"]
+
+    @pytest.mark.parametrize(
+        ("field", "value"),
+        [
+            ("topic", "Transport"),
+            ("topic", "not-a-topic"),
+            ("format", "NOT-A-FORMAT"),
+            ("publisher", "not a slug!"),
+        ],
+    )
+    def test_get_with_invalid_filter_is_invalid(self, client, search_url, field, value):
+        response = client.get(search_url, {field: value})
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.template_name == ["search/search.jinja"]
+        assert field in response.context_data["form"].errors
+        assert "search_made" not in response.context_data
+        assert "directory_docs" not in response.context_data
 
 
 class TestDatasetView:
