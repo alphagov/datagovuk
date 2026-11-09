@@ -149,6 +149,21 @@ Source: https://roadtraffic.dft.gov.uk/
 Copied the dropdown table under 'Road traffic by vehicle type from 1993 to 2025'. Extracted
 columns for 'Year' and 'All motor vehicles' to [road-traffic/road-traffic-mileage.csv](road-traffic/road-traffic-mileage.csv).
 
+### Social mobility
+
+The source webpage for the data is [https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/latest](https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/latest)
+
+The visualisation data was from a CSV download file on the page above:
+
+[https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/3.0/IN32-3.0-unemployment--by-SEB--table-format.csv](https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/3.0/IN32-3.0-unemployment--by-SEB--table-format.csv)
+
+The data was save here as a csv file:
+
+[social-mobility/unemployment-by-socio-ecomomic-background.csv](social-mobility/unemployment-by-socio-ecomomic-background.csv)
+
+
+The file [social-mobility/unemployment-by-socio-ecomomic-background.json](social-mobility/unemployment-by-socio-ecomomic-background.json) uses the data from the csv file as its data object for a bar chart.
+
 ### Storm overflows
 
 > [!WARNING]
@@ -183,22 +198,6 @@ The file [weather/uk-monthly-max-temperature.json](weather/uk-monthly-max-temper
 
 **Note:** Individual years can be anomalous, so a more robust approach would be to use decade averages (e.g. 1900s, 1920s, 1940s, etc.) rather than single-year snapshots. Worth exploring if there's interest.
 
-### Water quality
-Source: [https://www.gov.uk/government/statistics/bathing-water-quality-statistics](https://www.gov.uk/government/statistics/bathing-water-quality-statistics)
-Copy 'latest results' at the bottom of the page into a .csv and chart the percentages.
-
-### Woodland area
-
-The source webpage for the data is [https://www.forestresearch.gov.uk/tools-and-resources/statistics/data-downloads/](https://www.forestresearch.gov.uk/tools-and-resources/statistics/data-downloads/)
-
-The visualisation data was downloaded from there (woodland area statistics).
-
-The `Year` and `UK total (thousand hectares)` columns were extracted for years 2005 to 2025 to create [forest-and-woodlands/woodland-area.csv](forest-and-woodlands/woodland-area.csv).
-
-Values represent the cumulative total woodland area in the UK at each year, **not new** woodland planted that year.
-
-The file [forest-and-woodlands/woodland-area.json](forest-and-woodlands/woodland-area.json) uses the data from the csv file as its `series.data` object.
-
 
 ### UK Trade
 
@@ -217,20 +216,23 @@ the graph itself this was divided by the number base 1000 to give the number in 
 
 The file [uk-trade/total-uk-imports-exports-2010-2025.json](uk-trade/total-uk-imports-exports-2010-2025.json) uses the data from the csv file as its two `series` objects.
 
-### Social mobility
 
-The source webpage for the data is [https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/latest](https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/latest)
+### Water quality
+Source: [https://www.gov.uk/government/statistics/bathing-water-quality-statistics](https://www.gov.uk/government/statistics/bathing-water-quality-statistics)
+Copy 'latest results' at the bottom of the page into a .csv and chart the percentages.
 
-The visualisation data was from a CSV download file on the page above:
+### Woodland area
 
-[https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/3.0/IN32-3.0-unemployment--by-SEB--table-format.csv](https://social-mobility.data.gov.uk/intermediate_outcomes/work_in_early_adulthood_(25_to_29_years)/unemployment/3.0/IN32-3.0-unemployment--by-SEB--table-format.csv)
+The source webpage for the data is [https://www.forestresearch.gov.uk/tools-and-resources/statistics/data-downloads/](https://www.forestresearch.gov.uk/tools-and-resources/statistics/data-downloads/)
 
-The data was save here as a csv file:
+The visualisation data was downloaded from there (woodland area statistics).
 
-[social-mobility/unemployment-by-socio-ecomomic-background.csv](social-mobility/unemployment-by-socio-ecomomic-background.csv)
+The `Year` and `UK total (thousand hectares)` columns were extracted for years 2005 to 2025 to create [forest-and-woodlands/woodland-area.csv](forest-and-woodlands/woodland-area.csv).
 
+Values represent the cumulative total woodland area in the UK at each year, **not new** woodland planted that year.
 
-The file [social-mobility/unemployment-by-socio-ecomomic-background.json](social-mobility/unemployment-by-socio-ecomomic-background.json) uses the data from the csv file as its data object for a bar chart.
+The file [forest-and-woodlands/woodland-area.json](forest-and-woodlands/woodland-area.json) uses the data from the csv file as its `series.data` object.
+
 
 ***
 
