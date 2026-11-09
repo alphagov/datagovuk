@@ -36,15 +36,27 @@ env:
 jobs:
   smoke-tests:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
+
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v7.0.1
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.3.0
+        uses: docker/setup-buildx-action@v4.4.1
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and cache local backend
-        uses: docker/bake-action@v7.3.0
+        uses: docker/bake-action@v7.5.0
         with:
           push: false
           load: true
@@ -75,6 +87,7 @@ jobs:
 
       - name: Run E2E smoke tests
         run: |
+          docker network create datagovuk
           docker compose -f docker-compose.local.yml up -d
           # --override-ini suppresses --ds=config.settings.test and --reuse-db from the default
           # addopts in pyproject.toml; no local Django instance is needed when BASE_URL is set.

@@ -98,6 +98,16 @@ class TestTestError403View:
         assert "Forbidden - National Data Library" in response.content.decode()
 
 
+class TestCSRF403View:
+    def test_post_csrf_token_missing_responds_403(self, client):
+        client.handler.enforce_csrf_checks = True
+        url = reverse("pages:home")
+        response = client.post(url, {"data": "data"})
+
+        assert response.status_code == HTTPStatus.FORBIDDEN
+        assert "Forbidden - National Data Library" in response.content.decode()
+
+
 class TestTestError500View:
     def test_view_synthetic_500(self, client):
         url = reverse("core:test_error_500")

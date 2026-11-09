@@ -85,6 +85,7 @@ LOCAL_APPS = [
     "datagovuk.directory",
     "datagovuk.ckan_redirect",
     "datagovuk.support",
+    "datagovuk.search",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -146,6 +147,8 @@ SECURE_CSP = {
         "ckan.publishing.service.gov.uk",
     ],
     "font-src": [CSP.SELF],
+    "frame-ancestors": [CSP.SELF],
+    "form-action": [CSP.SELF],
     "img-src": [CSP.SELF, "*.google-analytics.com", "*.googletagmanager.com"],
     "manifest-src": [CSP.SELF],
     "media-src": [CSP.SELF],
@@ -317,13 +320,21 @@ DATAGOVUK_GIT_SHA = env("GIT_SHA", default=None)
 
 class FEATURE_FLAGS(Enum):  # noqa: N801
     TEST_FEATURE_FLAG = "test-feature-flag"
-    SUPPORT_FORM = "support-form"
+    SEARCH_V2 = "search-v2"
 
 
 FEATURE_FLAGS_ENABLED = env.list("FEATURE_FLAGS_ENABLED", default=[])
 
 
 SOLR_URL = env("SOLR_URL", default=None)
+
+OPENSEARCH_URL = env("OPENSEARCH_URL", default=None)
+OPENSEARCH_DATASETS_INDEX = env("OPENSEARCH_DATASETS_INDEX", default="datasets")
+OPENSEARCH_COLLECTIONS_INDEX = env("OPENSEARCH_COLLECTIONS_INDEX", default="collections")
+
+AWS_OPENSEARCH_USE_SSL = env.bool("AWS_OPENSEARCH_USE_SSL", default=True)
+AWS_OPENSEARCH_VERIFY_CERTS = env.bool("AWS_OPENSEARCH_VERIFY_CERTS", default=True)
+AWS_REGION = env("AWS_REGION", default=None)
 
 MONKEYPATCH_ZSCALER_SSL = env.bool("MONKEYPATCH_ZSCALER_SSL", False)
 

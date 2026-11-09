@@ -33,7 +33,7 @@ class TestDatasetPage:
     def test_feedback_shows_dataset_specific_text(self, page, live_server_url, dataset_url):
         page.goto(live_server_url + dataset_url)
         feedback = page.locator(".datagovuk-inset-text")
-        expect(feedback).to_contain_text("Is this data/dataset useful?")
+        expect(feedback).to_contain_text("Is this data useful?")
 
     def test_feedback_link(self, page, live_server_url, dataset_url):
         page.goto(live_server_url + dataset_url)

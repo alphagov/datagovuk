@@ -15,3 +15,9 @@ services:
       - '8001:8000'
       - '9394:9394'
     command: /start
+  zap:
+    image: zaproxy/zap-stable
+    depends_on:
+      - django
+    volumes:
+      - ./pentest:/zap/wrk:rw

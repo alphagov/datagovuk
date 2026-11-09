@@ -1,16 +1,10 @@
 from http import HTTPStatus
 from unittest.mock import patch
 
-import pytest
 from django.contrib.messages import get_messages
 from django.urls import reverse
 
 from datagovuk.support.zendesk import ZendeskError
-
-
-@pytest.fixture(autouse=True)
-def support_feature_flag(settings):
-    settings.FEATURE_FLAGS_ENABLED = [settings.FEATURE_FLAGS.SUPPORT_FORM.value]
 
 
 class TestSupportFormView:

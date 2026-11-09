@@ -21,6 +21,8 @@ init:
     just patch-zscaler-ssl
     @echo ""
     @echo "datagovuk install is initialised for local development. Bringing up the containers with '$ just up'"
+    docker network create datagovuk || true
+    just ghcr-login
     just up
 
 patch-zscaler-ssl:
@@ -81,22 +83,38 @@ run +args:
 
 # test: Run pytest
 test *args:
+    @docker compose exec django pytest -n 4 {{args}}
+
+test-sync *args:
     @docker compose exec django pytest {{args}}
 
 test-unit *args:
     @docker compose exec django pytest datagovuk/ {{args}}
 
 test-e2e *args:
-    @docker compose exec django pytest tests/e2e/ {{args}}
+    @docker compose exec django pytest -n 4 tests/e2e/ {{args}}
 
 coverage:
     @docker compose exec django coverage run -m pytest datagovuk/
     @docker compose exec django coverage html
+    open htmlcov/index.html
 
 # e2e-install-playwright: Install playwright locally
 e2e-install-playwright:
-    uv sync
-    uv run playwright install --with-deps
+    SSL_CERT_FILE="" uv sync --system-certs
+    uv run playwright install --with-deps || { \
+        echo ""; \
+        echo "Playwright browser download failed."; \
+        echo "If the error was 'Request to ... timed out', your network may have broken IPv6 connectivity"; \
+        echo "(Playwright tries IPv6 first and the connection hangs; check with: curl -6 -m 10 https://www.google.com)."; \
+        echo "Disable IPv6 temporarily and retry:"; \
+        echo ""; \
+        echo "  sudo networksetup -setv6off Wi-Fi"; \
+        echo "  just e2e-install-playwright"; \
+        echo "  sudo networksetup -setv6automatic Wi-Fi"; \
+        echo ""; \
+        exit 1; \
+    }
 
 # e2e-codegen: Generate a new end to end test with playwright recorder
 e2e-codegen +args:
@@ -137,3 +155,11 @@ prod-up *args:
 prod-down *args:
     @echo "Stopping production containers..."
     docker compose -f docker-compose.production.yml down {{args}}
+
+pentest:
+    just prod-build
+    just prod-up
+    docker compose -f docker-compose.production.yml run --rm zap zap-baseline.py -t http://django:8000 -r zap-report.html
+
+ghcr-login:
+    SSL_CERT_FILE= gh auth token | SSL_CERT_FILE= docker login ghcr.io -u "$(SSL_CERT_FILE= gh api user -q .login)" --password-stdin

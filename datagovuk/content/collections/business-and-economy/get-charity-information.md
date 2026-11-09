@@ -4,8 +4,8 @@ websites:
   - url: https://register-of-charities.charitycommission.gov.uk/en/charity-search
     link-text: Get charity information
 api:
-  url: https://register-of-charities.charitycommission.gov.uk/en/documentation-on-the-api
-  link-text: Charity Commission API
+  - url: https://register-of-charities.charitycommission.gov.uk/en/documentation-on-the-api
+    link-text: Charity Commission API
 dataset:
 page-last-updated: "2026-03-24"
 visualisation-data:

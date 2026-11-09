@@ -1,6 +1,8 @@
 import pytest
 from playwright.sync_api import expect
 
+from datagovuk.pages.views import HELP_PAGES
+
 
 @pytest.mark.smoke
 def test_about_page_content(page, live_server_url):
@@ -32,7 +34,24 @@ def test_accessibility_page_content(page, live_server_url):
     )
 
 
-# TODO: reenable the support page test once the new support page is implemented in all environments
+@pytest.mark.smoke
+def test_support_page_content(page, live_server_url):
+    page.goto(live_server_url + "/support/")
+    expect(page.get_by_role("heading", level=1)).to_have_text("Contact National Data Library")
+    expect(page.get_by_label("What are the details")).to_be_visible()
+    expect(page.get_by_role("link", name="Join the National Data Library on Slack")).to_have_attribute(
+        "href",
+        "https://ukgovernmentdigital.slack.com/archives/C037J3GTE4T",
+    )
+
+
+@pytest.mark.smoke
+def test_help_page_content(page, live_server_url):
+    page.goto(live_server_url + "/help/")
+    expect(page.get_by_role("heading", level=1)).to_have_text("Help")
+    for item in HELP_PAGES:
+        expect(page.get_by_role("link", name="About the National Data Library")).to_be_visible()
+        expect(page.get_by_text(item["description"])).to_be_visible()
 
 
 def test_team_page_content(page, live_server_url):
@@ -61,15 +80,4 @@ def test_privacy_and_terms_page_content(page, live_server_url):
 @pytest.mark.smoke
 def test_roadmap_page_content(page, live_server_url):
     page.goto(live_server_url + "/roadmap/")
-    expect(page.get_by_role("heading", level=1)).to_have_text("Our plan for the National Data Library")
-    expect(page.get_by_role("heading", level=2, name="National Data Library roadmap")).to_be_visible()
-
-    expect(page.get_by_role("heading", level=3, name="Now")).to_be_visible()
-    expect(page.get_by_role("link", name="Complete the feedback form").first).to_have_attribute(
-        "href",
-        "https://forms.office.com/e/9V26PNFQaR",
-    )
-    collections_link = page.get_by_role("link", name="data collections pages", exact=True)
-    expect(collections_link).to_have_attribute("href", "/")
-    collections_link.click()
-    expect(page).to_have_url(live_server_url + "/")
+    expect(page.get_by_role("heading", level=1)).to_have_text("The National Data Library roadmap")

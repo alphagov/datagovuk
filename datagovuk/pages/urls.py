@@ -24,12 +24,6 @@ urlpatterns = [
         kwargs={"slug": "accessibility"},
     ),
     path(
-        "support/",
-        views.PagesView.as_view(),
-        name="support",
-        kwargs={"slug": "support"},
-    ),
-    path(
         "team/",
         views.PagesView.as_view(),
         name="team",
@@ -67,5 +61,10 @@ urlpatterns = [
         "publishers/",
         TemplateView.as_view(template_name="pages/publishers.jinja"),
         name="publishers",
+    ),
+    path(
+        "help/",
+        views.HelpView.as_view(),
+        name="help",
     ),
 ]

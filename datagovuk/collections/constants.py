@@ -42,11 +42,12 @@ BASE_COLLECTIONS = [
         ],
     },
     {
-        "title": "Government",
-        "slug": "government",
+        "title": "Government and Parliament",
+        "slug": "government-and-parliament",
         "description": "Elections and legislation, finance and performance, Council Tax",
         "topics": [
             {"title": "Election results", "slug": "election-results"},
+            {"title": "Parliament voting records", "slug": "parliament-voting-records"},
             {"title": "Legislation", "slug": "legislation"},
             {"title": "Service assessment reports", "slug": "service-assessment-reports"},
             {"title": "Local government finance", "slug": "local-government-finance"},
@@ -81,6 +82,7 @@ BASE_COLLECTIONS = [
             {"title": "Births", "slug": "births"},
             {"title": "Deaths", "slug": "deaths"},
             {"title": "Public health dashboard", "slug": "public-health-dashboard"},
+            {"title": "NHS England waiting times", "slug": "nhs-england-waiting-times"},
             {"title": "Population estimates", "slug": "population-estimates"},
             {"title": "Immigration", "slug": "immigration"},
             {"title": "Social mobility", "slug": "social-mobility"},

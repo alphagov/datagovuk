@@ -143,6 +143,13 @@ def search_datasets(solr_client):
         title="DGUK E2E Search dataset licence",
         license_id="ogl",
     )
+    create_solr_doc(
+        solr_client,
+        name="search-dataset-missing-links",
+        title="DGUK E2E Search dataset missing links",
+        license_id="ogl",
+        res_url=[],
+    )
     # Most recent by virtue of being the last created..
     create_solr_doc(
         solr_client,

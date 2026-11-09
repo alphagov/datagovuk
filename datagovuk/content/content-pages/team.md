@@ -21,6 +21,8 @@ Brendan Smith – Senior Developer
 
 Geena Vabulas – Senior User Researcher
 
+Gemma Dugdale – Content Designer
+
 Joe Lanman – Senior Designer
 
 Ken Tsang – Lead Developer

@@ -2,6 +2,7 @@ import csv
 import io
 
 import requests
+from urllib3.exceptions import LocationParseError
 
 from datagovuk.core.utils import capture_exception
 
@@ -25,7 +26,7 @@ def fetch_raw_content(url: str):
             raw_content = response.content.decode("iso-8859-1")
         raw_content = raw_content.replace("\r\n", "\n").replace("\r", "\n")
         return raw_content.rpartition("\n")[0]
-    except (requests.RequestException, UnicodeDecodeError) as e:
+    except (requests.RequestException, UnicodeDecodeError, LocationParseError) as e:
         capture_exception(e, send_to_sentry=False)
         return ""
 

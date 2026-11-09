@@ -43,6 +43,17 @@ def test_about(client):
     assert "About the National Data Library" in response_content
 
 
+def test_help(client):
+    url = reverse("pages:help")
+    response = client.get(url)
+    response_content = response.content.decode()
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.headers["Cache-Control"] == "max-age=1800, public"
+    assert "Help" in response_content
+    assert "Test feature flag enabled" not in response_content
+
+
 def test_data_curation(client):
     url = reverse("pages:data_curation")
     response = client.get(url)
@@ -81,16 +92,6 @@ def test_accessibility(client):
     assert "Accessibility statement for the National Data Library" in response_content
 
 
-def test_support(client):
-    url = reverse("pages:support")
-    response = client.get(url)
-    response_content = response.content.decode()
-
-    assert response.status_code == HTTPStatus.OK
-    assert "Support - National Data Library" in response_content
-    assert "If you’re a civil servant" in response_content  # noqa: RUF001
-
-
 def test_team(client):
     response = client.get(reverse("pages:team"))
     response_content = response.content.decode()
@@ -114,5 +115,5 @@ def test_roadmap(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Our plan for the National Data Library - National Data Library" in response_content
+    assert "The National Data Library roadmap - National Data Library" in response_content
     assert "National Data Library roadmap" in response_content

@@ -1,6 +1,10 @@
 {% extends "directory/base.jinja" %}
 
 {% set page_title = "Search directory" %}
+
+{% block extra_head %}
+  {% if pagination and pagination.page > 1 %}<meta name="robots" content="noindex, follow" />{% endif %}
+{% endblock extra_head %}
 {% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
 {% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect -%}
 {% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes -%}
@@ -48,6 +52,17 @@
              "value": "on",
              "checked": true if form.open_government_licence_only.value() else false,
              "text": form.open_government_licence_only.label,
+           },
+         ],
+         "formGroup": {"classes": "datagovuk-form-group"},
+      }) }}
+      {{ govukCheckboxes({
+         "name": form.include_datasets_with_no_links.name,
+         "items": [
+           {
+             "value": "on",
+             "checked": true if form.include_datasets_with_no_links.value() else false,
+             "text": form.include_datasets_with_no_links.label,
            },
          ],
          "formGroup": {"classes": "datagovuk-form-group"},

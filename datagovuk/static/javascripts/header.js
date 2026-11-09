@@ -4,8 +4,7 @@ class DatagovukHeader {
     this.$header = $header
     this.$mobileButton = $header.querySelector('#datagovuk-header-button-all')
     this.$desktopButtons = [
-      $header.querySelector('#datagovuk-header-button-collections'),
-      $header.querySelector('#datagovuk-header-button-data-manual')
+      $header.querySelector('#datagovuk-header-button-collections')
     ]
     this.$menus = Array.from($header.querySelectorAll('.datagovuk-header__inner .datagovuk-menu'))
 
