@@ -218,8 +218,13 @@ The file [uk-trade/total-uk-imports-exports-2010-2025.json](uk-trade/total-uk-im
 
 
 ### Water quality
-Source: [https://www.gov.uk/government/statistics/bathing-water-quality-statistics](https://www.gov.uk/government/statistics/bathing-water-quality-statistics)
-Copy 'latest results' at the bottom of the page into a .csv and chart the percentages.
+Source: [ENV17 - Bathing water quality: additional datasets](https://www.gov.uk/government/statistical-data-sets/env17-bathing-water-quality-additional-datasets)
+Files: Classifications/classification summaries for each year, 2017 onwards.
+
+Create a new table with columns for the water classifications (Excellent, Good, Sufficient, and Poor) and Total.
+Create a row for each year (2017 onwards, with 2020 missing).
+From each classification file copy in the summary statistics.
+
 
 ### Woodland area
 
