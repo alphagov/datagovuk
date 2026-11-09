@@ -161,7 +161,39 @@ def search_collections(query):
     return response, documents
 
 
-def search_directory(query):
+def _get_directory_filter(filters):
+    if not filters:
+        return {}
+
+    opensearch_filters = []
+    if filters.get("topic"):
+        opensearch_filters.append(
+            {"term": {"topic_slug": filters["topic"]}},
+        )
+    if filters.get("publisher"):
+        opensearch_filters.append(
+            {"term": {"organisations.slug": filters["publisher"]}},
+        )
+    if filters.get("format"):
+        opensearch_filters.append(
+            {"term": {"resources.format": filters["format"]}},
+        )
+    if filters.get("open_government_licence_only"):
+        opensearch_filters.append(
+            {"term": {"licence.slug": "uk-ogl"}},
+        )
+    return {
+        "bool": {
+            "filter": opensearch_filters,
+        },
+    }
+
+
+def _get_directory_aggregations(filters):
+    return {}
+
+
+def search_directory(query, filters=None):
     client = get_opensearch_client()
     if query and query.strip():
         search_clause = {
@@ -179,16 +211,25 @@ def search_directory(query):
     else:
         search_clause = {"match_all": {}}
 
+    post_filter = _get_directory_filter(filters)
+    aggregations = _get_directory_aggregations(filters)
+
+    query_body = {
+        "query": {
+            "bool": {
+                "must": [search_clause],
+            },
+        },
+        "size": 20,
+    }
+    if post_filter:
+        query_body["post_filter"] = post_filter
+    if aggregations:
+        query_body["aggs"] = aggregations
+
     response = client.search(
         index=settings.OPENSEARCH_DATASETS_INDEX,
-        body={
-            "query": {
-                "bool": {
-                    "must": [search_clause],
-                },
-            },
-            "size": 20,
-        },
+        body=query_body,
     )
     documents = [Dataset(**hit["_source"]) for hit in response["hits"]["hits"]]
     return response, documents

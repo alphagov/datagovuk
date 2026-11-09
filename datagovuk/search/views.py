@@ -13,9 +13,9 @@ class SearchView(GETFormView):
     rows_per_page = 20
 
     def form_valid(self, form):
-        query = form.cleaned_data["query"]
+        query = form.cleaned_data.pop("query", "")
 
-        directory_results, directory_docs = search_directory(query)
+        directory_results, directory_docs = search_directory(query, filters=form.cleaned_data)
         collection_results, collection_docs = search_collections(query)
         context = self.get_context_data(
             query=query,

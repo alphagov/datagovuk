@@ -14,11 +14,12 @@ from datagovuk.search.opensearch import (
     search_directory,
 )
 
-from .factories import CollectionFactory, DatasetFactory, ResourceFactory
+from .factories import CollectionFactory, DatasetFactory, OrganisationFactory, ResourceFactory
 
 COLLECTION_RESULTS = 2
 DIRECTORY_RESULTS = 20
 EXTRA_RESULTS = 3
+FILTERED_RESULTS = 2
 
 
 def _slugs(documents):
@@ -378,6 +379,127 @@ def test_search_directory_limits_documents_but_not_total(opensearch_documents):
 
     assert len(results) == DIRECTORY_RESULTS
     assert response["hits"]["total"]["value"] == DIRECTORY_RESULTS + EXTRA_RESULTS
+
+
+@pytest.mark.parametrize(
+    "filters",
+    [
+        None,
+        {},
+        {"topic": "", "publisher": "", "format": "", "open_government_licence_only": False},
+    ],
+)
+def test_search_directory_without_filter_values_matches_all(filters, opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="first", topic_slug="transport"),
+            DatasetFactory(slug="second", topic_slug="health"),
+        ],
+    )
+
+    _, results = search_directory("", filters)
+
+    assert sorted(_slugs(results)) == ["first", "second"]
+
+
+def test_search_directory_filters_by_topic(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="transport", topic_slug="transport"),
+            DatasetFactory(slug="health", topic_slug="health"),
+            DatasetFactory(slug="no-topic", topic_slug=None),
+        ],
+    )
+
+    _, results = search_directory("", {"topic": "transport"})
+
+    assert _slugs(results) == ["transport"]
+
+
+def test_search_directory_filters_by_publisher_on_any_organisation(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="first-publisher", organisations=[OrganisationFactory(slug="wanted")]),
+            DatasetFactory(
+                slug="second-publisher",
+                organisations=[OrganisationFactory(slug="other"), OrganisationFactory(slug="wanted")],
+            ),
+            DatasetFactory(slug="other-publisher", organisations=[OrganisationFactory(slug="other")]),
+        ],
+    )
+
+    _, results = search_directory("", {"publisher": "wanted"})
+
+    assert sorted(_slugs(results)) == ["first-publisher", "second-publisher"]
+
+
+def test_search_directory_filters_by_format_on_any_resource(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="csv", resources=[ResourceFactory(format="CSV")]),
+            DatasetFactory(slug="mixed", resources=[ResourceFactory(format="PDF"), ResourceFactory(format="CSV")]),
+            DatasetFactory(slug="pdf", resources=[ResourceFactory(format="PDF")]),
+            DatasetFactory(slug="no-resources", resources=[]),
+        ],
+    )
+
+    _, results = search_directory("", {"format": "CSV"})
+
+    assert sorted(_slugs(results)) == ["csv", "mixed"]
+
+
+def test_search_directory_filters_by_open_government_licence_only(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="ogl", licence={"slug": "uk-ogl", "title": "Open Government Licence"}),
+            DatasetFactory(slug="other-licence", licence={"slug": "cc-by", "title": "Creative Commons"}),
+            DatasetFactory(slug="no-licence", licence=None),
+        ],
+    )
+
+    _, results = search_directory("", {"open_government_licence_only": True})
+
+    assert _slugs(results) == ["ogl"]
+
+
+def test_search_directory_combines_filters(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="both", topic_slug="transport", resources=[ResourceFactory(format="CSV")]),
+            DatasetFactory(slug="topic-only", topic_slug="transport", resources=[ResourceFactory(format="PDF")]),
+            DatasetFactory(slug="format-only", topic_slug="health", resources=[ResourceFactory(format="CSV")]),
+        ],
+    )
+
+    _, results = search_directory("", {"topic": "transport", "format": "CSV"})
+
+    assert _slugs(results) == ["both"]
+
+
+def test_search_directory_combines_query_and_filters(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(slug="rail-transport", title="Rail timetables", topic_slug="transport"),
+            DatasetFactory(slug="rail-health", title="Rail accidents", topic_slug="health"),
+            DatasetFactory(slug="bus-transport", title="Bus routes", topic_slug="transport"),
+        ],
+    )
+
+    _, results = search_directory("rail", {"topic": "transport"})
+
+    assert _slugs(results) == ["rail-transport"]
+
+
+def test_search_directory_with_filters_total_excludes_filtered_documents(opensearch_documents):
+    opensearch_documents(
+        [DatasetFactory(topic_slug="transport") for _ in range(FILTERED_RESULTS)]
+        + [DatasetFactory(topic_slug="health") for _ in range(EXTRA_RESULTS)],
+    )
+
+    response, results = search_directory("", {"topic": "transport"})
+
+    assert len(results) == FILTERED_RESULTS
+    assert response["hits"]["total"]["value"] == FILTERED_RESULTS
 
 
 def test_get_directory_document_by_slug_found(opensearch_documents):
