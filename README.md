@@ -20,6 +20,19 @@ They assume a user using Mac OSX.
 ### Install docker desktop
 https://docs.docker.com/desktop/setup/install/mac-install/
 
+### Docker filesystem permissions (macOS)
+
+If you are running Docker on a Mac, you need to ensure the Docker Desktop application has the correct permissions to access the project files on your local filesystem.
+
+1. Open **System Settings** on your Mac.
+2. Go to **Privacy & Security** > **Files and Folders** (or **Full Disk Access**).
+3. Ensure the toggle next to **Docker** is turned on.
+4. Next, open the **Docker Desktop** application.
+5. Click the gear icon to open **Settings**.
+6. Go to **Resources** > **File Sharing**.
+7. Ensure the root directory containing your project (e.g., `/Users/yourusername/projects` or `/Users/yourusername`) is listed here. If it is not, click the `+` icon to add it.
+8. Click **Apply & restart** if you made any changes.
+
 ### Install justfile
 `just` is a simple way to save/run project-specific commands.  It's an alternative to `make` and the devs go in to the differences on the project homepage; https://github.com/casey/just
 
