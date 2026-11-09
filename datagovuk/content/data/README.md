@@ -68,6 +68,19 @@ Sheet: Table 3
 
 Copy the 'Year' and 'Pounds £' columns into a .csv. Remove references to the notes.
 
+### Deaths
+Source: [ONS](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregistrationsummarytables/2024)
+File: Figure 1 .csv
+
+For male/female deaths: Delete the header rows. No additional processing required.
+OR
+Sum rows to get total deaths.
+
+OR, for crude mortality rate:
+File: Figure 2 .xlsx
+
+Delete header rows. Delete number of deaths column. Sort so most recent year is last.
+
 ### Driving tests
 
 Source: https://www.gov.uk/government/statistical-data-sets/driving-test-and-theory-test-data-cars

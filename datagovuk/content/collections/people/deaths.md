@@ -6,7 +6,7 @@ websites:
 api:
 dataset:
 page-last-updated: "2026-03-24"
-visualisation-data:
+visualisation-data: "deaths/mortality-rate-1992-2024.json"
 contact:
 status: for-publication
 ---
