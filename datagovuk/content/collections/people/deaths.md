@@ -1,12 +1,12 @@
 ---
 title: Deaths
 websites:
-  - url: https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregistrationsummarytables/2024
+  - url: https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregistrationsummarytables/2025
     link-text: Deaths
 api:
 dataset:
-page-last-updated: "2026-03-24"
-visualisation-data: "deaths/mortality-rate-1992-2024.json"
+page-last-updated: "2026-11-09"
+visualisation-data: "deaths/death-registrations-1992-2025-male-female-total.json"
 contact:
 status: for-publication
 ---

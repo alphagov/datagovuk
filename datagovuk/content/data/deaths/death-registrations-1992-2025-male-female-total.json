@@ -1,8 +1,8 @@
 {
   "title": "Deaths registered in England and Wales",
   "visualisation_type": "line",
-  "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/bulletins/birthsummarytablesenglandandwales/2025",
-  "download": "live-births-england-and-wales-1938-2025.csv",
+  "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregistrationsummarytables/2025",
+  "download": "death-registrations-1992-2025-male-female-total.csv",
   "publisher": "Office for National Statistics",
   "visualisation_suffix": "k",
   "series": [
@@ -42,7 +42,8 @@
         "2021": 297.989,
         "2022": 292.064,
         "2023": 295.416,
-        "2024": 289.726
+        "2024": 289.726,
+        "2025": 291.364
       }
     },
     {
@@ -81,7 +82,8 @@
         "2021": 288.345,
         "2022": 285.096,
         "2023": 285.947,
-        "2024": 278.887
+        "2024": 278.887,
+        "2025": 279.624
       }
     },
     {
@@ -120,7 +122,8 @@
         "2021": 586.334,
         "2022": 577.16,
         "2023": 581.363,
-        "2024": 568.613
+        "2024": 568.613,
+        "2025": 570.988
       }
     }
   ]
