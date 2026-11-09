@@ -1,5 +1,4 @@
 .datagovuk-section-navigation .datagovuk-section-navigation__item {
-  padding: 10px;
   margin-bottom: 15px;
 }
 
@@ -13,6 +12,8 @@
   color: $datagovuk-green;
   text-decoration: none;
   font-size: 22px;
+  display: block;
+  padding: 10px;
 }
 
 .datagovuk-section-navigation .datagovuk-section-navigation__link:hover {
