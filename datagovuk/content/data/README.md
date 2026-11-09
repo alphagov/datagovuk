@@ -76,8 +76,9 @@ For male/female deaths: Delete the header rows. No additional processing require
 OR
 Sum rows to get total deaths.
 
-OR, for crude mortality rate:
-File: Figure 2 .xlsx
+OR, for age-standardised mortality rate:
+Source: [ONS](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregistrationsummarytables/2025#trends-in-registered-deaths-and-mortality-rates)
+File: Figure 1 .xlsx
 
 Delete header rows. Delete number of deaths column. Sort so most recent year is last.
 
