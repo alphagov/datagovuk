@@ -1,7 +1,21 @@
 ---
 title: "Title"
 
+websites:
+  - url: 
+    link-text:
+  - url: 
+    link-text:
+api:
+    url: 
+    link-text: 
+dataset:
+    url: 
+    link-text:
+
 page-last-reviewed: "YYYY-MM-DD"
+
+visualisation-data:
 
 formats:
   - csv
@@ -9,7 +23,7 @@ formats:
   - pdf
   - xls
   - xlsx
-
+    
 access-methods:
   - download
   - web-service
@@ -35,4 +49,8 @@ nations:
   - wales
   - scotland
   - northern-ireland
+
+status: for-publication
 ---
+
+Main body
