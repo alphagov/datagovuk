@@ -15,6 +15,7 @@ class SearchView(GETFormView):
         query = form.cleaned_data.pop("query", "")
         context = self.get_context_data(
             search_made=True,
+            search_query=query,
             debug_show_facets=True,
             directory_search=search_directory(query, filters=form.cleaned_data),
             collection_search=search_collections(query),
