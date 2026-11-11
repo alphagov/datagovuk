@@ -1,15 +1,20 @@
+import json
 from datetime import datetime  # noqa: TC003
 
 import boto3
 from django.conf import settings
 from opensearchpy import AWSV4SignerAuth, OpenSearch, RequestsHttpConnection
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class Organisation(BaseModel):
     uuid: str
     slug: str
     name: str
+
+
+# copied from datagovuk-indexer repo, ADDITIONAL_INFO_JSON_VALUE_KEYS constant
+_JSON_VALUE_KEYS = {"access_constraints", "dataset-reference-date"}
 
 
 class Dataset(BaseModel):
@@ -21,6 +26,27 @@ class Dataset(BaseModel):
     organisations: list[Organisation] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
+    additional_information: dict = Field(default_factory=dict)
+
+    @model_validator(mode="before")
+    @classmethod
+    def convert_additional_information(cls, data):
+        raw = data.get("additional_information")
+        if isinstance(raw, list):
+            result = {}
+            for additional_info in raw:
+                key = additional_info.get("key")
+                value = additional_info.get("value")
+                if key is not None:
+                    if key in _JSON_VALUE_KEYS:
+                        try:
+                            result[key] = json.loads(value)
+                        except json.JSONDecodeError, TypeError:
+                            result[key] = value
+                    else:
+                        result[key] = value
+            data["additional_information"] = result
+        return data
 
     @property
     def organisation(self):
