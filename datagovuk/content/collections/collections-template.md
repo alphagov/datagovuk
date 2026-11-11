@@ -35,14 +35,11 @@ topic: business-and-economy
 organisations:
   - slug: office-for-national-statistics
     contact:
-      url: "https://www.ons.gov.uk"
-      emails:
-        - "contact@ons.gov.uk"
+        - https://www.ons.gov.uk/help
+        - contact@ons.gov.uk
   - slug: department-for-transport
     contact:
-      url: "https://www.gov.uk/dft"
-      emails:
-        - "contact@dft.gov.uk"
+        - contact@dft.gov.uk
 
 nations:
   - england
@@ -50,7 +47,11 @@ nations:
   - scotland
   - northern-ireland
 
-status: for-publication
+keywords:
+  -
+  -
+  -
+  
 ---
 
 Main body
