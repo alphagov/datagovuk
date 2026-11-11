@@ -4,11 +4,11 @@ from django.urls import reverse
 
 
 def test_update(client):
-    url = reverse("updates:post", kwargs={"year": "2026", "slug": "welcome-to-updates"})
+    url = reverse("updates:post", kwargs={"year": "2026", "slug": "cleaning-up-data-gov-uk"})
     response = client.get(url)
     response_content = response.content.decode()
 
-    assert url == "/updates/2026/welcome-to-updates/"
+    assert url == "/updates/2026/cleaning-up-data-gov-uk/"
     assert response.status_code == HTTPStatus.OK
     assert "Cleaning up data.gov.uk - Updates - National Data Library" in response_content
     assert "28 October 2026" in response_content

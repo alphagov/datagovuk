@@ -14,7 +14,7 @@ The National Data Library (data.gov.uk) helps people find and use open data from
 
 Over the years, as teams focused on other priority services, broken links had built up on data.gov.uk. This was a poor user experience, so cleaning them up was our main priority when we started transforming the service.
 
-Working with data publishers, we’ve deleted 60,818 broken links so far and fixed others, bringing broken links down from over 30% to about 7%.
+Working with data publishers, we’ve removed 60,818 broken links so far and fixed others, bringing broken links down from over 30% to about 7%.
 
 ## Why so many broken links?
 
