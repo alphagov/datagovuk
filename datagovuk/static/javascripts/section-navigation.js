@@ -3,9 +3,9 @@ class DatagovukSectionNavigation {
     this.$sectionNavigation = $sectionNavigation
     this.$button = $sectionNavigation.querySelector('#datagovuk-section-navigation-button-all')
     this.$navigationItems = $sectionNavigation.querySelector('.datagovuk-section-navigation__items-mobile')
-    
+
     this.$button.setAttribute('aria-expanded', 'false')
-    
+
     // Toggle on button click (stop propagation so the document click listener doesn't immediately catch it)
     this.$button.addEventListener('click', (event) => {
       event.stopPropagation()
