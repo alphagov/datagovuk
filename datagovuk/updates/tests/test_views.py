@@ -17,6 +17,16 @@ class TestUpdateView:
         assert response.context_data["date"] == datetime.date(2026, 10, 28)
         assert "Body" in response.context_data["content"]
 
+    def test_authors_link_to_team_page(self, client, make_post):
+        url = make_post(front_matter={"authors": ["Ada Lovelace", "Grace Hopper"]})
+
+        response = client.get(url)
+
+        html = response.content.decode()
+        team_url = reverse("pages:team")
+        assert f'<a href="{team_url}" class="govuk-link datagovuk-link">Ada Lovelace</a>' in html
+        assert f'<a href="{team_url}" class="govuk-link datagovuk-link">Grace Hopper</a>' in html
+
     def test_missing_post_returns_not_found(self, client, make_post):
         make_post(slug="exists")
 

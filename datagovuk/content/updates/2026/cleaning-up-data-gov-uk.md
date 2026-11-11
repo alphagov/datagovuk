@@ -24,7 +24,7 @@ data.gov.uk launched in 2010, and a lot has changed in 16 years! In many cases t
 - commercial data hosting providers closing and going offline
 - data being republished elsewhere without older links being updated or removed
 
-Tim Berners-Lee (inventor of the web and co-founder of data.gov.uk) wrote a classic essay – [Cool URLs don’t change](https://www.w3.org/Provider/Style/URI). In some cases, old links were redirected to the data’s new location, and files were archived before removal, but it does not always happen. However, many older versions of government websites are available in the [UK Government Web Archive](https://webarchive.nationalarchives.gov.uk).
+Tim Berners-Lee (inventor of the web and [co-founder of data.gov.uk](https://www.theguardian.com/technology/blog/2010/jan/21/timbernerslee-government-data)) wrote a classic essay on this issue – [Cool URLs don’t change](https://www.w3.org/Provider/Style/URI), with techniques to avoid links breaking over time. On data.gov.uk, in some cases old links were redirected to the data’s new location, and files were archived before removal (many older versions of government websites are available in the [UK Government Web Archive](https://webarchive.nationalarchives.gov.uk)) but it does not always happen.
 
 data.gov.uk previously had a policy of keeping links to datasets that have been removed, to aid historical records. But we know from feedback and research that clicking broken links was easily the biggest issue our users faced. With The National Archives providing a robust archive of government sites, this means we can focus on providing useful and usable data in the National Data Library and remove old broken links.
 
