@@ -7,6 +7,10 @@ from datagovuk.search.opensearch import Collection, Dataset
 
 from .factories import CollectionFactory, DatasetFactory, OrganisationFactory
 
+TOTAL_RESULTS = 25
+SECOND_PAGE = 2
+SECOND_PAGE_RESULTS = TOTAL_RESULTS - 20
+
 
 @pytest.fixture
 def search_url():
@@ -55,13 +59,50 @@ class TestSearchView:
         search_url,
         opensearch_documents,
     ):
-        opensearch_documents([DatasetFactory()])
+        opensearch_documents([DatasetFactory(title=f"Rail {n}") for n in range(25)])
 
         response = client.get(search_url, {"query": "rail", "publisher": "ordnance-survey", "page": "2"})
 
         assert response.context_data["selected_filters"] == [
             {"group": "Publisher", "label": "Ordnance Survey", "url": "?query=rail"},
         ]
+
+    def test_get_with_many_results_paginates_directory_results(self, client, search_url, opensearch_documents):
+        opensearch_documents([DatasetFactory(title=f"Rail {n}") for n in range(25)])
+
+        response = client.get(search_url, {"query": "rail", "page": "2"})
+
+        context = response.context_data
+        assert len(context["directory_docs"]) == SECOND_PAGE_RESULTS
+        assert context["pagination"]["total_results"] == TOTAL_RESULTS
+        assert context["pagination"]["page"] == SECOND_PAGE
+
+    def test_get_with_page_past_the_end_redirects_to_last_page(self, client, search_url, opensearch_documents):
+        opensearch_documents([DatasetFactory(title=f"Rail {n}") for n in range(25)])
+
+        response = client.get(search_url, {"query": "rail", "page": "9"})
+
+        assert response.status_code == HTTPStatus.FOUND
+        assert response["Location"] == f"{search_url}?query=rail&page=2"
+
+    def test_get_with_non_numeric_page_uses_first_page(self, client, search_url, opensearch_documents):
+        opensearch_documents([DatasetFactory(title="Rail")])
+
+        response = client.get(search_url, {"query": "rail", "page": "abc"})
+
+        assert response.context_data["pagination"]["page"] == 1
+
+    def test_get_shows_collections_on_first_page_only(self, client, search_url, opensearch_documents):
+        opensearch_documents(
+            [DatasetFactory(title=f"Rail {n}") for n in range(25)]
+            + [CollectionFactory(slug="rail-collection", collection="transport")],
+        )
+
+        first = client.get(search_url, {"query": "rail"})
+        second = client.get(search_url, {"query": "rail", "page": "2"})
+
+        assert [doc.slug for doc in first.context_data["collection_docs"]] == ["rail-collection"]
+        assert second.context_data["collection_docs"] == []
 
     def test_get_without_selected_facets_has_no_selected_filters(self, client, search_url, opensearch_documents):
         opensearch_documents([DatasetFactory()])

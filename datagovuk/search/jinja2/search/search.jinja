@@ -93,7 +93,7 @@
 
     <div class="govuk-grid-column-two-thirds">
       {% if search_made %}
-        {% if collection_results.hits.total.value > 0 %}
+        {% if collection_results and collection_results.hits.total.value > 0 %}
           <h2 class="govuk-heading-m datagovuk-heading-m">Curated data</h2>
           <p class="govuk-body datagovuk-body">Selected by the National Data Library team</p>
           <ul class="datagovuk-search-results">
@@ -110,6 +110,14 @@
           <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         {% endif %}
         {% if directory_results.hits.total.value > 0 %}
+          {% set total_results = directory_results.hits.total.value %}
+          <div class="govuk-body datagovuk-body datagovuk-search__results-count">
+            {% if pagination.first_result_in_page != 1 %}
+              {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ total_results|intcomma }} result{{ "s" if total_results > 1 else "" }}
+            {% else %}
+              {{ total_results|intcomma }} result{{ "s" if total_results > 1 else "" }}
+            {% endif %}
+          </div>
           <ul class="datagovuk-search-results">
             {% for doc in directory_docs %}
               <li class="datagovuk-search-results__item">
@@ -129,6 +137,7 @@
               </li>
             {% endfor %}
           </ul>
+          {% if pagination.pages %}{{ govukPagination(dict(pagination.pages, classes="datagovuk-pagination") ) }}{% endif %}
         {% else %}
           <p class="govuk-body datagovuk-body">0 results found</p>
           <p class="govuk-body datagovuk-body">Improve your search results by:</p>

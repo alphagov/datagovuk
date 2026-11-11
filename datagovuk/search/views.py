@@ -1,9 +1,10 @@
+import math
 from urllib.parse import urlencode
 
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.views.generic import TemplateView
 
-from datagovuk.core.views import GETFormView
+from datagovuk.core.views import GETFormView, PaginationMixin
 
 from .forms import SearchForm
 from .opensearch import get_directory_document_by_slug, search_collections, search_directory
@@ -113,18 +114,35 @@ def _build_facet_groups(params):
     return facet_groups
 
 
-class SearchView(GETFormView):
+class SearchView(GETFormView, PaginationMixin):
     template_name = "search/search.jinja"
     form_class = SearchForm
     rows_per_page = 20
+    # OpenSearch refuses to return results beyond from + size = index.max_result_window (10,000 by default).
+    # This must not exceed that index setting, which needs raising above the number of datasets.
+    max_result_window = 100_000
 
     def form_valid(self, form):
         query = form.cleaned_data["query"]
 
-        directory_results, directory_docs = search_directory(query)
-        collection_results, collection_docs = search_collections(query)
+        page = self._get_page()
+        directory_results, directory_docs = search_directory(
+            query,
+            start=(page - 1) * self.rows_per_page,
+            rows=self.rows_per_page,
+        )
+        total = directory_results["hits"]["total"]["value"]
+        last_page = max(1, math.ceil(min(total, self.max_result_window) / self.rows_per_page))
+        if page > last_page:
+            params = self.request.GET.copy()
+            params["page"] = last_page
+            return HttpResponseRedirect(f"{self.request.path}?{params.urlencode()}")
+
+        # Curated collections are only shown on the first page of results
+        collection_results, collection_docs = search_collections(query) if page == 1 else (None, [])
         context = self.get_context_data(
             query=query,
+            page=page,
             directory_results=directory_results,
             directory_docs=directory_docs,
             collection_results=collection_results,
@@ -132,17 +150,10 @@ class SearchView(GETFormView):
         )
         return self.render_to_response(context)
 
-    def get_context_data(
-        self,
-        query=None,
-        directory_results=None,
-        directory_docs=None,
-        collection_results=None,
-        collection_docs=None,
-        **kwargs,
-    ):
+    def get_context_data(self, **kwargs):
+        # ContextMixin copies every kwarg (query, directory_docs, etc.) into the context
         context = super().get_context_data(**kwargs)
-        if query is not None:
+        if kwargs.get("query") is not None:
             context["search_made"] = True
             facet_groups = _build_facet_groups(self.request.GET.dict())
             context["facet_groups"] = facet_groups
@@ -152,11 +163,19 @@ class SearchView(GETFormView):
                 for facet in group["facets"]
                 if facet["selected"]
             ]
-            context["collection_results"] = collection_results
-            context["collection_docs"] = collection_docs
-            context["directory_results"] = directory_results
-            context["directory_docs"] = directory_docs
+            context["pagination"] = self.get_govuk_pagination(
+                page=kwargs["page"],
+                rows_per_page=self.rows_per_page,
+                total_results=min(kwargs["directory_results"]["hits"]["total"]["value"], self.max_result_window),
+            )
         return context
+
+    def _get_page(self):
+        try:
+            page = int(self.request.GET.get("page", 1))
+        except ValueError:
+            page = 1
+        return max(1, min(page, self.max_result_window // self.rows_per_page))
 
 
 class DatasetView(TemplateView):

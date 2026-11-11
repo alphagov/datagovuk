@@ -87,7 +87,7 @@ def search_collections(query):
     return response, documents
 
 
-def search_directory(query):
+def search_directory(query, start=0, rows=20):
     client = get_opensearch_client()
     if query and query.strip():
         search_clause = {
@@ -113,7 +113,9 @@ def search_directory(query):
                     "must": [search_clause],
                 },
             },
-            "size": 20,
+            "from": start,
+            "size": rows,
+            "track_total_hits": True,
         },
     )
     documents = [Dataset(**hit["_source"]) for hit in response["hits"]["hits"]]
