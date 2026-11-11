@@ -18,6 +18,7 @@ class SearchView(GETFormView):
         directory_results, directory_docs = search_directory(query)
         collection_results, collection_docs = search_collections(query)
         context = self.get_context_data(
+            form=form,
             query=query,
             directory_results=directory_results,
             directory_docs=directory_docs,
@@ -38,6 +39,7 @@ class SearchView(GETFormView):
         context = super().get_context_data(**kwargs)
         if query is not None:
             context["search_made"] = True
+            context["search_query"] = query
             context["collection_results"] = collection_results
             context["collection_docs"] = collection_docs
             context["directory_results"] = directory_results
