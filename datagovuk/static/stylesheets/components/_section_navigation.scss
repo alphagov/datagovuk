@@ -1,18 +1,19 @@
 .datagovuk-section-navigation .datagovuk-section-navigation__item {
-  padding: 10px;
   margin-bottom: 15px;
 }
 
 .datagovuk-section-navigation .datagovuk-section-navigation__item.datagovuk-section-navigation__item--selected {
   border-left: 4px solid $datagovuk-green;
   margin-left: -10px;
-  padding-left: 15px;
+  padding-left: 6px; // 10px original padding minus 4px border-left width to maintain alignment
 }
 
 .datagovuk-section-navigation .datagovuk-section-navigation__link {
   color: $datagovuk-green;
   text-decoration: none;
   font-size: 22px;
+  display: block;
+  padding: 10px;
 }
 
 .datagovuk-section-navigation .datagovuk-section-navigation__link:hover {
@@ -20,13 +21,13 @@
 }
 
 .datagovuk-section-navigation__button {
-    display: none;
-    color: $datagovuk-black;
-    background: $datagovuk-light-grey;
-    border: none;
-    padding: 22px 0;
-    margin-left: auto;
-    margin-right: auto;
+  display: none;
+  color: $datagovuk-black;
+  background: $datagovuk-light-grey;
+  border: none;
+  padding: 22px 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .datagovuk-section-navigation__button:hover {
@@ -47,19 +48,19 @@
 }
 
 .datagovuk-section-navigation__button:after {
-    transform: translateY(-35%) rotate(45deg) scale(1);
-    content: "";
-    display: inline-block;
-    height: 8px;
-    vertical-align: flex;
-    width: 8px;
-    border-bottom: 2px solid $datagovuk-black;
-    border-right: 2px solid $datagovuk-black;
-    margin: 0px 10px 0px 10px;
+  transform: translateY(-35%) rotate(45deg) scale(1);
+  content: "";
+  display: inline-block;
+  height: 8px;
+  vertical-align: flex;
+  width: 8px;
+  border-bottom: 2px solid $datagovuk-black;
+  border-right: 2px solid $datagovuk-black;
+  margin: 0px 10px 0px 10px;
 }
 
 .datagovuk-section-navigation__button[aria-expanded="true"]:after {
-    transform: translateY(1px) rotate(225deg) scale(1);
+  transform: translateY(1px) rotate(225deg) scale(1);
 }
 
 .datagovuk-section-navigation .datagovuk-section-navigation__items-desktop {
