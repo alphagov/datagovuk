@@ -6,7 +6,7 @@ authors:
   - Joe Lanman
   - Antonia Panayotova
 image:
-  src: images/updates/cleaning-illustration-16-9.png
+  src: images/updates/cleaning-illustration.webp
   alt: Isometric illustration of a swarm of robot hoovers
 ---
 
