@@ -11,7 +11,18 @@
   font-size: 24px;
 }
 
+/* Space images out from the surrounding text */
+.datagovuk-content .datagovuk-image {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
 @media (min-width: $desktop-breakpoint) {
+  .datagovuk-content .datagovuk-image {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
   .datagovuk-content .datagovuk-heading-xl {
     font-size: 42px;
   }
@@ -24,4 +35,9 @@
     font-size: 26px;
   }
 
+}
+
+/* Indent bullet lists in content */
+.datagovuk-content .datagovuk-list.govuk-list--bullet {
+  margin-left: 10px;
 }
