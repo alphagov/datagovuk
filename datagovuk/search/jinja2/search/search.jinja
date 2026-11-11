@@ -126,6 +126,14 @@
           <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         {% endif %}
         {% if directory_search.total > 0 %}
+          {% set total_results = directory_search.total %}
+          <div class="govuk-body datagovuk-body datagovuk-search__results-count">
+            {% if pagination.first_result_in_page != 1 %}
+              {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ total_results|intcomma }} result{{ "s" if total_results > 1 else "" }}
+            {% else %}
+              {{ total_results|intcomma }} result{{ "s" if total_results > 1 else "" }}
+            {% endif %}
+          </div>
           <ul class="datagovuk-search-results">
             {% for doc in directory_search.docs %}
               <li class="datagovuk-search-results__item">
@@ -145,6 +153,7 @@
               </li>
             {% endfor %}
           </ul>
+          {% if pagination.pages %}{{ govukPagination(dict(pagination.pages, classes="datagovuk-pagination") ) }}{% endif %}
         {% else %}
           <p class="govuk-body datagovuk-body">0 results found</p>
           <p class="govuk-body datagovuk-body">Improve your search results by:</p>
