@@ -1,4 +1,7 @@
-<div class="datagovuk-table-container" tabindex="0" role="region">
+<div class="datagovuk-table-container"
+     tabindex="0"
+     role="region"
+     {% if table_label %}aria-label="{{ table_label }}"{% endif %}>
   <table class="govuk-table datagovuk-table">
     {%- if table_headings %}
       <thead class="govuk-table__head datagovuk-table__head">

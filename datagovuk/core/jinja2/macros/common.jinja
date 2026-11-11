@@ -32,8 +32,8 @@
   </li>
 {% endmacro %}
 
-{% macro section_navigation(items, extra_section_nav = "") %}
-  <nav id="datagovuk-section-navigation" class="datagovuk-section-navigation govuk-!-margin-bottom-8">
+{% macro section_navigation(items, label, extra_section_nav = "") %}
+  <nav id="datagovuk-section-navigation" class="datagovuk-section-navigation govuk-!-margin-bottom-8" aria-label="{{ label }}">
     <button type="button"
             class="govuk-button datagovuk-button datagovuk-section-navigation__button"
             id="datagovuk-section-navigation-button-all"

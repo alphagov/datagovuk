@@ -33,7 +33,7 @@
 
     {% if preview_exists %}
       <div class="govuk-grid-column-full govuk-!-margin-bottom-8 datagovuk-preview">
-        {% with table_header_classes="datagovuk-preview-table__header" %}
+        {% with table_header_classes="datagovuk-preview-table__header", table_label="Preview of " ~ datafile.name %}
           {% include "includes/table.jinja" %}
         {% endwith %}
       </div>

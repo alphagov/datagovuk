@@ -17,7 +17,7 @@
     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
       {% if resource.is_csv %}
         <a href="{{ url('directory:preview', kwargs={'dataset_uuid': doc.uuid, 'name': doc.name, 'datafile_uuid': resource.uuid}) }}"
-           class="govuk-link datagovuk-link">Preview</a>
+           class="govuk-link datagovuk-link">Preview<span class="govuk-visually-hidden">{{ " " ~ (resource.name or "Data") }}</span></a>
       {% else %}
         –
       {% endif %}
@@ -125,9 +125,9 @@
       </section>
     </div>
     <div class="govuk-grid-column-one-third">
-      <section class="datagovuk-more-from-publisher">
+      <aside class="datagovuk-more-from-publisher" aria-labelledby="datagovuk-more-from-publisher-heading">
         <div class="datagovuk-card">
-          <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
+          <h2 id="datagovuk-more-from-publisher-heading" class="govuk-body datagovuk-body">More from this publisher</h2>
           <p class="govuk-body datagovuk-body">
             {# djlint:off #}
             <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.slug }}"
@@ -137,15 +137,19 @@
             {# djlint:on #}
           </p>
         </div>
-      </section>
+      </aside>
     </div>
   </div>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
       <section class="govuk-!-margin-bottom-8">
-        <h2 class="govuk-heading-m datagovuk-heading-m">Data links</h2>
+        <h2 id="datagovuk-data-links-heading" class="govuk-heading-m datagovuk-heading-m">Data links</h2>
         {% if doc.datafiles %}
-          <div id="datagovuk-resources-table" class="datagovuk-table-container" tabindex="0" role="region">
+          <div id="datagovuk-resources-table"
+               class="datagovuk-table-container"
+               tabindex="0"
+               role="region"
+               aria-labelledby="datagovuk-data-links-heading">
             <table class="govuk-table datagovuk-table">
               <thead class="govuk-table__head datagovuk-table__head">
                 <tr class="govuk-table__row">
@@ -263,9 +267,9 @@
         </section>
       {% endif %}
 
-      <section class="datagovuk-more-from-publisher--mobile">
+      <aside class="datagovuk-more-from-publisher--mobile" aria-labelledby="datagovuk-more-from-publisher-mobile-heading">
         <div class="datagovuk-card govuk-!-margin-bottom-8">
-          <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
+          <h2 id="datagovuk-more-from-publisher-mobile-heading" class="govuk-body datagovuk-body">More from this publisher</h2>
           <p class="govuk-body datagovuk-body">
             {# djlint:off #}
                 <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.title }}"
@@ -275,7 +279,7 @@
             {# djlint:on #}
           </p>
         </div>
-      </section>
+      </aside>
       {% if not doc.harvested %}
         <section class="edit">
           <h2 class="govuk-heading-m datagovuk-heading-m">Edit this dataset</h2>
