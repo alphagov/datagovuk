@@ -17,18 +17,21 @@ class TestMarkdownToHTMLRenderer:
         """)
 
     def test_image_relative_path_uses_static_url(self):
-        rendered_markdown = render_markdown("![A chart of datasets](images/updates/cleaning-illustration.png)")
+        rendered_markdown = render_markdown("![A chart of datasets](images/tests/fixture-image.png)")
         assert rendered_markdown == textwrap.dedent("""\
-            <p class="govuk-body-m datagovuk-body"><img class="datagovuk-image" width="4000" height="3000" loading="lazy" src="/assets/images/updates/cleaning-illustration.png" alt="A chart of datasets" /></p>
+            <p class="govuk-body-m datagovuk-body"><img class="datagovuk-image" width="40" height="30" loading="lazy" src="/assets/images/tests/fixture-image.png" alt="A chart of datasets" /></p>
         """)
 
     def test_image_title(self):
-        rendered_markdown = render_markdown('![Alt](images/updates/cleaning-illustration.png "A title")')
-        assert 'src="/assets/images/updates/cleaning-illustration.png" alt="Alt" title="A title"' in rendered_markdown
+        rendered_markdown = render_markdown('![Alt](images/tests/fixture-image.png "A title")')
+        assert 'src="/assets/images/tests/fixture-image.png" alt="Alt" title="A title"' in rendered_markdown
 
     def test_image_without_readable_dimensions_omits_them(self):
-        rendered_markdown = render_markdown("![Alt](images/icons/arrow.svg)")
-        assert '<img class="datagovuk-image" loading="lazy" src="/assets/images/icons/arrow.svg"' in rendered_markdown
+        rendered_markdown = render_markdown("![Alt](images/tests/fixture-image.svg)")
+        assert (
+            '<img class="datagovuk-image" loading="lazy" src="/assets/images/tests/fixture-image.svg"'
+            in rendered_markdown
+        )
 
     def test_image_missing_file_raises(self):
         with pytest.raises(ValueError, match="not found in static files"):

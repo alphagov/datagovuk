@@ -157,11 +157,11 @@ def test_build_table_data_mixed_numeric_column_uses_numeric_format():
 
 
 def test_get_image_size_returns_width_and_height():
-    assert get_image_size("images/updates/cleaning-illustration.png") == (4000, 3000)
+    assert get_image_size("images/tests/fixture-image.png") == (40, 30)
 
 
 def test_get_image_size_unreadable_format_returns_none_pair():
-    assert get_image_size("images/icons/arrow.svg") == (None, None)
+    assert get_image_size("images/tests/fixture-image.svg") == (None, None)
 
 
 def test_get_image_size_missing_file_raises():

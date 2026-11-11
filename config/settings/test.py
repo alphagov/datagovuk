@@ -43,3 +43,6 @@ BASIC_AUTH_BYPASS = None
 FEATURE_FLAGS_ENABLED = []
 
 SOLR_URL = SOLR_URL + "-test"  # noqa: F405
+
+# Static fixtures (e.g. images with known dimensions) used by tests
+STATICFILES_DIRS = [*STATICFILES_DIRS, str(APPS_DIR / "core" / "tests" / "static")]  # noqa: F405

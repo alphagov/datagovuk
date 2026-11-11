@@ -1,61 +1,67 @@
+import datetime
 from http import HTTPStatus
+from unittest.mock import patch
 
 from django.urls import reverse
 
 
-def test_update(client):
-    url = reverse("updates:post", kwargs={"year": "2026", "slug": "cleaning-up-data-gov-uk"})
-    response = client.get(url)
-    response_content = response.content.decode()
+class TestUpdateView:
+    def test_renders_post_from_year_and_slug(self, client, make_post):
+        url = make_post(slug="my-post", year="2026", front_matter={"title": "My post"})
 
-    assert url == "/updates/2026/cleaning-up-data-gov-uk/"
-    assert response.status_code == HTTPStatus.OK
-    assert "Cleaning up data.gov.uk - Updates - National Data Library" in response_content
-    assert "28 October 2026" in response_content
-    assert "By Joe Lanman, Antonia Panayotova" in response_content
-    assert 'src="/assets/images/updates/cleaning-illustration-16-9.png"' in response_content
-    assert 'width="2400"' in response_content
-    assert 'height="1254"' in response_content
-    assert 'alt="An illustration of someone cleaning data"' in response_content
-    assert '<meta name="description" content="We will use this section' in response_content
-    assert '<meta property="og:title" content="Cleaning up data.gov.uk" />' in response_content
-    assert '<meta property="og:description" content="We will use this section' in response_content
-    assert (
-        '<meta property="og:image" content="http://testserver/assets/images/updates/cleaning-illustration-16-9.png" />'
-        in response_content
-    )
+        response = client.get(url)
 
+        assert url == "/updates/2026/my-post/"
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["title"] == "My post"
+        assert response.context_data["date"] == datetime.date(2026, 10, 28)
+        assert "Body" in response.context_data["content"]
 
-def test_update_not_found(client):
-    url = reverse("updates:post", kwargs={"year": "2026", "slug": "missing"})
+    def test_missing_post_returns_not_found(self, client, make_post):
+        make_post(slug="exists")
 
-    assert client.get(url).status_code == HTTPStatus.NOT_FOUND
+        response = client.get(reverse("updates:post", kwargs={"year": "2026", "slug": "missing"}))
 
+        assert response.status_code == HTTPStatus.NOT_FOUND
 
-def test_update_invalid_date_not_found(client, tmp_path, settings):
-    post = tmp_path / "2026" / "bad-date.md"
-    post.parent.mkdir()
-    post.write_text("---\ntitle: Bad\ndate: not-a-date\n---\nBody")
-    settings.DATAGOVUK_CONTENT_ROOT = f"{tmp_path}/"
-    settings.DATAGOVUK_CONTENT_UPDATES_ROOT = f"{tmp_path}/"
-    url = reverse("updates:post", kwargs={"year": "2026", "slug": "bad-date"})
+    def test_invalid_date_returns_not_found(self, client, make_post):
+        url = make_post(front_matter={"date": "not-a-date"})
 
-    assert client.get(url).status_code == HTTPStatus.NOT_FOUND
+        assert client.get(url).status_code == HTTPStatus.NOT_FOUND
 
+    def test_missing_date_returns_not_found(self, client, make_post, tmp_path):
+        url = make_post()
+        (tmp_path / "2026" / "test-post.md").write_text("---\ntitle: No date\n---\nBody")
 
-def test_update_without_optional_front_matter(client, tmp_path, settings):
-    post = tmp_path / "2026" / "minimal.md"
-    post.parent.mkdir()
-    post.write_text("---\ntitle: Minimal\ndate: 2026-10-28\n---\nBody")
-    settings.DATAGOVUK_CONTENT_ROOT = f"{tmp_path}/"
-    settings.DATAGOVUK_CONTENT_UPDATES_ROOT = f"{tmp_path}/"
-    url = reverse("updates:post", kwargs={"year": "2026", "slug": "minimal"})
-    response = client.get(url)
-    response_content = response.content.decode()
+        assert client.get(url).status_code == HTTPStatus.NOT_FOUND
 
-    assert response.status_code == HTTPStatus.OK
-    assert "Minimal" in response_content
-    assert "By " not in response_content
-    assert "datagovuk-image" not in response_content
-    assert 'property="og:image"' not in response_content
-    assert 'name="description"' not in response_content
+    def test_page_description_is_summary(self, client, make_post):
+        url = make_post(front_matter={"summary": "A short summary"})
+
+        response = client.get(url)
+
+        assert response.context_data["page_description"] == "A short summary"
+
+    def test_page_description_is_none_without_summary(self, client, make_post):
+        url = make_post()
+
+        response = client.get(url)
+
+        assert response.context_data["page_description"] is None
+
+    def test_image_dimensions_are_added_to_context(self, client, make_post):
+        image = {"src": "images/updates/example.png", "alt": "An example"}
+        url = make_post(front_matter={"image": image})
+
+        with patch("datagovuk.updates.views.get_image_size", return_value=(2400, 1254)) as get_image_size:
+            response = client.get(url)
+
+        get_image_size.assert_called_once_with("images/updates/example.png")
+        assert response.context_data["image"] == {**image, "width": 2400, "height": 1254}
+
+    def test_no_image_in_context_without_image(self, client, make_post):
+        url = make_post()
+
+        response = client.get(url)
+
+        assert "image" not in response.context_data
