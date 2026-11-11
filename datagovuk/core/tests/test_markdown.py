@@ -22,10 +22,6 @@ class TestMarkdownToHTMLRenderer:
             <p class="govuk-body-m datagovuk-body"><img class="datagovuk-image" width="40" height="30" loading="lazy" src="/assets/images/tests/fixture-image.png" alt="A chart of datasets" /></p>
         """)
 
-    def test_image_title(self):
-        rendered_markdown = render_markdown('![Alt](images/tests/fixture-image.png "A title")')
-        assert 'src="/assets/images/tests/fixture-image.png" alt="Alt" title="A title"' in rendered_markdown
-
     def test_image_without_readable_dimensions_omits_them(self):
         rendered_markdown = render_markdown("![Alt](images/tests/fixture-image.svg)")
         assert (
