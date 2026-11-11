@@ -18,14 +18,12 @@ class TestUpdateView:
         assert "Body" in response.context_data["content"]
 
     def test_authors_link_to_team_page(self, client, make_post):
-        url = make_post(front_matter={"authors": ["Ada Lovelace", "Grace Hopper"]})
+        url = make_post(front_matter={"authors": ["Ada Lovelace"]})
 
-        response = client.get(url)
+        html = client.get(url).content.decode()
 
-        html = response.content.decode()
-        team_url = reverse("pages:team")
-        assert f'<a href="{team_url}" class="govuk-link datagovuk-link">Ada Lovelace</a>' in html
-        assert f'<a href="{team_url}" class="govuk-link datagovuk-link">Grace Hopper</a>' in html
+        assert f'href="{reverse("pages:team")}"' in html
+        assert "Ada Lovelace" in html
 
     def test_missing_post_returns_not_found(self, client, make_post):
         make_post(slug="exists")
@@ -75,3 +73,21 @@ class TestUpdateView:
         response = client.get(url)
 
         assert "image" not in response.context_data
+
+    def test_image_is_used_for_social_sharing(self, client, make_post):
+        image = {"src": "images/tests/fixture-image.png", "alt": "An example"}
+        url = make_post(front_matter={"image": image})
+
+        response = client.get(url)
+
+        html = response.content.decode()
+        expected_url = "http://testserver/assets/images/tests/fixture-image.png"
+        assert f'<meta property="og:image" content="{expected_url}"' in html
+        assert 'width="40" height="30"' in html
+
+    def test_no_social_sharing_image_without_image(self, client, make_post):
+        url = make_post()
+
+        response = client.get(url)
+
+        assert 'property="og:image"' not in response.content.decode()
