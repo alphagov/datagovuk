@@ -23,6 +23,7 @@ class TestSearchView:
         assert response.template_name == ["search/search.jinja"]
         assert not response.context_data["form"].is_bound
         assert "search_made" not in response.context_data
+        assert "search_query" not in response.context_data
         assert "directory_search" not in response.context_data
         assert "collection_search" not in response.context_data
 
@@ -41,6 +42,7 @@ class TestSearchView:
         assert response.status_code == HTTPStatus.OK
         context = response.context_data
         assert context["search_made"] is True
+        assert context["search_query"] == "rail"
         assert [doc.slug for doc in context["directory_search"].docs] == ["rail-data"]
         assert [doc.slug for doc in context["collection_search"].docs] == ["rail-collection"]
         assert all(isinstance(doc, Dataset) for doc in context["directory_search"].docs)
@@ -107,6 +109,7 @@ class TestSearchView:
         assert response.template_name == ["search/search.jinja"]
         assert "query" in response.context_data["form"].errors
         assert "search_made" not in response.context_data
+        assert "search_query" not in response.context_data
         assert "directory_search" not in response.context_data
 
     def test_result_with_multiple_organisations_shows_first(self, client, search_url, opensearch_documents):
@@ -208,6 +211,7 @@ class TestSearchView:
         assert response.template_name == ["search/search.jinja"]
         assert field in response.context_data["form"].errors
         assert "search_made" not in response.context_data
+        assert "search_query" not in response.context_data
         assert "directory_search" not in response.context_data
 
 
