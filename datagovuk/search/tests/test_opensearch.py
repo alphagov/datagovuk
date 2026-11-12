@@ -24,14 +24,14 @@ def _slugs(documents):
 
 
 def test_dataset_additional_information_list_converted_to_dict():
-    dataset = DatasetFactory(additional_information=[{"key": "licence", "value": "test"}])
+    dataset = DatasetFactory(additional_information=[{"key": "licence", "value": "test", "type": "string"}])
     assert Dataset(**dataset).additional_information == {"licence": "test"}
 
 
 def test_dataset_additional_information_json_value_key_is_parsed():
     additional_information = [
-        {"key": "access_constraints", "value": '["OGL"]'},
-        {"key": "dataset-reference-date", "value": '[{"type": "creation", "value": "2026-01-01"}]'},
+        {"key": "access_constraints", "value": '["OGL"]', "type": "json"},
+        {"key": "dataset-reference-date", "value": '[{"type": "creation", "value": "2026-01-01"}]', "type": "json"},
     ]
     dataset = DatasetFactory(additional_information=additional_information)
     assert Dataset(**dataset).additional_information == {
@@ -41,18 +41,23 @@ def test_dataset_additional_information_json_value_key_is_parsed():
 
 
 def test_dataset_additional_information_invalid_json_falls_back_to_raw_string():
-    dataset = DatasetFactory(additional_information=[{"key": "access_constraints", "value": "invalid-json"}])
+    dataset = DatasetFactory(
+        additional_information=[{"key": "access_constraints", "value": "invalid-json", "type": "json"}],
+    )
     assert Dataset(**dataset).additional_information == {"access_constraints": "invalid-json"}
 
 
 def test_dataset_additional_information_none_value_falls_back_to_none():
-    dataset = DatasetFactory(additional_information=[{"key": "access_constraints", "value": None}])
+    dataset = DatasetFactory(additional_information=[{"key": "access_constraints", "value": None, "type": "json"}])
     assert Dataset(**dataset).additional_information == {"access_constraints": None}
 
 
 def test_dataset_additional_information_without_key_is_skipped():
     dataset = DatasetFactory(
-        additional_information=[{"key": None, "value": "ignored"}, {"key": "test-key", "value": "test-value"}],
+        additional_information=[
+            {"key": None, "value": "ignored", "type": "json"},
+            {"key": "test-key", "value": "test-value", "type": "string"},
+        ],
     )
     assert Dataset(**dataset).additional_information == {"test-key": "test-value"}
 
