@@ -2,15 +2,15 @@
 title: "Title"
 
 websites:
-  - url: 
+  - url:
     link-text:
-  - url: 
+  - url:
     link-text:
 api:
-    url: 
-    link-text: 
+    url:
+    link-text:
 dataset:
-    url: 
+    url:
     link-text:
 
 page-last-reviewed: "YYYY-MM-DD"
@@ -23,7 +23,7 @@ formats:
   - pdf
   - xls
   - xlsx
-    
+
 access-methods:
   - download
   - web-service
@@ -51,7 +51,7 @@ keywords:
   -
   -
   -
-  
+
 ---
 
 Main body
