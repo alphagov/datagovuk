@@ -13,10 +13,6 @@ class Organisation(BaseModel):
     name: str
 
 
-# copied from datagovuk-indexer repo, ADDITIONAL_INFO_JSON_VALUE_KEYS constant
-_JSON_VALUE_KEYS = {"access_constraints", "dataset-reference-date"}
-
-
 class Dataset(BaseModel):
     uuid: str
     slug: str
@@ -37,8 +33,9 @@ class Dataset(BaseModel):
             for additional_info in raw:
                 key = additional_info.get("key")
                 value = additional_info.get("value")
+                value_type = additional_info.get("type")
                 if key is not None:
-                    if key in _JSON_VALUE_KEYS:
+                    if value_type == "json":
                         try:
                             result[key] = json.loads(value)
                         except json.JSONDecodeError, TypeError:
