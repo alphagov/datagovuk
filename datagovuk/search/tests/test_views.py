@@ -164,8 +164,9 @@ class TestDatasetView:
                 DatasetFactory(
                     slug="wanted",
                     additional_information=[
-                        {"key": "licence", "value": "OGL"},
-                        {"key": "access_constraints", "value": '{"test-key": "test-value"}'},
+                        {"key": "licence", "value": "OGL", "type": "string"},
+                        {"key": "dataset-reference-date", "value": "invalid-json", "type": "json"},
+                        {"key": "access_constraints", "value": '{"test-key": "test-value"}', "type": "json"},
                     ],
                 ),
             ],
@@ -177,4 +178,8 @@ class TestDatasetView:
 
         assert response.status_code == HTTPStatus.OK
         assert response.template_name == ["search/dataset.jinja"]
-        assert additional_information == {"licence": "OGL", "access_constraints": {"test-key": "test-value"}}
+        assert additional_information == {
+            "licence": "OGL",
+            "dataset-reference-date": "invalid-json",
+            "access_constraints": {"test-key": "test-value"},
+        }
