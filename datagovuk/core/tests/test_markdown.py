@@ -37,9 +37,9 @@ class TestMarkdownToHTMLRenderer:
         "url",
         ["https://example.net/a.png", "//example.net/a.png", "/assets/images/a.png", "data:image/png;base64,AAAA"],
     )
-    def test_image_non_static_url_raises(self, url):
-        with pytest.raises(ValueError, match="relative to the static folder"):
-            render_markdown(f"![Alt]({url})")
+    def test_image_non_static_url_is_omitted(self, url):
+        rendered_markdown = render_markdown(f"![Alt]({url})")
+        assert "<img" not in rendered_markdown
 
     def test_heading(self):
         markdown = inspect.cleandoc("""

@@ -16,13 +16,13 @@ class MarkdownToHTMLRenderer(mistune.HTMLRenderer):
         return f'<a href="{url}" class="govuk-link datagovuk-link datagovuk-link--secondary">{text}</a>'
 
     def image(self, text, url, title=None):
-        # Images must be static files, given as a path relative to the static folder (e.g.
-        # `images/updates/chart.png`), so they get the same hashed URLs as images in templates. External and
-        # absolute URLs are rejected because our CSP would block them anyway.
+        # Images in our own content should be static files, given as a path relative to the static folder (e.g.
+        # `images/updates/chart.png`), so they get the same hashed URLs as images in templates.
+        # External and absolute URLs (e.g. in publisher-supplied dataset descriptions) are not supported, because our
+        # CSP would block them anyway, so they are silently dropped rather than erroring.
         parsed_url = urlparse(url)
         if parsed_url.scheme or parsed_url.netloc or url.startswith("/"):
-            error_message = f"Markdown images must be a path relative to the static folder, got: {url}"
-            raise ValueError(error_message)
+            return ""
         width, height = get_image_size(url)
         dimensions = f' width="{width}" height="{height}"' if width else ""
         attributes = f'<img class="datagovuk-image"{dimensions} loading="lazy" '
