@@ -1,6 +1,6 @@
 ---
 title: The National Data Library – cleaning up data.gov.uk
-date: 2026-11-11
+date: 2026-11-12
 summary: How we reduced broken links on data.gov.uk from over 30% to about 7% as we build the National Data Library.
 authors:
   - Joe Lanman
