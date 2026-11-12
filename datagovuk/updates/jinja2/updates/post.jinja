@@ -18,7 +18,8 @@
             By
             {% for author in authors -%}
               <a href="{{ url('pages:team') }}" class="govuk-link datagovuk-link">{{ author }}</a>
-              {% if not loop.last %},{% endif %}
+              {%- if not loop.last %},
+              {% endif -%}
             {%- endfor %} ·
           {% endif %}
           <time datetime="{{ date.isoformat() }}">{{ date.strftime("%-d %B %Y") }}</time>
