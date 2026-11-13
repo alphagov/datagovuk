@@ -13,6 +13,51 @@ class Organisation(BaseModel):
     name: str
 
 
+class Resource(BaseModel):
+    uuid: str
+    name: str | None = None
+    description: str | None = None
+    format: str | None = None
+    url: str
+    resource_type: str | None = None
+    size: int | None = None
+    created_at: datetime | None = None
+    last_modified: datetime | None = None
+    metadata_modified: datetime | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def default_supporting_document_name(cls, data):
+        if data.get("resource_type") == "supporting-document" and not data.get("name"):
+            data["name"] = "No name specified"
+        return data
+
+    @property
+    def file_size(self):
+        return self.size
+
+    @property
+    def last_updated(self):
+        # This is a slight change from solr.py
+        # was last_modified if present, then created and if not then metadata_modified
+        # now it is the most recent date from either last_modified, metadata_modified, or created_at
+        updated_dates = [
+            updated_date
+            for updated_date in [self.last_modified, self.metadata_modified, self.created_at]
+            if updated_date is not None
+        ]
+
+        return max(
+            updated_dates,
+            default=None,
+        )
+
+    @property
+    def is_csv(self):
+        return self.format == "CSV"
+
+
+
 class Dataset(BaseModel):
     uuid: str
     slug: str
@@ -24,6 +69,19 @@ class Dataset(BaseModel):
     created_at: datetime
     updated_at: datetime
     additional_information: dict = Field(default_factory=dict)
+    resources: list[Resource] = Field(default_factory=list)
+
+    @property
+    def name(self):
+        return self.slug
+
+    @property
+    def datafiles(self):
+        return [resource for resource in self.resources if resource.resource_type != "supporting-document"]
+
+    @property
+    def docs(self):
+        return [resource for resource in self.resources if resource.resource_type == "supporting-document"]
 
     @model_validator(mode="before")
     @classmethod
