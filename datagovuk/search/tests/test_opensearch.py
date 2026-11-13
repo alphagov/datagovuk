@@ -40,7 +40,7 @@ def test_resource_last_updated_falls_back_to_created_at_when_no_last_modified_or
     assert resource.last_updated == datetime.fromisoformat("2024-01-02T03:04:05+00:00")
 
 
-def test_resource_last_updated_returns_max_when_multiple_dates_present():
+def test_resource_last_updated_prefers_last_modified_when_multiple_dates_present():
     resource = Resource(
         **ResourceFactory(
             last_modified="2024-01-01T00:00:00+00:00",
@@ -48,7 +48,7 @@ def test_resource_last_updated_returns_max_when_multiple_dates_present():
             created_at="2023-01-01T00:00:00+00:00",
         ),
     )
-    assert resource.last_updated == datetime.fromisoformat("2025-06-01T00:00:00+00:00")
+    assert resource.last_updated == datetime.fromisoformat("2024-01-01T00:00:00+00:00")
 
 
 def test_resource_last_updated_returns_none_when_all_dates_absent():
