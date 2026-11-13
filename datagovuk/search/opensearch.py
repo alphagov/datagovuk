@@ -13,6 +13,40 @@ class Organisation(BaseModel):
     name: str
 
 
+class Resource(BaseModel):
+    uuid: str
+    name: str | None = None
+    description: str | None = None
+    format: str | None = None
+    url: str
+    resource_type: str | None = None
+    size: int | None = None
+    created_at: datetime | None = None
+    last_modified: datetime | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def default_name(cls, data):
+        if not data.get("name"):
+            if data.get("resource_type") == "supporting-document":
+                data["name"] = "No name specified"
+            else:
+                data["name"] = data.get("description")
+        return data
+
+    @property
+    def file_size(self):
+        return self.size
+
+    @property
+    def last_updated(self):
+        return self.last_modified or self.created_at
+
+    @property
+    def is_csv(self):
+        return self.format == "CSV"
+
+
 class Dataset(BaseModel):
     uuid: str
     slug: str
@@ -24,6 +58,19 @@ class Dataset(BaseModel):
     created_at: datetime
     updated_at: datetime
     additional_information: dict = Field(default_factory=dict)
+    resources: list[Resource] = Field(default_factory=list)
+
+    @property
+    def name(self):
+        return self.slug
+
+    @property
+    def datafiles(self):
+        return [resource for resource in self.resources if resource.resource_type != "supporting-document"]
+
+    @property
+    def docs(self):
+        return [resource for resource in self.resources if resource.resource_type == "supporting-document"]
 
     @model_validator(mode="before")
     @classmethod

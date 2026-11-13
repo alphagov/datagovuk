@@ -9,6 +9,17 @@ class OrganisationFactory(factory.DictFactory):
     name = factory.LazyAttribute(lambda o: o.slug.replace("-", " ").title())
 
 
+class ResourceFactory(factory.DictFactory):
+    uuid = factory.LazyFunction(lambda: str(uuid.uuid4()))
+    name = factory.Sequence(lambda n: f"Resource {n}")
+    url = factory.Sequence(lambda n: f"https://example.com/resource-{n}.csv")
+    format = "CSV"
+    resource_type = "data-link"
+    size = None
+    created_at = "2024-01-02T03:04:05+00:00"
+    last_modified = "2025-06-07T08:09:10+00:00"
+
+
 class DatasetFactory(factory.DictFactory):
     """
     Builds a document for the `datasets` index.
@@ -24,6 +35,7 @@ class DatasetFactory(factory.DictFactory):
     is_harvested = False
     created_at = "2024-01-02T03:04:05+00:00"
     updated_at = "2025-06-07T08:09:10+00:00"
+    resources = factory.LazyFunction(list)
 
 
 class CollectionFactory(factory.DictFactory):
