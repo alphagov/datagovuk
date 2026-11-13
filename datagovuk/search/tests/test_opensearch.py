@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 import pytest
 from pydantic import ValidationError
@@ -83,9 +84,31 @@ def test_dataset_is_harvested_false():
     assert Dataset(**dataset).is_harvested is False
 
 
-def test_dataset_is_harvested_defaults_to_none():
+def test_dataset_is_harvested_defaults_to_false():
     dataset = DatasetFactory()
-    assert Dataset(**dataset).is_harvested is None
+    del dataset["is_harvested"]
+    assert Dataset(**dataset).is_harvested is False
+
+
+def test_dataset_additional_information_metadata_date_is_parsed():
+    dataset = DatasetFactory(
+        additional_information=[{"key": "metadata-date", "value": "2026-03-04T05:06:07", "type": "string"}],
+    )
+    assert Dataset(**dataset).additional_information == {
+        "metadata-date": datetime.fromisoformat("2026-03-04T05:06:07"),
+    }
+
+
+def test_dataset_additional_information_invalid_metadata_date_is_none():
+    dataset = DatasetFactory(
+        additional_information=[{"key": "metadata-date", "value": "not-a-date", "type": "string"}],
+    )
+    assert Dataset(**dataset).additional_information == {"metadata-date": None}
+
+
+def test_dataset_additional_information_empty_metadata_date_is_none():
+    dataset = DatasetFactory(additional_information=[{"key": "metadata-date", "value": None, "type": "string"}])
+    assert Dataset(**dataset).additional_information == {"metadata-date": None}
 
 
 def test_get_opensearch_client_connects_to_configured_cluster():
