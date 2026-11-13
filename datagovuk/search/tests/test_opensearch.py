@@ -7,13 +7,14 @@ from pydantic import ValidationError
 from datagovuk.search.opensearch import (
     Collection,
     Dataset,
+    Resource,
     get_directory_document_by_slug,
     get_opensearch_client,
     search_collections,
     search_directory,
 )
 
-from .factories import CollectionFactory, DatasetFactory
+from .factories import CollectionFactory, DatasetFactory, ResourceFactory
 
 COLLECTION_RESULTS = 2
 DIRECTORY_RESULTS = 20
@@ -22,6 +23,59 @@ EXTRA_RESULTS = 3
 
 def _slugs(documents):
     return [document.slug for document in documents]
+
+
+def test_resource_last_updated_uses_last_modified_when_present():
+    resource = Resource(**ResourceFactory(last_modified="2025-01-01T00:00:00+00:00"))
+    assert resource.last_updated == datetime.fromisoformat("2025-01-01T00:00:00+00:00")
+
+
+def test_resource_last_updated_falls_back_to_metadata_modified_when_no_last_modified():
+    resource = Resource(**ResourceFactory(last_modified=None, metadata_modified="2024-06-01T00:00:00+00:00"))
+    assert resource.last_updated == datetime.fromisoformat("2024-06-01T00:00:00+00:00")
+
+
+def test_resource_last_updated_falls_back_to_created_at_when_no_last_modified_or_metadata_modified():
+    resource = Resource(**ResourceFactory(last_modified=None, metadata_modified=None))
+    assert resource.last_updated == datetime.fromisoformat("2024-01-02T03:04:05+00:00")
+
+
+def test_resource_last_updated_returns_max_when_multiple_dates_present():
+    resource = Resource(
+        **ResourceFactory(
+            last_modified="2024-01-01T00:00:00+00:00",
+            metadata_modified="2025-06-01T00:00:00+00:00",
+            created_at="2023-01-01T00:00:00+00:00",
+        ),
+    )
+    assert resource.last_updated == datetime.fromisoformat("2025-06-01T00:00:00+00:00")
+
+
+def test_resource_last_updated_returns_none_when_all_dates_absent():
+    resource = Resource(**ResourceFactory(last_modified=None, metadata_modified=None, created_at=None))
+    assert resource.last_updated is None
+
+
+def test_resource_supporting_document_name_defaults_to_no_name_specified():
+    resource = Resource(**ResourceFactory(name=None, resource_type="supporting-document"))
+    assert resource.name == "No name specified"
+
+
+def test_resource_name_is_none_when_not_supporting_document():
+    resource = Resource(**ResourceFactory(name=None, resource_type="data-link"))
+    assert resource.name is None
+
+
+def test_resource_is_csv_true_for_csv_format():
+    assert Resource(**ResourceFactory(format="CSV")).is_csv is True
+
+
+def test_resource_is_csv_false_for_non_csv_format():
+    assert Resource(**ResourceFactory(format="JSON")).is_csv is False
+
+
+def test_resource_is_csv_false_when_format_is_none():
+    assert Resource(**ResourceFactory(format=None)).is_csv is False
 
 
 def test_dataset_additional_information_list_converted_to_dict():
