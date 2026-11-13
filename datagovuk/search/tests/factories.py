@@ -18,7 +18,6 @@ class ResourceFactory(factory.DictFactory):
     size = None
     created_at = "2024-01-02T03:04:05+00:00"
     last_modified = "2025-06-07T08:09:10+00:00"
-    metadata_modified = None
 
 
 class DatasetFactory(factory.DictFactory):
