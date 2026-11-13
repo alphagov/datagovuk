@@ -1,131 +1,284 @@
 {% extends "directory/base.jinja" %}
 
 {% set page_title = "Search directory" %}
+{% set hide_directory_header = true %}
+{% set header_search_query = (form.query.value() or "") if form else "" %}
 {% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
 {% from "govuk_frontend_jinja/components/select/macro.html" import govukSelect -%}
 {% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes -%}
 {% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination -%}
 
+{# Multi-select filter rendered as a checkbox list. The first `visible` options are shown, the rest sit behind "Show more". #}
+{% macro filter_options(field, title, counts={}, visible=4, searchable=False) %}
+  {% set selected = field.value() or [] %}
+  {% set options = field.field.choices | list %}
+  {% set shown = options[:visible] %}
+  {% set hidden = options[visible:] %}
+  {% set selected_hidden = hidden | selectattr(0, "in", selected) | list | length > 0 %}
+  {# Nothing to choose from, e.g. no datasets in the results have this attribute #}
+  {% if options %}
+    <fieldset class="datagovuk-filter-group">
+      <legend class="datagovuk-filter-group__title">{{ title }}</legend>
+      {% if searchable %}
+        {# Shown by JavaScript: filters the options below as you type #}
+        <div class="datagovuk-clearable datagovuk-filter-search" data-clearable hidden>
+          <input class="datagovuk-input datagovuk-input--search"
+                 type="search"
+                 data-filter-options
+                 aria-label="Search {{ title|lower }} options"
+                 autocomplete="off" />
+          <button class="datagovuk-clearable__button" type="button" data-clear>
+            <img src="{{ static('images/icons/cancel.svg') }}" width="20" height="20" alt="" />
+            <span class="govuk-visually-hidden">Clear search</span>
+          </button>
+        </div>
+      {% endif %}
+      <div class="datagovuk-filter-group__options">
+        {% for value, label in shown %}{{ filter_option(field.name, value, label, selected, counts.get(value) ) }}{% endfor %}
+        {% if hidden %}
+          {# JavaScript collapses these and reveals the toggle; without it every option simply stays visible #}
+          <div class="datagovuk-filter-group__options"
+               id="{{ field.name }}-more-options"
+               data-more-options
+               {% if selected_hidden %}data-expanded{% endif %}>
+            {% for value, label in hidden %}
+              {{ filter_option(field.name, value, label, selected, counts.get(value) ) }}
+            {% endfor %}
+          </div>
+          <button type="button"
+                  class="datagovuk-filter-more__button"
+                  data-more-toggle
+                  aria-controls="{{ field.name }}-more-options"
+                  aria-expanded="false"
+                  hidden>Show more</button>
+        {% endif %}
+      </div>
+    </fieldset>
+  {% endif %}
+{% endmacro %}
+
+{% macro filter_option(name, value, label, selected, count=None) %}
+  <label class="datagovuk-choice">
+    <input class="datagovuk-choice__input datagovuk-choice__input--checkbox"
+           type="checkbox"
+           name="{{ name }}"
+           value="{{ value }}"
+           {% if value in selected %}checked{% endif %} />
+    <span class="datagovuk-choice__label">{{ label }}
+      {% if count is not none %}<span class="datagovuk-choice__count">({{ count|intcomma }})</span>{% endif %}
+    </span>
+  </label>
+{% endmacro %}
+
+{% macro format_icon(file_format) %}
+  <span class="datagovuk-format-icon datagovuk-format-icon--{{ file_format|format_icon }}" aria-hidden="true"></span>
+{% endmacro %}
+
 {% block search_main %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
-      {# djlint:off #}
-      {{ govukSelect({
-        "label": {
-          "text": form.publisher.label,
-        },
-        "name": form.publisher.name,
-        "value": form.publisher.value(),
-        "items": form.publisher.field.choices|to_govuk_items,
-        "errorMessage": {"html": form.publisher.errors} if form.publisher.errors else None,
-        "formGroup": {"classes": "datagovuk-form-group"},
-      }) }}
-      {{ govukSelect({
-        "label": {
-          "text": form.topic.label,
-        },
-        "name": form.topic.name,
-        "value": form.topic.value(),
-        "items": form.topic.field.choices|to_govuk_items,
-        "errorMessage": {"html": form.topic.errors} if form.topic.errors else None,
-        "formGroup": {"classes": "datagovuk-form-group"},
-      }) }}
-      {{ govukSelect({
-        "label": {
-          "text": form.format.label,
-        },
-        "name": form.format.name,
-        "value": form.format.value(),
-        "items": form.format.field.choices|to_govuk_items,
-        "errorMessage": {"html": form.format.errors} if form.format.errors else None,
-        "formGroup": {"classes": "datagovuk-form-group"},
-      }) }}
-      {{ govukCheckboxes({
-         "name": form.open_government_licence_only.name,
-         "items": [
-           {
-             "value": "on",
-             "checked": true if form.open_government_licence_only.value() else false,
-             "text": form.open_government_licence_only.label,
-           },
-         ],
-         "formGroup": {"classes": "datagovuk-form-group"},
-      }) }}
-      {{ govukCheckboxes({
-         "name": form.include_datasets_with_no_links.name,
-         "items": [
-           {
-             "value": "on",
-             "checked": true if form.include_datasets_with_no_links.value() else false,
-             "text": form.include_datasets_with_no_links.label,
-           },
-         ],
-         "formGroup": {"classes": "datagovuk-form-group"},
-      }) }}
-      {# djlint:on #}
-      {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button datagovuk-button--secondary"}) }}
+  <h1 class="govuk-visually-hidden">Search results</h1>
+  {% if active_filters %}
+    <div class="datagovuk-active-filters">
+      <ul class="datagovuk-active-filters__list" aria-label="Selected filters">
+        {% for chip in active_filters %}
+          <li>
+            <a class="datagovuk-filter-chip" href="{{ chip.remove_url }}">
+              <span class="datagovuk-filter-chip__label">{{ chip.label }}</span>
+              <img src="{{ static('images/icons/cancel.svg') }}" width="20" height="20" alt="" />
+              <span class="govuk-visually-hidden">Remove filter</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+      <a class="datagovuk-active-filters__clear" href="{{ clear_filters_url }}">Clear all</a>
+    </div>
+  {% endif %}
+  <div class="datagovuk-search-layout">
+    <div class="datagovuk-search-layout__sidebar">
+      {# Small screens: the filters sit behind this button. Shown by JavaScript; without it the filters stay open #}
+      <button type="button"
+              class="datagovuk-filter-toggle"
+              aria-expanded="false"
+              aria-controls="search-filters"
+              data-filter-toggle
+              hidden>
+        Filter by
+        <span class="datagovuk-filter-toggle__icon">
+          <img src="{{ static('images/icons/chevron-down-filter.svg') }}" width="17" height="9" alt="" />
+        </span>
+      </button>
+      <div class="datagovuk-search-filters" id="search-filters" data-filters-panel>
+        <h2 class="datagovuk-search-filters-heading">Filter by</h2>
+
+        {{ filter_options(form.collection, "Collection", collection_counts if collection_counts else {}) }}
+
+        {{ filter_options(form.topic, "Topic", facet_counts.topic if facet_counts else {}) }}
+        {{ filter_options(form.format, "Format", facet_counts.format if facet_counts else {}, searchable=True) }}
+
+        {{ filter_options(form.publisher, "Publisher", facet_counts.publisher if facet_counts else {}, searchable=True) }}
+
+        <fieldset class="datagovuk-filter-group">
+          <legend class="datagovuk-filter-group__title">Licence</legend>
+          <div class="datagovuk-filter-group__options">
+            <label class="datagovuk-choice">
+              <input class="datagovuk-choice__input datagovuk-choice__input--checkbox"
+                     type="checkbox"
+                     name="{{ form.open_government_licence_only.name }}"
+                     value="on"
+                     {% if form.open_government_licence_only.value() %}checked{% endif %} />
+              <span class="datagovuk-choice__label">{{ form.open_government_licence_only.label }}</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="datagovuk-filter-group">
+          <legend class="datagovuk-filter-group__title">Datasets</legend>
+          <div class="datagovuk-filter-group__options">
+            <label class="datagovuk-choice">
+              <input class="datagovuk-choice__input datagovuk-choice__input--checkbox"
+                     type="checkbox"
+                     name="{{ form.include_datasets_with_no_links.name }}"
+                     value="on"
+                     {% if form.include_datasets_with_no_links.value() %}checked{% endif %} />
+              <span class="datagovuk-choice__label">{{ form.include_datasets_with_no_links.label }}</span>
+            </label>
+          </div>
+        </fieldset>
+
+        {# Filters apply as soon as they change; this button is only needed without JavaScript #}
+        <noscript>
+          {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button datagovuk-button--secondary"}) }}
+        </noscript>
+      </div>
     </div>
 
-    <div class="govuk-grid-column-two-thirds">
+    <div class="datagovuk-search-layout__results">
       {% if search_made %}
+        {# Only shown when the search is about something we have curated, and only on the first page #}
+        {% if curated_items and (not pagination or (pagination.first_result_in_page or 1) == 1) %}
+          <section class="datagovuk-curated" aria-labelledby="curated-heading" data-more-group>
+            <div class="datagovuk-curated__header">
+              <h2 class="datagovuk-curated__heading" id="curated-heading">
+                <img src="{{ static('images/icons/lightbulb.svg') }}" width="24" height="24" alt="" />
+                Curated data
+              </h2>
+              <span class="datagovuk-tooltip">
+                <button type="button" class="datagovuk-tooltip__button" aria-describedby="curated-info">
+                  <img src="{{ static('images/icons/info.svg') }}" width="30" height="30" alt="" />
+                  <span class="govuk-visually-hidden">About curated data</span>
+                </button>
+                <span role="tooltip" id="curated-info" class="datagovuk-tooltip__text">Selected by the National Data Library team</span>
+              </span>
+            </div>
+            {% macro curated_item(item) %}
+              <div class="datagovuk-curated__item">
+                <a class="datagovuk-search-result__title-link" href="{{ item.url }}">{{ item.title }}</a>
+                <p class="datagovuk-search-result__text datagovuk-line-clamp">{{ item.summary }}</p>
+              </div>
+            {% endmacro %}
+            {% for item in curated_items[:2] %}{{ curated_item(item) }}{% endfor %}
+            {% if curated_items|length > 2 %}
+              {# JavaScript collapses these and reveals the button; without it every item stays visible #}
+              <div id="curated-more-options" data-more-options>
+                {% for item in curated_items[2:] %}{{ curated_item(item) }}{% endfor %}
+              </div>
+              <button type="button"
+                      class="datagovuk-filter-more__button"
+                      data-more-toggle
+                      aria-controls="curated-more-options"
+                      aria-expanded="false"
+                      hidden>Show more</button>
+            {% endif %}
+          </section>
+        {% endif %}
         {% if results.hits > 0 %}
           <div class="datagovuk-search__results-header">
-            <div class="govuk-body datagovuk-body datagovuk-search__results-count">
+            <div class="datagovuk-search__results-count">
               {% if pagination.first_result_in_page != 1 %}
                 {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ pagination.total_results|intcomma }} result{{ "s" if pagination.total_results > 1 else "" }}
               {% else %}
                 {{ pagination.total_results|intcomma }} result{{ "s" if pagination.total_results > 1 else "" }}
               {% endif %}
             </div>
+            {# djlint:off #}
             {{ govukSelect({
-                        "label": {
-                        "text": "Sort by"
-                        },
-                        "name": "sort",
-                        "value": sort,
-                        "items": [
-                        {"text": "Most relevant", "value": "best"},
-                        {"text": "Most recent", "value": "recent"}
-                        ],
-                        "formGroup": {
-                        "classes": "datagovuk-form-group datagovuk-search__sort-by"
-                        },
-                        "attributes": {
-                        "onchange": "this.form.submit()"
-                        }
-                        }) }}
+              "label": {"text": "Sort by"},
+              "name": "sort",
+              "value": sort,
+              "items": [
+                {"text": "Most Relevant", "value": "best"},
+                {"text": "Most Recent", "value": "recent"}
+              ],
+              "formGroup": {"classes": "datagovuk-form-group datagovuk-search__sort-by", "attributes": {"data-custom-select": ""}},
+              "attributes": {"onchange": "this.form.submit()"}
+            }) }}
+            {# djlint:on #}
           </div>
           <ul class="datagovuk-search-results">
             {% for doc in docs %}
+              {% set file_formats = doc.datafiles | map(attribute="format") | select | unique | list %}
               <li class="datagovuk-search-results__item">
-                <h2 class="govuk-body datagovuk-body">
+                <h2 class="datagovuk-search-result__title">
                   <a href="{{ url('directory:dataset', kwargs={'uuid': doc.uuid, 'slug': doc.name}) }}"
-                     class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.title }}</a>
+                     class="datagovuk-search-result__title-link">{{ doc.title }}</a>
                 </h2>
-                <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
-                  <div class="datagovuk-search-results__item-label">Publisher</div>
-                  <div class="datagovuk-search-results__item-value">{{ doc.organisation.title }}</div>
-                </div>
-                <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
-                  <div class="datagovuk-search-results__item-label">Updated</div>
-                  <div class="datagovuk-search-results__item-value">{{ doc.public_updated_at|date("j F Y") }}</div>
-                </div>
-                <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.summary | striptags | truncate(200) }}</div>
+                <p class="datagovuk-search-result__meta">{{ doc.organisation.title }}</p>
+                <p class="datagovuk-search-result__meta">
+                  Updated <span class="datagovuk-search-result__date">{{ doc.public_updated_at|date("d F Y") }}</span>
+                </p>
+                {% if file_formats %}
+                  <ul class="datagovuk-format-tags">
+                    {% for file_format in file_formats[:5] %}
+                      <li class="datagovuk-format-tag">{{ format_icon(file_format) }}{{ file_format|capitalize }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+                <p class="datagovuk-search-result__text">{{ doc.summary | striptags | truncate(200) }}</p>
               </li>
             {% endfor %}
           </ul>
           {% if pagination.pages %}{{ govukPagination(dict(pagination.pages, classes="datagovuk-pagination") ) }}{% endif %}
-        {% else %}
-          <p class="govuk-body datagovuk-body">0 results found</p>
-          <p class="govuk-body datagovuk-body">Improve your search results by:</p>
-          <ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body">
-            <li>removing filters</li>
-            <li>double-checking your spelling</li>
-            <li>using fewer keywords</li>
-            <li>searching for something less specific</li>
-          </ul>
+        {% elif not curated_items %}
+          {# No datasets, but if curated data answers the search there's nothing to apologise for #}
+          <section class="datagovuk-no-results" aria-labelledby="no-results-heading">
+            <h2 class="datagovuk-no-results__heading" id="no-results-heading">No results found</h2>
+            {% if form.query.value() %}
+              <p class="datagovuk-no-results__text">No datasets match your search for ‘{{ form.query.value() }}’.</p>
+            {% else %}
+              <p class="datagovuk-no-results__text">No datasets match the filters you have chosen.</p>
+            {% endif %}
+            <p class="datagovuk-no-results__text">This may be because:</p>
+            <ul class="datagovuk-no-results__list">
+              <li>the National Data Library does not have data on this topic</li>
+              <li>the search terms are too specific</li>
+              <li>there is a spelling error in the search</li>
+            </ul>
+            <p class="datagovuk-no-results__text">To help find more results, you can try:</p>
+            <ul class="datagovuk-no-results__list">
+              <li>checking your spelling</li>
+              <li>using fewer or broader search terms</li>
+              <li>browsing by topic filters</li>
+            </ul>
+          </section>
+          {% if suggested_searches %}
+            <section class="datagovuk-suggested-searches" aria-labelledby="suggested-searches-heading">
+              <h2 class="datagovuk-suggested-searches__heading" id="suggested-searches-heading">Suggested searches</h2>
+              <ul class="datagovuk-suggested-searches__list">
+                {% for suggestion in suggested_searches %}
+                  <li>
+                    <a class="datagovuk-suggested-searches__link" href="{{ url("directory:search") }}?query={{ suggestion|urlencode }}">{{ suggestion }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </section>
+          {% endif %}
         {% endif %}
+        <div class="datagovuk-feedback">
+          Is this data/dataset useful?
+          <a class="datagovuk-feedback__link"
+             href="https://docs.google.com/forms/d/e/1FAIpQLSc_woKw0QjtHf-GI1y-nvm0y-BM9k7vMBVJ_l6vIGmCrJX4LQ/viewform?usp=sharing&ouid=105726931184087623854"
+             target="_blank"
+             rel="noopener noreferrer">Give us feedback</a>
+        </div>
       {% endif %}
     </div>
   </div>
@@ -133,31 +286,121 @@
 
 {% block extra_js %}
   {% compress js %}
-    <script type="text/javascript" src={{static("javascripts/accessible-autocomplete-3.0.1.min.js")}}></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        const selectsToEnhance = ["publisher", "topic", "format"];
-        selectsToEnhance.forEach(id => {
-          const element = document.querySelector(`#${id}`);
-          accessibleAutocomplete.enhanceSelectElement({
-            selectElement: element,
-            showAllValues: true,
-            defaultValue: '',
-            preserveNullOptions: true,
-            inputClasses: "govuk-input",
-            menuClasses: "datagovuk-autocomplete__menu",
-            dropdownArrow: function (config) {
-              return '<svg class="' + config.className + '" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 11.25L15 18.75L22.5 11.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>'
+        // Apply filters automatically as soon as one changes
+        const sidebar = document.querySelector('.datagovuk-search-layout__sidebar');
+        if (sidebar) {
+          sidebar.addEventListener('change', (event) => {
+            // Only real filter controls apply; the option search box and autocomplete text are not filters
+            if (event.target.matches('input[type=radio], input[type=checkbox], select')) {
+              sidebar.closest('form').submit();
             }
           });
+        }
+
+        // Small screens: the filters open and close from the "Filter by" button
+        const filterToggle = document.querySelector('[data-filter-toggle]');
+        const filterPanel = document.querySelector('[data-filters-panel]');
+        if (filterToggle && filterPanel) {
+          const smallScreen = window.matchMedia('(max-width: 779px)');
+          const syncFilters = () => {
+            if (!smallScreen.matches) {
+              filterToggle.hidden = true;
+              filterPanel.hidden = false;
+              return;
+            }
+            filterToggle.hidden = false;
+            filterPanel.hidden = filterToggle.getAttribute('aria-expanded') !== 'true';
+          };
+          filterToggle.addEventListener('click', () => {
+            filterToggle.setAttribute('aria-expanded', String(filterToggle.getAttribute('aria-expanded') !== 'true'));
+            syncFilters();
+          });
+          smallScreen.addEventListener('change', syncFilters);
+          syncFilters();
+        }
+
+        // "Show more" / "Show less": the button sits below the list, so it stays at the bottom in both states
+        const setExpanded = (group, expanded) => {
+          const extras = group.querySelector('[data-more-options]');
+          const toggle = group.querySelector('[data-more-toggle]');
+          if (!extras || !toggle) return;
+          extras.hidden = !expanded;
+          toggle.setAttribute('aria-expanded', String(expanded));
+          toggle.textContent = expanded ? 'Show less' : 'Show more';
+        };
+        document.querySelectorAll('.datagovuk-filter-group, [data-more-group]').forEach((group) => {
+          const toggle = group.querySelector('[data-more-toggle]');
+          if (!toggle) return;
+          toggle.hidden = false;
+          setExpanded(group, group.querySelector('[data-more-options]').hasAttribute('data-expanded'));
+          toggle.addEventListener('click', () => setExpanded(group, toggle.getAttribute('aria-expanded') !== 'true'));
+        });
+
+        // Selected-filter chips stay on one line: whatever doesn't fit collapses into a "+N" button
+        const chipRow = document.querySelector('.datagovuk-active-filters');
+        if (chipRow) {
+          const items = [...chipRow.querySelectorAll('.datagovuk-active-filters__list > li')];
+          const clearAll = chipRow.querySelector('.datagovuk-active-filters__clear');
+          const more = document.createElement('button');
+          more.type = 'button';
+          more.className = 'datagovuk-filter-chip datagovuk-filter-chip--more';
+          more.hidden = true;
+          clearAll.before(more);
+          chipRow.classList.add('is-collapsible');
+          let expanded = false;
+
+          const layoutChips = () => {
+            const gap = parseFloat(getComputedStyle(chipRow).columnGap) || 0;
+            items.forEach((item) => { item.hidden = false; });
+            more.hidden = true;
+            chipRow.classList.toggle('is-expanded', expanded);
+
+            const widths = items.map((item) => item.offsetWidth);
+            const available = chipRow.clientWidth - clearAll.offsetWidth - gap;
+            const total = widths.reduce((sum, w) => sum + w, 0) + gap * (items.length - 1);
+            if (total <= available) { expanded = false; chipRow.classList.remove('is-expanded'); return; }
+
+            more.hidden = false;
+            if (expanded) {
+              more.textContent = 'Show less';
+              more.setAttribute('aria-expanded', 'true');
+              return;
+            }
+            more.setAttribute('aria-expanded', 'false');
+            // Keep as many chips as fit alongside the "+N" button (always at least one)
+            let keep = items.length - 1;
+            for (; keep > 1; keep -= 1) {
+              more.textContent = `+${items.length - keep}`;
+              const used = widths.slice(0, keep).reduce((sum, w) => sum + w, 0) + gap * keep + more.offsetWidth;
+              if (used <= available) break;
+            }
+            more.textContent = `+${items.length - keep}`;
+            more.setAttribute('aria-label', `Show ${items.length - keep} more selected filters`);
+            items.forEach((item, index) => { item.hidden = index >= keep; });
+          };
+
+          more.addEventListener('click', () => { expanded = !expanded; layoutChips(); });
+          layoutChips();
+          new ResizeObserver(layoutChips).observe(chipRow);
+        }
+
+        // Option search: narrow the visible options as you type (the box is hidden without JavaScript)
+        document.querySelectorAll('[data-filter-options]').forEach((search) => {
+          search.closest('[data-clearable]').hidden = false;
+          const group = search.closest('fieldset');
+          search.addEventListener('input', () => {
+            const term = search.value.trim().toLowerCase();
+            if (term) setExpanded(group, true);
+            group.querySelectorAll('.datagovuk-choice').forEach((option) => {
+              option.hidden = term !== '' && !option.textContent.toLowerCase().includes(term);
+            });
+          });
+          // Typing must not submit or reload the page
+          search.addEventListener('keydown', (e) => { if (e.key === 'Enter') e.preventDefault(); });
         });
       });
     </script>
   {% endcompress %}
 {% endblock extra_js %}
-
-{% block extra_css %}
-  {% compress css %}
-    <link href="{{ static('stylesheets/accessible-autocomplete-3.0.1.min.css') }}" rel="stylesheet" />
-  {% endcompress %}
-{% endblock extra_css %}

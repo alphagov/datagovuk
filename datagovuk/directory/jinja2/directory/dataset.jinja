@@ -1,9 +1,9 @@
 {% extends "directory/base.jinja" %}
 
 {% set page_title = doc.title %}
-{% set directory_heading_level = "h2" %}
-{% from "govuk_frontend_jinja/components/summary-list/macro.html" import govukSummaryList -%}
+{% set hide_directory_header = true %}
 {% from "govuk_frontend_jinja/components/button/macro.html" import govukButton -%}
+{% from "macros/common.jinja" import cta_button %}
 
 {% macro resource_row(resource, doc) %}
   <tr class="govuk-table__row">
@@ -11,7 +11,7 @@
       <a href="{{ resource.url }}" class="govuk-link datagovuk-link">{{ resource.name or "Data" }}</a>
       {% if resource.size %}({{ resource.size|format_file_size }}){% endif %}
     </td>
-    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--wrap govuk-body datagovuk-body">
+    <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
       {{ resource.format }}
     </td>
     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
@@ -19,11 +19,11 @@
         <a href="{{ url('directory:preview', kwargs={'dataset_uuid': doc.uuid, 'name': doc.name, 'datafile_uuid': resource.uuid}) }}"
            class="govuk-link datagovuk-link">Preview</a>
       {% else %}
-        –
+        N/A
       {% endif %}
     </td>
     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-      {{ resource.last_modified|date("j/n/Y") }}
+      {{ resource.last_modified|date("d/m/Y") }}
     </td>
   </tr>
 {% endmacro %}
@@ -53,96 +53,72 @@
 {% endblock extra_head %}
 
 {% block search_main %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds-from-desktop">
-      {% set title_class = "datagovuk-heading-xl--small" if doc.title|length > 100 else "" %}
-      <h1 class="govuk-heading-xl datagovuk-heading-xl govuk-!-margin-bottom-6 {{ title_class }}" property="dc:title">
-        {{ doc.title }}
-      </h1>
-    </div>
-  </div>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+  <div class="datagovuk-dataset">
+    <h1 class="datagovuk-dataset__title{% if doc.title|length > 100 %} datagovuk-dataset__title--long{% endif %}"
+        property="dc:title">{{ doc.title }}</h1>
+
+    <div class="datagovuk-dataset__content">
       {% set licence_html %}
         <span property="dc:rights">
           {% if doc.licence_title and doc.licence_url %}
-            <a href="{{ doc.licence_url }}" class="govuk-link datagovuk-link" rel="dc:rights">{{ doc.licence_title }}</a>
+            <a href="{{ doc.licence_url }}" class="datagovuk-dataset__link datagovuk-dataset__link--plain" rel="dc:rights">{{ doc.licence_title }}</a>
           {% elif doc.licence_title %}
             {{ doc.licence_title }}
           {% elif doc.licence_custom %}
-            <a href="#licence-information" class="govuk-link datagovuk-link">View licence information</a>
+            <a href="#licence-information" class="datagovuk-dataset__link datagovuk-dataset__link--plain">View licence information</a>
           {% else %}
             Not set
           {% endif %}
         </span>
       {% endset %}
 
-      {% set publisher_html %}
-        <span property="dc:publisher">{{ doc.organisation.title }}</span>
-      {% endset %}
-      {% set last_updated_html %}
-        <span property="dc:date">{{ doc.public_updated_at|date("j F Y") }}</span>
-      {% endset %}
-      {# djlint:off #}
-      {{ govukSummaryList({
-        "rows": [
-          {
-            "key": {"text": "Publisher"},
-            "value": {"html": publisher_html},
-          },
-          {
-            "key": {"text": "Updated"},
-            "value": {"html": last_updated_html},
-          },
-          {
-            "key": {"text": "Topic"},
-            "value": {"text": doc.topic or "Not set"},
-          },
-          {
-            "key": {"text": "Licence"},
-            "value": {"html": licence_html},
-          },
-        ],
-        "classes": "datagovuk-summary-list govuk-summary-list--no-border",
-      }) }}
-      {# djlint:on #}
-      <section class="govuk-!-margin-bottom-8">
-        <h2 class="govuk-heading-m datagovuk-heading-m">Summary</h2>
+      <dl class="datagovuk-metadata">
+        <div class="datagovuk-metadata__row">
+          <dt class="datagovuk-metadata__label">Published by:</dt>
+          <dd class="datagovuk-metadata__value">
+            <span property="dc:publisher">{{ doc.organisation.title }}</span>
+          </dd>
+        </div>
+        <div class="datagovuk-metadata__row">
+          <dt class="datagovuk-metadata__label">Last updated:</dt>
+          <dd class="datagovuk-metadata__value">
+            <span property="dc:date">{{ doc.public_updated_at|date("j F Y") }}</span>
+          </dd>
+        </div>
+        <div class="datagovuk-metadata__row">
+          <dt class="datagovuk-metadata__label">Topic:</dt>
+          <dd class="datagovuk-metadata__value">
+            {{ doc.topic or "Not set" }}
+          </dd>
+        </div>
+        <div class="datagovuk-metadata__row">
+          <dt class="datagovuk-metadata__label">Licence:</dt>
+          <dd class="datagovuk-metadata__value">
+            {{ licence_html }}
+          </dd>
+        </div>
+      </dl>
 
-        <div id="summary"
-             class="govuk-!-margin-bottom-2 govuk-body datagovuk-body datagovuk-dataset-summary datagovuk-line-clamp"
-             property="dc:description">{{ render_publisher_string(doc.summary) }}</div>
-        {{ govukButton({
-          "text": "View full summary",
-          "type": "button",
-          "classes": "datagovuk-button datagovuk-button--secondary datagovuk-line-clamp-toggle govuk-!-margin-top-6",
-          "attributes": {
-            "aria-controls": "summary",
-            "data-hide-text": "Hide full summary"
-          }
-        }) }}
-      </section>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <section class="datagovuk-more-from-publisher">
-        <div class="datagovuk-card">
-          <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
-          <p class="govuk-body datagovuk-body">
-            {# djlint:off #}
-            <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.title }}"
-               class="govuk-link datagovuk-link datagovuk-link--secondary">
-              All datasets from {{ doc.organisation.title }}
-            </a>
-            {# djlint:on #}
-          </p>
+      <section class="datagovuk-dataset__section">
+        <h2 class="datagovuk-dataset__heading">Summary</h2>
+        <div class="datagovuk-dataset__summary">
+          <div id="summary" class="datagovuk-dataset__text datagovuk-dataset-summary datagovuk-line-clamp" property="dc:description">
+            {{ render_publisher_string(doc.summary) }}
+          </div>
+          {{ govukButton({
+            "text": "View full summary",
+            "type": "button",
+            "classes": "datagovuk-button datagovuk-button--secondary datagovuk-line-clamp-toggle",
+            "attributes": {
+              "aria-controls": "summary",
+              "data-hide-text": "Hide full summary"
+            }
+          }) }}
         </div>
       </section>
-    </div>
-  </div>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      <section class="govuk-!-margin-bottom-8">
-        <h2 class="govuk-heading-m datagovuk-heading-m">Data links</h2>
+
+      <section class="datagovuk-dataset__section">
+        <h2 class="datagovuk-dataset__heading">Data links</h2>
         {% if doc.datafiles %}
           <div id="datagovuk-resources-table" class="datagovuk-table-container" tabindex="0" role="region">
             <table class="govuk-table datagovuk-table">
@@ -151,7 +127,8 @@
                   <th scope="col" class="govuk-table__header datagovuk-table__header datagovuk-table__header--wrap govuk-body datagovuk-body">
                     Link
                   </th>
-                  <th scope="col" class="govuk-table__header datagovuk-table__header datagovuk-table__header--wrap govuk-body datagovuk-body">
+                  <th scope="col"
+                      class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
                     Format
                   </th>
                   <th scope="col"
@@ -160,7 +137,7 @@
                   </th>
                   <th scope="col"
                       class="govuk-table__header datagovuk-table__header datagovuk-table__header--compact govuk-body datagovuk-body">
-                    Updated
+                    Last update
                   </th>
                 </tr>
               </thead>
@@ -179,7 +156,7 @@
             {{ govukButton({
               "text": "Show more",
               "type": "button",
-              "classes": "datagovuk-button datagovuk-button--secondary datagovuk-visibility-toggle govuk-!-margin-top-6",
+              "classes": "datagovuk-button datagovuk-button--secondary datagovuk-visibility-toggle",
               "attributes": {
                 "aria-controls": "truncated-resources-rest",
                 "data-hide-text": "Show less"
@@ -187,122 +164,83 @@
             }) }}
           {% endif %}
         {% else %}
-          <p class="govuk-body datagovuk-body">There are no links to this data.</p>
+          <p class="datagovuk-dataset__text">There are no links to this data.</p>
         {% endif %}
       </section>
-    </div>
-  </div>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <section class="govuk-!-margin-bottom-8">
-        {% with dataset=true %}
-          {% include "includes/feedback.jinja" %}
-        {% endwith %}
-      </section>
-    </div>
-  </div>
-  {% if doc.additional_information %}
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
 
+      {% with dataset=true %}
+        {% include "includes/feedback.jinja" %}
+      {% endwith %}
+
+      {% if doc.additional_information %}
         {% with additional_information=doc.additional_information %}
           {% include "directory/includes/additional_information.jinja" %}
         {% endwith %}
-      </div>
-    </div>
-  {% endif %}
-  {% if doc.docs %}
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-full">
+      {% endif %}
+
+      {% if doc.docs %}
         {% with supporting_documents=doc.docs %}
           {% include "directory/includes/supporting_documents.jinja" %}
         {% endwith %}
-      </div>
-    </div>
-  {% endif %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+      {% endif %}
 
       {% if doc.contact_email or doc.foi_email or doc.foi_web %}
-        <section class="contact govuk-!-margin-bottom-8">
-          <h2 class="govuk-heading-m datagovuk-heading-m">Contact</h2>
-
-          {% set contact_email_is_email = "@" in doc.contact_email %}
-          {% if doc.contact_email %}
-            <h3 class="govuk-heading-s datagovuk-heading-s">Enquiries</h3>
-            <p class="govuk-body datagovuk-body">
-              <a href="{{ 'mailto:' ~ doc.contact_email if contact_email_is_email else doc.contact_email }}"
-                 class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.contact_email if contact_email_is_email else "Enquiries" }}</a>
-            </p>
-          {% endif %}
-
-          {% set foi_email_is_email = "@" in doc.foi_email %}
-          {% if doc.foi_email or doc.foi_web %}
-            <h3 class="govuk-heading-s datagovuk-heading-s">Freedom of information (FOI) requests</h3>
-            {% if doc.foi_email %}
-              <p class="govuk-body datagovuk-body">
-                <a href="{{ 'mailto:' ~ doc.foi_email if foi_email_is_email else doc.foi_email }}"
-                   class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.foi_email if foi_email_is_email else "Freedom of Information (FOI) requests" }}</a>
-              </p>
+        <section class="datagovuk-dataset__section contact">
+          <h2 class="datagovuk-dataset__heading">Contact</h2>
+          <div class="datagovuk-dataset__contacts">
+            {% set contact_email_is_email = "@" in doc.contact_email %}
+            {% if doc.contact_email %}
+              <div class="datagovuk-dataset__contact">
+                <h3 class="datagovuk-dataset__text">Enquiries</h3>
+                <a href="{{ 'mailto:' ~ doc.contact_email if contact_email_is_email else doc.contact_email }}"
+                   class="datagovuk-dataset__link">{{ doc.contact_email if contact_email_is_email else "Enquiries" }}</a>
+              </div>
             {% endif %}
 
-            {% if doc.foi_web %}
-              <p class="govuk-body datagovuk-body">
-                <a href="{{ doc.foi_web }}" class="govuk-link datagovuk-link datagovuk-link--secondary">Freedom of Information (FOI) requests</a>
-              </p>
+            {% set foi_email_is_email = "@" in doc.foi_email %}
+            {% if doc.foi_email or doc.foi_web %}
+              <div class="datagovuk-dataset__contact">
+                <h3 class="datagovuk-dataset__text">Freedom of Information (FOI) requests</h3>
+                {% if doc.foi_email %}
+                  <a href="{{ 'mailto:' ~ doc.foi_email if foi_email_is_email else doc.foi_email }}" class="datagovuk-dataset__link">{{ doc.foi_email if foi_email_is_email else "Freedom of Information (FOI) requests" }}</a>
+                {% endif %}
+                {% if doc.foi_web %}
+                  <a href="{{ doc.foi_web }}" class="datagovuk-dataset__link">Freedom of information requests for this dataset</a>
+                {% endif %}
+              </div>
             {% endif %}
-          {% endif %}
+          </div>
         </section>
       {% endif %}
 
       {% if doc.licence_custom %}
-        <section class="licence-information">
-          <h2 id="licence-information" class="govuk-heading-m datagovuk-heading-m">Licence information</h2>
-          <div class="govuk-!-margin-bottom-8 govuk-body datagovuk-body">{{ render_publisher_string(doc.licence_custom) }}</div>
+        <section class="datagovuk-dataset__section licence-information">
+          <h2 id="licence-information" class="datagovuk-dataset__heading">Licence information</h2>
+          <div class="datagovuk-dataset__text">{{ render_publisher_string(doc.licence_custom) }}</div>
         </section>
       {% endif %}
 
-      <section class="datagovuk-more-from-publisher--mobile">
-        <div class="datagovuk-card govuk-!-margin-bottom-8">
-          <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
-          <p class="govuk-body datagovuk-body">
-            {# djlint:off #}
-                <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.title }}"
-                    class="govuk-link datagovuk-link datagovuk-link--secondary">
-                All datasets from {{ doc.organisation.title }}
-                </a>
-            {# djlint:on #}
-          </p>
-        </div>
-      </section>
       {% if not doc.harvested %}
-        <section class="edit">
-          <h2 class="govuk-heading-m datagovuk-heading-m">Edit this dataset</h2>
-          <p class="govuk-body datagovuk-body">
+        <section class="datagovuk-dataset__section edit">
+          <h2 class="datagovuk-dataset__heading">Edit this dataset</h2>
+          <p class="datagovuk-dataset__text">
             You must have an account for this publisher on data.gov.uk to make any changes to a dataset.
           </p>
-          {% set ckan_base_url = "https://ckan.publishing.service.gov.uk/dataset/edit/" %}
-          {# djlint:off #}
-          {{govukButton({
-            "html": '''
-              Sign in <span class="datagovuk-right-arrow">
-                <img class="datagovuk-button__arrow" src="/assets/images/icons/arrow-black-right.svg" width="20" height="20" alt="">
-                <img class="datagovuk-button__arrow--focus" src="/assets/images/icons/arrow-white-right.svg" width="20" height="20" alt="">
-              </span>
-            ''',
-            "href": ckan_base_url ~ doc.name,
-            "classes": "datagovuk-button datagovuk-button--secondary",
-          })}}
-          {# djlint:on #}
+          {{ cta_button(url('data_manual:home') , 'Data manual', 'link') }}
         </section>
       {% endif %}
     </div>
+
+    <aside class="datagovuk-dataset__secondary" aria-label="More from this publisher">
+      <section class="datagovuk-publisher-card">
+        <h2 class="datagovuk-publisher-card__heading">More from this publisher</h2>
+        <p class="datagovuk-publisher-card__name">
+          {# djlint:off #}
+          <a href="{{ url("directory:search") ~ "?publisher=" ~ (doc.organisation.title|urlencode) }}"
+             class="datagovuk-publisher-card__link">{{ doc.organisation.title }}</a>
+          {# djlint:on #}
+        </p>
+      </section>
+    </aside>
   </div>
 {% endblock search_main %}
-
-{% block extra_js %}
-  {% compress js %}
-    <script src="{{ static('javascripts/visibility-toggle.js') }}"></script>
-    <script src="{{ static('javascripts/line-clamp-toggle.js') }}"></script>
-  {% endcompress %}
-{% endblock extra_js %}

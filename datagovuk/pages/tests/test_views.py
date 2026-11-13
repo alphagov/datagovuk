@@ -20,6 +20,8 @@ def test_home(client):
     assert response.headers["Cache-Control"] == "max-age=1800, public"
     response_content = response.content.decode()
     assert "National Data Library - The home of UK public data - data.gov.uk" in response_content
+    assert "Discover UK public data to inform decisions and build services" in response_content
+    assert 'role="search"' in response_content
     assert "Test feature flag enabled" not in response_content
 
 
@@ -106,3 +108,14 @@ def test_roadmap(client):
     assert response.status_code == HTTPStatus.OK
     assert "Our plan for the National Data Library - National Data Library" in response_content
     assert "National Data Library roadmap" in response_content
+
+
+def test_help(client):
+    url = reverse("pages:help")
+    response = client.get(url)
+    response_content = response.content.decode()
+
+    assert response.status_code == HTTPStatus.OK
+    assert "Help - National Data Library" in response_content
+    assert "About the National Data Library" in response_content
+    assert "API documentation" in response_content

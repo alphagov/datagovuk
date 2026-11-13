@@ -38,13 +38,76 @@
     padding: 22px 0;
 }
 
-.datagovuk-header__search {
-    display: none;
-}
-
 .datagovuk-header__nav {
     display: none;
 }
+
+/* Search in the header: its own row on small screens, between the logo and the links on desktop */
+.datagovuk-header__search {
+    display: flex;
+    align-items: center;
+    flex: 1 0 100%;
+    min-width: 0;
+    max-width: 100%;
+    order: 5;
+    margin: 0 0 16px;
+    height: 60px;
+    padding: 8px 12px 8px 24px;
+    box-sizing: border-box;
+    background-color: $datagovuk-white;
+    border: 1px solid $datagovuk-mid-grey;
+    border-radius: 30px;
+
+    &:focus-within {
+        outline: 3px solid #ffdd00;
+        outline-offset: 0;
+    }
+}
+
+.datagovuk-header__search-input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    /* Inter Regular, 1.4: 20px on mobile, 22px on desktop */
+    font-family: Inter, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: $datagovuk-black;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    &::placeholder {
+        color: $datagovuk-grey;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.datagovuk-header__search-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 41px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 20px;
+    background-color: $datagovuk-light-pink;
+    cursor: pointer;
+
+    img {
+        width: 22px;
+        height: 22px;
+    }
+}
+
 
 .datagovuk-header__button:after,
 .datagovuk-directory-header__button:after {
@@ -161,53 +224,21 @@
         width: 200px;
     }
 
-    .datagovuk-header__search {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 0 20px;
-        height: 57px;
-        width: 400px;
-        flex-shrink: 0;
-        background: white;
-        border: 1px solid #0b0c0c;
-        border-radius: 12px;
-
-        &:focus-within {
-            outline: 3px solid #ffdd00;
-            outline-offset: 0;
-        }
-    }
-
-    .datagovuk-header__search-icon {
-        width: 24px;
-        height: 24px;
-        flex-shrink: 0;
-    }
-
-    .datagovuk-header__search-input {
-        flex: 1;
-        border: none;
-        background: transparent;
-        font-family: Inter, sans-serif;
-        font-size: 20px;
-        color: $datagovuk-black;
-        min-width: 0;
-
-        &:focus {
-            outline: none;
-        }
-
-        &::placeholder {
-            color: $datagovuk-grey;
-        }
-    }
-
     .datagovuk-header__nav {
         display: flex;
         align-items: center;
         gap: 24px;
         flex-shrink: 0;
+    }
+
+    .datagovuk-header__search {
+        flex: 0 1 415px;
+        order: 0;
+        margin: 0;
+    }
+
+    .datagovuk-header__search-input {
+        font-size: 22px;
     }
 
     .datagovuk-header__link,

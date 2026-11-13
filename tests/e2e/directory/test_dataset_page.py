@@ -23,7 +23,7 @@ class TestDatasetPage:
         expect(headers.nth(0)).to_have_text("Link")
         expect(headers.nth(1)).to_have_text("Format")
         expect(headers.nth(2)).to_have_text("Preview")
-        expect(headers.nth(3)).to_have_text("Updated")
+        expect(headers.nth(3)).to_have_text("Last update")
 
     def test_table_rows_have_govuk_classes(self, page, live_server_url, dataset_url):
         page.goto(live_server_url + dataset_url)

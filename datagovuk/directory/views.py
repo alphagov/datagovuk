@@ -9,6 +9,7 @@ from datagovuk.core.utils import build_table_data
 from datagovuk.core.views import GETFormView, PaginationMixin
 
 from .constants import FORMATS_BY_FORMAT_VALUE, TOPICS_BY_SOLR_ALIAS, FormatChoices, TopicChoices
+from .curated import get_collection_counts, get_curated_items, get_suggested_searches
 from .forms import SearchForm
 from .preview_utils import fetch_csv
 from .solr import (
@@ -102,14 +103,6 @@ class SearchView(GETFormView, PaginationMixin):
         ]
         publisher_choices = [(title, title) for title in facet_titles]
 
-        # topics facet
-        facet_topics = OrderedSet()
-        for facet_value in facets["extras_theme-primary"]:
-            if facet_value not in TOPICS_BY_SOLR_ALIAS:
-                continue
-            facet_topics.add(TOPICS_BY_SOLR_ALIAS[facet_value])
-        topic_choices = [(topic, topic) for topic in facet_topics if topic in TopicChoices]
-
         # format facet
         facet_formats = OrderedSet()
         for facet_value in facets["res_format"]:
@@ -123,25 +116,118 @@ class SearchView(GETFormView, PaginationMixin):
 
         return {
             "publisher_choices": publisher_choices,
-            "topic_choices": topic_choices,
             "format_choices": format_choices,
         }
+
+    @staticmethod
+    def get_topic_choices(topic_counts, *, include_empty):
+        """
+        Topics are a fixed list. Offer every one when browsing everything; when searching, only the topics that
+        have results. Those with the most results come first.
+        """
+        topics = [topic for topic in TopicChoices.values if topic and (include_empty or topic_counts.get(topic))]
+        topics.sort(key=lambda topic: -topic_counts.get(topic, 0))
+        return [(topic, topic) for topic in topics]
+
+    @staticmethod
+    def with_selected(choices, filters):
+        """Keep ticked options in the list even when they have no matches alongside the other filters."""
+        for choices_key, field in (
+            ("collection_choices", "collection"),
+            ("publisher_choices", "publisher"),
+            ("topic_choices", "topic"),
+            ("format_choices", "format"),
+        ):
+            present = {value for value, _ in choices[choices_key]}
+            choices[choices_key] += [(value, value) for value in filters.get(field, []) if value not in present]
+        return choices
+
+    def get_facet_counts(self, facet_fields):
+        """
+        Number of matching datasets per topic and per format, for display next to each filter option.
+
+        A dataset can appear under several aliases (topic) or spellings (format) of the same option, so
+        the highest count is used rather than the sum, which would count datasets more than once.
+        """
+
+        def pairs(facet_values):
+            return zip(facet_values[::2], facet_values[1::2], strict=False)
+
+        topic_counts = {topic: 0 for topic in TopicChoices.values if topic}
+        for facet_value, count in pairs(facet_fields["extras_theme-primary"]):
+            topic = TOPICS_BY_SOLR_ALIAS.get(facet_value)
+            if topic:
+                topic_counts[topic] = max(topic_counts[topic], count)
+
+        format_counts = {}
+        for facet_value, count in pairs(facet_fields["res_format"]):
+            file_format = FORMATS_BY_FORMAT_VALUE.get(facet_value, "OTHER")
+            format_counts[file_format] = max(format_counts.get(file_format, 0), count)
+
+        publisher_counts = {}
+        titles_by_slug = {slug: title for title, slug in get_organisations_by_title().items()}
+        for facet_value, count in pairs(facet_fields["organization"]):
+            if facet_value in titles_by_slug:
+                publisher_counts[titles_by_slug[facet_value]] = count
+
+        return {"publisher": publisher_counts, "topic": topic_counts, "format": format_counts}
+
+    LIST_FILTERS = ("collection", "topic", "format", "publisher")
+    BOOLEAN_FILTERS = ("open_government_licence_only", "include_datasets_with_no_links")
+
+    def _url_with(self, **changes):
+        """The current search URL with some filters changed: a value of None removes the parameter."""
+        params = self.request.GET.copy()
+        params.pop("page", None)
+        for key, value in changes.items():
+            if value is None:
+                params.pop(key, None)
+            else:
+                params.setlist(key, value)
+        return f"{self.request.path}?{params.urlencode()}"
+
+    def get_active_filters(self, filters):
+        """One chip per ticked filter, each linking to the same search without that filter."""
+        chips = []
+        for field in self.LIST_FILTERS:
+            selected = filters.get(field, [])
+            for value in selected:
+                remaining = [other for other in selected if other != value]
+                chips.append({"label": value, "remove_url": self._url_with(**{field: remaining})})
+        for field in self.BOOLEAN_FILTERS:
+            if filters.get(field):
+                label = self.form_class.base_fields[field].label
+                chips.append({"label": label, "remove_url": self._url_with(**{field: None})})
+        return chips
 
     def get_context_data(self, query=None, filters=None, search_result=None, page=None, sort=None, **kwargs):
         context = super().get_context_data(**kwargs)
         if query is not None:
             results = search_result["results"]
             docs = search_result["docs"]
-            show_facets = (results.hits > 0) and query
-            if show_facets:
-                # If we have results AND a query set, re-initialise the form now
-                # that we know what facets should be shown
-                form_kwargs = {
-                    **self.get_form_kwargs(),
-                    **self.get_choices_from_facets(results.facets["facet_fields"]),
+            # Collections come from the curated pages, not Solr: only those with pages for this search are offered
+            collection_counts = get_collection_counts(query, filters.get("topic", []))
+            collection_choices = [
+                (title, title)
+                for title, count in sorted(collection_counts.items(), key=lambda item: -item[1])
+                if count or not query
+            ]
+            if results.hits > 0:
+                facet_fields = results.facets["facet_fields"]
+                facet_counts = self.get_facet_counts(facet_fields)
+                choices = {
+                    **self.get_choices_from_facets(facet_fields),
+                    # Searching with no words (the search icon on its own) browses everything available
+                    "topic_choices": self.get_topic_choices(facet_counts["topic"], include_empty=not query),
                 }
-                form = self.form_class(**form_kwargs)
-                context["form"] = form
+                context["facet_counts"] = facet_counts
+            else:
+                # Nothing was found, so there is nothing to filter by, other than what is already ticked
+                choices = {"publisher_choices": [], "topic_choices": [], "format_choices": []}
+            choices["collection_choices"] = collection_choices
+            context["collection_counts"] = collection_counts
+            form_kwargs = {**self.get_form_kwargs(), **self.with_selected(choices, filters)}
+            context["form"] = self.form_class(**form_kwargs)
             context["results"] = results
             context["pagination"] = self.get_govuk_pagination(
                 page=page,
@@ -151,6 +237,10 @@ class SearchView(GETFormView, PaginationMixin):
             context["docs"] = docs
             context["sort"] = sort
             context["search_made"] = True
+            context["suggested_searches"] = get_suggested_searches(query) if results.hits == 0 else []
+            context["curated_items"] = get_curated_items(query, filters.get("topic", []), filters.get("collection", []))
+            context["active_filters"] = self.get_active_filters(filters)
+            context["clear_filters_url"] = self._url_with(**dict.fromkeys(self.LIST_FILTERS + self.BOOLEAN_FILTERS))
         return context
 
 

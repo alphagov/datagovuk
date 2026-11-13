@@ -8,6 +8,8 @@ from jinja2 import ChoiceLoader, Environment, PackageLoader, PrefixLoader
 from markdownify import markdownify
 from markupsafe import Markup
 
+from datagovuk.directory.format_icons import get_format_icon
+
 from .feature_flags import is_feature_flag_enabled
 from .markdown import render_markdown
 
@@ -96,6 +98,7 @@ def environment(**options):
     env.filters.update(django_filters)
     env.filters["to_govuk_items"] = to_govuk_items
     env.filters["format_file_size"] = format_file_size
+    env.filters["format_icon"] = get_format_icon
     env.filters["is_html"] = is_html
     env.filters["html_to_markdown"] = lambda html: markdownify(
         html,

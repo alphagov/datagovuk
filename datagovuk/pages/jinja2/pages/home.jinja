@@ -1,6 +1,7 @@
 {% extends "base.jinja" %}
 
-{% from "macros/common.jinja" import cta_button %}
+{# The homepage has its own search in the hero, so the header one is left out #}
+{% set hide_header_search = true %}
 
 {% block page_title %}
   National Data Library - The home of UK public data - data.gov.uk
@@ -13,12 +14,31 @@
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container">
     <div class="datagovuk-home-hero">
+      <div class="datagovuk-home-hero__background" aria-hidden="true">
+        <span class="datagovuk-home-hero__ellipse datagovuk-home-hero__ellipse--green">
+          <img src="{{ static('images/home-hero-ellipse-green.svg') }}" alt="" />
+        </span>
+        <span class="datagovuk-home-hero__ellipse datagovuk-home-hero__ellipse--pink">
+          <img src="{{ static('images/home-hero-ellipse-pink.svg') }}" alt="" />
+        </span>
+      </div>
       <h1 class="govuk-heading-xl datagovuk-heading-xl datagovuk-home-hero__heading">
-        The home of UK public data to inform decisions and build services
+        Discover UK public data to inform decisions and build services
       </h1>
-      <p class="govuk-body datagovuk-body">
-        <a href="{{ url('pages:roadmap') }}" class="govuk-link datagovuk-link datagovuk-home-hero__link">Find out more
-        about the National Data Library</a>
+      <form class="datagovuk-home-search" action="{{ url('directory:search') }}" method="get" role="search" data-clearable>
+        <label class="govuk-visually-hidden" for="home-search-query">Search for data</label>
+        <input class="datagovuk-home-search__input" type="search" id="home-search-query" name="query" autocomplete="off" />
+        <button class="datagovuk-home-search__button" type="submit">
+          <img src="{{ static('images/icons/search.svg') }}" width="24" height="24" alt="" />
+          <span class="govuk-visually-hidden">Search</span>
+        </button>
+        <button class="datagovuk-home-search__button datagovuk-search-clear" type="button" data-clear>
+          <img src="{{ static('images/icons/cancel.svg') }}" width="20" height="20" alt="" />
+          <span class="govuk-visually-hidden">Clear search</span>
+        </button>
+      </form>
+      <p class="govuk-body datagovuk-body datagovuk-home-hero__link-wrapper">
+        <a href="{{ url('pages:roadmap') }}" class="govuk-link datagovuk-link datagovuk-home-hero__link">Find out more about the National Data Library</a>
       </p>
     </div>
 
@@ -72,29 +92,15 @@
 
     </div>
 
-    <div class="datagovuk-home-cards datagovuk-home-section">
-
-      <div class="datagovuk-home-card datagovuk-home-card--data-manual">
-
-        <h2 class="govuk-heading-m datagovuk-heading-m datagovuk-home-card__heading">Data manual</h2>
-
-        <p class="govuk-body datagovuk-body datagovuk-home-card__description">
+    <div class="datagovuk-home-feature datagovuk-home-section">
+      <img src="{{ static('images/data-manual-book.svg') }}" width="111" height="97" alt="" class="datagovuk-home-feature__image" />
+      <div class="datagovuk-home-feature__content">
+        <h2 class="govuk-body datagovuk-body datagovuk-home-feature__heading">
+          <a href="{{ url('data_manual:home') }}" class="govuk-link datagovuk-link datagovuk-home-feature__link">Data manual</a>
+        </h2>
+        <p class="govuk-body datagovuk-body datagovuk-home-feature__description">
           A guide to working with data in government and the public sector
         </p>
-
-        {{ cta_button(url('data_manual:home') , 'Data manual', 'link') }}
-
-      </div>
-
-      <div class="datagovuk-home-card datagovuk-home-card--data-manual">
-
-        <h2 class="govuk-heading-m datagovuk-heading-m datagovuk-home-card__heading">Directory</h2>
-
-        <p class="govuk-body datagovuk-body datagovuk-home-card__description">
-          You can still search the original open data directory, which we're working&nbsp;on
-        </p>
-
-        {{ cta_button(url("directory:search") , 'Directory', 'link') }}
       </div>
     </div>
 

@@ -1,0 +1,86 @@
+/*
+ * Checkboxes and radios (Figma: Checkboxes/Checkbox, Radios/Radio, small 24px control).
+ * Markup:
+ *   <label class="datagovuk-choice">
+ *     <input class="datagovuk-choice__input datagovuk-choice__input--radio|--checkbox" type="radio|checkbox" />
+ *     <span class="datagovuk-choice__label">Label</span>
+ *   </label>
+ */
+$datagovuk-focus-ring: 3px;
+
+.datagovuk-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.datagovuk-choice[hidden] {
+  display: none;
+}
+
+.datagovuk-choice__input {
+  appearance: none;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  /* 24px control centred in a 44px target */
+  margin: 10px;
+  background-color: $datagovuk-white;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.datagovuk-choice__input--checkbox {
+  border: 1px solid $datagovuk-black;
+  border-radius: 5px;
+
+  &:checked {
+    background-image: url(static('images/icons/checkbox-tick.svg'));
+  }
+
+  &:focus-visible {
+    border-width: 2px;
+    outline: none;
+    box-shadow: 0 0 0 $datagovuk-focus-ring $datagovuk-yellow;
+  }
+}
+
+.datagovuk-choice__input--radio {
+  border: 2px solid $datagovuk-grey;
+  border-radius: 50%;
+
+  /* 12px selection indicator */
+  &:checked {
+    background-image: radial-gradient(circle, $datagovuk-black 0 6px, transparent 6.5px);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 $datagovuk-focus-ring $datagovuk-yellow;
+  }
+}
+
+.datagovuk-choice__label {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  align-self: center;
+  padding: 6.5px 15px 6.5px 0;
+  font-family: Inter, sans-serif;
+  font-size: 20px;
+  line-height: 1.8;
+  color: $datagovuk-black;
+
+  @media (min-width: $desktop-breakpoint) {
+    font-size: 22px;
+    line-height: 1.4;
+  }
+}
+
+/* Number of matching results, e.g. "PDF (24)" */
+.datagovuk-choice__count {
+  color: $datagovuk-grey;
+}

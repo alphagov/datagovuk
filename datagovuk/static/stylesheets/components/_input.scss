@@ -1,0 +1,55 @@
+/*
+ * Text and search inputs (Figma: Inputs/Input).
+ * 10px radius, 1px mid-grey border; 2px yellow border on focus; 1.5px red border when invalid.
+ */
+.datagovuk-input {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 55px;
+  padding: 12px 12px 12px 20px;
+  font-family: Inter, sans-serif;
+  font-size: 22px;
+  line-height: 1.4;
+  color: $datagovuk-black;
+  background-color: $datagovuk-white;
+  border: 1px solid $datagovuk-mid-grey;
+  border-radius: 10px;
+
+  &::placeholder {
+    color: $datagovuk-grey;
+  }
+
+  &:focus {
+    outline: none;
+    border: 2px solid $datagovuk-yellow;
+    /* keep the text where it was when the border grows by 1px */
+    padding: 11px 11px 11px 19px;
+  }
+}
+
+.datagovuk-input--error,
+.datagovuk-input--error:focus {
+  border: 1.5px solid #d4351c;
+}
+
+/*
+ * Search variant: 60px tall with a leading magnifier. The icon sits in a 36px box 16px in from the border and
+ * the text starts 12px after it (Figma: Inputs/Input, Type=Search).
+ */
+.datagovuk-input--search {
+  height: 60px;
+  padding: 12px 12px 12px 64px;
+  background-image: url(static('images/icons/search.svg'));
+  background-repeat: no-repeat;
+  /* centred in the 36px icon box: 16px padding + 18px = 34px from the inner edge of the 1px border */
+  background-position: 18px center;
+  background-size: 32px 32px;
+
+  /* the border grows by 1px on focus, so everything moves back by 1px */
+  &:focus {
+    padding: 11px 11px 11px 63px;
+    background-position: 17px center;
+  }
+}

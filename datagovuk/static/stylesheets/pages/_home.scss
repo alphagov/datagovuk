@@ -1,28 +1,156 @@
 .datagovuk-home-hero {
+    position: relative;
     text-align: center;
-    padding: 60px 40px;
+    padding: 40px 0 30px;
     margin-bottom: 40px;
-    border-radius: 30px;
-    background-image: url('/assets/images/home-hero-bg.jpg');
-    background-size: cover;
+    isolation: isolate;
+}
+
+/*
+ * Background wash: two blurred gradient ellipses from the Figma design.
+ * The blur is baked into the SVGs, which extend past the ellipse box
+ * (-331.32% vertically, -62.28% horizontally), so each img is inset the same way.
+ * Offsets are measured from the hero centre / the top of the heading.
+ */
+.datagovuk-home-hero__background {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 50%;
+    width: 100vw;
+    height: 100%;
+    margin-left: -50vw;
+    overflow-x: clip;
+    pointer-events: none;
+    transform-origin: top center;
+    transform: scale(0.5);
+}
+
+.datagovuk-home-hero__ellipse {
+    position: absolute;
+    left: 50%;
+    display: block;
+
+    img {
+        position: absolute;
+        top: -331.32%;
+        left: -62.28%;
+        width: 224.56%;
+        height: 762.64%;
+        max-width: none;
+    }
+
+    &--green {
+        top: 66px;
+        width: 446.35px;
+        height: 193.75px;
+        margin-left: -518.5px;
+    }
+
+    &--pink {
+        top: 300px;
+        width: 445.02px;
+        height: 116.53px;
+        margin-left: -241.4px;
+    }
 }
 
 .datagovuk-home-hero :last-child {
   margin-bottom: 0;
 }
 
+/* The heading text is a clipped window onto the gradient photo, as in the design */
 .datagovuk-home-hero .datagovuk-home-hero__heading {
     display: inline-block;
+    max-width: 579px;
+    margin-bottom: 30px;
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
     color: #583F38;
-    max-width: 620px;
+    background-image: url('/assets/images/home-hero-heading.jpg');
+    background-size: 1479px 986px;
+    background-position: -107px -141px;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.datagovuk-home-search {
+    display: flex;
+    align-items: center;
+    max-width: 642px;
+    height: 68px;
+    margin: 0 auto 30px;
+    padding: 8px;
+    box-sizing: border-box;
+    background-color: $datagovuk-white;
+    border: 1px solid $datagovuk-mid-grey;
+    border-radius: 34px;
+
+    &:focus-within {
+        outline: 3px solid #ffdd00;
+        outline-offset: 0;
+    }
+}
+
+.datagovuk-home-search__input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0 20px;
+    border: none;
+    background: transparent;
+    /* desktop body: Inter Regular 22px / 1.4 (20px on mobile) */
+    font-family: Inter, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: $datagovuk-black;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    @media (min-width: $desktop-breakpoint) {
+        font-size: 22px;
+    }
+
+    &::placeholder {
+        color: $datagovuk-grey;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.datagovuk-home-search__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: $datagovuk-light-pink;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $datagovuk-light-grey-hover;
+    }
+
+    &:focus {
+        outline: 3px solid #ffdd00;
+        outline-offset: 0;
+    }
 }
 
 .datagovuk-home-hero .datagovuk-home-hero__link {
-    color: #583F38;
+    color: $datagovuk-dark-pink;
 }
 
  .datagovuk-home-section {
-    margin-bottom: 50px;
+    margin-bottom: 70px;
  }
 
 .datagovuk-home-collections__heading {
@@ -50,56 +178,33 @@
     color: $datagovuk-grey;
 }
 
-.datagovuk-home-card {
-    text-align: center;
+.datagovuk-home-feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 40px 20px;
     border-radius: 30px;
     background-color: $datagovuk-light-green;
-    padding: 40px;
-    margin-bottom: 30px;
+    color: $datagovuk-primary-green;
 }
 
-.datagovuk-home-card :last-child {
-  margin-bottom: 0;
+.datagovuk-home-feature__image {
+    flex-shrink: 0;
 }
 
-.datagovuk-home-card__heading {
-    display: inline-block;
+.datagovuk-home-feature :last-child {
+    margin-bottom: 0;
 }
 
-.datagovuk-home-card__description {
-    margin-bottom: 20px;
+.datagovuk-home-feature .datagovuk-home-feature__link,
+.datagovuk-home-feature .datagovuk-home-feature__description {
+    color: $datagovuk-primary-green;
 }
 
-.datagovuk-home-card__arrow {
-   right: 15px;
-
-   &--hover {
-        opacity: 0;
-        position: absolute;
-        right: 0;
-   }
-}
-
-.datagovuk-home-card__link {
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-
-    &:focus .datagovuk-home-card__arrow {
-        opacity: 0;
-    }
-
-    &:focus .datagovuk-home-card__arrow--hover {
-        opacity: 1;
-    }
-}
-
-.datagovuk-home-card__link-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    position: relative;
+.datagovuk-home-feature__heading {
+    font-size: 24px;
+    margin-bottom: 15px;
 }
 
 .datagovuk-home-publications__heading {
@@ -123,8 +228,22 @@
 /* Desktop styling overrides */
 @media (min-width: 40.0625em) {
     .datagovuk-home-hero {
-        padding: 80px 40px;
+        padding: 70px 0 40px;
         margin-bottom: 60px;
+    }
+
+    .datagovuk-home-hero__background {
+        transform: none;
+    }
+
+    .datagovuk-home-hero .datagovuk-home-hero__heading {
+        margin-bottom: 46px;
+        font-size: 42px;
+        line-height: 70px;
+    }
+
+    .datagovuk-home-section {
+        margin-bottom: 90px;
     }
 
     .datagovuk-home-collections__description {
@@ -146,16 +265,28 @@
         height: 110px;
     }
 
-    .datagovuk-home-cards {
+    /* Image sits in the left half, text starts at the midpoint of the panel */
+    .datagovuk-home-feature {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 30px;
+        align-items: center;
+        gap: 0;
+        min-height: 272px;
+        padding: 56px;
+        box-sizing: border-box;
     }
 
-    .datagovuk-home-card__description {
-        max-width: 300px;
-        margin-left: auto;
-        margin-right: auto;
+    .datagovuk-home-feature__image {
+        justify-self: center;
+        margin-right: 94px;
+    }
+
+    .datagovuk-home-feature__heading {
+        font-size: 30px;
+    }
+
+    .datagovuk-home-feature__description {
+        font-size: 22px;
     }
 
     .datagovuk-home-publications {

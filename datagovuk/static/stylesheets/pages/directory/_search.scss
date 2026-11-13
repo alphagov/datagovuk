@@ -1,63 +1,3 @@
-.datagovuk-search-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.datagovuk-search-bar .govuk-input {
-  padding-left: 50px;
-  border-width: 2px;
-}
-
-.datagovuk-search-bar .datagovuk-search-input-wrapper {
-  position: relative;
-  flex-grow: 1;
-}
-
-.datagovuk-search-bar .datagovuk-search-input-wrapper::before {
-  content: "";
-  position: absolute;
-  left: 14px;
-  top: 14px;
-  width: 26px;
-  height: 26px;
-  background-color: $datagovuk-grey;
-  -webkit-mask: url(static('images/icons/search.svg')) no-repeat center;
-  mask: url(static('images/icons/search.svg')) no-repeat center;
-  pointer-events: none;
-}
-
-.datagovuk-search-bar .govuk-button {
-  width: 52px;
-  height: 52px;
-}
-
-.datagovuk-search-bar .govuk-button::before {
-  content: "";
-  position: absolute;
-  left: 13px;
-  top: 13px;
-  width: 26px;
-  height: 26px;
-  background-color: $datagovuk-black;
-  -webkit-mask: url(static('images/icons/search.svg')) no-repeat center;
-  mask: url(static('images/icons/search.svg')) no-repeat center;
-  pointer-events: none;
-}
-
-.datagovuk-search-bar .govuk-button::before {
-  content: "";
-  position: absolute;
-  left: 13px;
-  top: 13px;
-  width: 26px;
-  height: 26px;
-  background-color: $datagovuk-black;
-  -webkit-mask: url(static('images/icons/search.svg')) no-repeat center;
-  mask: url(static('images/icons/search.svg')) no-repeat center;
-  pointer-events: none;
-}
-
 .datagovuk-search__results-header {
   display: flex;
   flex-wrap: wrap;
@@ -74,18 +14,102 @@
 
 .datagovuk-search__sort-by {
   display: flex;
-  align-items: baseline;
-  gap: 15px;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 0;
 }
 
-.datagovuk-search__sort-by label {
+.datagovuk-search__sort-by label.govuk-label {
   flex-shrink: 0;
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.4;
+  color: $datagovuk-black;
 }
 
 // fix for govuk-form-group causing a gap on the right
 .datagovuk-search__sort-by::after {
   content: none;
+}
+
+/* Selected filters shown as removable chips above the results */
+.datagovuk-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 0;
+  font-family: Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* With JavaScript the row stays on one line; extra chips collapse into a "+N" button */
+.datagovuk-active-filters.is-collapsible:not(.is-expanded) {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+/* The chip's own display rule would otherwise override the hidden attribute and leave an empty pill */
+.datagovuk-active-filters li[hidden],
+.datagovuk-filter-chip[hidden] {
+  display: none;
+}
+
+.datagovuk-active-filters__list {
+  display: contents;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.datagovuk-filter-chip {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 8px;
+  min-height: 41px;
+  box-sizing: border-box;
+  padding: 6.5px 17px;
+  font-size: 20px;
+  line-height: 1.4;
+  color: $datagovuk-black;
+  text-decoration: none;
+  background-color: $datagovuk-light-grey;
+  border-radius: 20px;
+
+  &:hover {
+    background-color: $datagovuk-light-grey-hover;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px $datagovuk-yellow;
+  }
+}
+
+.datagovuk-filter-chip__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.datagovuk-filter-chip--more {
+  flex-shrink: 0;
+  font-family: Inter, sans-serif;
+  border: 0;
+  cursor: pointer;
+}
+
+.datagovuk-active-filters__clear {
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-left: 4px;
+  font-size: 20px;
+  line-height: 1.4;
+  color: $datagovuk-grey;
+  text-decoration: underline;
+  text-underline-position: from-font;
 }
 
 .datagovuk-search-filters-heading {
@@ -114,20 +138,429 @@
   position: relative;
 }
 
+
+/* ---- Search results page (Search V2) ---- */
+.datagovuk-search-layout {
+  display: block;
+  font-family: Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Small screens: "Filter by" button that opens the filters (Figma: Buttons/Button, light grey pill) */
+.datagovuk-filter-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0 0 24px;
+  padding: 13px 17px;
+  font-family: Inter, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.8;
+  text-transform: uppercase;
+  color: $datagovuk-black;
+  background-color: $datagovuk-light-grey;
+  border: 0;
+  border-radius: 20px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $datagovuk-light-grey-hover;
+  }
+
+  &:focus-visible {
+    outline: 3px solid $datagovuk-yellow;
+    outline-offset: 0;
+  }
+
+  &[aria-expanded="true"] .datagovuk-filter-toggle__icon {
+    transform: rotate(180deg);
+  }
+}
+
+.datagovuk-filter-toggle__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+/* display:flex above would otherwise override the hidden attribute */
+.datagovuk-filter-toggle[hidden] {
+  display: none;
+}
+
+/* The toggle already says "Filter by" on small screens */
+.datagovuk-filter-toggle:not([hidden]) + .datagovuk-search-filters .datagovuk-search-filters-heading {
+  display: none;
+}
+
+.datagovuk-search-filters-heading {
+  margin: 0 0 24px;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: $datagovuk-grey;
+}
+
+/* All text in the filter sidebar is dgu grey */
+.datagovuk-search-layout__sidebar {
+  color: $datagovuk-grey;
+
+  .datagovuk-choice__label,
+  .datagovuk-choice__count,
+  .datagovuk-input {
+    color: $datagovuk-grey;
+  }
+}
+
+.datagovuk-filter-group {
+  min-width: 0;
+  margin: 0 0 32px;
+  padding: 0 0 24px;
+  border: 0;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.datagovuk-filter-group__title {
+  display: block;
+  margin-bottom: 12px;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1.4;
+  color: $datagovuk-grey;
+}
+
+.datagovuk-filter-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.datagovuk-filter-search {
+  margin-bottom: 8px;
+}
+
+.datagovuk-filter-group__options[hidden],
+.datagovuk-filter-more__button[hidden] {
+  display: none;
+}
+
+.datagovuk-filter-more__button {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  align-self: flex-start;
+  margin-top: 12px;
+  padding: 13px 17px;
+  font-family: Inter, sans-serif;
+  font-size: 22px;
+  line-height: 1.4;
+  color: $datagovuk-grey;
+  background-color: $datagovuk-light-grey;
+  border: 0;
+  border-radius: 20px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $datagovuk-light-grey-hover;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px $datagovuk-yellow;
+  }
+}
+
+.datagovuk-curated {
+  margin-bottom: 36px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $datagovuk-mid-grey;
+}
+
+.datagovuk-curated__heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 20px;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: $datagovuk-black;
+}
+
+.datagovuk-curated__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.datagovuk-curated__header .datagovuk-curated__heading {
+  margin-bottom: 0;
+}
+
+/* Only the result link is desktop body (22px); everything else in a result is body-s (20px) */
+.datagovuk-search-result__title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+
+  @media (min-width: $desktop-breakpoint) {
+    font-size: 22px;
+  }
+}
+
+.datagovuk-search-result__title-link {
+  font-size: 20px;
+  color: $datagovuk-green;
+  text-decoration: underline;
+  text-underline-position: from-font;
+
+  @media (min-width: $desktop-breakpoint) {
+    font-size: 22px;
+  }
+}
+
+.datagovuk-search-result__meta {
+  margin: 0 0 12px;
+  font-size: 20px;
+  line-height: 1.4;
+  color: $datagovuk-black;
+}
+
+.datagovuk-search-result__date {
+  margin-left: 0.6em;
+}
+
+.datagovuk-search-result__text {
+  margin: 0 0 20px;
+  font-size: 20px;
+  line-height: 1.4;
+  color: $datagovuk-grey;
+}
+
+.datagovuk-curated__item {
+  margin-bottom: 20px;
+
+  .datagovuk-search-result__title-link {
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+}
+
+.datagovuk-format-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 30px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+/* File type icons are drawn from the SVG shape so they take the dgu primary pink colour */
+.datagovuk-format-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background-color: $datagovuk-dark-pink;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+$datagovuk-format-icons: table, file-spreadsheet, file-text, file-json, file-code, file-archive, map, globe, file-audio,
+  file-video, image, file;
+
+@each $icon in $datagovuk-format-icons {
+  .datagovuk-format-icon--#{$icon} {
+    -webkit-mask-image: url(static('images/icons/#{$icon}.svg'));
+    mask-image: url(static('images/icons/#{$icon}.svg'));
+  }
+}
+
+.datagovuk-format-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  /* body-s, in the same dgu primary pink as the icon */
+  font-size: 20px;
+  line-height: 1.4;
+  color: $datagovuk-dark-pink;
+}
+
+.datagovuk-search__results-header {
+  align-items: center;
+  margin-bottom: 36px;
+  font-size: 22px;
+}
+
+/*
+ * Sort by (Figma: 201 × 54 button, 1px mid-grey border, 15px radius, 17px left padding,
+ * 10px chevron 18px from the right edge)
+ */
+.datagovuk-search__sort-by .govuk-select {
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  min-width: 201px;
+  height: 54px;
+  padding: 0 38px 0 17px;
+  font-family: Inter, sans-serif;
+  font-size: 22px;
+  line-height: 1.4;
+  color: $datagovuk-black;
+  background-color: $datagovuk-white;
+  background-image: url(static('images/icons/chevron-down.svg'));
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 10px auto;
+  border: 1px solid $datagovuk-mid-grey;
+  border-radius: 15px;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px $datagovuk-yellow;
+  }
+}
+
+.datagovuk-search-results__item {
+  margin-bottom: 36px;
+}
+
+.datagovuk-pagination {
+  margin: 0 0 40px;
+
+  .govuk-pagination__link,
+  .govuk-pagination__link-title {
+    color: $datagovuk-green;
+    font-size: 22px;
+  }
+
+  .govuk-pagination__item--current .govuk-pagination__link {
+    color: $datagovuk-white;
+    background-color: $datagovuk-green;
+    border-radius: 10px;
+    text-decoration: none;
+  }
+}
+
+.datagovuk-feedback {
+  margin-bottom: 40px;
+  padding: 24px 24px 24px 42px;
+  font-size: 22px;
+  line-height: 1.4;
+  color: $datagovuk-black;
+  background-color: $datagovuk-light-green;
+  border-left: 5px solid $datagovuk-green;
+  border-radius: 3px;
+}
+
+.datagovuk-feedback__link {
+  color: $datagovuk-green;
+}
+
 /* Desktop styling overrides */
 @media (min-width: $desktop-breakpoint) {
-  .datagovuk-search-bar {
-    display: flex;
-    margin-bottom: 20px;
-    margin-top: 20px;
+
+
+}
+
+@media (min-width: $desktop-header-breakpoint) {
+
+  .datagovuk-search-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 347px) minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+    margin-top: 40px;
   }
 
-  .datagovuk-search-bar .datagovuk-form-group {
-    display: flex;
-    flex-grow: 1;
+  .datagovuk-search-layout__results {
+    padding-left: 0;
   }
+}
 
-  .datagovuk-search-bar .govuk-input {
-    flex-grow: 1;
+/* "No results found" panel and suggested searches (Figma: Page not found) */
+.datagovuk-no-results {
+  box-sizing: border-box;
+  margin-bottom: 32px;
+  padding: 32px;
+  font-family: Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $datagovuk-dark-pink;
+  background-color: $datagovuk-light-pink;
+  border: 5px solid $datagovuk-light-pink;
+}
+
+.datagovuk-no-results__heading {
+  margin: 0 0 20px;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: $datagovuk-dark-pink;
+}
+
+.datagovuk-no-results__text {
+  margin: 0 0 20px;
+  font-size: 22px;
+  line-height: 1.4;
+  color: $datagovuk-dark-pink;
+}
+
+.datagovuk-no-results__list {
+  margin: 0 0 20px;
+  padding-left: 49px;
+  font-size: 22px;
+  line-height: 1.4;
+  list-style: disc;
+  color: $datagovuk-dark-pink;
+
+  &:last-child {
+    margin-bottom: 0;
   }
+}
+
+.datagovuk-suggested-searches {
+  padding-top: 16px;
+  margin-bottom: 32px;
+  font-family: Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.datagovuk-suggested-searches__heading {
+  margin: 0 0 16px;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #0b0c0c;
+}
+
+.datagovuk-suggested-searches__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.datagovuk-suggested-searches__link {
+  font-size: 22px;
+  line-height: 1.4;
+  color: $datagovuk-green;
+  text-decoration: underline;
+  text-underline-position: from-font;
 }

@@ -1,0 +1,85 @@
+{% extends "base.jinja" %}
+
+{% block page_title %}
+  Help - National Data Library
+{% endblock page_title %}
+
+{% block page_description %}
+  Find help, guidance and support for the National Data Library
+{% endblock page_description %}
+
+{% block main %}
+  <div class="govuk-width-container datagovuk-width-container datagovuk-content">
+
+    <h1 class="govuk-heading-l datagovuk-heading-l">Help</h1>
+
+    <div class="datagovuk-help-topics">
+
+      <div class="datagovuk-help-topics__item">
+        <h2 class="govuk-body datagovuk-body datagovuk-help-topics__item-heading">
+          <a href="{{ url('pages:about') }}" class="govuk-link datagovuk-link">About the National Data Library</a>
+        </h2>
+        <p class="govuk-body datagovuk-body">
+          What the National Data Library is, how it works and plans for the future.
+        </p>
+      </div>
+
+      <div class="datagovuk-help-topics__item">
+        <h2 class="govuk-body datagovuk-body datagovuk-help-topics__item-heading">
+          <a href="{{ url('data_manual:home') }}" class="govuk-link datagovuk-link">Data manual</a>
+        </h2>
+        <p class="govuk-body datagovuk-body">
+          Guidance and standards for people who work with data in the public sector.
+        </p>
+      </div>
+
+      <div class="datagovuk-help-topics__item">
+        <h2 class="govuk-body datagovuk-body datagovuk-help-topics__item-heading">
+          <a href="{{ url('pages:publishers') }}" class="govuk-link datagovuk-link">Help for publishers</a>
+        </h2>
+        <p class="govuk-body datagovuk-body">
+          How to add, update and maintain datasets in the directory.
+        </p>
+      </div>
+
+      <div class="datagovuk-help-topics__item">
+        <h2 class="govuk-body datagovuk-body datagovuk-help-topics__item-heading">
+          <a href="#" class="govuk-link datagovuk-link">API documentation</a>
+        </h2>
+        <p class="govuk-body datagovuk-body">
+          Technical guidance for using the National Data Library directory API.
+        </p>
+      </div>
+
+      <div class="datagovuk-help-topics__item">
+        <h2 class="govuk-body datagovuk-body datagovuk-help-topics__item-heading">
+          <a href="{{ url('pages:data_curation') }}" class="govuk-link datagovuk-link">Curated collections</a>
+        </h2>
+        <p class="govuk-body datagovuk-body">
+          How we select data for collections and how to suggest additions.
+        </p>
+      </div>
+
+      <div class="datagovuk-help-topics__item">
+        <h2 class="govuk-body datagovuk-body datagovuk-help-topics__item-heading">
+          <a href="{{ url('support:support-form') }}" class="govuk-link datagovuk-link">Support</a>
+        </h2>
+        <p class="govuk-body datagovuk-body">
+          Get support, report a problem and provide feedback.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="datagovuk-inset-text datagovuk-help-feedback">
+      <p class="govuk-body datagovuk-body">
+        Is this page useful?
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSc_woKw0QjtHf-GI1y-nvm0y-BM9k7vMBVJ_l6vIGmCrJX4LQ/viewform"
+           class="govuk-link datagovuk-link"
+           rel="noopener noreferrer"
+           target="_blank">Give us feedback</a>
+      </p>
+    </div>
+
+  </div>
+{% endblock main %}

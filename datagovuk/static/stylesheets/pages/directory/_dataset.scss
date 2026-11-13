@@ -1,19 +1,304 @@
+/*
+ * Dataset (result details) page. Figma: "Result details".
+ * Desktop: title across the top, content on the left (2/3), publisher on the right (1/3).
+ */
+.datagovuk-dataset {
+  font-family: Inter, sans-serif;
+  color: $datagovuk-black;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.datagovuk-dataset__title {
+  margin: 20px 0 30px;
+  font-family: "Libre Baskerville", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 42px;
+  color: $datagovuk-black;
+  overflow-wrap: anywhere;
+}
+
+.datagovuk-dataset__content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  min-width: 0;
+}
+
+.datagovuk-dataset__secondary {
+  min-width: 0;
+  margin-top: 40px;
+}
+
+.datagovuk-dataset__heading {
+  margin: 0 0 28px;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: $datagovuk-black;
+}
+
+.datagovuk-dataset__text {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: $datagovuk-black;
+}
+
+.datagovuk-dataset__summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
 .datagovuk-dataset-summary {
+  min-width: 0;
+  color: $datagovuk-grey;
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 
-.datagovuk-more-from-publisher {
-  display: none;
+/* The summary is rendered from the publisher's text, which brings its own body styles */
+.datagovuk-dataset-summary .datagovuk-body,
+.datagovuk-dataset-summary p,
+.datagovuk-dataset-summary li {
+  color: $datagovuk-grey;
 }
 
-/* Desktop styling overrides */
-@media (min-width: $desktop-breakpoint) {
-  .datagovuk-more-from-publisher {
-    display: block;
+.datagovuk-dataset-summary > :first-child {
+  margin-top: 0;
+}
+
+.datagovuk-dataset-summary > :last-child {
+  margin-bottom: 0;
+}
+
+.datagovuk-dataset .govuk-button {
+  margin-bottom: 0;
+}
+
+/* Spacing between sections comes from the column's gap, not from each component */
+.datagovuk-dataset .govuk-inset-text {
+  margin: 0;
+}
+
+.datagovuk-dataset__section .govuk-summary-list {
+  margin-bottom: 28px;
+}
+
+/* Links: DGU green and underlined, with the DGU yellow focus */
+.datagovuk-dataset__link,
+.datagovuk-publisher-card__link,
+.datagovuk-dataset .datagovuk-table .datagovuk-link {
+  font-size: inherit;
+  text-decoration: underline;
+  text-underline-position: from-font;
+
+  &:focus {
+    color: $datagovuk-black;
+    text-decoration: none;
+    background-color: $datagovuk-yellow;
+    box-shadow:
+      0 -2px $datagovuk-yellow,
+      0 4px $datagovuk-black;
+    outline: 3px solid transparent;
+  }
+}
+
+.datagovuk-dataset__link {
+  display: block;
+  font-size: 20px;
+  line-height: 1.4;
+  color: $datagovuk-green;
+}
+
+.datagovuk-dataset__link--plain {
+  display: inline;
+  color: $datagovuk-black;
+}
+
+/* Published by / Last updated / Topic / Licence */
+.datagovuk-metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.datagovuk-metadata__row {
+  display: flex;
+  gap: 12px;
+}
+
+.datagovuk-metadata__label {
+  flex: 0 0 8em;
+  color: $datagovuk-black;
+}
+
+.datagovuk-metadata__value {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  color: $datagovuk-black;
+  overflow-wrap: anywhere;
+}
+
+/* Data links table */
+.datagovuk-dataset .datagovuk-table-container {
+  margin-bottom: 28px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.datagovuk-dataset .datagovuk-table {
+  width: 100%;
+  min-width: 520px; /* on small screens the table scrolls sideways rather than squeezing its columns */
+  border-collapse: collapse;
+}
+
+.datagovuk-dataset .datagovuk-table__cell--wrap {
+  min-width: 180px;
+}
+
+.datagovuk-dataset .datagovuk-table__header,
+.datagovuk-dataset .datagovuk-table__cell {
+  min-width: 0;
+  padding: 10px 8px;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: $datagovuk-black;
+  vertical-align: top;
+  border-bottom: 1px solid $datagovuk-state-hover;
+}
+
+.datagovuk-dataset .datagovuk-table__header--compact,
+.datagovuk-dataset .datagovuk-table__cell--compact {
+  width: auto;
+  white-space: nowrap;
+}
+
+.datagovuk-dataset .datagovuk-table th:last-child,
+.datagovuk-dataset .datagovuk-table td:last-child {
+  padding-right: 8px;
+}
+
+.datagovuk-dataset .datagovuk-table .datagovuk-link:link,
+.datagovuk-dataset .datagovuk-table .datagovuk-link:visited {
+  color: $datagovuk-green;
+}
+
+/* Contact */
+.datagovuk-dataset__contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.datagovuk-dataset__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.datagovuk-dataset__contact .datagovuk-dataset__text {
+  font-weight: 400;
+}
+
+/* More from this publisher */
+.datagovuk-publisher-card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 30px;
+  margin-bottom: 40px;
+  background-color: $datagovuk-light-grey;
+  border-radius: 10px;
+}
+
+.datagovuk-publisher-card__heading {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: $datagovuk-grey;
+}
+
+.datagovuk-publisher-card__name {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.datagovuk-publisher-card__link {
+  color: $datagovuk-black;
+}
+
+/* Desktop */
+@media (min-width: $desktop-header-breakpoint) {
+  .datagovuk-dataset {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    column-gap: 40px;
+    row-gap: 40px;
+    align-items: start;
   }
 
-  .datagovuk-more-from-publisher--mobile {
-    display: none;
+  .datagovuk-dataset__title {
+    grid-column: 1;
+    margin: 0;
+    font-size: 42px;
+    line-height: 70px;
+  }
+
+  .datagovuk-dataset__content {
+    grid-column: 1;
+    gap: 60px;
+  }
+
+  .datagovuk-dataset__secondary {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 0;
+  }
+
+  .datagovuk-dataset__heading {
+    font-size: 42px;
+  }
+
+  .datagovuk-dataset__text,
+  .datagovuk-dataset__link,
+  .datagovuk-metadata,
+  .datagovuk-dataset .datagovuk-table__header,
+  .datagovuk-dataset .datagovuk-table__cell,
+  .datagovuk-publisher-card__heading,
+  .datagovuk-publisher-card__name {
+    font-size: 22px;
+  }
+
+  .datagovuk-metadata__label {
+    flex-basis: 195px;
+  }
+}
+
+/* Long titles stay readable at any width */
+.datagovuk-dataset__title--long {
+  font-size: 30px;
+  line-height: 42px;
+}
+
+@media (min-width: $desktop-header-breakpoint) {
+  .datagovuk-dataset__title--long {
+    font-size: 30px;
+    line-height: 42px;
   }
 }

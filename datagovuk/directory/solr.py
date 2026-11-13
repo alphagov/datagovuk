@@ -4,6 +4,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime
+from difflib import get_close_matches
 
 import pysolr
 from cache_memoize import cache_memoize
@@ -92,29 +93,41 @@ def _get_base_filters():
     return solr_filters
 
 
+def _as_list(value):
+    if not value:
+        return []
+    return [value] if isinstance(value, str) else list(value)
+
+
 def _get_user_filters(filters):
+    """
+    Filters for each group (publisher, topic, format) are tagged so the facet counts can ignore their own
+    group's selection. Within a group the selected values are OR'd; groups are AND'd together.
+    """
     user_filters = []
 
-    if filters.get("publisher"):
+    publishers = _as_list(filters.get("publisher"))
+    if publishers:
         all_organisations = get_organisations_by_title()
-        organisation_slug = all_organisations.get(filters["publisher"])
-        if organisation_slug:
-            user_filters.append(f"organization:{organisation_slug}")
+        organisation_slugs = [all_organisations[title] for title in publishers if title in all_organisations]
+        if organisation_slugs:
+            clauses = " OR ".join(f'"{slug}"' for slug in organisation_slugs)
+            user_filters.append(f"{{!tag=publisher}}organization:({clauses})")
 
-    if filters.get("topic"):
-        topic_slug = slugify(filters["topic"])
-        user_filters.append(f'extras_theme-primary:"{topic_slug}"')
+    topics = _as_list(filters.get("topic"))
+    if topics:
+        clauses = " OR ".join(f'"{slugify(topic)}"' for topic in topics)
+        user_filters.append(f"{{!tag=topic}}extras_theme-primary:({clauses})")
 
-    if filters.get("format"):
-        file_format = filters["format"]
+    format_clauses = []
+    for file_format in _as_list(filters.get("format")):
         if file_format == FormatChoices.OTHER:
-            user_filters.extend(
-                [f'-res_format:"{f}"' for f in list(itertools.chain.from_iterable(FORMATS.values()))],
-            )
+            known_formats = " ".join(f'-res_format:"{f}"' for f in itertools.chain.from_iterable(FORMATS.values()))
+            format_clauses.append(f"(*:* {known_formats})")
         elif file_format in FORMATS:
-            user_filters.append(
-                " OR ".join(f'res_format:"{f}"' for f in FORMATS[file_format]),
-            )
+            format_clauses.extend(f'res_format:"{f}"' for f in FORMATS[file_format])
+    if format_clauses:
+        user_filters.append("{!tag=format}" + " OR ".join(format_clauses))
 
     if filters.get("open_government_licence_only") is True:
         ogl_ids = ("uk-ogl", "OGL-UK-*", "ogl")
@@ -138,8 +151,13 @@ def _get_sort(sort):
 def _get_facets():
     return {
         "facet": "true",
-        "facet.field": ["organization", "extras_theme-primary", "res_format"],
-        "f.organization.facet.limit": ORGANISATIONS_LIMIT,
+        # Each group's counts ignore that group's own filter, so every option can be ticked in addition to the others
+        "facet.field": [
+            "{!ex=publisher key=organization}organization",
+            "{!ex=topic key=extras_theme-primary}extras_theme-primary",
+            "{!ex=format key=res_format}res_format",
+        ],
+        "facet.limit": ORGANISATIONS_LIMIT,
         "facet.sort": "count",
         "facet.mincount": 1,
     }
@@ -154,11 +172,10 @@ def search(query, filters, sort="best", start=0, rows=20):
     solr_client = get_solr_client()
     solr_facets = _get_facets()
     solr_sort = _get_sort(sort)
-    search_options = {}
+    # Facets give the counts shown next to each filter option, so they are wanted for every search
+    search_options = {**solr_facets}
     if solr_sort:
         search_options["sort"] = solr_sort
-    if query:
-        search_options.update(solr_facets)
 
     solr_results = solr_client.search(
         q=solr_query,
@@ -172,6 +189,26 @@ def search(query, filters, sort="best", start=0, rows=20):
         "results": solr_results,
         "docs": docs,
     }
+
+
+MIN_FUZZY_LENGTH = 4
+SIMILAR_WORD_CUTOFF = 0.8
+SIMILAR_WORD_SAMPLE = 20
+
+
+def get_similar_title_words(term):
+    """Words used in dataset titles that are close to a search word, e.g. "fishry" -> "fishery"."""
+    term = "".join(re.findall(r"[a-z0-9]+", term.lower()))
+    if len(term) < MIN_FUZZY_LENGTH:
+        return []
+    results = get_solr_client().search(
+        q=f"title:{term}~2",
+        fq=_get_base_filters(),
+        fl=["title"],
+        rows=SIMILAR_WORD_SAMPLE,
+    )
+    title_words = {word for doc in results for word in re.findall(r"[a-z0-9]+", doc.get("title", "").lower())}
+    return get_close_matches(term, sorted(title_words - {term}), n=1, cutoff=SIMILAR_WORD_CUTOFF)
 
 
 def get_document(document_id):

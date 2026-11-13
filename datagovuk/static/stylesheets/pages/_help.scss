@@ -1,0 +1,38 @@
+.datagovuk-help-topics {
+  margin-bottom: 40px;
+}
+
+.datagovuk-help-topics__item {
+  margin-bottom: 30px;
+}
+
+.datagovuk-help-topics__item-heading {
+  margin-bottom: 10px;
+}
+
+.datagovuk-help-topics__item p {
+  color: $datagovuk-black;
+  margin-bottom: 0;
+}
+
+.datagovuk-help-feedback {
+  max-width: 720px;
+}
+
+.datagovuk-help-feedback p {
+  margin-bottom: 0;
+}
+
+/* Desktop styling overrides */
+@media (min-width: $desktop-header-breakpoint) {
+  .datagovuk-help-topics {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px 60px;
+    margin-bottom: 50px;
+  }
+
+  .datagovuk-help-topics__item {
+    margin-bottom: 0;
+  }
+}

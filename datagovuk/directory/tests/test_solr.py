@@ -11,6 +11,7 @@ from datagovuk.directory.solr import (
     SolrDataset,
     SolrSupportingDocument,
     get_dataset_by_legacy_name,
+    get_similar_title_words,
     get_solr_client,
     process_query,
 )
@@ -517,3 +518,28 @@ class TestPreviewModel:
         assert preview.url == "https://example.com/test.csv"
         assert preview.format == "CSV"
         assert preview.exists is True
+
+
+class TestGetSimilarTitleWords:
+    def test_finds_the_word_in_dataset_titles_closest_to_the_search_word(self, solr_doc_factory):
+        solr_doc_factory(name="fishery", title="Fishery landings data")
+
+        assert get_similar_title_words("fishry") == ["fishery"]
+
+    def test_the_search_word_itself_is_not_suggested(self, solr_doc_factory):
+        solr_doc_factory(name="fishery", title="Fishery landings data")
+
+        assert get_similar_title_words("fishery") == []
+
+    def test_nothing_is_suggested_when_no_title_word_is_close(self, solr_doc_factory):
+        solr_doc_factory(name="fishery", title="Fishery landings data")
+
+        assert get_similar_title_words("quantum") == []
+
+    def test_short_words_are_not_looked_up(self):
+        assert get_similar_title_words("abc") == []
+
+    def test_punctuation_in_the_search_word_cannot_change_the_query(self, solr_doc_factory):
+        solr_doc_factory(name="fishery", title="Fishery landings data")
+
+        assert get_similar_title_words('fishry" OR title:*') == []

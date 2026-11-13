@@ -18,7 +18,7 @@ def test_homepage_heading(page, live_server_url):
     page.goto(live_server_url)
     main_content = page.locator(".datagovuk-main")
     expect(main_content.get_by_role("heading", level=1)).to_have_text(
-        "The home of UK public data to inform decisions and build services",
+        "Discover UK public data to inform decisions and build services",
     )
 
 
@@ -45,10 +45,16 @@ def test_homepage_spotlight_links(page, live_server_url):
     expect(link).to_have_attribute("href", "/collections/early-years")
 
 
-def test_homepage_card_links(page, live_server_url):
+def test_homepage_data_manual_link(page, live_server_url):
     page.goto(live_server_url)
     expect(page.locator("#main").get_by_role("link", name="Data manual")).to_be_visible()
-    expect(page.locator("#main").get_by_role("link", name="Directory")).to_be_visible()
+
+
+def test_homepage_search_submits_to_directory_search(page, live_server_url):
+    page.goto(live_server_url)
+    page.get_by_role("searchbox", name="Search for data").fill("housing")
+    page.get_by_role("button", name="Search").click()
+    expect(page).to_have_url(f"{live_server_url}/search?query=housing")
 
 
 def test_footer_links_have_correct_hrefs(page, live_server_url):

@@ -1,0 +1,77 @@
+/*
+ * Clear (X) button for search inputs. It appears once something has been typed (.is-typing, set by search-clear.js).
+ *  - Inputs with the search button on the right (header, homepage): the X takes the search button's place.
+ *  - Inputs with the search icon on the left (.datagovuk-clearable): the icon stays and the X sits at the right end.
+ */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+/* Right-hand search button swaps for the X while typing */
+[data-clearable]:not(.is-typing) > .datagovuk-search-clear,
+[data-clearable].is-typing > button[type="submit"] {
+  display: none;
+}
+
+/* The X is a plain icon: it doesn't keep the search button's pink background */
+[data-clearable] > .datagovuk-search-clear {
+  cursor: pointer;
+  background-color: transparent;
+  border: 0;
+
+  &:hover {
+    background-color: $datagovuk-light-grey;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px $datagovuk-yellow;
+  }
+}
+
+/* Left-hand search icon stays; the X appears at the right end of the input */
+.datagovuk-clearable {
+  position: relative;
+
+  .datagovuk-input,
+  .datagovuk-input:focus {
+    padding-right: 52px;
+  }
+}
+
+.datagovuk-clearable[hidden] {
+  display: none;
+}
+
+.datagovuk-clearable__button {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transform: translateY(-50%);
+
+  &:hover {
+    background-color: $datagovuk-light-grey;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px $datagovuk-yellow;
+  }
+}
+
+.datagovuk-clearable.is-typing > .datagovuk-clearable__button {
+  display: flex;
+}
