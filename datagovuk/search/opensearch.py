@@ -26,9 +26,12 @@ class Resource(BaseModel):
 
     @model_validator(mode="before")
     @classmethod
-    def default_supporting_document_name(cls, data):
-        if data.get("resource_type") == "supporting-document" and not data.get("name"):
-            data["name"] = "No name specified"
+    def default_name(cls, data):
+        if not data.get("name"):
+            if data.get("resource_type") == "supporting-document":
+                data["name"] = "No name specified"
+            else:
+                data["name"] = data.get("description")
         return data
 
     @property

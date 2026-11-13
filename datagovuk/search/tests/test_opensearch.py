@@ -50,9 +50,19 @@ def test_resource_supporting_document_name_defaults_to_no_name_specified():
     assert resource.name == "No name specified"
 
 
-def test_resource_name_is_none_when_not_supporting_document():
+def test_resource_name_defaults_to_description_when_not_supporting_document():
+    resource = Resource(**ResourceFactory(name=None, description="My description", resource_type="data-link"))
+    assert resource.name == "My description"
+
+
+def test_resource_name_is_none_when_no_name_or_description():
     resource = Resource(**ResourceFactory(name=None, resource_type="data-link"))
     assert resource.name is None
+
+
+def test_resource_name_is_kept_when_present():
+    resource = Resource(**ResourceFactory(name="My file", description="My description", resource_type="data-link"))
+    assert resource.name == "My file"
 
 
 def test_resource_is_csv_true_for_csv_format():

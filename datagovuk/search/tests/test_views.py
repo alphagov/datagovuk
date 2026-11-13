@@ -198,7 +198,7 @@ class TestDatasetView:
             "access_constraints": {"test-key": "test-value"},
         }
 
-    def test_get_dataset_resources_are_in_datafiles(self, client, opensearch_documents):
+    def test_get_dataset_resources_split_into_datafiles_and_docs(self, client, opensearch_documents):
         opensearch_documents(
             [
                 DatasetFactory(
