@@ -21,12 +21,6 @@ class ResourceFactory(factory.DictFactory):
     metadata_modified = None
 
 
-class AdditionalInformationFactory(factory.DictFactory):
-    key = factory.Sequence(lambda n: f"test-{n}")
-    value = factory.Sequence(lambda n: f"test-value-{n}")
-
-
-
 class DatasetFactory(factory.DictFactory):
     """
     Builds a document for the `datasets` index.
