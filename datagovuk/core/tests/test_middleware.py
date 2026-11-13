@@ -4,7 +4,7 @@ from http import HTTPStatus
 import pytest
 from django.http import HttpResponse
 
-from datagovuk.core.middleware import BasicAuthMiddleware, CacheControlMiddleware
+from datagovuk.core.middleware import BasicAuthMiddleware, CacheControlMiddleware, RemoveTrailingSlashMiddleware
 
 
 class TestCacheControlMiddleware:
@@ -272,3 +272,64 @@ class TestBasicAuthMiddleware:
         response = middleware(request)
 
         assert response.status_code == HTTPStatus.UNAUTHORIZED
+
+
+class TestRemoveTrailingSlashMiddleware:
+    @pytest.mark.parametrize(
+        ("path", "expected_location"),
+        [
+            ("/about/", "/about"),
+            ("/data-manual/security/", "/data-manual/security"),
+            ("/about///", "/about"),
+        ],
+    )
+    def test_trailing_slash_redirects_permanently_without_slash(self, rf, path, expected_location):
+        response = RemoveTrailingSlashMiddleware(_get_response)(rf.get(path))
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response["Location"] == expected_location
+
+    def test_trailing_slash_with_leading_double_slash_does_not_redirect_off_site(self, rf):
+        request = rf.get("/")
+        request.path = "//example.com/"
+
+        response = RemoveTrailingSlashMiddleware(_get_response)(request)
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response["Location"] == "/example.com"
+
+    def test_trailing_slash_with_query_string_redirect_keeps_query_string(self, rf):
+        response = RemoveTrailingSlashMiddleware(_get_response)(rf.get("/search/?q=crime&page=2"))
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response["Location"] == "/search?q=crime&page=2"
+
+    @pytest.mark.parametrize("path", ["/", "/about", "/dataset/abc/some-dataset"])
+    def test_no_trailing_slash_passes_through(self, rf, path):
+        response = RemoveTrailingSlashMiddleware(_get_response)(rf.get(path))
+
+        assert response.status_code == HTTPStatus.OK
+
+    @pytest.mark.parametrize("path", ["/health/", "/version/", "/metrics/", "/assets/some/dir/"])
+    def test_default_exempt_path_passes_through(self, rf, path):
+        response = RemoveTrailingSlashMiddleware(_get_response)(rf.get(path))
+
+        assert response.status_code == HTTPStatus.OK
+
+    def test_custom_exempt_path_passes_through(self, rf, settings):
+        settings.TRAILING_SLASH_REDIRECT_EXEMPT = ["/status/"]
+
+        middleware = RemoveTrailingSlashMiddleware(_get_response)
+
+        assert middleware(rf.get("/status/")).status_code == HTTPStatus.OK
+        assert middleware(rf.get("/health/")).status_code == HTTPStatus.MOVED_PERMANENTLY
+
+    def test_trailing_slash_redirect_through_full_stack(self, client):
+        response = client.get("/about/")
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response["Location"] == "/about"
+
+    def test_no_trailing_slash_does_not_append_slash_through_full_stack(self, client):
+        assert client.get("/about").status_code == HTTPStatus.OK
+        assert client.get("/no-such-page").status_code == HTTPStatus.NOT_FOUND
