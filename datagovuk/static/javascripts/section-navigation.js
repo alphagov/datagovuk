@@ -3,7 +3,7 @@ class DatagovukSectionNavigation {
     this.$sectionNavigation = $sectionNavigation
     this.$button = $sectionNavigation.querySelector('#datagovuk-section-navigation-button-all')
     this.$navigationItems = $sectionNavigation.querySelector('.datagovuk-section-navigation__items-mobile')
-    
+
     this.$button.setAttribute('aria-expanded', 'false')
     this.$button.addEventListener('click', () => this.toggleNavigationItems())
     this.close()
