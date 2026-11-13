@@ -122,6 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "datagovuk.core.middleware.RemoveTrailingSlashMiddleware",
     "datagovuk.core.middleware.BasicAuthMiddleware",
     "datagovuk.core.middleware.CacheControlMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -309,6 +310,15 @@ BASIC_AUTH_EXEMPT = ["/health/", "/metrics/", "/version/", STATIC_URL]
 BASIC_AUTH_USERNAME = env("BASIC_AUTH_USERNAME", default=None)
 BASIC_AUTH_PASSWORD = env("BASIC_AUTH_PASSWORD", default=None)
 BASIC_AUTH_BYPASS = env("BASIC_AUTH_BYPASS", default=None)
+
+# TRAILING SLASHES
+# ------------------------------------------------------------------------------
+# URLs have no trailing slash. RemoveTrailingSlashMiddleware 301s /foo/ to /foo, so
+# Django's opposite behaviour (redirecting /foo to /foo/) must be off.
+# https://docs.djangoproject.com/en/dev/ref/settings/#append-slash
+APPEND_SLASH = False
+# Infrastructure endpoints are called with a trailing slash by health checks and CI.
+TRAILING_SLASH_REDIRECT_EXEMPT = ["/health/", "/metrics/", "/version/", "/__debug__/", STATIC_URL]
 
 DATAGOVUK_CONTENT_ROOT = "datagovuk/content/"
 DATAGOVUK_CONTENT_DATA_ROOT = f"{DATAGOVUK_CONTENT_ROOT}data/"

@@ -3,8 +3,33 @@ from binascii import Error as BinasciiError
 from http import HTTPStatus
 
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.utils.crypto import constant_time_compare
+
+
+class RemoveTrailingSlashMiddleware:
+    """
+    301 redirect any URL ending in a slash to its slash-free equivalent
+
+    The root URL and paths starting with any prefix in TRAILING_SLASH_REDIRECT_EXEMPT
+    are left alone.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+        self.exempt_paths = settings.TRAILING_SLASH_REDIRECT_EXEMPT
+
+    def __call__(self, request):
+        path = request.path
+        if path == "/" or not path.endswith("/") or path.startswith(tuple(self.exempt_paths)):
+            return self.get_response(request)
+
+        # Stripping slashes from both ends collapses repeated leading slashes, so a
+        # path like //example.com/ can't become a protocol-relative open redirect.
+        new_url = "/" + path.strip("/")
+        if query_string := request.META.get("QUERY_STRING"):
+            new_url = f"{new_url}?{query_string}"
+        return HttpResponsePermanentRedirect(new_url)
 
 
 class BasicAuthMiddleware:
