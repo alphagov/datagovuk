@@ -21,7 +21,7 @@ class DatasetFactory(factory.DictFactory):
     description = factory.LazyAttribute(lambda o: f"Description for {o.title}")
     organisations = factory.LazyFunction(lambda: [OrganisationFactory()])
     additional_information = factory.LazyFunction(list)
-    is_harvested = None
+    is_harvested = False
     created_at = "2024-01-02T03:04:05+00:00"
     updated_at = "2025-06-07T08:09:10+00:00"
 
