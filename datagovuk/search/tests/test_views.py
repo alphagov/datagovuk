@@ -158,6 +158,20 @@ class TestDatasetView:
 
         assert response.status_code == HTTPStatus.NOT_FOUND
 
+    def test_get_dataset_harvested_true_is_in_context(self, client, opensearch_documents):
+        opensearch_documents([DatasetFactory(slug="wanted", is_harvested=True)])
+
+        response = client.get(reverse("search:dataset", kwargs={"slug": "wanted"}))
+
+        assert response.context_data["doc"].harvested is True
+
+    def test_get_dataset_harvested_false_is_in_context(self, client, opensearch_documents):
+        opensearch_documents([DatasetFactory(slug="wanted", is_harvested=False)])
+
+        response = client.get(reverse("search:dataset", kwargs={"slug": "wanted"}))
+
+        assert response.context_data["doc"].harvested is False
+
     def test_get_dataset_additional_information_is_in_context(self, client, opensearch_documents):
         opensearch_documents(
             [

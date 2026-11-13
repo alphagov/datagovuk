@@ -73,6 +73,21 @@ def test_dataset_additional_information_defaults_to_empty_dict():
     assert Dataset(**dataset).additional_information == {}
 
 
+def test_dataset_is_harvested_true():
+    dataset = DatasetFactory(is_harvested=True)
+    assert Dataset(**dataset).is_harvested is True
+
+
+def test_dataset_is_harvested_false():
+    dataset = DatasetFactory(is_harvested=False)
+    assert Dataset(**dataset).is_harvested is False
+
+
+def test_dataset_is_harvested_defaults_to_none():
+    dataset = DatasetFactory()
+    assert Dataset(**dataset).is_harvested is None
+
+
 def test_get_opensearch_client_connects_to_configured_cluster():
     client = get_opensearch_client()
 
