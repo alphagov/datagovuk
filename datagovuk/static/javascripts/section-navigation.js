@@ -3,29 +3,22 @@ class DatagovukSectionNavigation {
     this.$sectionNavigation = $sectionNavigation
     this.$button = $sectionNavigation.querySelector('#datagovuk-section-navigation-button-all')
     this.$navigationItems = $sectionNavigation.querySelector('.datagovuk-section-navigation__items-mobile')
-
+    
     this.$button.setAttribute('aria-expanded', 'false')
-
-    // Toggle on button click (stop propagation so the document click listener doesn't immediately catch it)
-    this.$button.addEventListener('click', (event) => {
-      event.stopPropagation()
-      this.toggleNavigationItems()
-    })
-
-    // Clicking anywhere inside the navigation items shouldn't close it
-    this.$navigationItems.addEventListener('click', (event) => {
-      event.stopPropagation()
-    })
-
+    this.$button.addEventListener('click', () => this.toggleNavigationItems())
     this.close()
 
-    // Document-level click handler to close when clicking outside
-    document.addEventListener('click', () => {
-      this.close()
+    document.addEventListener('keydown', (event) => this.handleKeydown(event))
+
+    // Close when focus moves to something outside the navigation (e.g. tabbing out)
+    document.addEventListener('focusin', (event) => {
+      if (this.$sectionNavigation.contains(event.target) === false) this.close()
     })
 
-    // Keep keyboard accessibility (Escape key and tabbing out)
-    document.addEventListener('keydown', (event) => this.handleKeydown(event))
+    // Close when clicking outside the navigation
+    document.addEventListener('click', (event) => {
+      if (this.$sectionNavigation.contains(event.target) === false) this.close()
+    })
   }
 
   toggleNavigationItems() {
@@ -45,13 +38,10 @@ class DatagovukSectionNavigation {
 
   handleKeydown(event) {
     if (event.key === 'Escape') {
-      const $openButton = [this.$button].find(
-        $button => $button.getAttribute('aria-expanded') === 'true'
-      )
-
-      if ($openButton) {
+      const isOpen = this.$button.getAttribute('aria-expanded') === 'true'
+      if (isOpen) {
         this.close()
-        $openButton.focus()
+        this.$button.focus()
       }
     }
   }

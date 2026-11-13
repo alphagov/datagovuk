@@ -20,6 +20,10 @@
   text-decoration: underline;
 }
 
+.datagovuk-section-navigation .datagovuk-section-navigation__link:focus {
+  color: $datagovuk-black;
+}
+
 .datagovuk-section-navigation__button {
   display: none;
   color: $datagovuk-black;
