@@ -16,7 +16,7 @@ search_v2_urlpatterns = (
 urlpatterns = [
     path("", include("datagovuk.pages.urls", namespace="pages")),
     path("", include("datagovuk.core.urls", namespace="core")),
-    path("data-manual/", include("datagovuk.data_manual.urls", namespace="data_manual")),
+    path("", include("datagovuk.data_manual.urls", namespace="data_manual")),
     path("updates/", include("datagovuk.updates.urls", namespace="updates")),
     path("", include("datagovuk.collections.urls", namespace="collections")),
     path("", include("datagovuk.directory.urls", namespace="directory")),
@@ -40,25 +40,25 @@ if settings.DEBUG:
     # these url in browser to see how these error pages look like.
     urlpatterns += [
         path(
-            "400/",
+            "400",
             default_views.bad_request,
             kwargs={"exception": Exception("Bad Request!")},
             name="error_bad_request",
         ),
         path(
-            "403/",
+            "403",
             default_views.permission_denied,
             kwargs={"exception": Exception("Permission Denied")},
             name="error_forbidden",
         ),
         path(
-            "404/",
+            "404",
             default_views.page_not_found,
             kwargs={"exception": Exception("Page not Found")},
             name="error_not_found",
         ),
         path(
-            "500/",
+            "500",
             default_views.server_error,
             name="error_server_error",
         ),

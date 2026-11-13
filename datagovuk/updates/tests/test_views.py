@@ -11,7 +11,7 @@ class TestUpdateView:
 
         response = client.get(url)
 
-        assert url == "/updates/2026/my-post/"
+        assert url == "/updates/2026/my-post"
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["title"] == "My post"
         assert response.context_data["date"] == datetime.date(2026, 10, 28)
