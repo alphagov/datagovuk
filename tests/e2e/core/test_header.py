@@ -8,7 +8,7 @@ def test_header(page, live_server_url) -> None:
     page.goto(live_server_url)
     expect(page.get_by_role("link", name="Home")).to_be_visible()
     expect(page.get_by_role("button", name="Collections")).to_be_visible()
-    expect(page.get_by_role("banner").get_by_role("link", name="Directory")).to_be_visible()
+    expect(page.get_by_role("banner").get_by_role("textbox", name="Search data.gov.uk")).to_be_visible()
     header_collections_locator = page.locator("#datagovuk-menu-collections")
     # Expect collection link to only be visible after clicking Collections sub-menu
     collection_labels = [
@@ -31,10 +31,11 @@ def test_header(page, live_server_url) -> None:
         expect(page.get_by_role("heading", name=collection_label)).to_be_visible()
         page.goto(live_server_url)
 
-    # Ensure directory link works
-    page.get_by_role("banner").get_by_role("link", name="Directory").click()
+    # Ensure header search works
+    page.get_by_role("banner").get_by_role("textbox", name="Search data.gov.uk").fill("test")
+    page.get_by_role("banner").get_by_role("button", name="Search").click()
 
-    expect(page).to_have_url(live_server_url + "/search")
+    expect(page).to_have_url(live_server_url + "/search?query=test")
     page.goto(live_server_url)
 
     # Ensure Help works
@@ -59,10 +60,11 @@ def test_header_mobile(page, live_server_url) -> None:
         page.locator("#datagovuk-menu-collections").get_by_role("link", name="Business and economy"),
     ).to_be_visible()
 
-    # Ensure directory link works
-    page.get_by_role("banner").get_by_role("link", name="Directory").click()
+    # Ensure header search works
+    page.get_by_role("banner").get_by_role("textbox", name="Search data.gov.uk").fill("test")
+    page.get_by_role("banner").get_by_role("button", name="Search").click()
 
-    expect(page).to_have_url(live_server_url + "/search")
+    expect(page).to_have_url(live_server_url + "/search?query=test")
     page.goto(live_server_url)
 
     # Ensure Help works

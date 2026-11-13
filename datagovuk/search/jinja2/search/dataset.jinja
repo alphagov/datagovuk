@@ -130,7 +130,7 @@
           <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
           <p class="govuk-body datagovuk-body">
             {# djlint:off #}
-            <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.slug }}"
+            <a href="{{ url("search:search") ~ "?publisher=" ~ doc.organisation.slug }}"
                class="govuk-link datagovuk-link datagovuk-link--secondary">
               All datasets from {{ doc.organisation.name }}
             </a>
@@ -268,7 +268,7 @@
           <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
           <p class="govuk-body datagovuk-body">
             {# djlint:off #}
-                <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.title }}"
+                <a href="{{ url("search:search") ~ "?publisher=" ~ doc.organisation.slug }}"
                     class="govuk-link datagovuk-link datagovuk-link--secondary">
                 All datasets from {{ doc.organisation.title }}
                 </a>

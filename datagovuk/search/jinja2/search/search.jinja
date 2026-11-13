@@ -10,16 +10,90 @@
 {% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes -%}
 {% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination -%}
 
+{% macro facet_item(facet) -%}
+  <li class="govuk-body datagovuk-body-s datagovuk-search-facets__item{{ ' datagovuk-search-facets__item--selected' if facet.selected else '' }}"
+      data-facet-label="{{ facet.label }}">
+    <a href="{{ facet.url }}"
+       class="govuk-link datagovuk-link datagovuk-search-facets__link"
+       {% if facet.selected %}aria-current="true"{% endif %}>
+      {#- No whitespace inside the link, or it gets underlined as part of the link -#}
+      {{- facet.label -}}
+      {%- if facet.selected %}<span class="govuk-visually-hidden">(selected, remove filter)</span>
+    {% endif -%}
+  </a>
+  {% if not facet.selected %}<span class="datagovuk-search-facets__count">{{ facet.count|intcomma }}</span>{% endif %}
+</li>
+{%- endmacro %}
+
 {% block search_main %}
+  {% if selected_filters %}
+    <ul class="datagovuk-selected-filters" aria-label="Selected filters">
+      {% for filter in selected_filters %}
+        <li>
+          <a href="{{ filter.url }}" class="govuk-link datagovuk-link datagovuk-body-s datagovuk-selected-filters__pill">
+            {{- filter.group }}: {{ filter.label -}}
+            <span class="govuk-visually-hidden">(remove filter)</span>
+            <span class="datagovuk-selected-filters__remove" aria-hidden="true"></span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
       <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
-      {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button datagovuk-button--secondary"}) }}
+      {% for facet_group in facet_groups %}
+        <div class="datagovuk-search-facets-group" data-facet-group>
+          <h3 class="govuk-body datagovuk-body-s">{{ facet_group.label }}</h3>
+          {% if facet_group.facets | length > 4 %}
+            {# Hidden until facet-search.js reveals it, so there is no dead input without JavaScript #}
+            {% set search_id = "facets-search-" ~ facet_group.key %}
+            <div class="datagovuk-facet-search" data-facet-search hidden>
+              <label class="govuk-visually-hidden" for="{{ search_id }}">Search {{ facet_group.label }}</label>
+              <input type="search"
+                     id="{{ search_id }}"
+                     class="govuk-input datagovuk-facet-search__input"
+                     placeholder="Search"
+                     autocomplete="off"
+                     spellcheck="false" />
+              <p class="govuk-body datagovuk-body-s datagovuk-facet-search__empty" data-facet-search-empty hidden>
+                No matching {{ facet_group.label | lower }}
+              </p>
+              <p class="govuk-visually-hidden" role="status" data-facet-search-live></p>
+            </div>
+          {% endif %}
+          {% set rest_id = "facets-rest-" ~ facet_group.key %}
+          <div class="datagovuk-search-facets-wrapper" role="group" aria-label="{{ facet_group.label }}">
+            <ul class="datagovuk-search-facets">
+              {% for facet in facet_group.facets[:4] %}{{ facet_item(facet) }}{% endfor %}
+            </ul>
+            {% if facet_group.facets | length > 4 %}
+              {# The toggle sets display: block on this div, so the list inside keeps its own display: flex #}
+              <div id="{{ rest_id }}">
+                <ul class="datagovuk-search-facets">
+                  {% for facet in facet_group.facets[4:] %}{{ facet_item(facet) }}{% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+          </div>
+          {% if facet_group.facets | length > 4 %}
+            {{ govukButton({
+                        "text": "Show more",
+                        "type": "button",
+                        "classes": "datagovuk-button datagovuk-button--secondary datagovuk-body-s datagovuk-search-facets__toggle datagovuk-visibility-toggle",
+                        "attributes": {
+                        "aria-controls": rest_id,
+                        "data-hide-text": "Show less"
+                        }
+                        }) }}
+          {% endif %}
+        </div>
+      {% endfor %}
     </div>
 
     <div class="govuk-grid-column-two-thirds">
       {% if search_made %}
-        {% if collection_results.hits.total.value > 0 %}
+        {% if collection_results and collection_results.hits.total.value > 0 %}
           <h2 class="govuk-heading-m datagovuk-heading-m">Curated data</h2>
           <p class="govuk-body datagovuk-body">Selected by the National Data Library team</p>
           <ul class="datagovuk-search-results">
@@ -36,6 +110,14 @@
           <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         {% endif %}
         {% if directory_results.hits.total.value > 0 %}
+          {% set total_results = directory_results.hits.total.value %}
+          <div class="govuk-body datagovuk-body datagovuk-search__results-count">
+            {% if pagination.first_result_in_page != 1 %}
+              {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ total_results|intcomma }} result{{ "s" if total_results > 1 else "" }}
+            {% else %}
+              {{ total_results|intcomma }} result{{ "s" if total_results > 1 else "" }}
+            {% endif %}
+          </div>
           <ul class="datagovuk-search-results">
             {% for doc in directory_docs %}
               <li class="datagovuk-search-results__item">
@@ -55,6 +137,7 @@
               </li>
             {% endfor %}
           </ul>
+          {% if pagination.pages %}{{ govukPagination(dict(pagination.pages, classes="datagovuk-pagination") ) }}{% endif %}
         {% else %}
           <p class="govuk-body datagovuk-body">0 results found</p>
           <p class="govuk-body datagovuk-body">Improve your search results by:</p>
@@ -69,3 +152,10 @@
     </div>
   </div>
 {% endblock search_main %}
+
+{% block extra_js %}
+  {% compress js %}
+    <script src="{{ static('javascripts/visibility-toggle.js') }}"></script>
+    <script src="{{ static('javascripts/facet-search.js') }}"></script>
+  {% endcompress %}
+{% endblock extra_js %}

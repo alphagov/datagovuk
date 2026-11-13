@@ -131,3 +131,180 @@
     flex-grow: 1;
   }
 }
+
+// Borders only go between groups, not after the last one.
+.datagovuk-search-facets-group {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--govuk-border-colour);
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+// The gap spaces the items from each other but never after the last one, so the space above the "Show more" button
+// is the same whichever item is last on screen.
+.datagovuk-search-facets {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+
+// Wraps all of a group's facet lists (the top few and the "Show more" list). Scrolls once they pass 500px.
+// No padding: content scrolled to the edge would show through it. Link focus styles extend 2px above and 4px below
+// the link, so the 5px top padding on each item covers the first but the last item's can be clipped at the very end.
+// The gap between the top list and the "Show more" div.
+.datagovuk-search-facets-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+// Search box above a facet group's values, styled like the header search: a pill with the icon inside on the right.
+// Revealed by facet-search.js.
+.datagovuk-facet-search {
+  position: relative;
+  margin-bottom: 10px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 5px;
+    width: 44px;
+    height: 44px;
+    background-color: $datagovuk-grey;
+    -webkit-mask: url(static('images/icons/search.svg')) no-repeat center / 26px;
+    mask: url(static('images/icons/search.svg')) no-repeat center / 26px;
+    pointer-events: none;
+  }
+}
+
+.datagovuk-facet-search__input {
+  height: auto; // let the padding set the height, instead of .govuk-input's fixed 2.5rem
+  margin-bottom: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 20px;
+  padding-right: 60px; // keeps text clear of the icon
+  border-width: 1px;
+  border-radius: 999px;
+  border-color: $datagovuk-mid-grey;
+}
+
+.datagovuk-facet-search__empty {
+  margin: 10px 0 0;
+  color: $datagovuk-grey;
+}
+
+// Match the body-s text size. The double class beats .datagovuk-button's own font-size, whatever the load order.
+.datagovuk-button.datagovuk-search-facets__toggle {
+  margin: 20px 0 0; // gap below the facet list, and no bottom margin (overrides .govuk-button's)
+  padding-top: 10px; // slightly less than .datagovuk-button's 14px
+  padding-bottom: 10px;
+  font-size: 18px;
+
+  @media (min-width: $desktop-breakpoint) {
+    font-size: 20px;
+  }
+}
+
+// The left padding leaves room for the selected tick, and keeps wrapped lines aligned with the first.
+.datagovuk-search-facets__item {
+  position: relative;
+  margin: 0; // overrides govuk-body's bottom margin
+  padding: 5px 0 0 22px;
+}
+
+.datagovuk-search-facets__count {
+  color: $datagovuk-grey;
+}
+
+// Selected facets are bold text with a tick to the left, no background or colour.
+.datagovuk-search-facets__item--selected {
+  .datagovuk-search-facets__link {
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  // Tick drawn with borders: a box with only its right and bottom edges, rotated.
+  // Absolutely positioned in the item's left padding, level with the first line of text.
+  &::before {
+    content: "";
+    position: absolute;
+    top: calc(5px + 0.7em); // the item's top padding plus half the 140% line height
+    left: 3px; // the rotation makes the tick overhang its box by ~3px, so this puts its left edge at 0
+    box-sizing: border-box;
+    width: 7px;
+    height: 11px;
+    border-right: 3px solid $datagovuk-black;
+    border-bottom: 3px solid $datagovuk-black;
+    transform: translateY(-65%) rotate(45deg);
+  }
+}
+
+// Selected filter pills above the facets and results. Each links to the current search with that filter removed.
+.datagovuk-selected-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 40px;
+  padding: 0;
+  list-style: none;
+}
+
+.datagovuk-selected-filters__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background-color: $datagovuk-light-grey-hover;
+  color: $datagovuk-black;
+  text-decoration: none;
+
+  &:hover {
+    background-color: darken($datagovuk-light-grey-hover, 6%);
+  }
+
+  // Same focus style as .datagovuk-button: the GOV.UK yellow background (from .govuk-link:focus) with a dark green
+  // outline, and no underline-style box-shadow.
+  &:focus:not(:active):not(:hover) {
+    box-shadow: none;
+    outline: 2px solid $datagovuk-dark-green;
+  }
+}
+
+// A cross drawn with two rotated bars rather than a text glyph, so it is centred exactly whatever the font metrics.
+.datagovuk-selected-filters__remove {
+  position: relative;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    margin-top: -0.5px;
+    background-color: currentcolor;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
