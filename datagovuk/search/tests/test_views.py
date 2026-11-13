@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from datagovuk.search.opensearch import Collection, Dataset
 
-from .factories import CollectionFactory, DatasetFactory, OrganisationFactory
+from .factories import CollectionFactory, DatasetFactory, OrganisationFactory, ResourceFactory
 
 
 @pytest.fixture
@@ -197,3 +197,26 @@ class TestDatasetView:
             "dataset-reference-date": "invalid-json",
             "access_constraints": {"test-key": "test-value"},
         }
+
+    def test_get_dataset_resources_are_in_datafiles(self, client, opensearch_documents):
+        opensearch_documents(
+            [
+                DatasetFactory(
+                    slug="wanted",
+                    resources=[
+                        ResourceFactory(name="My CSV", format="CSV", resource_type="data-link"),
+                        ResourceFactory(name="My Doc", format="PDF", resource_type="supporting-document"),
+                    ],
+                ),
+            ],
+        )
+
+        response = client.get(reverse("search:dataset", kwargs={"slug": "wanted"}))
+        doc = response.context_data["doc"]
+
+        assert response.status_code == HTTPStatus.OK
+        assert len(doc.datafiles) == 1
+        assert doc.datafiles[0].name == "My CSV"
+        assert doc.datafiles[0].is_csv is True
+        assert len(doc.docs) == 1
+        assert doc.docs[0].name == "My Doc"
