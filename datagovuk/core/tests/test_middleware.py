@@ -4,7 +4,7 @@ from http import HTTPStatus
 import pytest
 from django.http import HttpResponse
 
-from datagovuk.core.middleware import BasicAuthMiddleware, CacheControlMiddleware
+from datagovuk.core.middleware import BasicAuthMiddleware, CacheControlMiddleware, RemoveTrailingSlashMiddleware
 
 
 class TestCacheControlMiddleware:
@@ -272,3 +272,52 @@ class TestBasicAuthMiddleware:
         response = middleware(request)
 
         assert response.status_code == HTTPStatus.UNAUTHORIZED
+
+
+class TestRemoveTrailingSlashMiddleware:
+    @pytest.mark.parametrize(
+        ("path", "expected_location"),
+        [
+            ("/about/", "/about"),
+            ("/data-manual/", "/data-manual"),
+            ("/about///", "/about"),
+        ],
+    )
+    def test_resolvable_slash_free_path_redirects_permanently(self, rf, path, expected_location):
+        response = RemoveTrailingSlashMiddleware(_get_response)(rf.get(path))
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response["Location"] == expected_location
+
+    def test_redirect_keeps_query_string(self, rf):
+        response = RemoveTrailingSlashMiddleware(_get_response)(rf.get("/about/?q=crime&page=2"))
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response["Location"] == "/about?q=crime&page=2"
+
+    def test_leading_double_slash_does_not_redirect_off_site(self, rf):
+        request = rf.get("/")
+        request.path_info = "//example.com/"
+
+        response = RemoveTrailingSlashMiddleware(_get_response)(request)
+
+        assert not response.has_header("Location")
+
+    @pytest.mark.parametrize("path", ["/", "/about", "/health/", "/version/"])
+    def test_path_that_resolves_as_is_passes_through(self, rf, path):
+        response = RemoveTrailingSlashMiddleware(_get_response)(rf.get(path))
+
+        assert response.status_code == HTTPStatus.OK
+
+    def test_trailing_slash_redirect_through_full_stack(self, client):
+        response = client.get("/about/")
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response["Location"] == "/about"
+
+    def test_unknown_trailing_slash_path_is_404_through_full_stack(self, client):
+        assert client.get("/no-such-page/").status_code == HTTPStatus.NOT_FOUND
+
+    def test_no_trailing_slash_does_not_append_slash_through_full_stack(self, client):
+        assert client.get("/about").status_code == HTTPStatus.OK
+        assert client.get("/no-such-page").status_code == HTTPStatus.NOT_FOUND

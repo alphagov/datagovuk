@@ -30,7 +30,7 @@ We're moving to a modern and reliable technical platform. For you, this means a 
 
 ### Growing curated content
 
-We continue to add new data and visualisations to curated collections. We also continue to improve existing pages based on user feedback. You can help us by [suggesting data which meets our data curation principles](https://www.data.gov.uk/data-curation/).
+We continue to add new data and visualisations to curated collections. We also continue to improve existing pages based on user feedback. You can help us by [suggesting data which meets our data curation principles](https://www.data.gov.uk/data-curation).
 
 You can also see and comment on upcoming curated data pages on our [GitHub repository](https://github.com/alphagov/datagovuk/issues). The repository is open, but you will need a GitHub account to comment.
 

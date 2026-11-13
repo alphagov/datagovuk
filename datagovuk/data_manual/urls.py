@@ -7,14 +7,14 @@ app_name = "data_manual"
 
 urlpatterns = [
     path(
-        "",
+        "data-manual",
         TemplateView.as_view(
             template_name="data_manual/home.jinja",
         ),
         name="home",
     ),
     path(
-        "<slug:data_manual_name>/",
+        "data-manual/<slug:data_manual_name>",
         DataManualView.as_view(),
         name="data_manual_page",
     ),
