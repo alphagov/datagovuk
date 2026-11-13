@@ -1,6 +1,6 @@
 ---
 # Copy this file to content/updates/<year>/<slug>.md to publish a new update.
-# The URL will be /updates/<year>/<slug>/. The slug may only contain lowercase letters, numbers and hyphens.
+# The URL will be /updates/<year>/<slug>. The slug may only contain lowercase letters, numbers and hyphens.
 # This file is not served: its name doesn't match the update URL pattern.
 
 # Required. Shown as the page heading and in the browser tab.
