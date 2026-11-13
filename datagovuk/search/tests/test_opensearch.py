@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 import pytest
 from pydantic import ValidationError
@@ -21,6 +22,93 @@ EXTRA_RESULTS = 3
 
 def _slugs(documents):
     return [document.slug for document in documents]
+
+
+def test_dataset_additional_information_list_converted_to_dict():
+    dataset = DatasetFactory(additional_information=[{"key": "licence", "value": "test", "type": "string"}])
+    assert Dataset(**dataset).additional_information == {"licence": "test"}
+
+
+def test_dataset_additional_information_json_value_key_is_parsed():
+    additional_information = [
+        {"key": "access_constraints", "value": '["OGL"]', "type": "json"},
+        {"key": "dataset-reference-date", "value": '[{"type": "creation", "value": "2026-01-01"}]', "type": "json"},
+    ]
+    dataset = DatasetFactory(additional_information=additional_information)
+    assert Dataset(**dataset).additional_information == {
+        "access_constraints": ["OGL"],
+        "dataset-reference-date": [{"type": "creation", "value": "2026-01-01"}],
+    }
+
+
+def test_dataset_additional_information_invalid_json_falls_back_to_raw_string():
+    dataset = DatasetFactory(
+        additional_information=[{"key": "access_constraints", "value": "invalid-json", "type": "json"}],
+    )
+    assert Dataset(**dataset).additional_information == {"access_constraints": "invalid-json"}
+
+
+def test_dataset_additional_information_none_value_falls_back_to_none():
+    dataset = DatasetFactory(additional_information=[{"key": "access_constraints", "value": None, "type": "json"}])
+    assert Dataset(**dataset).additional_information == {"access_constraints": None}
+
+
+def test_dataset_additional_information_without_key_is_skipped():
+    dataset = DatasetFactory(
+        additional_information=[
+            {"key": None, "value": "ignored", "type": "json"},
+            {"key": "test-key", "value": "test-value", "type": "string"},
+        ],
+    )
+    assert Dataset(**dataset).additional_information == {"test-key": "test-value"}
+
+
+def test_dataset_additional_information_empty_list_produces_empty_dict():
+    dataset = DatasetFactory(additional_information=[])
+    assert Dataset(**dataset).additional_information == {}
+
+
+def test_dataset_additional_information_defaults_to_empty_dict():
+    dataset = DatasetFactory()
+    del dataset["additional_information"]
+    assert Dataset(**dataset).additional_information == {}
+
+
+def test_dataset_is_harvested_true():
+    dataset = DatasetFactory(is_harvested=True)
+    assert Dataset(**dataset).is_harvested is True
+
+
+def test_dataset_is_harvested_false():
+    dataset = DatasetFactory(is_harvested=False)
+    assert Dataset(**dataset).is_harvested is False
+
+
+def test_dataset_is_harvested_defaults_to_false():
+    dataset = DatasetFactory()
+    del dataset["is_harvested"]
+    assert Dataset(**dataset).is_harvested is False
+
+
+def test_dataset_additional_information_metadata_date_is_parsed():
+    dataset = DatasetFactory(
+        additional_information=[{"key": "metadata-date", "value": "2026-03-04T05:06:07", "type": "string"}],
+    )
+    assert Dataset(**dataset).additional_information == {
+        "metadata-date": datetime.fromisoformat("2026-03-04T05:06:07"),
+    }
+
+
+def test_dataset_additional_information_invalid_metadata_date_is_none():
+    dataset = DatasetFactory(
+        additional_information=[{"key": "metadata-date", "value": "not-a-date", "type": "string"}],
+    )
+    assert Dataset(**dataset).additional_information == {"metadata-date": None}
+
+
+def test_dataset_additional_information_empty_metadata_date_is_none():
+    dataset = DatasetFactory(additional_information=[{"key": "metadata-date", "value": None, "type": "string"}])
+    assert Dataset(**dataset).additional_information == {"metadata-date": None}
 
 
 def test_get_opensearch_client_connects_to_configured_cluster():

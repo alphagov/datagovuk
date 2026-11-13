@@ -157,3 +157,43 @@ class TestDatasetView:
         response = client.get(f"/v2/dataset/{url_slug}")
 
         assert response.status_code == HTTPStatus.NOT_FOUND
+
+    def test_get_dataset_harvested_true_is_in_context(self, client, opensearch_documents):
+        opensearch_documents([DatasetFactory(slug="wanted", is_harvested=True)])
+
+        response = client.get(reverse("search:dataset", kwargs={"slug": "wanted"}))
+
+        assert response.context_data["doc"].harvested is True
+
+    def test_get_dataset_harvested_false_is_in_context(self, client, opensearch_documents):
+        opensearch_documents([DatasetFactory(slug="wanted", is_harvested=False)])
+
+        response = client.get(reverse("search:dataset", kwargs={"slug": "wanted"}))
+
+        assert response.context_data["doc"].harvested is False
+
+    def test_get_dataset_additional_information_is_in_context(self, client, opensearch_documents):
+        opensearch_documents(
+            [
+                DatasetFactory(
+                    slug="wanted",
+                    additional_information=[
+                        {"key": "licence", "value": "OGL", "type": "string"},
+                        {"key": "dataset-reference-date", "value": "invalid-json", "type": "json"},
+                        {"key": "access_constraints", "value": '{"test-key": "test-value"}', "type": "json"},
+                    ],
+                ),
+            ],
+        )
+
+        response = client.get(reverse("search:dataset", kwargs={"slug": "wanted"}))
+        doc = response.context_data["doc"]
+        additional_information = doc.additional_information
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.template_name == ["search/dataset.jinja"]
+        assert additional_information == {
+            "licence": "OGL",
+            "dataset-reference-date": "invalid-json",
+            "access_constraints": {"test-key": "test-value"},
+        }

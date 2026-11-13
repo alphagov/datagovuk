@@ -1,9 +1,10 @@
-from datetime import datetime  # noqa: TC003
+import json
+from datetime import datetime
 
 import boto3
 from django.conf import settings
 from opensearchpy import AWSV4SignerAuth, OpenSearch, RequestsHttpConnection
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class Organisation(BaseModel):
@@ -18,9 +19,39 @@ class Dataset(BaseModel):
     title: str
     description_raw: str
     description: str
+    is_harvested: bool = False
     organisations: list[Organisation] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
+    additional_information: dict = Field(default_factory=dict)
+
+    @model_validator(mode="before")
+    @classmethod
+    def convert_additional_information(cls, data):
+        result = {}
+        for info in data.get("additional_information", []):
+            key = info.get("key")
+            value = info.get("value")
+            value_type = info.get("type")
+            if key is not None:
+                if value_type == "json":
+                    try:
+                        result[key] = json.loads(value)
+                    except json.JSONDecodeError, TypeError:
+                        result[key] = value
+                elif key == "metadata-date":
+                    try:
+                        result[key] = datetime.fromisoformat(value) if value else None
+                    except ValueError:
+                        result[key] = None
+                else:
+                    result[key] = value
+        data["additional_information"] = result
+        return data
+
+    @property
+    def harvested(self):
+        return self.is_harvested
 
     @property
     def organisation(self):
