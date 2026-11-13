@@ -262,6 +262,18 @@ class TestSolrSupportingDocumentModel:
 
         assert doc.last_modified is None
 
+    def test_last_updated_returns_last_modified(self):
+        last_modified = datetime.fromisoformat("2026-06-01T12:00:00")
+        doc = SolrSupportingDocument(
+            name="My report",
+            url="https://example.com/report.pdf",
+            format="PDF",
+            file_size="",
+            last_modified=last_modified,
+        )
+
+        assert doc.last_updated == last_modified
+
 
 class TestSolrDatasetModel:
     def solr_doc(self, **overrides):

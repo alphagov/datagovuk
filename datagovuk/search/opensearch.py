@@ -23,7 +23,6 @@ class Resource(BaseModel):
     size: int | None = None
     created_at: datetime | None = None
     last_modified: datetime | None = None
-    metadata_modified: datetime | None = None
 
     @model_validator(mode="before")
     @classmethod
@@ -38,12 +37,11 @@ class Resource(BaseModel):
 
     @property
     def last_updated(self):
-        return self.last_modified or self.metadata_modified or self.created_at
+        return self.last_modified or self.created_at
 
     @property
     def is_csv(self):
         return self.format == "CSV"
-
 
 
 class Dataset(BaseModel):
