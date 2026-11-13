@@ -28,22 +28,20 @@ class Dataset(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def convert_additional_information(cls, data):
-        raw = data.get("additional_information")
-        if isinstance(raw, list):
-            result = {}
-            for additional_info in raw:
-                key = additional_info.get("key")
-                value = additional_info.get("value")
-                value_type = additional_info.get("type")
-                if key is not None:
-                    if value_type == "json":
-                        try:
-                            result[key] = json.loads(value)
-                        except json.JSONDecodeError, TypeError:
-                            result[key] = value
-                    else:
+        result = {}
+        for info in data.get("additional_information", []):
+            key = info.get("key")
+            value = info.get("value")
+            value_type = info.get("type")
+            if key is not None:
+                if value_type == "json":
+                    try:
+                        result[key] = json.loads(value)
+                    except json.JSONDecodeError, TypeError:
                         result[key] = value
-            data["additional_information"] = result
+                else:
+                    result[key] = value
+        data["additional_information"] = result
         return data
 
     @property
