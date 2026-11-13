@@ -19,6 +19,7 @@ class Dataset(BaseModel):
     title: str
     description_raw: str
     description: str
+    is_harvested: bool | None = None
     organisations: list[Organisation] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
@@ -44,6 +45,10 @@ class Dataset(BaseModel):
                         result[key] = value
             data["additional_information"] = result
         return data
+
+    @property
+    def harvested(self):
+        return self.is_harvested
 
     @property
     def organisation(self):
