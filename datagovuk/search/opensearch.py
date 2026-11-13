@@ -38,19 +38,7 @@ class Resource(BaseModel):
 
     @property
     def last_updated(self):
-        # This is a slight change from solr.py
-        # was last_modified if present, then created and if not then metadata_modified
-        # now it is the most recent date from either last_modified, metadata_modified, or created_at
-        updated_dates = [
-            updated_date
-            for updated_date in [self.last_modified, self.metadata_modified, self.created_at]
-            if updated_date is not None
-        ]
-
-        return max(
-            updated_dates,
-            default=None,
-        )
+        return self.last_modified or self.metadata_modified or self.created_at
 
     @property
     def is_csv(self):
