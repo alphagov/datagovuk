@@ -214,6 +214,10 @@ class SolrSupportingDocument:
     file_size: str
     last_modified: datetime | None
 
+    @property
+    def last_updated(self):
+        return self.last_modified
+
     @staticmethod
     def from_resource(resource: dict):
         raw_date = resource.get("metadata_modified") or resource.get("created")

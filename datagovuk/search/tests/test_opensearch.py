@@ -25,34 +25,23 @@ def _slugs(documents):
     return [document.slug for document in documents]
 
 
-def test_resource_last_updated_uses_last_modified_when_present():
-    resource = Resource(**ResourceFactory(last_modified="2025-01-01T00:00:00+00:00"))
-    assert resource.last_updated == datetime.fromisoformat("2025-01-01T00:00:00+00:00")
-
-
-def test_resource_last_updated_falls_back_to_metadata_modified_when_no_last_modified():
-    resource = Resource(**ResourceFactory(last_modified=None, metadata_modified="2024-06-01T00:00:00+00:00"))
-    assert resource.last_updated == datetime.fromisoformat("2024-06-01T00:00:00+00:00")
-
-
-def test_resource_last_updated_falls_back_to_created_at_when_no_last_modified_or_metadata_modified():
-    resource = Resource(**ResourceFactory(last_modified=None, metadata_modified=None))
-    assert resource.last_updated == datetime.fromisoformat("2024-01-02T03:04:05+00:00")
+def test_resource_last_updated_falls_back_to_created_at_when_no_last_modified():
+    resource = Resource(**ResourceFactory(last_modified=None, created_at="2026-06-01T00:00:00+00:00"))
+    assert resource.last_updated == datetime.fromisoformat("2026-06-01T00:00:00+00:00")
 
 
 def test_resource_last_updated_prefers_last_modified_when_multiple_dates_present():
     resource = Resource(
         **ResourceFactory(
-            last_modified="2024-01-01T00:00:00+00:00",
-            metadata_modified="2025-06-01T00:00:00+00:00",
+            last_modified="2026-01-01T00:00:00+00:00",
             created_at="2023-01-01T00:00:00+00:00",
         ),
     )
-    assert resource.last_updated == datetime.fromisoformat("2024-01-01T00:00:00+00:00")
+    assert resource.last_updated == datetime.fromisoformat("2026-01-01T00:00:00+00:00")
 
 
 def test_resource_last_updated_returns_none_when_all_dates_absent():
-    resource = Resource(**ResourceFactory(last_modified=None, metadata_modified=None, created_at=None))
+    resource = Resource(**ResourceFactory(last_modified=None, created_at=None))
     assert resource.last_updated is None
 
 
