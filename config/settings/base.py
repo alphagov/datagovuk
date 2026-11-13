@@ -313,12 +313,10 @@ BASIC_AUTH_BYPASS = env("BASIC_AUTH_BYPASS", default=None)
 
 # TRAILING SLASHES
 # ------------------------------------------------------------------------------
-# URLs have no trailing slash. RemoveTrailingSlashMiddleware 301s /foo/ to /foo, so
+# URLs have no trailing slash. RemoveTrailingSlashMiddleware redirects /foo/ to /foo, so
 # Django's opposite behaviour (redirecting /foo to /foo/) must be off.
 # https://docs.djangoproject.com/en/dev/ref/settings/#append-slash
 APPEND_SLASH = False
-# Infrastructure endpoints are called with a trailing slash by health checks and CI.
-TRAILING_SLASH_REDIRECT_EXEMPT = ["/health/", "/metrics/", "/version/", "/__debug__/", STATIC_URL]
 
 DATAGOVUK_CONTENT_ROOT = "datagovuk/content/"
 DATAGOVUK_CONTENT_DATA_ROOT = f"{DATAGOVUK_CONTENT_ROOT}data/"
