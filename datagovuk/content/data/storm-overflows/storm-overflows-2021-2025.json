@@ -1,0 +1,12 @@
+{
+  "title": "Water company average reasons for frequent spills in 2025 (England, %)",
+  "publisher": "Department for Environment Food & Rural Affairs",
+  "source": "https://www.data.gov.uk/collections/environment/storm-overflows",
+  "download": "storm-overflows-reasons-2020-25.csv",
+  "visualisation_type": "bar",
+  "data": {
+    "Exceptional weather": 1.2,
+    "Operational (e.g. maintenance)": 19.5,
+    "Capacity": 64.3,
+    "Under investigation": 15.0
+}}
