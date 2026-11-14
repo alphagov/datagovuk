@@ -186,6 +186,7 @@ The data was save here as a csv file:
 [social-mobility/unemployment-by-socio-ecomomic-background.csv](social-mobility/unemployment-by-socio-ecomomic-background.csv)
 
 
+The file [social-mobility/unemployment-by-socio-ecomomic-background.json](social-mobility/unemployment-by-socio-ecomomic-background.json) uses the data from the csv file as its data object for a bar chart.
 
 ### Storm overflows
 
@@ -221,6 +222,7 @@ The file [weather/uk-monthly-max-temperature.json](weather/uk-monthly-max-temper
 
 **Note:** Individual years can be anomalous, so a more robust approach would be to use decade averages (e.g. 1900s, 1920s, 1940s, etc.) rather than single-year snapshots. Worth exploring if there's interest.
 
+
 ### UK Trade
 
 The source webpage for the data is [https://www.gov.uk/government/statistics/uk-trade-in-numbers/uk-trade-in-numbers-web-version](https://www.gov.uk/government/statistics/uk-trade-in-numbers/uk-trade-in-numbers-web-version)
@@ -238,7 +240,15 @@ the graph itself this was divided by the number base 1000 to give the number in 
 
 The file [uk-trade/total-uk-imports-exports-2010-2025.json](uk-trade/total-uk-imports-exports-2010-2025.json) uses the data from the csv file as its two `series` objects.
 
-The file [social-mobility/unemployment-by-socio-ecomomic-background.json](social-mobility/unemployment-by-socio-ecomomic-background.json) uses the data from the csv file as its data object for a bar chart.
+
+### Water quality
+Source: [ENV17 - Bathing water quality: additional datasets](https://www.gov.uk/government/statistical-data-sets/env17-bathing-water-quality-additional-datasets)
+Files: Classifications/classification summaries for each year, 2017 onwards.
+
+Create a new table with columns for the water classifications (Excellent, Good, Sufficient, and Poor) and Total.
+Create a row for each year (2017 onwards, with 2020 missing).
+From each classification file copy in the summary statistics.
+
 
 ### Woodland area
 
@@ -251,6 +261,7 @@ The `Year` and `UK total (thousand hectares)` columns were extracted for years 2
 Values represent the cumulative total woodland area in the UK at each year, **not new** woodland planted that year.
 
 The file [forest-and-woodlands/woodland-area.json](forest-and-woodlands/woodland-area.json) uses the data from the csv file as its `series.data` object.
+
 
 ***
 
