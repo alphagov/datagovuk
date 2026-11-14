@@ -14,6 +14,50 @@
     padding: 17px 0;
 }
 
+/* search-v2 feature flag: header with search box. Fold into the base styles and drop the body class when the flag is removed. */
+.datagovuk-feature-search-v2 {
+    .datagovuk-header__search {
+        order: 2;
+        width: 100%;
+        padding-bottom: 17px;
+
+        .datagovuk-form-group {
+            margin-bottom: 0;
+        }
+
+        .datagovuk-search-bar .govuk-input,
+        .datagovuk-search-bar .govuk-button {
+            border-radius: 999px;
+        }
+
+        /* The submit button sits inside the input, so drop the leading icon and keep text clear of the button */
+        .datagovuk-search-input-wrapper::before {
+            display: none;
+        }
+
+        .datagovuk-search-bar .govuk-input {
+            padding-left: 20px;
+            padding-right: 60px;
+            border-width: 1px;
+        }
+
+        .datagovuk-search-bar .govuk-button {
+            position: absolute;
+            top: 50%;
+            right: 5px;
+            width: 44px;
+            height: 44px;
+            margin: 0;
+            transform: translateY(-50%);
+        }
+
+        .datagovuk-search-bar .govuk-button::before {
+            left: 9px;
+            top: 9px;
+        }
+    }
+}
+
 .datagovuk-header__logo-link {
     display: block;
     width: 170px;
@@ -138,6 +182,21 @@
 
     .datagovuk-header {
         padding-top: 20px;
+    }
+
+    .datagovuk-feature-search-v2 {
+        .datagovuk-header__logo {
+            flex-grow: 0;
+        }
+
+        .datagovuk-header__search {
+            order: 0;
+            flex: 1 1 auto;
+            width: auto;
+            max-width: 480px;
+            margin: 0 auto;
+            padding-bottom: 0;
+        }
     }
 
     .datagovuk-header__logo-link {

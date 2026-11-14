@@ -51,7 +51,7 @@
     {% endif %}
   </head>
 
-  <body class="govuk-template__body">
+  <body class="govuk-template__body{% if is_feature_flag_enabled(FEATURE_FLAGS.SEARCH_V2) %} datagovuk-feature-search-v2{% endif %}">
     <script nonce="{{csp_nonce}}">document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
 
     <div id="global-cookie-message" data-module="cookie-banner" role="region" aria-label="cookie banner" data-nosnippet="">
@@ -103,7 +103,11 @@
 
     <a href="#main" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
-    {% include "includes/header.jinja" %}
+    {% if is_feature_flag_enabled(FEATURE_FLAGS.SEARCH_V2) %}
+      {% include "includes/header_search_v2.jinja" %}
+    {% else %}
+      {% include "includes/header.jinja" %}
+    {% endif %}
 
     <main id="main" class="datagovuk-main">
       {% block main %}

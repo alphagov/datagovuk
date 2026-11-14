@@ -18,6 +18,7 @@ class SearchView(GETFormView):
         directory_results, directory_docs = search_directory(query)
         collection_results, collection_docs = search_collections(query)
         context = self.get_context_data(
+            form=form,
             query=query,
             directory_results=directory_results,
             directory_docs=directory_docs,
