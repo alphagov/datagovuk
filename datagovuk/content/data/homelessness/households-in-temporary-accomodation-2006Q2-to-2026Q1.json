@@ -6,7 +6,7 @@
   "visualisation_type": "line",
   "series": [
     {
-      "name": "Households in temporary accommodation",
+      "name": "All households",
       "title": "Households in temporary accommodation",
       "color": "#C27A9A",
       "data": {
@@ -90,6 +90,16 @@
         "2025-09-30": 134700,
         "2025-12-31": 134140,
         "2026-03-31": 135580
+      }
+    },
+    {
+      "name": "Households with children",
+      "title": "Households in temporary accommodation with children",
+      "color": "#00890B",
+      "data": {
+        "2025-09-30": 85700,
+        "2025-12-31": 85760,
+        "2026-03-31": 86450
       }
     }
   ]
