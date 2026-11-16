@@ -13,9 +13,9 @@ At the moment, the service is made up of two parts:
 ## The new National Data Library pages
 As part of the transformation we have so far released:
 - a new visual design
-- curated [collections](/) of trusted, open data that’s in high demand (Read about [how we curate collections](/data-curation/))
-- a [data manual](/data-manual/) that signposts the most current and authoritative guidance for people who work with data in the public sector
-- a [roadmap](/roadmap/) that explains our current and upcoming work
+- curated [collections](/) of trusted, open data that’s in high demand (Read about [how we curate collections](/data-curation))
+- a [data manual](/data-manual) that signposts the most current and authoritative guidance for people who work with data in the public sector
+- a [roadmap](/roadmap) that explains our current and upcoming work
 - a spotlighted ['Early years'](/collections/early-years) collection to align to a new DSIT project working with local authorities to explore how better-connected data can support children and families outcomes
 
 ## The directory

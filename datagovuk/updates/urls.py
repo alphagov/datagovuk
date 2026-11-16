@@ -6,7 +6,7 @@ app_name = "updates"
 
 urlpatterns = [
     re_path(
-        r"^(?P<year>\d{4})/(?P<slug>[a-z0-9-]+)/$",
+        r"^(?P<year>\d{4})/(?P<slug>[a-z0-9-]+)$",
         UpdateView.as_view(),
         name="post",
     ),

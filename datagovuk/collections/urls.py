@@ -21,7 +21,7 @@ urlpatterns = [
         kwargs={"collection_name": "government-and-parliament"},
     ),
     path(
-        "collections/<slug:collection_name>/<slug:collection_page_name>/download/",
+        "collections/<slug:collection_name>/<slug:collection_page_name>/download",
         views.CollectionDownloadView.as_view(),
         name="collection_download",
     ),
