@@ -5,6 +5,7 @@
   "download": "decent-homes-percentages-2006-to-2024.csv",
   "publisher": "Ministry of Housing, Communities and Local Government",
   "min_value": 0,
+  "max_value": 100,
   "visualisation_suffix": "%",
   "series": [
     {
