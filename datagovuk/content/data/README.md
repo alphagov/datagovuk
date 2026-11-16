@@ -161,6 +161,16 @@ Invert financial year to be most recent at the bottom.
 Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
 Remove the second year in finanial year to make the axis labels neater.
 
+### Population
+Source: [ONS](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland)
+File: UK population estimates 1838 to 2025 edition of this dataset .xlsx
+Sheet: Table 1
+
+Delete heading and save for the .csv.
+For the chart - in the Year column, remove the 'Mid-' prefix.
+Sort by year.
+Divide the population by a million and give to 2 decimal places.
+
 ### Rents
 Source: https://www.data.gov.uk/collections/land-and-property/rents-lettings-and-tenancies
 Table: 602
