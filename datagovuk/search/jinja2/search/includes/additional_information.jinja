@@ -1,0 +1,92 @@
+{% macro dataset_additional_information(name, description_detail) -%}
+  {% if description_detail %}
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-body datagovuk-body govuk-summary-list__key">{{ name }}</dt>
+      <dd class="govuk-body datagovuk-body govuk-summary-list__value">
+        {{ description_detail }}
+      </dd>
+    </div>
+  {% endif %}
+{% endmacro %}
+
+<section class="govuk-!-margin-bottom-8 additional-information">
+  <h2 class="govuk-heading-m datagovuk-heading-m">Additional information</h2>
+  <dl id="additional-information" class="govuk-summary-list govuk-!-margin-top-4">
+    {% if additional_information['harvest_object_id'] %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-body datagovuk-body govuk-summary-list__key">Source Metadata</dt>
+        <dd class="govuk-body datagovuk-body govuk-summary-list__value">
+          <a href="/api/2/rest/harvestobject/{{ additional_information['harvest_object_id'] }}/xml"
+             class="govuk-link datagovuk-link--secondary">XML</a>,
+          <a href="/api/2/rest/harvestobject/{{ additional_information['harvest_object_id'] }}/html"
+             class="govuk-link datagovuk-link--secondary">HTML</a>
+        </dd>
+      </div>
+    {% endif %}
+
+    {% if additional_information['metadata-date'] %}
+      {{ dataset_additional_information('Date added', additional_information['metadata-date'] | date("d F Y") ) }}
+    {% endif %}
+
+    {{ dataset_additional_information('Harvest GUID', additional_information['guid']) }}
+
+    {% if additional_information['bbox-east-long'] and additional_information['bbox-west-long'] and additional_information['bbox-north-lat'] and additional_information['bbox-south-lat'] %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-body datagovuk-body govuk-summary-list__key">Extent (Latitude)</dt>
+        <dd class="govuk-body datagovuk-body govuk-summary-list__value">
+          {{ additional_information['bbox-north-lat'] }}° to {{ additional_information['bbox-south-lat'] }}°
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-body datagovuk-body govuk-summary-list__key">Extent (Longitude)</dt>
+        <dd class="govuk-body datagovuk-body govuk-summary-list__value">
+          {{ additional_information['bbox-west-long'] }}° to {{ additional_information['bbox-east-long'] }}°
+        </dd>
+      </div>
+    {% endif %}
+
+    {{ dataset_additional_information('Spatial reference system', additional_information['spatial-reference-system']) }}
+
+    {% if additional_information['dataset-reference-date'] %}
+      {% for date in additional_information['dataset-reference-date'] %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-body datagovuk-body govuk-summary-list__key">Dataset reference date ({{ date['type'] }})</dt>
+          <dd class="govuk-body datagovuk-body govuk-summary-list__value">
+            {{ date['value'] }}
+          </dd>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {{ dataset_additional_information('Frequency of update', additional_information['frequency-of-update']) }}
+
+    {% if additional_information['access_constraints'] %}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-body datagovuk-body govuk-summary-list__key">Access constraints</dt>
+        {% set constraints = additional_information['access_constraints'] %}
+        <dd class="govuk-body datagovuk-body govuk-summary-list__value">
+          {% if constraints is string %}
+            {{ constraints }}
+          {% else %}
+            {{ constraints | first | default("Not specified", true) }}
+          {% endif %}
+        </dd>
+      </div>
+    {% endif %}
+
+    {{ dataset_additional_information('Responsible party', additional_information['responsible-party']) }}
+
+    {{ dataset_additional_information('ISO 19139 resource type', additional_information['resource-type']) }}
+
+    {{ dataset_additional_information('Metadata language', additional_information['metadata-language']) }}
+  </dl>
+  {{ govukButton({
+    "text": "View additional information",
+    "type": "button",
+    "classes": "datagovuk-button  datagovuk-button--secondary datagovuk-visibility-toggle govuk-!-margin-top-4",
+    "attributes": {
+      "aria-controls": "additional-information",
+      "data-hide-text": "Hide additional information"
+    }
+  }) }}
+</section>
