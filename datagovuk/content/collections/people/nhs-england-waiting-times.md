@@ -35,3 +35,7 @@ Data may include waiting times for:
 You can use the Referral to Treatment Waiting Times Dashboard to view the size of the waiting list by length of wait, area and treatment. NHS England also publishes the Waiting List Minimum Dataset (WLMDS) which breaks down RTT waiting times data by age, sex, ethnicity and deprivation.
 
 Additionally, The Cancer Wait Times Dashboard lets you explore cancer waiting times by tumour type and healthcare provider. It reports whether these cancer waiting times are meeting set standards.
+
+The below chart describes the percentage of people spending less than or more than 4 hours in A&E in England. This is measured from arrival to admission, transfer or discharge.
+
+Some NHS trusts did not report data between May 2019 and May 2023 due to a clinical review.

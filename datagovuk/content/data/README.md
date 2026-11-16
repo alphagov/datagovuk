@@ -12,39 +12,16 @@ Blue: #026BDB
 
 ## Line and bar charts
 
-### Health Waiting Times
-
-#### A&E
+### A&E waiting times
 Source: (NHS England)[https://www.england.nhs.uk/statistics/statistical-work-areas/ae-waiting-times-and-activity/]
 Table: Monthly A&E Time Series September 2026
 Sheet: Performance
 
+Please note that from May 2019 to May 2023 the data is different, and the data owners said that this should be explained to potential users.
+
 Copy months and totals for <4 hours and >4 hours into a new sheet.
 Rename the columns to replace < and > symbols with 'less than' and 'greater than' respectively.
 Reformat the month to YYYY-MM-DD, e.g. 2016-10-15.
-Save the .csv.
-
-#### Ambulance response times
-Source: (NHS England)[https://www.england.nhs.uk/statistics/statistical-work-areas/ambulance-quality-indicators/]
-Table: AmbSYS time series to September 2026
-Sheet: Response times
-
-Copy the month/year columns and the columns for mean C1 responses (Category 1 - most serious, life threatening).
-Format the month to YYYY-MM-DD, e.g. 2016-10-15.
-Format the time into a number so 7:30 becomes 7.5 for the chart (as we can't handle times).
-Save the .csv with columns for month and year, and the original time values (e.g. 7:30) under the heading of "Mean category 1 response time (min:sec)" or similar.
-
-
-#### Cancer
-Source: (NHS England)[https://www.england.nhs.uk/statistics/statistical-work-areas/cancer-waiting-times/]
-Table: CWT CRS – National Time Series Oct 2009 – Aug 2026 with Revisions
-Sheet: Monthly performance
-
-Select the group of columns corresponding to the stat to display (e.g. 28-days wait, 31-days wait).
-Copy to new sheet.
-Rename Monthly to Month.
-Reformat the month to YYYY-MM-DD, e.g. 2016-10-15.
-Reformat the numbers to have no commas.
 Save the .csv.
 
 ### Agricultural commodities: milk prices
