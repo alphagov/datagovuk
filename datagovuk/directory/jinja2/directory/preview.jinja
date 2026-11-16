@@ -21,7 +21,8 @@
         <a href="{{ datafile.url }}" class="govuk-button datagovuk-button govuk-!-margin-bottom-8">
           <div class="datagovuk-button__content">
             Download CSV
-            <img src="{{ static('images/download.svg') }}" alt="Download" />
+            <img class="datagovuk-button__icon" src="{{ static('images/download.svg') }}" alt="Download" />
+            <img class="datagovuk-button__icon--focus" src="{{ static('images/download-black.svg') }}" alt="Download" />
           </div>
         </a>
       {% else %}

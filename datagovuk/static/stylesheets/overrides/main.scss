@@ -4,6 +4,7 @@
 @import 'forms';
 @import 'pagination';
 @import 'summary-list';
+@import 'skip-link';
 
 /* inter-regular - latin */
 @font-face {
@@ -54,6 +55,11 @@
 
 .datagovuk-link {
   text-decoration-thickness: 2px;
+}
+
+.datagovuk-link:focus {
+  background: $datagovuk-yellow;
+  color: $datagovuk-black;
 }
 
 .datagovuk-heading-xl {
@@ -111,15 +117,14 @@
   &:focus:not(:active):not(:hover) {
     box-shadow: none;
     outline: 2px solid $datagovuk-dark-green;
+    background: $datagovuk-yellow;
+
+    .datagovuk-button__icon { display: none; }
+    .datagovuk-button__icon--focus { display: inline-block; }
   }
 
-  .datagovuk-button__arrow--focus {
+  .datagovuk-button__icon--focus {
     display: none;
-  }
-
-  &:focus {
-    .datagovuk-button__arrow { display: none; }
-    .datagovuk-button__arrow--focus { display: inline-block; }
   }
 
   .datagovuk-button__content {

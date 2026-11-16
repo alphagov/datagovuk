@@ -89,6 +89,16 @@
   }
 }
 
+.datagovuk-form-group {
+  .govuk-input,
+  .govuk-textarea,
+  .govuk-select {
+    &:focus {
+      outline: 3px solid $datagovuk-yellow;
+    }
+  }
+}
+
 /* Desktop styling overrides */
 @media (min-width: $desktop-breakpoint) {
   .datagovuk-form-group {
