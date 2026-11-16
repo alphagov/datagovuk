@@ -303,6 +303,15 @@ class TestRemoveTrailingSlashMiddleware:
 
         assert not response.has_header("Location")
 
+    def test_leading_double_slash_redirects_to_resolvable_single_slash_path(self, rf):
+        request = rf.get("/")
+        request.path_info = "//about/"
+
+        response = RemoveTrailingSlashMiddleware(_get_response)(request)
+
+        assert response.status_code == HTTPStatus.MOVED_PERMANENTLY
+        assert response["Location"] == "/about"
+
     @pytest.mark.parametrize("path", ["/", "/about", "/health/", "/version/"])
     def test_path_that_resolves_as_is_passes_through(self, rf, path):
         response = RemoveTrailingSlashMiddleware(_get_response)(rf.get(path))

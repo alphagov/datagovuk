@@ -21,12 +21,15 @@ class RemoveTrailingSlashMiddleware:
 
     def __call__(self, request):
         path = request.path_info
-        if not path.endswith("/") or is_valid_path(path) or not is_valid_path(path.rstrip("/")):
-            return self.get_response(request)
-
         # Stripping slashes from both ends collapses repeated leading slashes, so a
         # path like //example.com/ can't become a protocol-relative open redirect.
         new_url = "/" + path.strip("/")
+        has_trailing_slash = path.endswith("/")
+
+        # `or` short-circuits, so URLs are only resolved for paths ending in a slash.
+        if not has_trailing_slash or is_valid_path(path) or not is_valid_path(new_url):
+            return self.get_response(request)
+
         if query_string := request.META.get("QUERY_STRING"):
             new_url = f"{new_url}?{query_string}"
         return HttpResponsePermanentRedirect(new_url)
