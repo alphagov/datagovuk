@@ -8,26 +8,34 @@
 
 /* inter-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  src: url(static('fonts/inter-v20-latin-regular.woff2')) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url(static('fonts/inter-v20-latin-regular.woff2')) format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
+
 /* inter-600 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
-  src: url(static('fonts/inter-v20-latin-600.woff2')) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url(static('fonts/inter-v20-latin-600.woff2')) format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
+
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
+  /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: 'Libre Baskerville';
   font-style: normal;
   font-weight: 400;
-  src: url(static('fonts/libre-baskerville-v24-latin-regular.woff2')) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url(static('fonts/libre-baskerville-v24-latin-regular.woff2')) format('woff2');
+  /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
 .datagovuk-template {
@@ -119,8 +127,13 @@
     outline: 2px solid $datagovuk-dark-green;
     background: $datagovuk-yellow;
 
-    .datagovuk-button__icon { display: none; }
-    .datagovuk-button__icon--focus { display: inline-block; }
+    .datagovuk-button__icon {
+      display: none;
+    }
+
+    .datagovuk-button__icon--focus {
+      display: inline-block;
+    }
   }
 
   .datagovuk-button__icon--focus {
@@ -182,7 +195,7 @@
 
 /* Desktop styling overrides */
 @media (min-width: $desktop-breakpoint) {
-  .datagovuk-heading-xl{
+  .datagovuk-heading-xl {
     font-size: 42px;
   }
 
