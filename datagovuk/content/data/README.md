@@ -182,7 +182,9 @@ The data was save here as a csv file:
 > [!WARNING]
 > The number of overflows being monitored increased dramatically over this period (from 862 in 2016 to 14,182 in 2024). The apparent rise in total spill events will be influenced by this expanded monitoring coverage, and not solely by an increase in spill frequency. This context isn't clear from visualisation data alone.
 
-Source: [https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac](https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac)
+#### Single year reasons for frequent spills
+
+Source: [DEFRA](https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac)
 File: EDM Storm Overflow Annual Return - Long-term Trends.zip
 Sheet:  <year> Summary Data sheet (most recent)
 Table: 5
@@ -191,6 +193,18 @@ In a new sheet, simplify the table on the most recent yearly summary for the per
 - Keeping the rows only for each reason;
 - Only the column for water company average;
 - Renaming the reasons and column names to be in simple language.
+- Export as a .csv.
+
+#### Time series for frequent spills
+
+Source: [DEFRA](https://environment.data.gov.uk/dataset/21e15f12-0df8-4bfc-b763-45226c16a8ac)
+File: EDM Storm Overflow Annual Return - Long-term Trends.zip
+Sheets:  <year> Summary Data sheet (2021 and onwards)
+Table: 5
+
+In a new sheet, from each table 5 copy the water company averages for each spill reasoning.
+- Have a row for each year, and
+- Renaming the reasons to be column names to be in simple language.
 - Export as a .csv.
 
 ### UK mean temperature
