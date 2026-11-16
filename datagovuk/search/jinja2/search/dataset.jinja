@@ -207,7 +207,7 @@
       <div class="govuk-grid-column-two-thirds">
 
         {% with additional_information=doc.additional_information %}
-          {% include "directory/includes/additional_information.jinja" %}
+          {% include "search/includes/additional_information.jinja" %}
         {% endwith %}
       </div>
     </div>
@@ -216,7 +216,7 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         {% with supporting_documents=doc.docs %}
-          {% include "directory/includes/supporting_documents.jinja" %}
+          {% include "search/includes/supporting_documents.jinja" %}
         {% endwith %}
       </div>
     </div>
