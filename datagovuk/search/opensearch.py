@@ -50,10 +50,6 @@ class Dataset(BaseModel):
         return data
 
     @property
-    def harvested(self):
-        return self.is_harvested
-
-    @property
     def organisation(self):
         return self.organisations[0]
 
