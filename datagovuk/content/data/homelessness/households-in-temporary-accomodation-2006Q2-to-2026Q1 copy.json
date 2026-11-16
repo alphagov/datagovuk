@@ -1,13 +1,13 @@
 {
-  "title": "Households in temporary accomodation",
+  "title": "Households in temporary accommodation",
   "publisher": "Ministry of Housing, Communities and Local Government",
   "source": "https://www.gov.uk/government/collections/homelessness-statistics#statutory-homelessness",
   "download": "households-in-temporary-accomodation-2006Q2-to-2026Q1.csv",
   "visualisation_type": "line",
   "series": [
     {
-      "name": "Households in temporary accomodation",
-      "title": "Households in temporary accomodation",
+      "name": "Households in temporary accommodation",
+      "title": "Households in temporary accommodation",
       "color": "#C27A9A",
       "data": {
         "2006-06-30": 93910,
