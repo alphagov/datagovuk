@@ -97,6 +97,46 @@ class TestSupportFormView:
         )
 
     @patch("datagovuk.support.views.send_ticket_to_zendesk")
+    def test_view_submission_with_phonenumber_filled_in_does_not_send_ticket_and_shows_success(
+        self,
+        mock_zendesk,
+        client,
+    ):
+        form_data = {
+            "details": "Test details",
+            "name": "Test user",
+            "email": "test@example.com",
+            "phonenumber": "01234 567890",
+        }
+        url = reverse("support:support-form")
+        response = client.post(url, data=form_data)
+        assert response.status_code == HTTPStatus.FOUND
+        mock_zendesk.assert_not_called()
+        messages = list(get_messages(response.wsgi_request))
+        assert len(messages) == 1
+        assert str(messages[0]) == "Your message was sent."
+
+    @patch("datagovuk.support.views.send_ticket_to_zendesk")
+    def test_view_invalid_submission_with_phonenumber_filled_in_does_not_send_ticket_and_shows_success(
+        self,
+        mock_zendesk,
+        client,
+    ):
+        form_data = {
+            "details": "",
+            "name": "Test user",
+            "email": "not-an-email",
+            "phonenumber": "01234 567890",
+        }
+        url = reverse("support:support-form")
+        response = client.post(url, data=form_data)
+        assert response.status_code == HTTPStatus.FOUND
+        mock_zendesk.assert_not_called()
+        messages = list(get_messages(response.wsgi_request))
+        assert len(messages) == 1
+        assert str(messages[0]) == "Your message was sent."
+
+    @patch("datagovuk.support.views.send_ticket_to_zendesk")
     def test_zendesk_submission_failure_is_handled(self, mock_zendesk, client):
         mock_zendesk.side_effect = ZendeskError(response=None)
         form_data = {

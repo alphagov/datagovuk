@@ -89,6 +89,12 @@
   }
 }
 
+// Hides the spam trap field on the support form. Named after
+// the field rather than using a generic hidden/utility class.
+.datagovuk-phonenumber {
+  display: none;
+}
+
 /* Desktop styling overrides */
 @media (min-width: $desktop-breakpoint) {
   .datagovuk-form-group {

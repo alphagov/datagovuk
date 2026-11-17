@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from sentry_sdk import capture_exception
@@ -20,6 +21,15 @@ class SupportFormView(FormView):
         initial = super().get_initial()
         initial["http_referer"] = self.request.headers.get("referer", "")
         return initial
+
+    def post(self, request, *args, **kwargs):
+        # The spam trap field is hidden from real users. Check it before validation and
+        # respond as if the message was sent, so bots get no signal that they were caught.
+        if request.POST.get("phonenumber"):
+            logger.info("Support form submission discarded: spam trap field was filled in")
+            messages.success(request, "Your message was sent.")
+            return HttpResponseRedirect(self.get_success_url())
+        return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
