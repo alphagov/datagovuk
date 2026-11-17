@@ -15,7 +15,7 @@ api:
 dataset:
   url: https://www.england.nhs.uk/statistics/statistical-work-areas/rtt-waiting-times/wlmds/
   link-text: NHS England Waiting List Minimum Dataset (WLMDS)
-page-last-updated: "2026-10-09"
+page-last-updated: "2026-11-17"
 visualisation-data: "health-waiting-times/a-and-e-waiting-times-upto-sept26.json"
 contact:
 status: for-publication
@@ -36,6 +36,6 @@ You can use the Referral to Treatment Waiting Times Dashboard to view the size o
 
 Additionally, The Cancer Wait Times Dashboard lets you explore cancer waiting times by tumour type and healthcare provider. It reports whether these cancer waiting times are meeting set standards.
 
-The below chart describes the percentage of people spending less than or more than 4 hours in A&E in England. This is measured from arrival to admission, transfer or discharge.
+The chart below describes the percentage of people spending less than or more than 4 hours in A&E in England. This is measured from arrival to admission, transfer or discharge.
 
 Some NHS trusts did not report data between May 2019 and May 2023 due to a clinical review.
