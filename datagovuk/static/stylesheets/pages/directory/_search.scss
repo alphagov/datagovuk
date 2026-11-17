@@ -190,6 +190,13 @@
 .datagovuk-facet-search__input {
   height: auto; // let the padding set the height, instead of .govuk-input's fixed 2.5rem
   margin-bottom: 0;
+  font-family: 'Inter', sans-serif; // overrides .govuk-input's GDS Transport
+  font-size: 18px; // matches .datagovuk-body-s
+  line-height: 140%;
+
+  @media (min-width: $desktop-breakpoint) {
+    font-size: 20px;
+  }
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 20px;
@@ -235,6 +242,11 @@
 
 .datagovuk-search-facets__link {
   text-decoration: none;
+
+  // Not while focused: the GOV.UK focus style (yellow background, black bar underneath) replaces the underline
+  &:hover:not(:focus) {
+    text-decoration: underline;
+  }
 }
 
 .datagovuk-search-facets__count {
@@ -246,7 +258,6 @@
 .datagovuk-search-facets__item--selected {
   .datagovuk-search-facets__link {
     font-weight: bold;
-    text-decoration: none;
   }
 
   // Tick drawn with borders: a box with only its right and bottom edges, rotated.
