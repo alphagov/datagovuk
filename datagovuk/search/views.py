@@ -32,6 +32,14 @@ MOCK_FACET_GROUPS = {
         "label": "Format",
         "facets": [("CSV", "CSV", 340), ("GeoJSON", "GeoJSON", 45), ("PDF", "PDF", 9)],
     },
+    # Each facet has a fourth item, the query parameter it sets, as they are not one choice from a list.
+    "other": {
+        "label": "More filters",
+        "facets": [
+            ("ogl", "Open Government Licence", 410, "licence"),
+            ("true", "Datasets with no links", 23, "include_no_links"),
+        ],
+    },
 }
 
 # Real publisher names for the ?mock_facets=long state. Several are long, which is the point.
@@ -93,13 +101,13 @@ def _build_facet_groups(params):
     base = {key: value for key, value in params.items() if key != "page"}
     facet_groups = []
     for key, group in mock_groups.items():
-        selected = params.get(key)
         facets = []
-        for value, label, count in group["facets"]:
-            is_selected = selected == value
-            link_params = {k: v for k, v in base.items() if k != key}
+        for value, label, count, *extra in group["facets"]:
+            param = extra[0] if extra else key
+            is_selected = params.get(param) == value
+            link_params = {k: v for k, v in base.items() if k != param}
             if not is_selected:
-                link_params[key] = value
+                link_params[param] = value
             facets.append(
                 {
                     "label": label,

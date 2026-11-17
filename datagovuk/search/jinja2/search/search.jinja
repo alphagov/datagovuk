@@ -30,8 +30,8 @@
     <ul class="datagovuk-selected-filters" aria-label="Selected filters">
       {% for filter in selected_filters %}
         <li>
-          <a href="{{ filter.url }}" class="govuk-link datagovuk-link datagovuk-body-s datagovuk-selected-filters__pill">
-            {{- filter.group }}: {{ filter.label -}}
+          <a href="{{ filter.url }}" class="datagovuk-body-s datagovuk-selected-filters__pill">
+            {{- filter.label -}}
             <span class="govuk-visually-hidden">(remove filter)</span>
             <span class="datagovuk-selected-filters__remove" aria-hidden="true"></span>
           </a>
@@ -41,10 +41,11 @@
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
       {% for facet_group in facet_groups %}
         <div class="datagovuk-search-facets-group" data-facet-group>
-          <h3 class="govuk-body datagovuk-body-s">{{ facet_group.label }}</h3>
+          {% if facet_group.label %}
+            <h3 class="govuk-body datagovuk-body-s datagovuk-search-facets-group__heading">{{ facet_group.label }}</h3>
+          {% endif %}
           {% if facet_group.facets | length > 4 %}
             {# Hidden until facet-search.js reveals it, so there is no dead input without JavaScript #}
             {% set search_id = "facets-search-" ~ facet_group.key %}
@@ -63,7 +64,9 @@
             </div>
           {% endif %}
           {% set rest_id = "facets-rest-" ~ facet_group.key %}
-          <div class="datagovuk-search-facets-wrapper" role="group" aria-label="{{ facet_group.label }}">
+          <div class="datagovuk-search-facets-wrapper"
+               role="group"
+               {% if facet_group.label %}aria-label="{{ facet_group.label }}"{% endif %}>
             <ul class="datagovuk-search-facets">
               {% for facet in facet_group.facets[:4] %}{{ facet_item(facet) }}{% endfor %}
             </ul>
@@ -120,7 +123,7 @@
                   <a href="{{ url('collections:collection_page', kwargs={'collection_name': doc.collection, 'collection_page_name': doc.slug}) }}"
                      class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.title }}</a>
                 </h2>
-                <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.description | truncate(200) }}</div>
+                <div class="govuk-body datagovuk-body-s datagovuk-!-colour-grey">{{ doc.description | truncate(200) }}</div>
               </li>
             {% endfor %}
           </ul>
@@ -134,15 +137,15 @@
                   <a href="{{ url('search:dataset', kwargs={'slug': doc.slug}) }}"
                      class="govuk-link datagovuk-link datagovuk-link--secondary">{{ doc.title }}</a>
                 </h2>
-                <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
+                <div class="datagovuk-search-results__item-row govuk-body datagovuk-body-s">
                   <div class="datagovuk-search-results__item-label">Publisher</div>
                   <div class="datagovuk-search-results__item-value">{{ doc.organisations[0].name }}</div>
                 </div>
-                <div class="datagovuk-search-results__item-row govuk-body datagovuk-body">
+                <div class="datagovuk-search-results__item-row govuk-body datagovuk-body-s">
                   <div class="datagovuk-search-results__item-label">Updated</div>
                   <div class="datagovuk-search-results__item-value">{{ doc.updated_at.date() |date("j F Y") }}</div>
                 </div>
-                <div class="govuk-body datagovuk-body datagovuk-!-colour-grey">{{ doc.description | truncate(200) }}</div>
+                <div class="govuk-body datagovuk-body-s datagovuk-!-colour-grey">{{ doc.description | truncate(200) }}</div>
               </li>
             {% endfor %}
           </ul>
