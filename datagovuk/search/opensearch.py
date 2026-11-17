@@ -161,7 +161,7 @@ def search_collections(query):
     return response, documents
 
 
-def search_directory(query, start=0, rows=20):
+def search_directory(query, start=0, rows=20, sort="best"):
     client = get_opensearch_client()
     if query and query.strip():
         search_clause = {
@@ -179,19 +179,20 @@ def search_directory(query, start=0, rows=20):
     else:
         search_clause = {"match_all": {}}
 
-    response = client.search(
-        index=settings.OPENSEARCH_DATASETS_INDEX,
-        body={
-            "query": {
-                "bool": {
-                    "must": [search_clause],
-                },
+    body = {
+        "query": {
+            "bool": {
+                "must": [search_clause],
             },
-            "from": start,
-            "size": rows,
-            "track_total_hits": True,
         },
-    )
+        "from": start,
+        "size": rows,
+        "track_total_hits": True,
+    }
+    if sort == "recent":
+        # Tie-break on slug so pages are stable when datasets share an updated_at
+        body["sort"] = [{"updated_at": {"order": "desc"}}, {"slug": {"order": "asc"}}]
+    response = client.search(index=settings.OPENSEARCH_DATASETS_INDEX, body=body)
     documents = [Dataset(**hit["_source"]) for hit in response["hits"]["hits"]]
     return response, documents
 

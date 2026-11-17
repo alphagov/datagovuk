@@ -122,6 +122,10 @@ def _build_facet_groups(params):
     return facet_groups
 
 
+SORT_OPTIONS = {"best": "Most relevant", "recent": "Most recent"}
+DEFAULT_SORT = "best"
+
+
 class SearchView(GETFormView, PaginationMixin):
     template_name = "search/search.jinja"
     form_class = SearchForm
@@ -134,10 +138,12 @@ class SearchView(GETFormView, PaginationMixin):
         query = form.cleaned_data["query"]
 
         page = self._get_page()
+        sort = self._get_sort()
         directory_results, directory_docs = search_directory(
             query,
             start=(page - 1) * self.rows_per_page,
             rows=self.rows_per_page,
+            sort=sort,
         )
         total = directory_results["hits"]["total"]["value"]
         last_page = max(1, math.ceil(min(total, self.max_result_window) / self.rows_per_page))
@@ -152,6 +158,7 @@ class SearchView(GETFormView, PaginationMixin):
             form=form,
             query=query,
             page=page,
+            sort=sort,
             directory_results=directory_results,
             directory_docs=directory_docs,
             collection_results=collection_results,
@@ -167,6 +174,16 @@ class SearchView(GETFormView, PaginationMixin):
             context["search_query"] = kwargs["query"]
             facet_groups = _build_facet_groups(self.request.GET.dict())
             context["facet_groups"] = facet_groups
+            context["sort"] = kwargs["sort"]
+            context["sort_options"] = [{"value": value, "text": text} for value, text in SORT_OPTIONS.items()]
+            # Everything in the current search except sort (which the select supplies) and page (changing the sort
+            # returns to the first page)
+            context["hidden_params"] = [
+                (key, value)
+                for key, values in self.request.GET.lists()
+                if key not in {"sort", "page"}
+                for value in values
+            ]
             context["selected_filters"] = [
                 {"group": group["label"], "label": facet["label"], "url": facet["url"]}
                 for group in facet_groups
@@ -179,6 +196,12 @@ class SearchView(GETFormView, PaginationMixin):
                 total_results=min(kwargs["directory_results"]["hits"]["total"]["value"], self.max_result_window),
             )
         return context
+
+    def _get_sort(self):
+        # Without a query every dataset matches equally, so relevance means nothing: default to most recent
+        default = DEFAULT_SORT if self.request.GET.get("query", "").strip() else "recent"
+        sort = self.request.GET.get("sort", default)
+        return sort if sort in SORT_OPTIONS else default
 
     def _get_page(self):
         try:

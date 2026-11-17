@@ -94,6 +94,66 @@ class TestSearchView:
 
         assert response.context_data["pagination"]["page"] == 1
 
+    def test_get_without_sort_uses_best_match(self, client, search_url, opensearch_documents):
+        opensearch_documents([DatasetFactory(slug="rail-data")])
+
+        response = client.get(search_url, {"query": "rail"})
+
+        assert response.context_data["sort"] == "best"
+        assert [option["value"] for option in response.context_data["sort_options"]] == ["best", "recent"]
+
+    @pytest.mark.parametrize("query", ["", "   "])
+    def test_get_without_query_or_sort_uses_recent(self, client, search_url, opensearch_documents, query):
+        opensearch_documents([DatasetFactory(slug="rail-data")])
+
+        response = client.get(search_url, {"query": query})
+
+        assert response.context_data["sort"] == "recent"
+
+    def test_get_without_query_with_explicit_sort_keeps_it(self, client, search_url, opensearch_documents):
+        opensearch_documents([DatasetFactory(slug="rail-data")])
+
+        response = client.get(search_url, {"query": "", "sort": "best"})
+
+        assert response.context_data["sort"] == "best"
+
+    def test_get_with_invalid_sort_uses_best_match(self, client, search_url, opensearch_documents):
+        opensearch_documents([DatasetFactory(slug="rail-data")])
+
+        response = client.get(search_url, {"query": "rail", "sort": "nonsense"})
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.context_data["sort"] == "best"
+
+    def test_get_with_recent_sort_orders_by_updated_at_descending(self, client, search_url, opensearch_documents):
+        opensearch_documents(
+            [
+                DatasetFactory(slug="oldest", updated_at="2020-01-01T00:00:00Z"),
+                DatasetFactory(slug="newest", updated_at="2024-01-01T00:00:00Z"),
+                DatasetFactory(slug="middle", updated_at="2022-01-01T00:00:00Z"),
+            ],
+        )
+
+        response = client.get(search_url, {"query": "", "sort": "recent"})
+
+        assert response.context_data["sort"] == "recent"
+        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["newest", "middle", "oldest"]
+
+    def test_get_hidden_params_keep_query_and_filters_but_not_sort_or_page(
+        self,
+        client,
+        search_url,
+        opensearch_documents,
+    ):
+        opensearch_documents([DatasetFactory(slug="rail-data")])
+
+        response = client.get(
+            search_url,
+            {"query": "rail", "publisher": "ordnance-survey", "sort": "recent", "page": 1},
+        )
+
+        assert response.context_data["hidden_params"] == [("query", "rail"), ("publisher", "ordnance-survey")]
+
     def test_get_shows_collections_on_first_page_only(self, client, search_url, opensearch_documents):
         opensearch_documents(
             [DatasetFactory(title=f"Rail {n}") for n in range(25)]
