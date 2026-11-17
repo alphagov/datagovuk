@@ -88,6 +88,106 @@
   content: none;
 }
 
+// Where customisable selects are supported, style the sort select like .datagovuk-button--secondary. Elsewhere it stays
+// the native GOV.UK select. The double class beats .datagovuk-form-group .govuk-select, whatever the load order.
+@supports (appearance: base-select) {
+  .datagovuk-search__sort-by .datagovuk-search__sort-select {
+    &,
+    &::picker(select) {
+      appearance: base-select;
+    }
+
+    height: auto;
+    padding: 14px 18px;
+    border: 0;
+    border-radius: 20px;
+    background-color: $datagovuk-light-grey;
+    color: $datagovuk-black;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+
+    @media (min-width: $desktop-breakpoint) {
+      font-size: 22px;
+    }
+
+    &:hover {
+      background-color: $datagovuk-light-grey-hover;
+    }
+
+    // Same focus as .datagovuk-button. No box-shadow, or .govuk-select:focus adds a thick inset border.
+    &:focus {
+      box-shadow: none;
+      outline: 2px solid $datagovuk-dark-green;
+      background-color: $datagovuk-yellow;
+    }
+
+    // The same chevron as the header menu buttons, drawn with borders and flipped while open.
+    // The 8px box plus 2px borders is a 10px square. Rotated 45° the chevron runs from the arm tips at the square's
+    // centre down to its point 5√2 ≈ 7px below, so what is drawn is centred 3.5px below the square's centre. Lift it
+    // by that to centre it in the select (and drop it when flipped).
+    &::picker-icon {
+      content: "";
+      display: block;
+      align-self: center;
+      width: 8px;
+      height: 8px;
+      margin: 0 6px 0 10px;
+      border-right: 2px solid $datagovuk-black;
+      border-bottom: 2px solid $datagovuk-black;
+      transform: translateY(-2px) rotate(45deg);
+    }
+
+    &:open::picker-icon {
+      transform: translateY(3.5px) rotate(225deg);
+    }
+
+    // The dropdown matches the autocomplete menu
+    &::picker(select) {
+      margin-top: 10px;
+      padding: 0;
+      border: 2px solid $datagovuk-black;
+      border-radius: 20px;
+      background-color: $datagovuk-white;
+      overflow: hidden;
+    }
+
+    option {
+      padding: 10px 18px;
+      background-color: $datagovuk-white;
+      color: $datagovuk-black;
+      font-family: 'Inter', sans-serif;
+      font-size: 20px;
+
+      &:hover,
+      &:focus {
+        background-color: $datagovuk-light-grey;
+      }
+
+      &:checked {
+        font-weight: bold;
+      }
+
+      // The same tick as selected facets, shown by the browser on the selected option only
+      &::checkmark {
+        content: "";
+        flex-shrink: 0;
+        width: 7px;
+        height: 11px;
+        margin: 0 14px 0 3px; // the rotation overhangs the box, so the left margin keeps it clear of the edge
+        border-right: 3px solid $datagovuk-black;
+        border-bottom: 3px solid $datagovuk-black;
+        transform: translateY(-10%) rotate(45deg);
+      }
+    }
+  }
+}
+
+// The select submits on change with JavaScript, so the button is only for when it is unavailable
+.js-enabled .datagovuk-search__sort-submit {
+  display: none;
+}
+
 .datagovuk-search-results {
   padding-left: 0;
   list-style: none;

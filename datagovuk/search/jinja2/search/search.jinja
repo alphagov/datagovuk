@@ -114,12 +114,31 @@
         {% endif %}
         {% if directory_results.hits.total.value > 0 %}
           {% set total_results = directory_results.hits.total.value %}
-          <div class="govuk-body datagovuk-body datagovuk-search__results-count">
-            {% if pagination.first_result_in_page != 1 %}
-              {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ total_results|intcomma }} result{{ "s" if total_results > 1 else "" }}
-            {% else %}
-              {{ total_results|intcomma }} result{{ "s" if total_results > 1 else "" }}
-            {% endif %}
+          <div class="datagovuk-search__results-header">
+            <div class="govuk-body datagovuk-body datagovuk-search__results-count">
+              {% if pagination.first_result_in_page != 1 %}
+                {{ pagination.first_result_in_page|intcomma }} to {{ pagination.last_result_in_page|intcomma }} of {{ total_results|intcomma }} result{{ "s" if total_results > 1 else "" }}
+              {% else %}
+                {{ total_results|intcomma }} result{{ "s" if total_results > 1 else "" }}
+              {% endif %}
+            </div>
+            {# The current search is resubmitted with the new sort. Page is left out, so it returns to page 1 #}
+            {% for key, value in hidden_params %}<input type="hidden" name="{{ key }}" value="{{ value }}" />{% endfor %}
+            {{ govukSelect({
+                        "label": {"text": "Sort by"},
+                        "name": "sort",
+                        "id": "search-sort",
+                        "classes": "datagovuk-search__sort-select",
+                        "value": sort,
+                        "items": sort_options,
+                        "formGroup": {"classes": "datagovuk-form-group datagovuk-search__sort-by"},
+                        "attributes": {"data-sort-select": ""}
+                        }) }}
+            {# Only needed without JavaScript, hidden by .js-enabled #}
+            {{ govukButton({
+              "text": "Apply sort",
+              "classes": "datagovuk-button datagovuk-button--secondary datagovuk-search__sort-submit"
+            }) }}
           </div>
           <ul class="datagovuk-search-results">
             {% for doc in directory_docs %}
@@ -160,5 +179,6 @@
   {% compress js %}
     <script src="{{ static('javascripts/visibility-toggle.js') }}"></script>
     <script src="{{ static('javascripts/facet-search.js') }}"></script>
+    <script src="{{ static('javascripts/sort-select.js') }}"></script>
   {% endcompress %}
 {% endblock extra_js %}
