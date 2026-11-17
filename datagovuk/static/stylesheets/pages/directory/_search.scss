@@ -88,11 +88,6 @@
   content: none;
 }
 
-.datagovuk-search-filters-heading {
-  margin-top: 5px;
-  margin-bottom: 40px;
-}
-
 .datagovuk-search-results {
   padding-left: 0;
   list-style: none;
@@ -141,6 +136,12 @@
   &:last-of-type {
     border-bottom: none;
   }
+}
+
+.datagovuk-search-facets-group__heading {
+  text-transform: uppercase;
+  color: $datagovuk-grey;
+  letter-spacing: 0.05em;
 }
 
 // The gap spaces the items from each other but never after the last one, so the space above the "Show more" button
@@ -194,7 +195,7 @@
   padding-left: 20px;
   padding-right: 60px; // keeps text clear of the icon
   border-width: 1px;
-  border-radius: 999px;
+  border-radius: 10px;
   border-color: $datagovuk-mid-grey;
 }
 
@@ -215,14 +216,29 @@
   }
 }
 
-// The left padding leaves room for the selected tick, and keeps wrapped lines aligned with the first.
+// Flex puts the label on the left and the count on the right. The left padding leaves room for the selected tick, and
+// wrapped label lines stay aligned with the first.
 .datagovuk-search-facets__item {
   position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 15px;
   margin: 0; // overrides govuk-body's bottom margin
   padding: 5px 0 0 22px;
+
+  // display: flex would otherwise override the hidden attribute facet-search.js sets
+  &[hidden] {
+    display: none;
+  }
+}
+
+.datagovuk-search-facets__link {
+  text-decoration: none;
 }
 
 .datagovuk-search-facets__count {
+  flex-shrink: 0;
   color: $datagovuk-grey;
 }
 
@@ -265,19 +281,24 @@
   gap: 8px;
   padding: 5px 14px;
   border-radius: 999px;
-  background-color: $datagovuk-light-grey-hover;
-  color: $datagovuk-black;
+  background-color: $datagovuk-light-green;
+  color: $datagovuk-dark-green;
   text-decoration: none;
 
-  &:hover {
-    background-color: darken($datagovuk-light-grey-hover, 6%);
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: darken($datagovuk-light-green, 6%);
   }
 
-  // Same focus style as .datagovuk-button: the GOV.UK yellow background (from .govuk-link:focus) with a dark green
-  // outline, and no underline-style box-shadow.
-  &:focus:not(:active):not(:hover) {
-    box-shadow: none;
+  // Keyboard focus only (same outline as .datagovuk-button), so clicking with a mouse leaves nothing behind.
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
     outline: 2px solid $datagovuk-dark-green;
+    outline-offset: 2px;
   }
 }
 
