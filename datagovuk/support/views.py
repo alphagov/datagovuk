@@ -27,8 +27,7 @@ class SupportFormView(FormView):
         # respond as if the message was sent, so bots get no signal that they were caught.
         if request.POST.get("phonenumber"):
             logger.info("Support form submission discarded: spam trap field was filled in")
-            messages.success(request, "Your message was sent.")
-            return HttpResponseRedirect(self.get_success_url())
+            return self._success_response()
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -50,8 +49,7 @@ class SupportFormView(FormView):
 
         try:
             send_ticket_to_zendesk(message_body, requester_name, requester_email)
-            messages.success(self.request, "Your message was sent.")
-            return super().form_valid(form)
+            return self._success_response()
         except ZendeskError as e:
             capture_exception(e)
             messages.error(
@@ -59,3 +57,8 @@ class SupportFormView(FormView):
                 "Your message was not sent due to a service problem. Try again later.",
             )
         return self.form_invalid(form)
+
+    def _success_response(self):
+        # Shared by real submissions and the spam trap, so both get an identical response.
+        messages.success(self.request, "Your message was sent.")
+        return HttpResponseRedirect(self.get_success_url())
