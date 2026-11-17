@@ -164,7 +164,7 @@ class SearchView(GETFormView, PaginationMixin):
         context = super().get_context_data(**kwargs)
         if kwargs.get("query") is not None:
             context["search_made"] = True
-            context["search_query"] = query
+            context["search_query"] = kwargs["query"]
             facet_groups = _build_facet_groups(self.request.GET.dict())
             context["facet_groups"] = facet_groups
             context["selected_filters"] = [
