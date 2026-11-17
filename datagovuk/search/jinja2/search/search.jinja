@@ -39,8 +39,8 @@
       {% endfor %}
     </ul>
   {% endif %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-one-third">
+  <div class="govuk-grid-row datagovuk-grid-row">
+    <div class="govuk-grid-column-one-third datagovuk-grid-column">
       {% for facet_group in facet_groups %}
         <div class="datagovuk-search-facets-group" data-facet-group>
           {% if facet_group.label %}
@@ -94,7 +94,7 @@
       {% endfor %}
     </div>
 
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-two-thirds datagovuk-grid-column">
       {% if search_made %}
         {% if debug_show_facets %}
           {{ govukButton({
