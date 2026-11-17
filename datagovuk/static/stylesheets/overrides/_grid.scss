@@ -1,0 +1,14 @@
+// GOV.UK grid gutter is 30px (15px each side of a column). We use 48px (24px each side).
+// Apply alongside the GOV.UK classes: `govuk-grid-row datagovuk-grid-row` and
+// `govuk-grid-column-* datagovuk-grid-column`.
+// Tablet and up only: below that the page margin is 15px, so a larger negative row margin would overflow.
+@media (min-width: $desktop-breakpoint) {
+  .datagovuk-grid-row {
+    margin-right: -24px;
+    margin-left: -24px;
+  }
+
+  .datagovuk-grid-column {
+    padding: 0 24px;
+  }
+}
