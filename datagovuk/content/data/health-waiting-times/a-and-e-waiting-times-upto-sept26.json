@@ -2,7 +2,7 @@
  "title": "Patients waiting less than 4 hours in A&E (England)",
  "visualisation_type": "line",
  "source": "https: //www.england.nhs.uk/statistics/statistical-work-areas/ae-waiting-times-and-activity/",
- "download": "data/a-and-e-waiting-times-upto-sept26.csv",
+ "download": "a-and-e-waiting-times-upto-sept26.csv",
  "publisher": "NHS England",
  "visualisation_suffix": "%",
  "series": [
