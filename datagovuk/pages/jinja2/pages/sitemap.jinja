@@ -1,0 +1,28 @@
+{% extends "base.jinja" %}
+
+{% set page_title = "Sitemap" %}
+
+{% block main %}
+  <div class="govuk-width-container datagovuk-width-container govuk-!-margin-top-9">
+    <h1 class="govuk-heading-xl datagovuk-heading-xl">Sitemap</h1>
+    {% for section in sitemap_sections %}
+      <h2 class="govuk-heading-l datagovuk-heading-l">
+        {% if section.url %}
+          <a class="govuk-link datagovuk-link" href="{{ section.url }}">{{ section.title }}</a>
+        {% else %}
+          {{ section.title }}
+        {% endif %}
+      </h2>
+      {% for group in section.groups %}
+        {% if group.title %}<h3 class="govuk-heading-m datagovuk-heading-m">{{ group.title }}</h3>{% endif %}
+        <ul class="govuk-list datagovuk-list">
+          {% for item in group["items"] if item.title %}
+            <li class="govuk-!-margin-bottom-2">
+              <a class="govuk-link datagovuk-link" href="{{ item.url }}">{{ item.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% endblock main %}
