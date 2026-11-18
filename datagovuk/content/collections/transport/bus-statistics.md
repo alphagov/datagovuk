@@ -1,14 +1,38 @@
 ---
 title: Bus statistics
+
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/bus-statistics-data-tables
     link-text: Bus statistics
 api:
 dataset:
-page-last-updated: "2026-06-15"
+
+page-last-reviewed: "2026-06-15"
+
 visualisation-data: bus-statistics/bus-statistics.json
-contact:
-status: for-publication
+
+formats:
+  - ods
+  - xls
+
+access-methods:
+  - download
+
+topic: transport
+
+organisations:
+  - slug: department-for-transport
+
+nations:
+  - england
+  - wales
+  - scotland
+
+keywords:
+  - bus fares
+  - local bus passenger journeys
+  - concessionary travel
+
 ---
 
 Get data and statistics about the local bus sector in England, Scotland and Wales. The data includes:

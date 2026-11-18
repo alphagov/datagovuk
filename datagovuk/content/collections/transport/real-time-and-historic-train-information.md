@@ -1,14 +1,35 @@
 ---
 title: Real-time and historic train information
+
 websites:
 api:
   - url: https://www.nationalrail.co.uk/developers/darwin-data-feeds
     link-text: "Train information APIs"
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+  - api
+
+topic: transport
+
+organisations:
+
+nations:
+  - england
+  - wales
+  - scotland
+
+keywords:
+  - darwin
+  - real-time trains
+  - train performance
+
 ---
 
 Get information from Darwin – the official train-running information engine for England, Scotland and Wales, run by National Rail. The data is available via API and provides real-time arrival and departure predictions, platform numbers, delay estimates, schedule changes and cancellations.

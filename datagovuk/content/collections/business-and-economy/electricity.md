@@ -1,14 +1,41 @@
 ---
 title: Electricity
+
 websites:
   - url: https://www.gov.uk/government/collections/electricity-statistics
     link-text: Electricity statistics
 api:
 dataset:
-page-last-updated: "2026-07-07"
+
+page-last-reviewed: "2026-07-07"
+
 visualisation-data: electricity-generation/electricity-generation-1996-2024.json
-contact:
-status: for-publication
+
+formats:
+  - pdf
+  - xlsx
+
+access-methods:
+  - download
+
+topic: business-and-economy
+
+organisations:
+  - slug: department-for-energy-security-and-net-zero
+  - slug: department-for-business-energy-and-industrial-strategy
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - electricity statistics
+  - electricity generation
+  - power station capacity
+  - fuel use
+
 ---
 
 Get statistical data on the UK’s electricity sector covering generation, fuel use, supply, consumption and power station capacity. The statistics examine trends in the UK’s electricity sector with monthly, quarterly and annual views. You can also access a historical electricity dataset covering 1920 to 2024.

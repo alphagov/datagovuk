@@ -1,5 +1,6 @@
 ---
 title: Food hygiene ratings
+
 websites:
   - url: https://ratings.food.gov.uk/
     link-text: Food hygiene ratings
@@ -7,10 +8,30 @@ api:
   - url: https://api.ratings.food.gov.uk/Help
     link-text: Food hygiene rating API
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - xml
+  - json
+
+access-methods:
+  - api
+
+topic: health
+
+organisations:
+  - slug: food-standards-agency
+
+nations:
+
+keywords:
+  - food businesses
+  - inspections
+  - restaurants
+
 ---
 
 Use the Food Standards Agency website to find a food business’s hygiene rating by entering the business name or address. Businesses include restaurants, pubs, cafés, takeaways, hotels and other places where consumers eat, as well as supermarkets and other food shops.

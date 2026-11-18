@@ -1,5 +1,6 @@
 ---
 title: Early years development review
+
 websites:
   - link-text: Early years development - England
     url: https://www.gov.uk/government/collections/child-and-maternal-health-statistics#child-development-outcomes-at-2-to-2-and-a-half-years
@@ -9,10 +10,31 @@ websites:
     url: https://www.opendata.nhs.scot/group/early-child-development
 api:
 dataset:
-page-last-updated: "2026-06-03"
+
+page-last-reviewed: "2026-06-03"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - xls
+  - pdf
+
+access-methods:
+  - download
+
+topic: health
+
+organisations:
+
+nations:
+  - england
+  - scotland
+
+keywords:
+  - child development
+  - ages and stages questionnaire
+  - health visitor review
+
 ---
 
 Explore analysis of early years child development.

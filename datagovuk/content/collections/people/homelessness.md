@@ -1,14 +1,36 @@
 ---
 title: Homelessness
+
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-homelessness
     link-text: Homelessness
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - ods
+  - xlsx
+
+access-methods:
+  - download
+
+topic: society
+
+organisations:
+  - slug: department-for-communities-and-local-government
+
+nations:
+  - england
+
+keywords:
+  - statutory homelessness
+  - local authority
+  - households
+
 ---
 
 Get the latest data on homelessness in England in ODS or XLSX format. The data is provided by the Ministry of Housing, Communities and Local Government and includes:

@@ -1,5 +1,6 @@
 ---
 title: Property price paid
+
 websites:
   - url: https://landregistry.data.gov.uk/app/ppd
     link-text: Search the property price paid dataset
@@ -7,10 +8,30 @@ api:
 dataset:
   url: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
   link-text: Download the price paid dataset
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+  - download
+
+topic: business-and-economy
+
+organisations:
+  - slug: land-registry
+
+nations:
+  - england
+  - wales
+
+keywords:
+  - property transactions
+  - house sales
+  - land registry
+
 ---
 
 Property price paid data is a comprehensive record of residential property transactions in England and Wales, as recorded by HM Land Registry. The data includes the sale price, date of transfer, property type (detached, semi-detached, terraced, flat/maisonette, or other), tenure (freehold or leasehold), and whether the property is a new build. Find properties by searching by any combination of these characteristics.

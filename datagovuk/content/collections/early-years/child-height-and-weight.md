@@ -1,5 +1,6 @@
 ---
 title: Child height and weight
+
 websites:
   - link-text: Child height and weight statistics 2024/25 - England
     url: https://fingertips.phe.org.uk/static-reports/obesity-physical-activity-nutrition/national-child-measurement-programme-2024-2025-academic-year.html
@@ -17,10 +18,35 @@ websites:
     url: https://www.publichealth.hscni.net/publications?keys=statistical+profile+of+children%27s+health
 api:
 dataset:
-page-last-updated: "2026-06-03"
+
+page-last-reviewed: "2026-06-03"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - pdf
+  - xlsx
+
+access-methods:
+  - download
+
+topic: health
+
+organisations:
+  - slug: nhs-digital
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - national child measurement programme
+  - childhood obesity
+  - child measurement programme
+
 ---
 
 Explore statistics and analysis on child height and weight across age, sex, deprivation, ethnicity and geographic areas.
