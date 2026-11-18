@@ -1,5 +1,6 @@
 ---
 title: Planning data
+
 websites:
   - url: https://www.planning.data.gov.uk
     link-text: Planning and housing data
@@ -9,10 +10,32 @@ api:
 dataset:
   url: https://www.planning.data.gov.uk/dataset/
   link-text: Planning data datasets
-page-last-updated: "2026-06-16"
+
+page-last-reviewed: "2026-06-16"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - json
+
+access-methods:
+  - api
+  - map-layer
+  - download
+
+topic: towns-and-cities
+
+organisations:
+  - slug: department-for-communities-and-local-government
+
+nations:
+  - england
+
+keywords:
+  - housing data
+  - brownfield site
+  - conservation area
+
 ---
 
 Find land and housing data in England to inform planning and housing decisions. Built by the Ministry of Housing, Communities and Local Government, the Planning Data platform collects data from various datasets grouped by geography, category, legal instrument, document, organisation, policy, metric and timetable.

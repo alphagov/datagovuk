@@ -1,5 +1,6 @@
 ---
 title: Early years health indicators
+
 websites:
   - link-text: Fingertips health trends - England
     url: https://fingertips.phe.org.uk/static-reports/health-trends-in-england/England/overview.html
@@ -15,10 +16,35 @@ websites:
     url: https://www.health-ni.gov.uk/articles/health-review-statistics-pre-school-children
 api:
 dataset:
-page-last-updated: "2026-06-03"
+
+page-last-reviewed: "2026-06-03"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - json
+  - pdf
+  - xlsx
+
+access-methods:
+  - download
+  - api
+
+topic: health
+
+organisations:
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - fingertips
+  - child obesity
+
 ---
 
 Explore general health trends, search by specific health indicators you're interested in and explore pre-defined public health topics.

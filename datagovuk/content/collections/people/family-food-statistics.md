@@ -1,5 +1,6 @@
 ---
 title: Family food statistics
+
 websites:
   - url: https://www.gov.uk/government/collections/family-food-statistics
     link-text: Family Food (2011 to present)
@@ -9,10 +10,37 @@ api:
 dataset:
   url: https://www.gov.uk/government/statistics/family-food-open-data
   link-text: Family Food (1974 to 2000) dataset
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - html
+  - pdf
+  - csv
+  - xls
+  - ods
+
+access-methods:
+  - download
+
+topic: society
+
+organisations:
+  - slug: department-for-environment-food-and-rural-affairs
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - food and drink purchases
+  - nutrient intakes
+  - household expenditure
+
 ---
 
 Get annual statistics about food and drink purchases in the UK, including detailed information on purchased quantities, expenditure and nutrient intakes since 2011. The data covers both household and eating out food and drink. The statistics come from ‘Family Food’, an annual publication by the Department for Environment, Food and Rural Affairs that uses data collected from a sample of UK households.

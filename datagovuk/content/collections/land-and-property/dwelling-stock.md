@@ -1,14 +1,35 @@
 ---
 title: Dwelling stock (including vacancies)
+
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-dwelling-stock-including-vacants
     link-text: Dwelling stock
 api:
 dataset:
-page-last-updated: "2026-11-09"
+
+page-last-reviewed: "2026-11-09"
+
 visualisation-data: "dwelling-stock/dwelling-stock-2009-2025-private-public.json"
-contact:
-status: for-publication
+
+formats:
+  - ods
+
+access-methods:
+  - download
+
+topic: towns-and-cities
+
+organisations:
+  - slug: department-for-communities-and-local-government
+
+nations:
+  - england
+
+keywords:
+  - vacant dwellings
+  - tenure
+  - housing
+
 ---
 
 Dwelling stock represents the total number of residential properties in a given area. The Ministry of Housing, Communities and Local Government publishes various data for England in ODS format. The data includes the number of dwellings by tenure and district in England since 2009, and local authority dwelling stock by English district from 1979.

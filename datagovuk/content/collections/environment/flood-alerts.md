@@ -1,5 +1,6 @@
 ---
 title: Flood alerts
+
 websites:
   - url: https://check-for-flooding.service.gov.uk/alerts-and-warnings
     link-text: Flood alerts
@@ -7,10 +8,29 @@ websites:
     link-text: Historic flood warnings
 api:
 dataset:
-page-last-updated: "2026-09-24"
+
+page-last-reviewed: "2026-09-24"
+
 visualisation-data: flood-alerts/flood-alerts-2011-2025.json
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+  - map-layer
+
+topic: environment
+
+organisations:
+  - slug: department-for-environment-food-and-rural-affairs
+
+nations:
+  - england
+
+keywords:
+  - flood warnings
+  - flooding
+  - historic flood warnings
+
 ---
 
 Use the Check for flooding service to see flood alerts and warnings by searching for a town, city or postcode in England, or view a map of flood alert areas. You can also view lists of places where flooding is currently expected or possible, which are updated every 24 hours.

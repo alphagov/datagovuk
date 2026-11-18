@@ -1,14 +1,35 @@
 ---
 title: Rents, lettings and tenancies
+
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-rents-lettings-and-tenancies
     link-text: Rents, lettings and tenancies
 api:
 dataset:
-page-last-updated: "2026-07-30"
+
+page-last-reviewed: "2026-07-30"
+
 visualisation-data: "rents/rents-201011-to-202425.json"
-contact:
-status: for-publication
+
+formats:
+  - ods
+  - xlsx
+
+access-methods:
+  - download
+
+topic: towns-and-cities
+
+organisations:
+  - slug: department-for-communities-and-local-government
+
+nations:
+  - england
+
+keywords:
+  - evictions
+  - waiting lists
+
 ---
 
 Get the latest data for England from the Ministry of Housing, Communities and Local Government. There are datasets in ODS format for:

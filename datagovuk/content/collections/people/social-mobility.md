@@ -1,14 +1,35 @@
 ---
 title: Social mobility
+
 websites:
   - url: https://social-mobility.data.gov.uk/
     link-text: Social mobility
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data: social-mobility/unemployment-by-socio-ecomomic-background.json
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+
+topic: society
+
+organisations:
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - promising prospects
+  - childhood conditions
+  - labour market opportunities
+
 ---
 
 Find social mobility data for an area of the UK by entering a postcode or selecting one of 205 regions. The result page has data on 4 measures of social mobility:

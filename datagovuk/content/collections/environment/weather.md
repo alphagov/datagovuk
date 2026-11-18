@@ -1,5 +1,6 @@
 ---
 title: Weather
+
 websites:
   - url: https://www.metoffice.gov.uk
     link-text: Weather forecasts
@@ -9,10 +10,33 @@ api:
 dataset:
   url: https://climate-themetoffice.hub.arcgis.com
   link-text: Met Office Climate Data Portal
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data: weather/uk-mean-temperature.json
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+  - api
+  - download
+
+topic: environment
+
+organisations:
+  - slug: met-office
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - forecasts
+  - climate data
+  - met office
+
 ---
 
 Find a forecast for anywhere in the UK. Search by place or postcode on the Met Office website. Results include hourly forecasts, temperature, wind, humidity, visibility, chance of rain, UV, air pollution, sunrise and sunset. You can also apply filters, view local weather maps and check the last 3 days’ weather.

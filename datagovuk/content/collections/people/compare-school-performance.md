@@ -1,5 +1,6 @@
 ---
 title: Compare school performance
+
 websites:
   - url: https://www.compare-school-performance.service.gov.uk/
     link-text: Compare school performance
@@ -7,10 +8,31 @@ api:
 dataset:
   url: https://www.compare-school-performance.service.gov.uk/download-data
   link-text: Download school performance data
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - xls
+
+access-methods:
+  - download
+
+topic: education
+
+organisations:
+  - slug: department-for-education
+
+nations:
+  - england
+
+keywords:
+  - schools
+  - pupil absence
+  - multi-academy trusts
+
 ---
 
 Compare the performance of schools, colleges and multi-academy trusts in England. Find one or more schools by entering a name, location, local authority or parliamentary constituency. Each result includes the school’s details such as address and headteacher, the performance of pupils at the school and pupil absence data.

@@ -1,5 +1,6 @@
 ---
 title: NHS England waiting times
+
 websites:
   - url: https://www.england.nhs.uk/statistics/statistical-work-areas/ae-waiting-times-and-activity/
     link-text: NHS England A&E waiting times
@@ -15,10 +16,28 @@ api:
 dataset:
   url: https://www.england.nhs.uk/statistics/statistical-work-areas/rtt-waiting-times/wlmds/
   link-text: NHS England Waiting List Minimum Dataset (WLMDS)
-page-last-updated: "2026-11-19"
+
+page-last-reviewed: "2026-11-19"
+
 visualisation-data: "health-waiting-times/a-and-e-waiting-times-upto-sept26.json"
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+
+topic: health
+
+organisations:
+  - slug: nhs-england
+
+nations:
+
+keywords:
+  - referral to treatment
+  - a&e
+  - ambulance response
+  - cancer waiting times
+
 ---
 
 Find waiting times data from NHS England.
