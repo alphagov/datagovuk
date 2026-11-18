@@ -40,58 +40,66 @@
     </ul>
   {% endif %}
   <div class="govuk-grid-row datagovuk-grid-row">
-    <div class="govuk-grid-column-one-third datagovuk-grid-column">
-      {% for facet_group in facet_groups %}
-        <div class="datagovuk-search-facets-group" data-facet-group>
-          {% if facet_group.label %}
-            <h3 class="govuk-body datagovuk-body-s datagovuk-search-facets-group__heading">{{ facet_group.label }}</h3>
-          {% endif %}
-          {% if facet_group.facets | length > 4 %}
-            {# Hidden until facet-search.js reveals it, so there is no dead input without JavaScript #}
-            {% set search_id = "facets-search-" ~ facet_group.key %}
-            <div class="datagovuk-facet-search" data-facet-search hidden>
-              <label class="govuk-visually-hidden" for="{{ search_id }}">Search {{ facet_group.label }}</label>
-              <input type="search"
-                     id="{{ search_id }}"
-                     class="govuk-input datagovuk-facet-search__input"
-                     placeholder="Search"
-                     autocomplete="off"
-                     spellcheck="false" />
-              <p class="govuk-body datagovuk-body-s datagovuk-facet-search__empty" data-facet-search-empty hidden>
-                No matching {{ facet_group.label | lower }}
-              </p>
-              <p class="govuk-visually-hidden" role="status" data-facet-search-live></p>
-            </div>
-          {% endif %}
-          {% set rest_id = "facets-rest-" ~ facet_group.key %}
-          <div class="datagovuk-search-facets-wrapper"
-               role="group"
-               {% if facet_group.label %}aria-label="{{ facet_group.label }}"{% endif %}>
-            <ul class="datagovuk-search-facets">
-              {% for facet in facet_group.facets[:4] %}{{ facet_item(facet) }}{% endfor %}
-            </ul>
+    <div class="govuk-grid-column-one-third datagovuk-grid-column datagovuk-search-filters" data-subnav>
+      {# Shown and wired up by subnav.js, on mobile only. Without JavaScript the filters are always visible #}
+      <button type="button"
+              class="govuk-button datagovuk-button datagovuk-subnav__button datagovuk-search-filters__button"
+              data-subnav-button
+              aria-controls="datagovuk-search-filters-panel"
+              aria-expanded="true">Filters</button>
+      <div id="datagovuk-search-filters-panel" class="datagovuk-search-filters__panel" data-subnav-panel>
+        {% for facet_group in facet_groups %}
+          <div class="datagovuk-search-facets-group" data-facet-group>
+            {% if facet_group.label %}
+              <h3 class="govuk-body datagovuk-body-s datagovuk-search-facets-group__heading">{{ facet_group.label }}</h3>
+            {% endif %}
             {% if facet_group.facets | length > 4 %}
-              {# The toggle sets display: block on this div, so the list inside keeps its own display: flex #}
-              <div id="{{ rest_id }}">
-                <ul class="datagovuk-search-facets">
-                  {% for facet in facet_group.facets[4:] %}{{ facet_item(facet) }}{% endfor %}
-                </ul>
+              {# Hidden until facet-search.js reveals it, so there is no dead input without JavaScript #}
+              {% set search_id = "facets-search-" ~ facet_group.key %}
+              <div class="datagovuk-facet-search" data-facet-search hidden>
+                <label class="govuk-visually-hidden" for="{{ search_id }}">Search {{ facet_group.label }}</label>
+                <input type="search"
+                       id="{{ search_id }}"
+                       class="govuk-input datagovuk-facet-search__input"
+                       placeholder="Search"
+                       autocomplete="off"
+                       spellcheck="false" />
+                <p class="govuk-body datagovuk-body-s datagovuk-facet-search__empty" data-facet-search-empty hidden>
+                  No matching {{ facet_group.label | lower }}
+                </p>
+                <p class="govuk-visually-hidden" role="status" data-facet-search-live></p>
               </div>
             {% endif %}
+            {% set rest_id = "facets-rest-" ~ facet_group.key %}
+            <div class="datagovuk-search-facets-wrapper"
+                 role="group"
+                 {% if facet_group.label %}aria-label="{{ facet_group.label }}"{% endif %}>
+              <ul class="datagovuk-search-facets">
+                {% for facet in facet_group.facets[:4] %}{{ facet_item(facet) }}{% endfor %}
+              </ul>
+              {% if facet_group.facets | length > 4 %}
+                {# The toggle sets display: block on this div, so the list inside keeps its own display: flex #}
+                <div id="{{ rest_id }}">
+                  <ul class="datagovuk-search-facets">
+                    {% for facet in facet_group.facets[4:] %}{{ facet_item(facet) }}{% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+            </div>
+            {% if facet_group.facets | length > 4 %}
+              {{ govukButton({
+                            "text": "Show more",
+                            "type": "button",
+                            "classes": "datagovuk-button datagovuk-button--secondary datagovuk-body-s datagovuk-search-facets__toggle datagovuk-visibility-toggle",
+                            "attributes": {
+                            "aria-controls": rest_id,
+                            "data-hide-text": "Show less"
+                            }
+                            }) }}
+            {% endif %}
           </div>
-          {% if facet_group.facets | length > 4 %}
-            {{ govukButton({
-                        "text": "Show more",
-                        "type": "button",
-                        "classes": "datagovuk-button datagovuk-button--secondary datagovuk-body-s datagovuk-search-facets__toggle datagovuk-visibility-toggle",
-                        "attributes": {
-                        "aria-controls": rest_id,
-                        "data-hide-text": "Show less"
-                        }
-                        }) }}
-          {% endif %}
-        </div>
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
 
     <div class="govuk-grid-column-two-thirds datagovuk-grid-column">
@@ -151,5 +159,6 @@
   {% compress js %}
     <script src="{{ static('javascripts/visibility-toggle.js') }}"></script>
     <script src="{{ static('javascripts/facet-search.js') }}"></script>
+    <script src="{{ static('javascripts/subnav.js') }}"></script>
   {% endcompress %}
 {% endblock extra_js %}

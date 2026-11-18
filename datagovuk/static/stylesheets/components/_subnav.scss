@@ -1,0 +1,47 @@
+// The button that shows and hides a panel on mobile (subnav.js), used by the search filters. Hidden without
+// JavaScript, when the panel is always visible, and on desktop, where the panel is too.
+.datagovuk-subnav__button {
+  display: none;
+  color: $datagovuk-black;
+  background: $datagovuk-light-grey;
+  border: none;
+  padding: 22px 0;
+
+  &:hover {
+    color: $datagovuk-black;
+    background: $datagovuk-light-grey;
+  }
+
+  &:focus,
+  &:focus:not(:active):not(:hover) {
+    color: $datagovuk-black;
+    background: $datagovuk-light-grey;
+    outline: 2px solid $datagovuk-black;
+    box-shadow: none;
+  }
+
+  &::after {
+    transform: translateY(-35%) rotate(45deg) scale(1);
+    content: "";
+    display: inline-block;
+    height: 8px;
+    width: 8px;
+    border-bottom: 2px solid $datagovuk-black;
+    border-right: 2px solid $datagovuk-black;
+    margin: 0 10px;
+  }
+
+  &[aria-expanded="true"]::after {
+    transform: translateY(1px) rotate(225deg) scale(1);
+  }
+}
+
+.js-enabled .datagovuk-subnav__button {
+  display: block;
+}
+
+@media (min-width: $desktop-breakpoint) {
+  .js-enabled .datagovuk-subnav__button {
+    display: none;
+  }
+}
