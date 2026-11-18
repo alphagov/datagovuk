@@ -6,7 +6,7 @@
 
 {% set header_end %}
   <div class="datagovuk-directory-header">
-    <div class="govuk-width-container datagovuk-width-container datagovuk-directory-header__inner">
+    <nav class="govuk-width-container datagovuk-width-container datagovuk-directory-header__inner" aria-label="Directory">
       <div class="datagovuk-directory-header__logo">
         {# djlint:off #}
       <{{ directory_heading_level }} class="govuk-!-margin-bottom-0 govuk-heading-m datagovuk-heading-m">
@@ -30,7 +30,7 @@
           <a href="{{ url('support:support-form') }}" class="govuk-link datagovuk-link datagovuk-menu__item-link">Support</a>
         </div>
       </div>
-    </div>
+    </nav>
   </div>
 {% endset %}
 
