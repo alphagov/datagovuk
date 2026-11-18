@@ -8,39 +8,51 @@ from datagovuk.core.views import GETFormView
 from .forms import SearchForm
 from .opensearch import get_directory_document_by_slug, search_collections, search_directory
 
-# TODO: temporary mock until the backend returns real facet data. Remove MOCK_FACET_GROUPS, _mock_facet_groups and
-# _build_facet_groups' use of them, and build facet groups from the OpenSearch aggregations instead.
-MOCK_FACET_GROUPS = {
-    "publisher": {
+# TODO: temporary mock until the backend returns real facet data. Remove everything down to _build_facet_groups, and
+# build facet groups of the same shape from the OpenSearch aggregations instead.
+#
+# A facet group is {"key", "label", "facets"}, a facet is {"value", "label", "count"}. A facet sets the group's key to
+# its value in the query string, unless it has its own "param". These must be parameters the directory search accepts.
+
+
+def _facets(rows):
+    return [{"value": value, "label": label, "count": count} for value, label, count in rows]
+
+
+MOCK_FACET_GROUPS = [
+    {
+        "key": "publisher",
         "label": "Publisher",
-        "facets": [
-            ("ordnance-survey", "Ordnance Survey", 120),
-            ("environment-agency", "Environment Agency", 87),
-            ("office-for-national-statistics", "Office for National Statistics", 54),
-            ("department-for-transport", "Department for Transport", 31),
-        ],
+        "facets": _facets(
+            [
+                ("ordnance-survey", "Ordnance Survey", 120),
+                ("environment-agency", "Environment Agency", 87),
+                ("office-for-national-statistics", "Office for National Statistics", 54),
+                ("department-for-transport", "Department for Transport", 31),
+            ],
+        ),
     },
-    "topic": {
+    {
+        "key": "topic",
         "label": "Topic",
-        "facets": [
-            ("environment", "Environment", 140),
-            ("transport", "Transport", 62),
-            ("health", "Health", 12),
-        ],
+        "facets": _facets(
+            [("environment", "Environment", 140), ("transport", "Transport", 62), ("health", "Health", 12)],
+        ),
     },
-    "format": {
+    {
+        "key": "format",
         "label": "Format",
-        "facets": [("CSV", "CSV", 340), ("GeoJSON", "GeoJSON", 45), ("PDF", "PDF", 9)],
+        "facets": _facets([("CSV", "CSV", 340), ("GeoJSON", "GeoJSON", 45), ("PDF", "PDF", 9)]),
     },
-    # Each facet has a fourth item, the query parameter it sets, as they are not one choice from a list.
-    "other": {
+    {
+        "key": "other",
         "label": "More filters",
         "facets": [
-            ("ogl", "Open Government Licence", 410, "licence"),
-            ("true", "Datasets with no links", 23, "include_no_links"),
+            {"param": "open_government_licence_only", "value": "on", "label": "Open Government Licence", "count": 410},
+            {"param": "include_datasets_with_no_links", "value": "on", "label": "Datasets with no links", "count": 23},
         ],
     },
-}
+]
 
 # Real publisher names for the ?mock_facets=long state. Several are long, which is the point.
 MOCK_LONG_PUBLISHERS = [
@@ -82,42 +94,41 @@ def _mock_facet_groups(variant):
     Return mock facet group data. Use ?mock_facets=empty or ?mock_facets=long to see other states.
     """
     if variant == "empty":
-        return {}
+        return []
     if variant == "long":
-        facet_groups = {key: {**group, "facets": list(group["facets"])} for key, group in MOCK_FACET_GROUPS.items()}
-        facet_groups["publisher"]["facets"] = [
-            (slug, label, 400 - 12 * n) for n, (slug, label) in enumerate(MOCK_LONG_PUBLISHERS)
+        long_publishers = _facets([(slug, label, 400 - 12 * n) for n, (slug, label) in enumerate(MOCK_LONG_PUBLISHERS)])
+        return [
+            {**group, "facets": long_publishers} if group["key"] == "publisher" else group
+            for group in MOCK_FACET_GROUPS
         ]
-        return facet_groups
     return MOCK_FACET_GROUPS
 
 
 def _build_facet_groups(params):
     """
-    Turn facet group data into links. Selecting a facet links to the current search with that facet set,
-    a selected facet links to the current search with it removed. Changing a filter resets the page.
+    Add a selected state and a link to each facet. Selecting a facet links to the current search with its parameter
+    set, a selected facet links to the current search with it removed. Changing a filter resets the page.
     """
-    mock_groups = _mock_facet_groups(params.get("mock_facets"))
     base = {key: value for key, value in params.items() if key != "page"}
     facet_groups = []
-    for key, group in mock_groups.items():
+    for group in _mock_facet_groups(params.get("mock_facets")):
         facets = []
-        for value, label, count, *extra in group["facets"]:
-            param = extra[0] if extra else key
-            is_selected = params.get(param) == value
+        for facet in group["facets"]:
+            param = facet.get("param", group["key"])
+            is_selected = params.get(param) == facet["value"]
             link_params = {k: v for k, v in base.items() if k != param}
             if not is_selected:
-                link_params[param] = value
+                link_params[param] = facet["value"]
             facets.append(
                 {
-                    "label": label,
-                    "count": count,
+                    "label": facet["label"],
+                    "count": facet["count"],
                     "selected": is_selected,
                     "url": f"?{urlencode(link_params)}" if link_params else "?",
                 },
             )
-        facets.sort(key=lambda facet: not facet["selected"])  # stable, so the selected facet moves to the top
-        facet_groups.append({"key": key, "label": group["label"], "facets": facets})
+        facets.sort(key=lambda facet: not facet["selected"])  # stable, so selected facets move to the top
+        facet_groups.append({**group, "facets": facets})
     return facet_groups
 
 
