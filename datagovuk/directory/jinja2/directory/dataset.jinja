@@ -125,9 +125,9 @@
       </section>
     </div>
     <div class="govuk-grid-column-one-third">
-      <section class="datagovuk-more-from-publisher">
+      <aside class="datagovuk-more-from-publisher" aria-labelledby="datagovuk-more-from-publisher-heading">
         <div class="datagovuk-card">
-          <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
+          <h2 id="datagovuk-more-from-publisher-heading" class="govuk-body datagovuk-body">More from this publisher</h2>
           <p class="govuk-body datagovuk-body">
             {# djlint:off #}
             <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.title }}"
@@ -137,7 +137,7 @@
             {# djlint:on #}
           </p>
         </div>
-      </section>
+      </aside>
     </div>
   </div>
   <div class="govuk-grid-row">
@@ -263,9 +263,9 @@
         </section>
       {% endif %}
 
-      <section class="datagovuk-more-from-publisher--mobile">
+      <aside class="datagovuk-more-from-publisher--mobile" aria-labelledby="datagovuk-more-from-publisher-mobile-heading">
         <div class="datagovuk-card govuk-!-margin-bottom-8">
-          <h2 class="govuk-body datagovuk-body">More from this publisher</h2>
+          <h2 id="datagovuk-more-from-publisher-mobile-heading" class="govuk-body datagovuk-body">More from this publisher</h2>
           <p class="govuk-body datagovuk-body">
             {# djlint:off #}
                 <a href="{{ url("directory:search") ~ "?publisher=" ~ doc.organisation.title }}"
@@ -275,7 +275,7 @@
             {# djlint:on #}
           </p>
         </div>
-      </section>
+      </aside>
       {% if not doc.harvested %}
         <section class="edit">
           <h2 class="govuk-heading-m datagovuk-heading-m">Edit this dataset</h2>

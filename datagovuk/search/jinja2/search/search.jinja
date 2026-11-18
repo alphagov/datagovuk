@@ -12,12 +12,13 @@
 
 {% block search_main %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-one-third">
-      <h2 class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
+    <section class="govuk-grid-column-one-third" aria-labelledby="datagovuk-search-filters-heading">
+      <h2 id="datagovuk-search-filters-heading"
+          class="govuk-body datagovuk-body datagovuk-body-uppercase datagovuk-search-filters-heading">Filters</h2>
       {{ govukButton({"text": "Apply filters", "classes": "datagovuk-button datagovuk-button--secondary"}) }}
-    </div>
+    </section>
 
-    <div class="govuk-grid-column-two-thirds">
+    <section class="govuk-grid-column-two-thirds" aria-label="Search results">
       {% if search_made %}
         {% if collection_results.hits.total.value > 0 %}
           <h2 class="govuk-heading-m datagovuk-heading-m">Curated data</h2>
@@ -66,6 +67,6 @@
           </ul>
         {% endif %}
       {% endif %}
-    </div>
+    </section>
   </div>
 {% endblock search_main %}
