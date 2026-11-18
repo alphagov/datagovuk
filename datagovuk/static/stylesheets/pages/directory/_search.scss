@@ -340,3 +340,16 @@
     transform: rotate(-45deg);
   }
 }
+
+// Mobile: the filters are hidden behind a button (subnav.js). Without JavaScript the filters are always visible.
+.datagovuk-search-filters__button {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+@media (min-width: $desktop-breakpoint) {
+  // Always visible on desktop, even though the script hides the panel for mobile
+  .datagovuk-search-filters__panel[hidden] {
+    display: block;
+  }
+}
