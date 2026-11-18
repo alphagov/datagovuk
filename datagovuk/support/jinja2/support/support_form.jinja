@@ -95,6 +95,11 @@
                   "errorMessage": {"text": form.email.errors|join} if form.email.errors else None,
                   "formGroup": {"classes": "datagovuk-form-group"},
                 }) }}
+
+                <div class="datagovuk-phonenumber" aria-hidden="true">
+                  <label for="phonenumber"></label>
+                  <input type="text" tabindex="-1" autocomplete="off" id="phonenumber" name="phonenumber" />
+                </div>
               </fieldset>
             </div>
 
