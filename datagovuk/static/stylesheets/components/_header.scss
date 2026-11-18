@@ -17,7 +17,6 @@
 /* search-v2 feature flag: header with search box. Fold into the base styles and drop the body class when the flag is removed. */
 .datagovuk-feature-search-v2 {
     .datagovuk-header__search {
-        order: 2;
         width: 100%;
         padding-bottom: 17px;
 
