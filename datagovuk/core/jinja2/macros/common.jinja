@@ -53,10 +53,10 @@
 
     {# Desktop #}
     <div class="datagovuk-section-navigation__items-desktop">
+      <a href="#datagovuk-page-content"
+         class="govuk-skip-link datagovuk-skip-link datagovuk-section-navigation__skip-link"
+         data-module="govuk-skip-link">Skip to page content</a>
       <ul class="govuk-list">
-        <li class="datagovuk-section-navigation__skip-link-item">
-          <a href="#datagovuk-page-content" class="govuk-skip-link datagovuk-skip-link" data-module="govuk-skip-link">Skip to page content</a>
-        </li>
         {% for item in items %}{{ section_navigation_item(item) }}{% endfor %}
       </ul>
       {{ extra_section_nav | safe }}
