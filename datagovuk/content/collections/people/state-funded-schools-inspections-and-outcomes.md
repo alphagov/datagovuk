@@ -1,14 +1,33 @@
 ---
 title: State-funded schools inspections and outcomes
+
 websites:
   - url: https://www.gov.uk/government/collections/maintained-schools-and-academies-inspections-and-outcomes-official-statistics
     link-text: State-funded schools statistics
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+
+topic: education
+
+organisations:
+  - slug: office-for-standards-in-education-childrens-services-and-skills
+
+nations:
+  - england
+
+keywords:
+  - school inspections
+  - ofsted
+  - academies
+
 ---
 
 Get Ofsted’s official statistics on the inspections and outcomes of state-funded schools and academies in England since 2019. The statistics are published twice a year and include:

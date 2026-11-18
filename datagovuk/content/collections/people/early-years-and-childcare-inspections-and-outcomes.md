@@ -1,14 +1,35 @@
 ---
 title: Early years and childcare inspections and outcomes
+
 websites:
   - url: https://www.gov.uk/government/collections/early-years-and-childcare-statistics
     link-text: Childcare provider statistics
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - xlsx
+  - ods
+
+access-methods:
+  - download
+
+topic: education
+
+organisations:
+  - slug: office-for-standards-in-education-childrens-services-and-skills
+
+nations:
+  - england
+
+keywords:
+  - childcare providers
+  - ofsted
+
 ---
 
 Get Ofsted’s official statistics on the inspections and outcomes of childcare providers in England since 2019. The statistics are published twice a year and include:

@@ -1,5 +1,6 @@
 ---
 title: Deprivation
+
 websites:
   - url: https://deprivation.communities.gov.uk/
     link-text: Deprivation in England
@@ -11,10 +12,39 @@ websites:
     link-text: Deprivation in Northern Ireland
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - xlsx
+  - csv
+  - json
+
+access-methods:
+  - download
+  - map-layer
+
+topic: society
+
+organisations:
+  - slug: department-for-communities-and-local-government
+  - slug: scottish-government
+  - slug: welsh-government
+  - slug: northern-ireland-statistics-and-research-agency
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - index of multiple deprivation
+  - income deprivation
+  - neighbourhoods
+
 ---
 
 Get statistics on deprivation in England. Deprivation refers to people’s unmet needs, a lack of access to opportunities and resources which we might expect in our society. Enter a postcode or use an interactive map to explore deprivation patterns and compare areas, including by local authority district or smaller neighbourhoods.

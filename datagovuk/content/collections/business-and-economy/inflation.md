@@ -1,14 +1,36 @@
 ---
 title: Inflation
+
 websites:
   - url: https://www.ons.gov.uk/economy/inflationandpriceindices
     link-text: Inflation and price indices
 api:
 dataset:
-page-last-updated: "2026-03-25"
+
+page-last-reviewed: "2026-03-25"
+
 visualisation-data: inflation/inflation.json
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - xls
+
+access-methods:
+  - download
+
+topic: business-and-economy
+
+organisations:
+  - slug: office-for-national-statistics
+
+nations:
+
+keywords:
+  - price indices
+  - consumer price inflation
+  - house price index
+  - producer price inflation
+
 ---
 
 Explore various datasets about inflation and price indices published by the Office for National Statistics (ONS). You can download the data as a PNG, CSV or XLS file.

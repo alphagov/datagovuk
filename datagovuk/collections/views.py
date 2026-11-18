@@ -52,7 +52,7 @@ class CollectionPageView(RenderedMarkdownView):
         collection = get_collections_by_slug().get(self.kwargs["collection_name"])
         context["collection_title"] = collection.get("title") if collection else None
         context["collection_slug"] = self.kwargs["collection_name"]
-        context["page_last_updated"] = date.strptime(context["page_last_updated"], "%Y-%m-%d")
+        context["page_last_reviewed"] = date.strptime(context["page_last_reviewed"], "%Y-%m-%d")
         collection_pages, selected_index = self.collection_pages
         if selected_index > 0:
             context["previous_page"] = collection_pages[selected_index - 1]
@@ -143,7 +143,7 @@ class CollectionsAPIView(View):
                     "title": topic.get("title"),
                     "description": topic.content,
                     "keywords": topic.get("keywords", []),
-                    "page-last-updated": topic.get("page-last-updated", ""),
+                    "page-last-updated": topic.get("page-last-reviewed", ""),
                 },
             )
         return topics

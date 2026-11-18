@@ -1,14 +1,36 @@
 ---
 title: Driving tests
+
 websites:
   - url: https://www.gov.uk/government/collections/driving-tests-and-instructors-statistics
     link-text: Driving tests
 api:
 dataset:
-page-last-updated: "2026-06-15"
+
+page-last-reviewed: "2026-06-15"
+
 visualisation-data: "driving-tests/car-driving-tests-2007-2025-fys.json"
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+  - download
+
+topic: transport
+
+organisations:
+  - slug: driver-and-vehicle-standards-agency
+
+nations:
+  - england
+  - wales
+  - scotland
+
+keywords:
+  - theory tests
+  - pass rates
+  - driving instructors
+
 ---
 
 Explore a data collection about the number of theory and driving tests taken in England, Scotland and Wales, as well as pass rates and the number of instructors. View or download quarterly analysis reports for every year since 2015-16.

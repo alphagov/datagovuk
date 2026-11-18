@@ -1,14 +1,38 @@
 ---
 title: Police recorded crime and outcomes
+
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/police-recorded-crime-and-outcomes-open-data-tables
     link-text: Crime and outcomes data
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - ods
+  - xlsx
+
+access-methods:
+  - download
+
+topic: crime-and-justice
+
+organisations:
+  - slug: home-office
+
+nations:
+  - england
+  - wales
+
+keywords:
+  - crime outcomes
+  - hate crime
+  - knife offences
+  - fraud
+
 ---
 
 Explore a range of datasets published by the Home Office that relate to crime in England and Wales, including:

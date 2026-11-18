@@ -1,14 +1,35 @@
 ---
 title: Fire statistics
+
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/fire-statistics-data-tables
     link-text: Fire statistics
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - xlsx
+
+access-methods:
+  - download
+
+topic: society
+
+organisations:
+  - slug: department-for-communities-and-local-government
+
+nations:
+
+keywords:
+  - fire incidents
+  - false alarms
+  - casualties
+  - response times
+
 ---
 
 View a wide range of datasets covering fires, false alarms and other incidents attended by fire crews. You can download each dataset as an XLSX file. This data is collected by the Ministry of Housing, Communities and Local Government.

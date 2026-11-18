@@ -1,5 +1,6 @@
 ---
 title: Pupil attendance
+
 websites:
   - url: https://www.gov.uk/government/collections/statistics-pupil-absence
     link-text: Pupil attendance and absence
@@ -9,10 +10,31 @@ api:
   - url: https://api.education.gov.uk/statistics/docs
     link-text:  Education statistics explorer (API)
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - zip
+
+access-methods:
+  - download
+  - api
+
+topic: education
+
+organisations:
+  - slug: department-for-education
+
+nations:
+  - england
+
+keywords:
+  - pupil absence
+  - persistent absence
+  - state-funded schools
+
 ---
 
 Explore a collection of statistics on pupil attendance and pupil absence in state-funded primary, secondary and special schools in England. For the latest pupil attendance data, the Department of Education (DfE) publishes a fortnightly release. There are also yearly statistics for the autumn term, autumn and spring term combined, and full year since 2009-10.
