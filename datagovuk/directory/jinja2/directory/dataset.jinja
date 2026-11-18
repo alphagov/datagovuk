@@ -17,7 +17,7 @@
     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
       {% if resource.is_csv %}
         <a href="{{ url('directory:preview', kwargs={'dataset_uuid': doc.uuid, 'name': doc.name, 'datafile_uuid': resource.uuid}) }}"
-           class="govuk-link datagovuk-link">Preview</a>
+           class="govuk-link datagovuk-link">Preview<span class="govuk-visually-hidden">{{ " " ~ (resource.name or "Data") }}</span></a>
       {% else %}
         –
       {% endif %}
