@@ -5,12 +5,10 @@ websites:
     link-text: Sample link
 api:
 dataset:
-page-last-updated: "2026-03-24"
+page-last-reviewed: "2026-03-24"
 visualisation-data:
-contact:
 keywords:
   - test-keyword
-status: for-publication
 ---
 
 Some existing markdown.

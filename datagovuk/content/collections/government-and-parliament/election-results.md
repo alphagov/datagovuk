@@ -1,14 +1,37 @@
 ---
 title: Election results
+
 websites:
   - url: https://electionresults.parliament.uk/
     link-text: Election results
 api:
 dataset:
-page-last-updated: "2026-04-08"
+
+page-last-reviewed: "2026-04-08"
+
 visualisation-data: election-results/vote-share.json
-contact:
-status: for-publication
+
+formats:
+  - csv
+
+access-methods:
+  - download
+
+topic: government
+
+organisations:
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - general election
+  - by-election
+  - vote share
+
 ---
 
 Get UK Parliament election results for every general election and by-election since 2010. Results include the number of constituencies contested and won, and the number of votes and vote share for every party that stood a candidate in each election.

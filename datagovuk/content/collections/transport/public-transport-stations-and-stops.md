@@ -1,5 +1,6 @@
 ---
 title: Public transport stations and stops
+
 websites:
   - url: https://beta-naptan.dft.gov.uk
     link-text: NaPTAN and related data
@@ -9,10 +10,38 @@ api:
 dataset:
     url: https://www.gov.uk/government/publications/national-public-transport-access-node-schema
     link-text: Guides and schemas
-page-last-updated: "2026-07-30"
+
+page-last-reviewed: "2026-07-30"
+
 visualisation-data:
-contact: Naptan.NPTG@dft.gov.uk
-status: for-publication
+
+formats:
+  - csv
+  - xml
+
+access-methods:
+  - download
+  - api
+
+topic: transport
+
+organisations:
+  - slug: department-for-transport
+    contact:
+        - Naptan.NPTG@dft.gov.uk
+
+nations:
+  - england
+  - wales
+  - scotland
+
+keywords:
+  - naptan
+  - bus stops
+  - rail stations
+  - public transport access nodes
+  - nptg
+
 ---
 
 Find the location of public transport access points in England, Scotland and Wales - bus stops, rail stations, tram stops, ferry terminals, airports, automated people mover stops, metro and underground stations.

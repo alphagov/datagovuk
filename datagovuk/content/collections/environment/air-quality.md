@@ -1,5 +1,6 @@
 ---
 title: Air quality
+
 websites:
   - url: https://check-air-quality.service.gov.uk/
     link-text: Check air quality
@@ -7,10 +8,33 @@ websites:
     link-text: Get air pollution data
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data: air-quality/air-quality.json
-contact:
-status: for-publication
+
+formats:
+  - csv
+
+access-methods:
+  - download
+
+topic: environment
+
+organisations:
+  - slug: department-for-environment-food-and-rural-affairs
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - air pollution
+  - pollutants
+  - monitoring stations
+
 ---
 
 Use GOV.UK’s check air quality service to check the air quality in an area of the UK. Enter a postcode to find an area and view predicted air pollution levels for the next 5 days. You can also view the levels of air pollutants that are monitored nearby, with readings measured every hour. The page for an area includes information on how to reduce your exposure to air pollution, and how air pollutants can affect your health.

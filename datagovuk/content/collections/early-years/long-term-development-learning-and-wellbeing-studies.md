@@ -1,5 +1,6 @@
 ---
 title: Long-term development, learning and wellbeing studies
+
 websites:
   - url: https://children2020s.ipsos.com/
     link-text: Children of the 2020s study website - England
@@ -13,10 +14,34 @@ websites:
     link-text: Growing up in Scotland on the UK Data service - Scotland
 api:
 dataset:
-page-last-updated: "2026-06-03"
+
+page-last-reviewed: "2026-06-03"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - pdf
+  - html
+
+access-methods:
+  - download
+
+topic: education
+
+organisations:
+  - slug: department-for-education
+  - slug: office-for-national-statistics
+
+nations:
+  - england
+  - scotland
+
+keywords:
+  - children of the 2020s
+  - growing up in scotland
+  - longitudinal study
+  - child development
+
 ---
 
 Explore research on what it is like for children to grow up today.

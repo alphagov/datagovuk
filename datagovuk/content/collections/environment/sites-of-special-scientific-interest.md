@@ -1,5 +1,6 @@
 ---
 title: Sites of Special Scientific Interest
+
 websites:
   - url: https://naturalengland-defra.opendata.arcgis.com/datasets/Defra::sites-of-special-scientific-interest-england/about
     link-text: Sites of Special Scientific Interest (England)
@@ -7,10 +8,36 @@ api:
 dataset:
   url: https://naturalengland-defra.opendata.arcgis.com/datasets/Defra::sites-of-special-scientific-interest-england/explore
   link-text: "Sites of Special Scientific Interest (England): map"
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - shp
+  - geojson
+  - kml
+  - xlsx
+  - gpkg
+
+access-methods:
+  - download
+  - map-layer
+
+topic: environment
+
+organisations:
+  - slug: natural-england
+
+nations:
+  - england
+
+keywords:
+  - sssi
+  - designated areas
+  - habitats
+
 ---
 
 Find Sites of Special Scientific Interest (SSSIs) in England. SSSIs are designated areas recognised for their ecological or geological significance. They support many characteristic, rare and endangered species, habitats and natural features.

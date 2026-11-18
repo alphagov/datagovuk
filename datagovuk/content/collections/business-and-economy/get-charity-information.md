@@ -1,5 +1,6 @@
 ---
 title: Get charity information
+
 websites:
   - url: https://register-of-charities.charitycommission.gov.uk/en/charity-search
     link-text: Get charity information
@@ -7,10 +8,34 @@ api:
   - url: https://register-of-charities.charitycommission.gov.uk/en/documentation-on-the-api
     link-text: Charity Commission API
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - json
+  - txt
+
+access-methods:
+  - download
+  - api
+
+topic: society
+
+organisations:
+  - slug: charity-commission-for-england-and-wales
+
+nations:
+  - england
+  - wales
+
+keywords:
+  - charities
+  - charity register
+  - charity income
+  - trustees
+
 ---
 
 Find information about registered charities in England and Wales. Search the Charity Commission register by charity name, charity number, area, activities and classifications. Results include details of the charity’s income and expenditure, how it spends its money, the number of employees, trustees and volunteers, and a breakdown of employees with total benefits over £60,000.

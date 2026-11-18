@@ -1,5 +1,6 @@
 ---
 title: Education statistics
+
 websites:
   - url: https://explore-education-statistics.service.gov.uk/find-statistics?themeId=e6e31160-fe79-4556-f3a9-08d86094b9e8&sortBy=newest
     link-text: Early years statistics - England
@@ -13,10 +14,39 @@ websites:
     link-text: Education statistics - Northern Ireland
 api:
 dataset:
-page-last-updated: "2026-06-03"
+
+page-last-reviewed: "2026-06-03"
+
 visualisation-data: education-statistics/early-years-foundation-stage-profile-results.json
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - ods
+  - xlsx
+
+access-methods:
+  - download
+  - api
+
+topic: education
+
+organisations:
+  - slug: department-for-education
+  - slug: scottish-government
+  - slug: welsh-government
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - early years education
+  - early years foundation stage profile
+  - childcare and early years provider survey
+  - early learning and childcare
+
 ---
 
 Explore early years education statistics in England including:

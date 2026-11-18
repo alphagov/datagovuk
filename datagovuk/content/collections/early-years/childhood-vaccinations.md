@@ -1,5 +1,6 @@
 ---
 title: Childhood vaccinations
+
 websites:
   - link-text: UKHSA childhood vaccination dashboard
     url: https://ukhsa-dashboard.data.gov.uk/cover/childhood-vaccinations
@@ -17,10 +18,34 @@ websites:
     url: https://www.publichealth.hscni.net/publications/annual-immunisation-and-vaccine-preventable-diseases-reports
 api:
 dataset:
-page-last-updated: "2026-06-03"
+
+page-last-reviewed: "2026-06-03"
+
 visualisation-data: childhood-vaccinations/mmr2-coverage-by-nations.json
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - json
+
+access-methods:
+  - download
+
+topic: health
+
+organisations:
+  - slug: uk-health-security-agency
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - vaccination coverage
+  - cover programme
+  - immunisation
+
 ---
 
 Explore childhood vaccination coverage across the UK.
