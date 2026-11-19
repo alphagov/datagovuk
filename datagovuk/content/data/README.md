@@ -90,6 +90,16 @@ Copy into new .csv, convert numbers columns to 'number' type and remove trailing
 Divide numbers by 1 million and round to 2 decimal places.
 Rename date column to Financial Year, and remove the second year to keep the axis labels concise.
 
+### Dwelling stock
+Source: https://www.gov.uk/government/statistical-data-sets/live-tables-on-dwelling-stock-including-vacants
+Table: 100
+
+Make a new sheet. From each sheet (where each sheet is a year), copy the row for England into the new sheet.
+Create a year column and add the headings for the types of dwellings.
+Keep the columns for 'Year', 'Private sector', and 'Total'. Sum non-private sector dwellings into a new column,
+'Public sector and housing associations.
+Divide the dwelling values by millions.
+
 ### Electricity generation
 
 Source: https://assets.publishing.service.gov.uk/media/688a31dda11f859994409290/DUKES_5.6.xlsx
@@ -162,6 +172,16 @@ Export columns 'Financial year', 'Tests', and 'Fails' to .csv.
 Invert financial year to be most recent at the bottom.
 Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
 Remove the second year in finanial year to make the axis labels neater.
+
+### Population
+Source: [ONS](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland)
+File: UK population estimates 1838 to 2025 edition of this dataset .xlsx
+Sheet: Table 1
+
+Delete heading and save for the .csv.
+For the chart - in the Year column, remove the 'Mid-' prefix.
+Sort by year.
+Divide the population by a million and give to 2 decimal places.
 
 ### Rents
 Source: https://www.data.gov.uk/collections/land-and-property/rents-lettings-and-tenancies

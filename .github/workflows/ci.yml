@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v7.0.1
 
       - name: Set up Python
-        uses: actions/setup-python@v7.0.0
+        uses: actions/setup-python@v7.1.0
         with:
           python-version-file: '.python-version'
       - name: Run pre-commit
@@ -30,6 +30,10 @@ jobs:
 
   pytest-unit:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
 
     steps:
       - name: Checkout Code Repository
@@ -56,6 +60,10 @@ jobs:
 
   pytest-e2e:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
 
     steps:
       - name: Checkout Code Repository

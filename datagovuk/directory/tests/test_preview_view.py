@@ -45,7 +45,7 @@ def make_solr_doc(dataset_uuid=DATASET_UUID, resource_uuid=DATAFILE_UUID, resour
 
 
 def make_request(rf, dataset_uuid=DATASET_UUID, name=DATASET_NAME, datafile_uuid=DATAFILE_UUID):
-    url = f"/dataset/{dataset_uuid}/{name}/datafile/{datafile_uuid}/preview/"
+    url = f"/dataset/{dataset_uuid}/{name}/datafile/{datafile_uuid}/preview"
     request = rf.get(url)
     request.resolver_match = MagicMock()
     return request

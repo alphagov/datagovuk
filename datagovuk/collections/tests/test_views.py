@@ -222,6 +222,31 @@ class TestCollectionView:
         assert response.status_code == HTTPStatus.NOT_FOUND
 
 
+class TestCollectionsAPIView:
+    def test_api_route_returns_collections(self, client, settings):
+        settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT = "datagovuk/collections/tests/content/"
+
+        response = client.get(reverse("collections:collections_json"))
+
+        assert response.status_code == HTTPStatus.OK
+        assert response.json() == {
+            "collections": [
+                {
+                    "name": "sample-collection",
+                    "topics": [
+                        {
+                            "slug": "sample-page",
+                            "title": "Sample collection page",
+                            "description": "Some existing markdown.",
+                            "keywords": ["test-keyword"],
+                            "page-last-updated": "2026-03-24",
+                        },
+                    ],
+                },
+            ],
+        }
+
+
 class TestGovernmentCollectionRedirects:
     def test_collection_redirects_to_government_and_parliament(self, client):
         response = client.get("/collections/government")

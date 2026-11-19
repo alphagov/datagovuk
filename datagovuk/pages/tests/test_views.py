@@ -21,6 +21,7 @@ def test_home(client):
     response_content = response.content.decode()
     assert "National Data Library - The home of UK public data - data.gov.uk" in response_content
     assert "Test feature flag enabled" not in response_content
+    assert "/updates/2026/cleaning-up-data-gov-uk" in response_content
 
 
 def test_home_test_feature_flag_enabled(client, settings):
@@ -41,6 +42,18 @@ def test_about(client):
     assert response.status_code == HTTPStatus.OK
     assert "About - National Data Library" in response_content
     assert "About the National Data Library" in response_content
+    assert '<meta property="og:title" content="About" />' in response_content
+
+
+def test_help(client):
+    url = reverse("pages:help")
+    response = client.get(url)
+    response_content = response.content.decode()
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.headers["Cache-Control"] == "max-age=1800, public"
+    assert "Help" in response_content
+    assert "Test feature flag enabled" not in response_content
 
 
 def test_data_curation(client):
@@ -104,5 +117,5 @@ def test_roadmap(client):
     response_content = response.content.decode()
 
     assert response.status_code == HTTPStatus.OK
-    assert "Our plan for the National Data Library - National Data Library" in response_content
+    assert "The National Data Library roadmap - National Data Library" in response_content
     assert "National Data Library roadmap" in response_content

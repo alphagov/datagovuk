@@ -1,7 +1,10 @@
 import logging
 import re
+from functools import cache
 
 import sentry_sdk
+from django.contrib.staticfiles import finders
+from django.core.files.images import get_image_dimensions
 
 logger = logging.getLogger(__name__)
 
@@ -58,3 +61,18 @@ def is_numeric(value):
             re.VERBOSE,
         ).match(str(value)),
     )
+
+
+@cache
+def get_image_size(path):
+    """
+    Return the (width, height) of an image in the static folder, given its path relative to that folder.
+
+    Returns (None, None) for formats that can't be read (e.g. SVG). Raises ValueError if the file doesn't exist,
+    so that typos in content are caught early rather than producing a broken image.
+    """
+    absolute_path = finders.find(path)
+    if absolute_path is None:
+        error_message = f"Image not found in static files: {path}"
+        raise ValueError(error_message)
+    return get_image_dimensions(absolute_path)

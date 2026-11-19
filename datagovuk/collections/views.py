@@ -1,7 +1,9 @@
 from datetime import date
+from pathlib import Path
 
+import frontmatter
 from django.conf import settings
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, JsonResponse
 from django.urls import reverse
 from django.views.generic.base import RedirectView, View
 
@@ -108,3 +110,40 @@ class CollectionView(RedirectView):
                 "collection_page_name": collection_page_name,
             },
         )
+
+
+class CollectionsAPIView(View):
+    def get(self, request):
+        collections_path = Path(settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT)
+        collections = []
+        topics = []
+
+        for collection in sorted(collections_path.iterdir()):
+            collection_name = collection.name
+            topics = self.get_topics_from_collection(collection)
+            collections.append(
+                {
+                    "name": collection_name,
+                    "topics": topics,
+                },
+            )
+
+        return JsonResponse({"collections": collections})
+
+    def get_topics_from_collection(self, collection):
+        topics = []
+        for topic_markdown in sorted(collection.rglob("*.md")):
+            with topic_markdown.open() as f:
+                topic = frontmatter.load(f)
+
+            # TODO: Add 'keywords' to collection markdowns frontmatter
+            topics.append(
+                {
+                    "slug": topic_markdown.stem,
+                    "title": topic.get("title"),
+                    "description": topic.content,
+                    "keywords": topic.get("keywords", []),
+                    "page-last-updated": topic.get("page-last-updated", ""),
+                },
+            )
+        return topics
