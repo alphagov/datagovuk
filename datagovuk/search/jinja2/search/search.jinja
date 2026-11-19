@@ -19,6 +19,23 @@
 
     <div class="govuk-grid-column-two-thirds">
       {% if search_made %}
+        {% if debug_show_facets %}
+          {{ govukButton({
+            "text": "Show facets",
+            "type": "button",
+            "classes": "datagovuk-button datagovuk-button--secondary datagovuk-visibility-toggle govuk-!-margin-top-6",
+            "attributes": {
+              "aria-controls": "datagovuk-facets",
+              "data-hide-text": "Hide facets"
+            }
+          }) }}
+          <div id="datagovuk-facets">
+            <h2 class="govuk-heading-m datagovuk-heading-m">Facets (debug)</h2>
+            <pre>
+              {{ directory_facets|tojson(indent=2) }}
+            </pre>
+          </div>
+        {% endif %}
         {% if collection_results.hits.total.value > 0 %}
           <h2 class="govuk-heading-m datagovuk-heading-m">Curated data</h2>
           <p class="govuk-body datagovuk-body">Selected by the National Data Library team</p>
@@ -69,3 +86,9 @@
     </div>
   </div>
 {% endblock search_main %}
+
+{% block extra_js %}
+  {% compress js %}
+    <script src="{{ static('javascripts/visibility-toggle.js') }}"></script>
+  {% endcompress %}
+{% endblock extra_js %}
