@@ -6,17 +6,6 @@ on:
     paths-ignore: ['docs/**']
 
 jobs:
-  get-main-sha:
-    runs-on: ubuntu-latest
-    outputs:
-      main_sha: ${{ steps.fetch.outputs.sha }}
-    steps:
-      - name: Get tip of main SHA
-        id: fetch
-        run: |
-          MAIN_SHA=$(git ls-remote ${{ github.server_url }}/${{ github.repository }}.git refs/heads/main | awk '{print $1}')
-          echo "sha=$MAIN_SHA" >> "$GITHUB_OUTPUT"
-
   ci:
     uses: ./.github/workflows/ci.yml
     permissions:
@@ -33,7 +22,7 @@ jobs:
       - get-main-sha
     uses: ./.github/workflows/push-to-ecr.yml
     with:
-      image_sha: ${{ needs.get_main_sha.outputs.main_sha }}
+      image_sha: ${{ github.sha }}
 
   notify-slack-if-failure-on-main:
     runs-on: ubuntu-latest
