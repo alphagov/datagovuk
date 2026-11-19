@@ -1,4 +1,5 @@
 import json
+from dataclasses import dataclass
 from datetime import datetime
 
 import boto3
@@ -115,6 +116,21 @@ class Collection(BaseModel):
     updated_at: datetime
 
 
+@dataclass(frozen=True)
+class SearchResult:
+    response: dict
+    docs: list
+
+    @property
+    def total(self):
+        return self.response["hits"]["total"]["value"]
+
+
+@dataclass(frozen=True)
+class DirectorySearchResult(SearchResult):
+    facets: dict
+
+
 def get_aws_sigv4_auth():
     session = boto3.Session()
     credentials = session.get_credentials()
@@ -160,7 +176,7 @@ def search_collections(query):
         },
     )
     documents = [Collection(**hit["_source"]) for hit in response["hits"]["hits"]]
-    return response, documents
+    return SearchResult(response=response, docs=documents)
 
 
 class MultiTermsFacet(Facet):
@@ -269,7 +285,7 @@ def search_directory(query, filters=None):
     response = DirectorySearch(query, filters=facet_filters).execute()
     raw_response = response.to_dict()
     documents = [Dataset(**hit["_source"]) for hit in raw_response["hits"]["hits"]]
-    return raw_response, documents, _get_directory_facets(response)
+    return DirectorySearchResult(response=raw_response, docs=documents, facets=_get_directory_facets(response))
 
 
 def get_directory_document_by_slug(slug):

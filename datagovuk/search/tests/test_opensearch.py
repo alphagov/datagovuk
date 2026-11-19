@@ -179,8 +179,8 @@ def test_search_collections_matches_on_title(opensearch_documents):
         ],
     )
 
-    _, results = search_collections("rail")
-    assert _slugs(results) == ["in-title"]
+    result = search_collections("rail")
+    assert _slugs(result.docs) == ["in-title"]
 
 
 def test_search_collections_does_not_match_on_description(opensearch_documents):
@@ -188,25 +188,25 @@ def test_search_collections_does_not_match_on_description(opensearch_documents):
         [CollectionFactory(title="Bus routes", description="Includes rail replacement services")],
     )
 
-    _, results = search_collections("rail")
+    result = search_collections("rail")
 
-    assert results == []
+    assert result.docs == []
 
 
 def test_search_collections_matches_stemmed_title(opensearch_documents):
     opensearch_documents([CollectionFactory(slug="railway", title="Railway stations")])
 
-    _, results = search_collections("railways")
+    result = search_collections("railways")
 
-    assert _slugs(results) == ["railway"]
+    assert _slugs(result.docs) == ["railway"]
 
 
 def test_search_collections_with_padded_query_matches(opensearch_documents):
     opensearch_documents([CollectionFactory(slug="rail", title="Rail timetables")])
 
-    _, results = search_collections("  rail  ")
+    result = search_collections("  rail  ")
 
-    assert _slugs(results) == ["rail"]
+    assert _slugs(result.docs) == ["rail"]
 
 
 @pytest.mark.parametrize("query", [None, "", " ", " \t\n "])
@@ -218,28 +218,28 @@ def test_search_collections_with_blank_query_matches_all(query, opensearch_docum
         ],
     )
 
-    _, results = search_collections(query)
+    result = search_collections(query)
 
-    assert sorted(_slugs(results)) == ["first", "second"]
+    assert sorted(_slugs(result.docs)) == ["first", "second"]
 
 
 def test_search_collections_returns_raw_response_and_documents_in_hit_order(opensearch_documents):
     opensearch_documents([CollectionFactory(title=f"Rail collection {i}") for i in range(2)])
 
-    response, results = search_collections("rail")
+    result = search_collections("rail")
 
-    assert all(isinstance(result, Collection) for result in results)
-    assert _slugs(results) == [hit["_source"]["slug"] for hit in response["hits"]["hits"]]
-    assert len(results) == len(response["hits"]["hits"])
+    assert all(isinstance(doc, Collection) for doc in result.docs)
+    assert _slugs(result.docs) == [hit["_source"]["slug"] for hit in result.response["hits"]["hits"]]
+    assert len(result.docs) == len(result.response["hits"]["hits"])
 
 
 def test_search_collections_without_hits_returns_no_documents(opensearch_documents):
     opensearch_documents([CollectionFactory(title="Rail timetables")])
 
-    response, results = search_collections("nothing matches")
+    result = search_collections("nothing matches")
 
-    assert response["hits"]["total"]["value"] == 0
-    assert results == []
+    assert result.total == 0
+    assert result.docs == []
 
 
 def test_search_collections_with_invalid_document_raises(opensearch_documents):
@@ -257,18 +257,18 @@ def test_search_collections_only_returns_collection_documents(opensearch_documen
         ],
     )
 
-    _, results = search_collections("")
+    result = search_collections("")
 
-    assert _slugs(results) == ["from-collection"]
+    assert _slugs(result.docs) == ["from-collection"]
 
 
 def test_search_collections_limits_documents_but_not_total(opensearch_documents):
     opensearch_documents([CollectionFactory() for _ in range(COLLECTION_RESULTS + EXTRA_RESULTS)])
 
-    response, results = search_collections("")
+    result = search_collections("")
 
-    assert len(results) == COLLECTION_RESULTS
-    assert response["hits"]["total"]["value"] == COLLECTION_RESULTS + EXTRA_RESULTS
+    assert len(result.docs) == COLLECTION_RESULTS
+    assert result.total == COLLECTION_RESULTS + EXTRA_RESULTS
 
 
 def test_search_directory_matches_on_title_and_description(opensearch_documents):
@@ -280,9 +280,9 @@ def test_search_directory_matches_on_title_and_description(opensearch_documents)
         ],
     )
 
-    _, results, _ = search_directory("rail")
+    result = search_directory("rail")
 
-    assert sorted(_slugs(results)) == ["in-description", "in-title"]
+    assert sorted(_slugs(result.docs)) == ["in-description", "in-title"]
 
 
 def test_search_directory_ranks_title_matches_above_description_matches(opensearch_documents):
@@ -293,9 +293,9 @@ def test_search_directory_ranks_title_matches_above_description_matches(opensear
         ],
     )
 
-    _, results, _ = search_directory("rail")
+    result = search_directory("rail")
 
-    assert _slugs(results) == ["in-title", "in-description"]
+    assert _slugs(result.docs) == ["in-title", "in-description"]
 
 
 def test_search_directory_matches_stemmed_title_and_description(opensearch_documents):
@@ -306,17 +306,17 @@ def test_search_directory_matches_stemmed_title_and_description(opensearch_docum
         ],
     )
 
-    _, results, _ = search_directory("railways")
+    result = search_directory("railways")
 
-    assert sorted(_slugs(results)) == ["in-description", "in-title"]
+    assert sorted(_slugs(result.docs)) == ["in-description", "in-title"]
 
 
 def test_search_directory_with_padded_query_matches(opensearch_documents):
     opensearch_documents([DatasetFactory(slug="rail", title="Rail timetables")])
 
-    _, results, _ = search_directory("  rail  ")
+    result = search_directory("  rail  ")
 
-    assert _slugs(results) == ["rail"]
+    assert _slugs(result.docs) == ["rail"]
 
 
 @pytest.mark.parametrize("query", [None, "", " ", " \t\n "])
@@ -328,28 +328,28 @@ def test_search_directory_with_blank_query_matches_all(query, opensearch_documen
         ],
     )
 
-    _, results, _ = search_directory(query)
+    result = search_directory(query)
 
-    assert sorted(_slugs(results)) == ["first", "second"]
+    assert sorted(_slugs(result.docs)) == ["first", "second"]
 
 
 def test_search_directory_returns_raw_response_and_documents_in_hit_order(opensearch_documents):
     opensearch_documents([DatasetFactory(title=f"Rail dataset {i}") for i in range(2)])
 
-    response, results, _ = search_directory("rail")
+    result = search_directory("rail")
 
-    assert all(isinstance(result, Dataset) for result in results)
-    assert _slugs(results) == [hit["_source"]["slug"] for hit in response["hits"]["hits"]]
-    assert len(results) == len(response["hits"]["hits"])
+    assert all(isinstance(doc, Dataset) for doc in result.docs)
+    assert _slugs(result.docs) == [hit["_source"]["slug"] for hit in result.response["hits"]["hits"]]
+    assert len(result.docs) == len(result.response["hits"]["hits"])
 
 
 def test_search_directory_without_hits_returns_no_documents(opensearch_documents):
     opensearch_documents([DatasetFactory(title="Rail timetables")])
 
-    response, results, _ = search_directory("nothing matches")
+    result = search_directory("nothing matches")
 
-    assert response["hits"]["total"]["value"] == 0
-    assert results == []
+    assert result.total == 0
+    assert result.docs == []
 
 
 def test_search_directory_with_invalid_document_raises(opensearch_documents):
@@ -367,18 +367,18 @@ def test_search_directory_only_returns_ckan_documents(opensearch_documents):
         ],
     )
 
-    _, results, _ = search_directory("")
+    result = search_directory("")
 
-    assert _slugs(results) == ["from-ckan"]
+    assert _slugs(result.docs) == ["from-ckan"]
 
 
 def test_search_directory_limits_documents_but_not_total(opensearch_documents):
     opensearch_documents([DatasetFactory() for _ in range(DIRECTORY_RESULTS + EXTRA_RESULTS)])
 
-    response, results, _ = search_directory("")
+    result = search_directory("")
 
-    assert len(results) == DIRECTORY_RESULTS
-    assert response["hits"]["total"]["value"] == DIRECTORY_RESULTS + EXTRA_RESULTS
+    assert len(result.docs) == DIRECTORY_RESULTS
+    assert result.total == DIRECTORY_RESULTS + EXTRA_RESULTS
 
 
 @pytest.mark.parametrize(
@@ -397,9 +397,9 @@ def test_search_directory_without_filter_values_matches_all(filters, opensearch_
         ],
     )
 
-    _, results, _ = search_directory("", filters)
+    result = search_directory("", filters)
 
-    assert sorted(_slugs(results)) == ["first", "second"]
+    assert sorted(_slugs(result.docs)) == ["first", "second"]
 
 
 def test_search_directory_filters_by_topic(opensearch_documents):
@@ -411,9 +411,9 @@ def test_search_directory_filters_by_topic(opensearch_documents):
         ],
     )
 
-    _, results, _ = search_directory("", {"topic": "transport"})
+    result = search_directory("", {"topic": "transport"})
 
-    assert _slugs(results) == ["transport"]
+    assert _slugs(result.docs) == ["transport"]
 
 
 def test_search_directory_filters_by_publisher_on_any_organisation(opensearch_documents):
@@ -428,9 +428,9 @@ def test_search_directory_filters_by_publisher_on_any_organisation(opensearch_do
         ],
     )
 
-    _, results, _ = search_directory("", {"publisher": "wanted"})
+    result = search_directory("", {"publisher": "wanted"})
 
-    assert sorted(_slugs(results)) == ["first-publisher", "second-publisher"]
+    assert sorted(_slugs(result.docs)) == ["first-publisher", "second-publisher"]
 
 
 def test_search_directory_filters_by_format_on_any_resource(opensearch_documents):
@@ -443,9 +443,9 @@ def test_search_directory_filters_by_format_on_any_resource(opensearch_documents
         ],
     )
 
-    _, results, _ = search_directory("", {"format": "CSV"})
+    result = search_directory("", {"format": "CSV"})
 
-    assert sorted(_slugs(results)) == ["csv", "mixed"]
+    assert sorted(_slugs(result.docs)) == ["csv", "mixed"]
 
 
 def test_search_directory_filters_by_open_government_licence_only(opensearch_documents):
@@ -457,9 +457,9 @@ def test_search_directory_filters_by_open_government_licence_only(opensearch_doc
         ],
     )
 
-    _, results, _ = search_directory("", {"open_government_licence_only": True})
+    result = search_directory("", {"open_government_licence_only": True})
 
-    assert _slugs(results) == ["ogl"]
+    assert _slugs(result.docs) == ["ogl"]
 
 
 def test_search_directory_combines_filters(opensearch_documents):
@@ -471,9 +471,9 @@ def test_search_directory_combines_filters(opensearch_documents):
         ],
     )
 
-    _, results, _ = search_directory("", {"topic": "transport", "format": "CSV"})
+    result = search_directory("", {"topic": "transport", "format": "CSV"})
 
-    assert _slugs(results) == ["both"]
+    assert _slugs(result.docs) == ["both"]
 
 
 def test_search_directory_combines_query_and_filters(opensearch_documents):
@@ -485,9 +485,9 @@ def test_search_directory_combines_query_and_filters(opensearch_documents):
         ],
     )
 
-    _, results, _ = search_directory("rail", {"topic": "transport"})
+    result = search_directory("rail", {"topic": "transport"})
 
-    assert _slugs(results) == ["rail-transport"]
+    assert _slugs(result.docs) == ["rail-transport"]
 
 
 def test_search_directory_with_filters_total_excludes_filtered_documents(opensearch_documents):
@@ -496,18 +496,18 @@ def test_search_directory_with_filters_total_excludes_filtered_documents(opensea
         + [DatasetFactory(topic_slug="health") for _ in range(EXTRA_RESULTS)],
     )
 
-    response, results, _ = search_directory("", {"topic": "transport"})
+    result = search_directory("", {"topic": "transport"})
 
-    assert len(results) == FILTERED_RESULTS
-    assert response["hits"]["total"]["value"] == FILTERED_RESULTS
+    assert len(result.docs) == FILTERED_RESULTS
+    assert result.total == FILTERED_RESULTS
 
 
 def test_search_directory_ignores_filters_which_are_not_facets(opensearch_documents):
     opensearch_documents([DatasetFactory(slug="first"), DatasetFactory(slug="second")])
 
-    _, results, _ = search_directory("", {"include_datasets_with_no_links": True})
+    result = search_directory("", {"include_datasets_with_no_links": True})
 
-    assert sorted(_slugs(results)) == ["first", "second"]
+    assert sorted(_slugs(result.docs)) == ["first", "second"]
 
 
 def test_search_directory_returns_topic_facet_with_labels_and_counts(opensearch_documents):
@@ -520,9 +520,9 @@ def test_search_directory_returns_topic_facet_with_labels_and_counts(opensearch_
         ],
     )
 
-    _, _, facets = search_directory("")
+    result = search_directory("")
 
-    assert facets["topic"] == [
+    assert result.facets["topic"] == [
         {"value": "transport", "label": "Transport", "count": 2},
         {"value": "health", "label": "Health", "count": 1},
     ]
@@ -538,9 +538,9 @@ def test_search_directory_returns_publisher_facet_with_labels_and_counts(opensea
         ],
     )
 
-    _, _, facets = search_directory("")
+    result = search_directory("")
 
-    assert facets["publisher"] == [
+    assert result.facets["publisher"] == [
         {"value": "wanted", "label": "Wanted Publisher", "count": 2},
         {"value": "other", "label": "Other Publisher", "count": 1},
     ]
@@ -554,9 +554,9 @@ def test_search_directory_returns_format_facet_counting_datasets_not_resources(o
         ],
     )
 
-    _, _, facets = search_directory("")
+    result = search_directory("")
 
-    assert facets["format"] == [
+    assert result.facets["format"] == [
         {"value": "csv", "label": "csv", "count": 2},
         {"value": "pdf", "label": "pdf", "count": 1},
     ]
@@ -571,9 +571,9 @@ def test_search_directory_returns_open_government_licence_facet_count(opensearch
         ],
     )
 
-    _, _, facets = search_directory("")
+    result = search_directory("")
 
-    assert facets["open_government_licence_only"] == [
+    assert result.facets["open_government_licence_only"] == [
         {"value": "on", "label": "Open Government Licence", "count": 1},
     ]
 
@@ -586,9 +586,9 @@ def test_search_directory_facets_are_narrowed_by_query(opensearch_documents):
         ],
     )
 
-    _, _, facets = search_directory("rail")
+    result = search_directory("rail")
 
-    assert facets["topic"] == [{"value": "transport", "label": "Transport", "count": 1}]
+    assert result.facets["topic"] == [{"value": "transport", "label": "Transport", "count": 1}]
 
 
 def test_search_directory_with_filters_narrows_other_facets_but_not_its_own(opensearch_documents):
@@ -605,11 +605,11 @@ def test_search_directory_with_filters_narrows_other_facets_but_not_its_own(open
         ],
     )
 
-    _, _, facets = search_directory("", {"topic": "transport", "open_government_licence_only": True})
+    result = search_directory("", {"topic": "transport", "open_government_licence_only": True})
 
-    assert facets["topic"] == [{"value": "transport", "label": "Transport", "count": 1}]
-    assert facets["format"] == [{"value": "csv", "label": "csv", "count": 1}]
-    assert facets["open_government_licence_only"] == [
+    assert result.facets["topic"] == [{"value": "transport", "label": "Transport", "count": 1}]
+    assert result.facets["format"] == [{"value": "csv", "label": "csv", "count": 1}]
+    assert result.facets["open_government_licence_only"] == [
         {"value": "on", "label": "Open Government Licence", "count": 1},
     ]
 
@@ -622,14 +622,14 @@ def test_search_directory_with_topic_filter_keeps_other_topics_in_topic_facet(op
         ],
     )
 
-    _, results, facets = search_directory("", {"topic": "transport"})
+    result = search_directory("", {"topic": "transport"})
 
-    assert len(results) == 1
-    assert facets["topic"] == [
+    assert len(result.docs) == 1
+    assert result.facets["topic"] == [
         {"value": "health", "label": "Health", "count": 1},
         {"value": "transport", "label": "Transport", "count": 1},
     ]
-    assert facets["format"] == [{"value": "csv", "label": "csv", "count": 1}]
+    assert result.facets["format"] == [{"value": "csv", "label": "csv", "count": 1}]
 
 
 def test_get_directory_document_by_slug_found(opensearch_documents):
