@@ -2,7 +2,6 @@ from datetime import date
 from http import HTTPStatus
 
 import pytest
-from chartkick.django import LineChart
 from django.urls import reverse
 
 
@@ -36,7 +35,8 @@ class TestCollectionPageView:
         assert response.context_data["status"] == "for-publication"
         assert "the UK house price index" in response.context_data["content"]
         visualisation = response.context_data["visualisation"]
-        assert isinstance(visualisation["visualisation"], LineChart)
+        assert visualisation["type"] == "line"
+        assert set(visualisation["visualisation"]) == {"options", "table"}
         assert visualisation["title"] == "Average house price"
         assert visualisation["type"] == "line"
         assert response.context_data["slug"] == "uk-house-prices"

@@ -1,0 +1,7 @@
+// Use our focus colour on tabs. The tabs macro can't add a class to each tab, so this goes on the tabs component.
+.datagovuk-tabs .govuk-tabs__tab:focus {
+  background-color: $datagovuk-yellow;
+  box-shadow:
+    0 -2px $datagovuk-yellow,
+    0 4px $datagovuk-black;
+}

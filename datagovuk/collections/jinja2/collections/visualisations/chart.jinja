@@ -1,0 +1,37 @@
+{% from "govuk_frontend_jinja/components/tabs/macro.html" import govukTabs %}
+{% from "govuk_frontend_jinja/components/table/macro.html" import govukTable %}
+
+{% set chart = visualisation.visualisation %}
+
+{% set chart_panel %}
+  <div class="datagovuk-chart datagovuk-chart--{{ visualisation.type }}" data-datagovuk-chart="datagovuk-chart-options">
+    <p class="govuk-body datagovuk-body">The chart needs JavaScript. The chart data is in the table.</p>
+  </div>
+  <script type="application/json" id="datagovuk-chart-options">{{ chart.options | tojson }}</script>
+{% endset %}
+
+{% set table_panel %}
+  <div class="datagovuk-table-container" tabindex="0" role="region" aria-label="{{ visualisation.title }}">
+    {# djlint:off #}
+    {{ govukTable({
+      "caption": visualisation.title,
+      "captionClasses": "govuk-table__caption--m",
+      "firstCellIsHeader": true,
+      "head": chart.table.head,
+      "rows": chart.table.rows,
+      "classes": "datagovuk-table"
+    }) }}
+    {# djlint:on #}
+  </div>
+{% endset %}
+
+{# djlint:off #}
+{{ govukTabs({
+  "title": "Chart and table",
+  "classes": "datagovuk-tabs datagovuk-chart-tabs",
+  "items": [
+    {"label": "Chart", "id": "chart", "panel": {"html": chart_panel}},
+    {"label": "Table", "id": "table", "panel": {"html": table_panel}}
+  ]
+}) }}
+{# djlint:on #}

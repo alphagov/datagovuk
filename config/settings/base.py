@@ -74,7 +74,6 @@ THIRD_PARTY_APPS = [
     "compressor",
     "django_prometheus",
     "health_check",
-    "chartkick.django",
 ]
 
 LOCAL_APPS = [

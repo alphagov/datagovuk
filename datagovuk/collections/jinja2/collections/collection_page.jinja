@@ -5,15 +5,6 @@
 {% set page_title = title ~ " - Collection" %}
 
 {% block main %}
-  {% if visualisation %}
-    {# TODO: Ideally we would add this to the extra_js block, but there is a bug in chartkick's JS preventing that #}
-    <script src="{{ static('chartkick/Chart.bundle.js') }}"></script>
-    <script src="{{ static('chartkick/chartkick.js') }}"></script>
-
-    <script src="{{ static('javascripts/chartjs-plugin-datalabels.js') }}"></script>
-    <script>Chart.register(ChartDataLabels);</script>
-  {% endif %}
-
   <div class="govuk-width-container datagovuk-width-container datagovuk-collection-header">
     <img src="{{ static('images/collections/badge-' ~ collection_slug ~ '.png') }}"
          class="datagovuk-collection-header__image"
@@ -42,10 +33,8 @@
           <section class="datagovuk-headline govuk-section datagovuk-section govuk-!-margin-top-8">
             <h2 class="govuk-heading-m datagovuk-heading-m">{{ visualisation.title }}</h2>
 
-            {% if visualisation.type == "bar" %}
-              <div class="govuk-grid-row bar-chart">{{ visualisation.visualisation|safe }}</div>
-            {% elif visualisation.type == "line" %}
-              <div class="govuk-grid-row line-chart">{{ visualisation.visualisation|safe }}</div>
+            {% if visualisation.type in ["line", "bar"] %}
+              {% include "collections/visualisations/chart.jinja" %}
             {% elif visualisation.type == "headline" %}
               <div class="datagovuk-headline__columns">{{ visualisation.visualisation|safe }}</div>
             {% endif %}
@@ -116,3 +105,11 @@
     </div>
   </div>
 {% endblock main %}
+
+{% block extra_js %}
+  {% if visualisation and visualisation.type in ["line", "bar"] %}
+    <script src="{{ static('javascripts/highcharts/13.1.1/highcharts.js') }}"></script>
+    <script src="{{ static('javascripts/highcharts/13.1.1/modules/accessibility.js') }}"></script>
+    <script src="{{ static('javascripts/charts/highcharts-init.js') }}"></script>
+  {% endif %}
+{% endblock extra_js %}

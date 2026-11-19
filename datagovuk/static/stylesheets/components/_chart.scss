@@ -1,0 +1,21 @@
+// Highcharts sizes the chart to fit this container
+.datagovuk-chart {
+  height: 400px;
+}
+
+/* Desktop styling overrides */
+@media (min-width: $desktop-breakpoint) {
+  .datagovuk-chart {
+    height: 500px;
+  }
+}
+
+// A bar chart sets its own height to fit its bars (see _get_bar_chart)
+.datagovuk-chart--bar {
+  height: auto;
+}
+
+// Show just the marker shape in a line chart's key, without the line Highcharts draws through it
+.datagovuk-chart .highcharts-legend-item .highcharts-graph {
+  display: none;
+}

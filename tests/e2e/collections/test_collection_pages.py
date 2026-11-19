@@ -42,13 +42,31 @@ def test_collection_page_has_cache_control_header_set(page, live_server_url):
 def test_collection_page_line_chart_is_visible(page, live_server_url):
     url = reverse(
         "collections:collection_page",
-        kwargs={"collection_name": "land-and-property", "collection_page_name": "uk-house-prices"},
+        kwargs={"collection_name": "business-and-economy", "collection_page_name": "uk-trade"},
     )
     page.goto(live_server_url + url)
 
-    expect(page.locator(".line-chart")).to_be_visible()
-    expect(page.locator(".line-chart canvas")).to_be_visible()
-    expect(page.get_by_role("heading", level=2, name="Average house price")).to_be_visible()
+    expect(
+        page.get_by_role("heading", level=2, name="Total UK exports and imports in goods and services"),
+    ).to_be_visible()
+    expect(page.locator(".datagovuk-chart .highcharts-root")).to_be_visible()
+
+
+# GOV.UK tabs are only shown as tabs from tablet width. On mobile the chart and table are shown one after the other.
+@pytest.mark.devices(["desktop"])
+def test_collection_page_line_chart_table_tab(page, live_server_url):
+    url = reverse(
+        "collections:collection_page",
+        kwargs={"collection_name": "business-and-economy", "collection_page_name": "uk-trade"},
+    )
+    page.goto(live_server_url + url)
+
+    page.get_by_role("tab", name="Table").click()
+
+    table = page.get_by_role("table", name="Total UK exports and imports in goods and services")
+    expect(table).to_be_visible()
+    expect(table.get_by_role("columnheader", name="Value of exports (£bn)")).to_be_visible()
+    expect(table.get_by_role("rowheader", name="2010")).to_be_visible()
 
 
 def test_collection_page_bar_chart_is_visible(page, live_server_url):
@@ -58,8 +76,7 @@ def test_collection_page_bar_chart_is_visible(page, live_server_url):
     )
     page.goto(live_server_url + url)
 
-    expect(page.locator(".bar-chart")).to_be_visible()
-    expect(page.locator(".bar-chart canvas")).to_be_visible()
+    expect(page.locator(".datagovuk-chart .highcharts-root")).to_be_visible()
     expect(
         page.get_by_role("heading", level=2, name="2024 UK General Election vote share by party (%)"),
     ).to_be_visible()
@@ -128,7 +145,7 @@ def test_collection_page_without_chart_has_no_chart(page, live_server_url):
     )
     page.goto(live_server_url + url)
 
-    expect(page.locator(".line-chart")).to_have_count(0)
+    expect(page.locator(".datagovuk-chart")).to_have_count(0)
 
 
 def test_collection_page_download(page, live_server_url):
