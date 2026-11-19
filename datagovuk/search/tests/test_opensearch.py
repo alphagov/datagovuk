@@ -502,6 +502,57 @@ def test_search_directory_with_filters_total_excludes_filtered_documents(opensea
     assert response["hits"]["total"]["value"] == FILTERED_RESULTS
 
 
+def test_search_directory_without_filters_counts_all_facet_values(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(topic_slug="transport", resources=[ResourceFactory(format="CSV")]),
+            DatasetFactory(
+                topic_slug="transport",
+                resources=[ResourceFactory(format="CSV"), ResourceFactory(format="PDF")],
+            ),
+            DatasetFactory(topic_slug="health", resources=[ResourceFactory(format="PDF")]),
+        ],
+    )
+
+    response, _ = search_directory("")
+
+    assert response.facets.topic == [("transport", 2, False), ("health", 1, False)]
+    assert response.facets.format == [("csv", 2, False), ("pdf", 2, False)]
+
+
+def test_search_directory_facet_counts_ignore_own_filter_but_apply_others(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(topic_slug="transport", resources=[ResourceFactory(format="CSV")]),
+            DatasetFactory(topic_slug="transport", resources=[ResourceFactory(format="PDF")]),
+            DatasetFactory(topic_slug="health", resources=[ResourceFactory(format="CSV")]),
+            DatasetFactory(topic_slug="education", resources=[ResourceFactory(format="PDF")]),
+        ],
+    )
+
+    response, results = search_directory("", {"topic": "transport", "format": "CSV"})
+
+    assert len(results) == 1
+    # Topic counts are filtered by format (CSV) only, so the other CSV topic is still offered
+    assert response.facets.topic == [("health", 1, False), ("transport", 1, True)]
+    # Format counts are filtered by topic (transport) only, so the other transport format is still offered
+    assert response.facets.format == [("csv", 1, True), ("pdf", 1, False)]
+
+
+def test_search_directory_with_open_government_licence_only_selects_licence_facet(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(licence={"slug": "uk-ogl", "title": "Open Government Licence"}),
+            DatasetFactory(licence={"slug": "uk-ogl", "title": "Open Government Licence"}),
+            DatasetFactory(licence={"slug": "cc-by", "title": "Creative Commons"}),
+        ],
+    )
+
+    response, _ = search_directory("", {"open_government_licence_only": True})
+
+    assert response.facets.licence == [("uk-ogl", 2, True), ("cc-by", 1, False)]
+
+
 def test_get_directory_document_by_slug_found(opensearch_documents):
     opensearch_documents([DatasetFactory(slug="wanted", title="Wanted dataset"), DatasetFactory(slug="other")])
 

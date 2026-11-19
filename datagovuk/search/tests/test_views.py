@@ -41,6 +41,7 @@ class TestSearchView:
         assert response.status_code == HTTPStatus.OK
         context = response.context_data
         assert context["search_made"] is True
+        assert context["form"].cleaned_data["query"] == "rail"
         assert [doc.slug for doc in context["directory_docs"]] == ["rail-data"]
         assert [doc.slug for doc in context["collection_docs"]] == ["rail-collection"]
         assert all(isinstance(doc, Dataset) for doc in context["directory_docs"])

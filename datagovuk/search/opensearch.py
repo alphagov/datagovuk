@@ -3,7 +3,8 @@ from datetime import datetime
 
 import boto3
 from django.conf import settings
-from opensearchpy import AWSV4SignerAuth, OpenSearch, RequestsHttpConnection
+from opensearchpy import AWSV4SignerAuth, OpenSearch, RequestsHttpConnection, Search
+from opensearchpy.helpers.faceted_search import FacetedResponse, FacetedSearch, TermsFacet
 from pydantic import BaseModel, Field, model_validator
 
 
@@ -161,40 +162,34 @@ def search_collections(query):
     return response, documents
 
 
-def _get_directory_filter(filters):
-    if not filters:
-        return {}
+OPEN_GOVERNMENT_LICENCE = "uk-ogl"
 
-    opensearch_filters = []
-    if filters.get("topic"):
-        opensearch_filters.append(
-            {"term": {"topic_slug": filters["topic"]}},
-        )
-    if filters.get("publisher"):
-        opensearch_filters.append(
-            {"term": {"organisations.slug": filters["publisher"]}},
-        )
-    if filters.get("format"):
-        opensearch_filters.append(
-            {"term": {"resources.format": filters["format"]}},
-        )
-    if filters.get("open_government_licence_only"):
-        opensearch_filters.append(
-            {"term": {"licence.slug": "uk-ogl"}},
-        )
-    return {
-        "bool": {
-            "filter": opensearch_filters,
-        },
+
+class DirectorySearch(FacetedSearch):
+    """
+    Dataset search with facets.
+
+    Each facet's selected values filter the returned hits (as a `post_filter`) and the counts of every other
+    facet, but not the facet's own counts, so users can still see the alternatives to what they selected.
+    """
+
+    facets = {
+        "topic": TermsFacet(field="topic_slug"),
+        "publisher": TermsFacet(field="organisations.slug", size=50),
+        "format": TermsFacet(field="resources.format"),
+        "licence": TermsFacet(field="licence.slug"),
     }
 
+    def search(self):
+        # Resolved per search rather than as class attributes, so that settings changes (e.g. in tests) apply
+        search = Search(using=get_opensearch_client(), index=settings.OPENSEARCH_DATASETS_INDEX)
+        return search.response_class(FacetedResponse)
 
-def _get_directory_aggregations(filters):
-    return {}
+    def query(self, search, query):
+        return search.query(_get_directory_search_clause(query))
 
 
-def search_directory(query, filters=None):
-    client = get_opensearch_client()
+def _get_directory_search_clause(query):
     if query and query.strip():
         search_clause = {
             "multi_match": {
@@ -210,28 +205,33 @@ def search_directory(query, filters=None):
         }
     else:
         search_clause = {"match_all": {}}
+    return {"bool": {"must": [search_clause]}}
 
-    post_filter = _get_directory_filter(filters)
-    aggregations = _get_directory_aggregations(filters)
 
-    query_body = {
-        "query": {
-            "bool": {
-                "must": [search_clause],
-            },
-        },
-        "size": 20,
-    }
-    if post_filter:
-        query_body["post_filter"] = post_filter
-    if aggregations:
-        query_body["aggs"] = aggregations
+def _get_directory_facet_filters(filters):
+    """
+    Convert search form values into `DirectorySearch` facet filters, dropping empty values (which would otherwise
+    filter on an empty string and match nothing).
 
-    response = client.search(
-        index=settings.OPENSEARCH_DATASETS_INDEX,
-        body=query_body,
-    )
-    documents = [Dataset(**hit["_source"]) for hit in response["hits"]["hits"]]
+    Publisher and format are lowercased because the index stores them with a lowercase normalizer: filtering would
+    match either way, but the facet values come back lowercase, and they must equal the filter value to be marked
+    as selected.
+    """
+    filters = filters or {}
+    facet_filters = {name: filters[name].lower() for name in ("publisher", "format") if filters.get(name)}
+    if filters.get("topic"):
+        facet_filters["topic"] = filters["topic"]
+    if filters.get("open_government_licence_only"):
+        facet_filters["licence"] = OPEN_GOVERNMENT_LICENCE
+    return facet_filters
+
+
+def search_directory(query, filters=None):
+    """
+    Returns the `FacetedResponse` (facet counts are on `response.facets`) and the page of matching datasets.
+    """
+    response = DirectorySearch(query, filters=_get_directory_facet_filters(filters))[:20].execute()
+    documents = [Dataset(**hit.to_dict()) for hit in response.hits]
     return response, documents
 
 
