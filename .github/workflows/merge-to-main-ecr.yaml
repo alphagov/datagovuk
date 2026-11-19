@@ -19,7 +19,6 @@ jobs:
   push-to-ecr:
     needs:
       - trivy-scan
-      - get-main-sha
     uses: ./.github/workflows/push-to-ecr.yml
     with:
       image_sha: ${{ github.sha }}
