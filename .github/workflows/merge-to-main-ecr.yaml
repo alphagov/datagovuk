@@ -1,4 +1,4 @@
-name: Merge to main
+name: Merge to main (ECR)
 
 on:
   push:
@@ -6,6 +6,17 @@ on:
     paths-ignore: ['docs/**']
 
 jobs:
+  get-main-sha:
+    runs-on: ubuntu-latest
+    outputs:
+      main_sha: ${{ steps.fetch.outputs.sha }}
+    steps:
+      - name: Get tip of main SHA
+        id: fetch
+        run: |
+          MAIN_SHA=$(git ls-remote ${{ github.server_url }}/${{ github.repository }}.git refs/heads/main | awk '{print $1}')
+          echo "sha=$MAIN_SHA" >> "$GITHUB_OUTPUT"
+
   ci:
     uses: ./.github/workflows/ci.yml
     permissions:
@@ -16,31 +27,18 @@ jobs:
     uses: ./.github/workflows/trivy-scans.yaml
     needs: ci
 
-  build-image:
-    uses: ./.github/workflows/build-image.yaml
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
-    needs: trivy-scan
+  push-to-ecr:
+    needs:
+      - trivy-scan
+      - get-main-sha
+    uses: ./.github/workflows/push-to-ecr.yml
     with:
-      buildType: build_push
-      gitRef: ${{ github.sha }}
-
-  create-integration-pr:
-    uses: ./.github/workflows/create-integration-pr.yaml
-    needs: build-image
-    with:
-      gitRef: ${{ github.ref_name }}
-    secrets: inherit
+      image_sha: ${{ needs.get_main_sha.outputs.main_sha }}
 
   notify-slack-if-failure-on-main:
     runs-on: ubuntu-latest
     needs:
-      - ci
-      - trivy-scan
-      - build-image
-      - create-integration-pr
+      - push-to-ecr
     steps:
       - name: Notify Slack if failure on main
         if: ${{ failure() }}
