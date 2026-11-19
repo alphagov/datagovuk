@@ -45,6 +45,7 @@ class SearchView(GETFormView):
             context["directory_results"] = directory_results
             context["directory_docs"] = directory_docs
             context["directory_facets"] = directory_facets
+            context["debug_show_facets"] = True
         return context
 
 
