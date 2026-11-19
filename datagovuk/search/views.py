@@ -15,22 +15,24 @@ class SearchView(GETFormView):
     def form_valid(self, form):
         query = form.cleaned_data.pop("query", "")
 
-        directory_results, directory_docs = search_directory(query, filters=form.cleaned_data)
+        directory_results, directory_docs, directory_facets = search_directory(query, filters=form.cleaned_data)
         collection_results, collection_docs = search_collections(query)
         context = self.get_context_data(
             query=query,
             directory_results=directory_results,
             directory_docs=directory_docs,
+            directory_facets=directory_facets,
             collection_results=collection_results,
             collection_docs=collection_docs,
         )
         return self.render_to_response(context)
 
-    def get_context_data(
+    def get_context_data(  # noqa: PLR0913
         self,
         query=None,
         directory_results=None,
         directory_docs=None,
+        directory_facets=None,
         collection_results=None,
         collection_docs=None,
         **kwargs,
@@ -42,6 +44,7 @@ class SearchView(GETFormView):
             context["collection_docs"] = collection_docs
             context["directory_results"] = directory_results
             context["directory_docs"] = directory_docs
+            context["directory_facets"] = directory_facets
         return context
 
 
