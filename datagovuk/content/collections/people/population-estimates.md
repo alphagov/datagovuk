@@ -5,7 +5,7 @@ websites:
     link-text: Population estimates
 api:
 dataset:
-page-last-updated: "2026-03-24"
+page-last-updated: "2026-11-19"
 visualisation-data: "population-estimates/uk-population-estimates-1838-to-2025.json"
 contact:
 status: for-publication
