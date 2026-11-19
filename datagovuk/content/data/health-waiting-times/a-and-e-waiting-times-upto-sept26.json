@@ -7,7 +7,7 @@
  "visualisation_suffix": "%",
  "series": [
     {
-     "color":  "#C27A9A",
+     "color":  "#00890B",
      "name": "All A&E departments",
      "data":  {
       "2010-11-01":	97.2,
@@ -167,7 +167,7 @@
       }
     },
     {
-     "color":  "#00890B",
+     "color":  "#C27A9A",
      "name": "All A&E departments excluding clinical review providers",
      "data":{
       "2019-05-01":	86.6,
