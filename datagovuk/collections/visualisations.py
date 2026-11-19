@@ -89,15 +89,36 @@ def _get_bar_chart(chart_spec):
     )
 
 
+def _get_shared_x_axis(series_list):
+    """Mirror how Chartkick builds a multi-series x-axis.
+
+    Chartkick aligns every series to the union of all x values, sorting it for date/number axes
+    and otherwise keeping first-seen order. Per-point dataset options must be indexed against
+    this shared axis rather than each series' own data. We sort only when every series is
+    already in sorted order, so labels like month names keep their file order.
+    """
+    keys = list(dict.fromkeys(key for series in series_list for key in series["data"]))
+    if all(list(series["data"]) == sorted(series["data"]) for series in series_list):
+        keys.sort()
+    return keys
+
+
 def _get_line_chart(chart_spec):
     is_multiple_series = len(chart_spec["series"]) > 1
     point_shapes = ["circle", "triangle", "rect", "rectRot"]
+    all_keys = _get_shared_x_axis(chart_spec["series"])
     for series in chart_spec["series"]:
-        data_size = len(series["data"])
+        # Mark the end of every unbroken segment, so each visible piece of a line carries
+        # its series' shape and can be identified without relying on colour.
+        has_value = [series["data"].get(key) is not None for key in all_keys]
+        is_segment_end = [
+            present and (index == len(all_keys) - 1 or not has_value[index + 1])
+            for index, present in enumerate(has_value)
+        ]
 
         series["dataset"] = {
-            "pointRadius": [0] * (data_size - 1) + [4],
-            "pointStyle": [point_shapes.pop() if point_shapes else "circle"] * data_size,
+            "pointRadius": [4 if is_end else 0 for is_end in is_segment_end],
+            "pointStyle": point_shapes.pop() if point_shapes else "circle",
         }
     return LineChart(
         chart_spec["series"],
