@@ -96,9 +96,9 @@ def _get_line_chart(chart_spec):
         data_size = len(series["data"])
 
         series["dataset"] = {
+            "pointRadius": [0] * (data_size - 1) + [4],
             "pointStyle": [point_shapes.pop() if point_shapes else "circle"] * data_size,
         }
-
     return LineChart(
         chart_spec["series"],
         thousands=",",
