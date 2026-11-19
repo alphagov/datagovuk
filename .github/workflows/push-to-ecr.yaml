@@ -7,6 +7,12 @@ on:
         description: 'Full git SHA (40 hex characters) of the image to push/promote. Must already exist in GHCR.'
         required: true
         type: string
+  workflow_call:
+    inputs:
+      image_sha:
+        description: 'Full git SHA (40 hex characters) of the image to push/promote. Must already exist in GHCR.'
+        required: true
+        type: string
 
 env:
   APP_NAME: datagovuk

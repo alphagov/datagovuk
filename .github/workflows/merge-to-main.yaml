@@ -1,4 +1,4 @@
-name: Merge to main (EKS)
+name: Merge to main (EKS and ECR)
 
 on:
   push:
@@ -27,7 +27,20 @@ jobs:
       buildType: build_push
       gitRef: ${{ github.sha }}
 
-  create-integration-pr:
+  # Push image to ECR (and by side effect automatically deploy to integration env)
+  push-to-ecr:
+    needs:
+      - build-image
+    uses: ./.github/workflows/push-to-ecr.yaml
+    with:
+      image_sha: ${{ github.sha }}
+    secrets: inherit
+    permissions:
+      id-token: write
+      contents: read
+
+  # Automatically deploy to EKS integration env
+  create-eks-integration-pr:
     uses: ./.github/workflows/create-integration-pr.yaml
     needs: build-image
     with:
@@ -37,10 +50,9 @@ jobs:
   notify-slack-if-failure-on-main:
     runs-on: ubuntu-latest
     needs:
-      - ci
-      - trivy-scan
       - build-image
-      - create-integration-pr
+      - create-eks-integration-pr
+      - push-to-ecr
     steps:
       - name: Notify Slack if failure on main
         if: ${{ failure() }}
