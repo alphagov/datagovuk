@@ -32,15 +32,15 @@
           <div id="datagovuk-facets">
             <h2 class="govuk-heading-m datagovuk-heading-m">Facets (debug)</h2>
             <pre>
-              {{ directory_facets|tojson(indent=2) }}
+              {{ directory_search.facets|tojson(indent=2) }}
             </pre>
           </div>
         {% endif %}
-        {% if collection_results.hits.total.value > 0 %}
+        {% if collection_search.total > 0 %}
           <h2 class="govuk-heading-m datagovuk-heading-m">Curated data</h2>
           <p class="govuk-body datagovuk-body">Selected by the National Data Library team</p>
           <ul class="datagovuk-search-results">
-            {% for doc in collection_docs %}
+            {% for doc in collection_search.docs %}
               <li class="datagovuk-search-results__item">
                 <h2 class="govuk-body datagovuk-body">
                   <a href="{{ url('collections:collection_page', kwargs={'collection_name': doc.collection, 'collection_page_name': doc.slug}) }}"
@@ -52,9 +52,9 @@
           </ul>
           <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible" />
         {% endif %}
-        {% if directory_results.hits.total.value > 0 %}
+        {% if directory_search.total > 0 %}
           <ul class="datagovuk-search-results">
-            {% for doc in directory_docs %}
+            {% for doc in directory_search.docs %}
               <li class="datagovuk-search-results__item">
                 <h2 class="govuk-body datagovuk-body">
                   <a href="{{ url('search:dataset', kwargs={'slug': doc.slug}) }}"

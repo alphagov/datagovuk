@@ -23,8 +23,8 @@ class TestSearchView:
         assert response.template_name == ["search/search.jinja"]
         assert not response.context_data["form"].is_bound
         assert "search_made" not in response.context_data
-        assert "directory_docs" not in response.context_data
-        assert "collection_docs" not in response.context_data
+        assert "directory_search" not in response.context_data
+        assert "collection_search" not in response.context_data
 
     def test_get_with_query_searches_directory_and_collections(self, client, search_url, opensearch_documents):
         opensearch_documents(
@@ -41,12 +41,12 @@ class TestSearchView:
         assert response.status_code == HTTPStatus.OK
         context = response.context_data
         assert context["search_made"] is True
-        assert [doc.slug for doc in context["directory_docs"]] == ["rail-data"]
-        assert [doc.slug for doc in context["collection_docs"]] == ["rail-collection"]
-        assert all(isinstance(doc, Dataset) for doc in context["directory_docs"])
-        assert all(isinstance(doc, Collection) for doc in context["collection_docs"])
-        assert context["directory_results"]["hits"]["total"]["value"] == 1
-        assert context["collection_results"]["hits"]["total"]["value"] == 1
+        assert [doc.slug for doc in context["directory_search"].docs] == ["rail-data"]
+        assert [doc.slug for doc in context["collection_search"].docs] == ["rail-collection"]
+        assert all(isinstance(doc, Dataset) for doc in context["directory_search"].docs)
+        assert all(isinstance(doc, Collection) for doc in context["collection_search"].docs)
+        assert context["directory_search"].total == 1
+        assert context["collection_search"].total == 1
 
     @pytest.mark.parametrize("query", ["", "   "])
     def test_get_with_blank_query_matches_all(self, client, search_url, opensearch_documents, query):
@@ -61,8 +61,8 @@ class TestSearchView:
 
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["search_made"] is True
-        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["anything"]
-        assert [doc.slug for doc in response.context_data["collection_docs"]] == ["any-collection"]
+        assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["anything"]
+        assert [doc.slug for doc in response.context_data["collection_search"].docs] == ["any-collection"]
 
     def test_get_with_no_results(self, client, search_url, opensearch_documents):
         opensearch_documents([DatasetFactory(), CollectionFactory()])
@@ -71,10 +71,10 @@ class TestSearchView:
 
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["search_made"] is True
-        assert response.context_data["directory_docs"] == []
-        assert response.context_data["collection_docs"] == []
-        assert response.context_data["directory_results"]["hits"]["total"]["value"] == 0
-        assert response.context_data["collection_results"]["hits"]["total"]["value"] == 0
+        assert response.context_data["directory_search"].docs == []
+        assert response.context_data["collection_search"].docs == []
+        assert response.context_data["directory_search"].total == 0
+        assert response.context_data["collection_search"].total == 0
 
     def test_get_with_only_collection_results(self, client, search_url, opensearch_documents):
         opensearch_documents([CollectionFactory(slug="only-collection", collection="transport")])
@@ -82,8 +82,8 @@ class TestSearchView:
         response = client.get(search_url, {"query": "collection"})
 
         assert response.status_code == HTTPStatus.OK
-        assert response.context_data["directory_docs"] == []
-        assert [doc.slug for doc in response.context_data["collection_docs"]] == ["only-collection"]
+        assert response.context_data["directory_search"].docs == []
+        assert [doc.slug for doc in response.context_data["collection_search"].docs] == ["only-collection"]
 
     def test_get_with_only_directory_results(self, client, search_url, opensearch_documents):
         opensearch_documents([DatasetFactory(slug="only-directory")])
@@ -91,8 +91,8 @@ class TestSearchView:
         response = client.get(search_url, {"query": "directory"})
 
         assert response.status_code == HTTPStatus.OK
-        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["only-directory"]
-        assert response.context_data["collection_docs"] == []
+        assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["only-directory"]
+        assert response.context_data["collection_search"].docs == []
 
     def test_get_with_query_at_maximum_length_is_valid(self, client, search_url):
         response = client.get(search_url, {"query": "a" * 256})
@@ -107,7 +107,7 @@ class TestSearchView:
         assert response.template_name == ["search/search.jinja"]
         assert "query" in response.context_data["form"].errors
         assert "search_made" not in response.context_data
-        assert "directory_docs" not in response.context_data
+        assert "directory_search" not in response.context_data
 
     def test_result_with_multiple_organisations_shows_first(self, client, search_url, opensearch_documents):
         organisations = [OrganisationFactory(name="First publisher"), OrganisationFactory(name="Second publisher")]
@@ -116,7 +116,7 @@ class TestSearchView:
         response = client.get(search_url, {"query": "rail"})
 
         assert response.status_code == HTTPStatus.OK
-        assert response.context_data["directory_docs"][0].organisation.name == "First publisher"
+        assert response.context_data["directory_search"].docs[0].organisation.name == "First publisher"
 
     def test_get_with_filters_only_filters_directory_not_collections(self, client, search_url, opensearch_documents):
         opensearch_documents(
@@ -131,8 +131,8 @@ class TestSearchView:
 
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["search_made"] is True
-        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["transport"]
-        assert [doc.slug for doc in response.context_data["collection_docs"]] == ["any-collection"]
+        assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["transport"]
+        assert [doc.slug for doc in response.context_data["collection_search"].docs] == ["any-collection"]
 
     def test_get_with_publisher_filters_directory_results(self, client, search_url, opensearch_documents):
         opensearch_documents(
@@ -145,7 +145,7 @@ class TestSearchView:
         response = client.get(search_url, {"publisher": "wanted-publisher"})
 
         assert response.status_code == HTTPStatus.OK
-        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["wanted"]
+        assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["wanted"]
 
     def test_get_with_format_filters_directory_results(self, client, search_url, opensearch_documents):
         opensearch_documents(
@@ -158,7 +158,7 @@ class TestSearchView:
         response = client.get(search_url, {"format": "CSV"})
 
         assert response.status_code == HTTPStatus.OK
-        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["csv"]
+        assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["csv"]
 
     def test_get_with_open_government_licence_only_filters_directory_results(
         self,
@@ -176,7 +176,7 @@ class TestSearchView:
         response = client.get(search_url, {"open_government_licence_only": "on"})
 
         assert response.status_code == HTTPStatus.OK
-        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["ogl"]
+        assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["ogl"]
 
     def test_get_with_query_and_filters_combines_them(self, client, search_url, opensearch_documents):
         opensearch_documents(
@@ -190,7 +190,7 @@ class TestSearchView:
         response = client.get(search_url, {"query": "rail", "topic": "transport"})
 
         assert response.status_code == HTTPStatus.OK
-        assert [doc.slug for doc in response.context_data["directory_docs"]] == ["rail-transport"]
+        assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["rail-transport"]
 
     @pytest.mark.parametrize(
         ("field", "value"),
@@ -208,7 +208,7 @@ class TestSearchView:
         assert response.template_name == ["search/search.jinja"]
         assert field in response.context_data["form"].errors
         assert "search_made" not in response.context_data
-        assert "directory_docs" not in response.context_data
+        assert "directory_search" not in response.context_data
 
 
 class TestDatasetView:
