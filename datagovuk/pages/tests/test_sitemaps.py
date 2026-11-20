@@ -3,7 +3,7 @@ from datagovuk.pages.sitemap import get_collection_groups, get_sitemap_sections,
 
 def test_get_collection_groups_lists_every_topic_of_each_collection(monkeypatch):
     monkeypatch.setattr(
-        "datagovuk.pages.sitemaps.get_collections",
+        "datagovuk.pages.sitemap.get_collections",
         lambda: [
             {
                 "title": "Transport",
