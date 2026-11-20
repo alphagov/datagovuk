@@ -1,9 +1,12 @@
 import json
+from dataclasses import dataclass
 from datetime import datetime
 
 import boto3
 from django.conf import settings
-from opensearchpy import AWSV4SignerAuth, OpenSearch, RequestsHttpConnection
+from opensearchpy import AWSV4SignerAuth, OpenSearch, Q, RequestsHttpConnection, Search
+from opensearchpy.helpers.faceted_search import Facet, FacetedResponse, FacetedSearch, NestedFacet, TermsFacet
+from opensearchpy.helpers.query import Terms
 from pydantic import BaseModel, Field, model_validator
 
 
@@ -113,6 +116,21 @@ class Collection(BaseModel):
     updated_at: datetime
 
 
+@dataclass(frozen=True)
+class SearchResult:
+    response: dict
+    docs: list
+
+    @property
+    def total(self):
+        return self.response["hits"]["total"]["value"]
+
+
+@dataclass(frozen=True)
+class DirectorySearchResult(SearchResult):
+    facets: dict
+
+
 def get_aws_sigv4_auth():
     session = boto3.Session()
     credentials = session.get_credentials()
@@ -158,40 +176,116 @@ def search_collections(query):
         },
     )
     documents = [Collection(**hit["_source"]) for hit in response["hits"]["hits"]]
-    return response, documents
+    return SearchResult(response=response, docs=documents)
 
 
-def search_directory(query):
-    client = get_opensearch_client()
-    if query and query.strip():
-        search_clause = {
-            "multi_match": {
-                "query": query,
-                "fields": [
+class MultiTermsFacet(Facet):
+    """
+    Facet over several fields at once (e.g. a slug and its display label), filtered on the first field only.
+    """
+
+    agg_type = "multi_terms"
+
+    def __init__(self, fields, **kwargs):
+        self._fields = fields
+        super().__init__(terms=[{"field": field} for field in fields], **kwargs)
+
+    def add_filter(self, filter_values):
+        slug_field = self._fields[0]
+        return Terms(**{slug_field: filter_values})
+
+    def get_value(self, bucket):
+        return tuple(bucket["key"])
+
+    def is_filtered(self, key, filter_values):
+        return key[0] in filter_values
+
+
+class ReverseNestedTermsFacet(TermsFacet):
+    """
+    Terms facet for use inside a `NestedFacet` which counts parent documents rather than nested ones.
+
+    This is for e.g. resources where we have a nested opensearch document; for the format facet,
+    we don't want the count of the nested documents (resources) - instead we want the count of
+    matching parent documents (datasets).
+    """
+
+    def get_aggregation(self):
+        agg = super().get_aggregation()
+        agg.bucket("parent_docs", "reverse_nested")
+        return agg
+
+    def get_metric(self, bucket):
+        return bucket["parent_docs"]["doc_count"]
+
+
+class BooleanFilterFacet(Facet):
+    """
+    Facet with a single "on" value, which counts and filters by documents matching `query`.
+    """
+
+    agg_type = "filters"
+
+    def __init__(self, query, **kwargs):
+        self._query = query
+        super().__init__(filters={"on": query}, **kwargs)
+
+    def add_filter(self, filter_values):
+        return self._query
+
+    def get_values(self, data, filter_values):
+        return [("on", data["buckets"]["on"]["doc_count"], bool(filter_values))]
+
+
+class DirectorySearch(FacetedSearch):
+    facets = {
+        "topic": MultiTermsFacet(fields=["topic_slug", "topic.keyword"], size=10000),
+        "publisher": MultiTermsFacet(fields=["organisations.slug", "organisations.name.keyword"], size=10000),
+        "format": NestedFacet("resources", ReverseNestedTermsFacet(field="resources.format", size=10000)),
+        "open_government_licence_only": BooleanFilterFacet(Q("term", licence__slug="uk-ogl")),
+    }
+
+    def search(self):
+        search = Search(using=get_opensearch_client(), index=settings.OPENSEARCH_DATASETS_INDEX)
+        return search.response_class(FacetedResponse).extra(size=20)
+
+    def query(self, search, query):
+        if query and query.strip():
+            return search.query(
+                "multi_match",
+                query=query,
+                fields=[
                     "title^3",  # High relevance for exact/standard title matches
                     "title.english^2",  # Medium relevance for stemmed English title matches
                     "description",
                     "description.english",
                 ],
-                "type": "best_fields",
-            },
-        }
-    else:
-        search_clause = {"match_all": {}}
+                type="best_fields",
+            )
+        return search
 
-    response = client.search(
-        index=settings.OPENSEARCH_DATASETS_INDEX,
-        body={
-            "query": {
-                "bool": {
-                    "must": [search_clause],
-                },
-            },
-            "size": 20,
-        },
-    )
-    documents = [Dataset(**hit["_source"]) for hit in response["hits"]["hits"]]
-    return response, documents
+
+def _get_directory_facets(response):
+    facets = response.facets
+    return {
+        "topic": [{"value": value, "label": label, "count": count} for (value, label), count, _ in facets.topic],
+        "publisher": [
+            {"value": value, "label": label, "count": count} for (value, label), count, _ in facets.publisher
+        ],
+        "format": [{"value": value, "label": value, "count": count} for value, count, _ in facets.format],
+        "open_government_licence_only": [
+            {"value": value, "label": "Open Government Licence", "count": count}
+            for value, count, _ in facets.open_government_licence_only
+        ],
+    }
+
+
+def search_directory(query, filters=None):
+    facet_filters = {name: value for name, value in (filters or {}).items() if name in DirectorySearch.facets and value}
+    response = DirectorySearch(query, filters=facet_filters).execute()
+    raw_response = response.to_dict()
+    documents = [Dataset(**hit["_source"]) for hit in raw_response["hits"]["hits"]]
+    return DirectorySearchResult(response=raw_response, docs=documents, facets=_get_directory_facets(response))
 
 
 def get_directory_document_by_slug(slug):

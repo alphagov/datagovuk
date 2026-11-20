@@ -10,39 +10,16 @@ from .opensearch import get_directory_document_by_slug, search_collections, sear
 class SearchView(GETFormView):
     template_name = "search/search.jinja"
     form_class = SearchForm
-    rows_per_page = 20
 
     def form_valid(self, form):
-        query = form.cleaned_data["query"]
-
-        directory_results, directory_docs = search_directory(query)
-        collection_results, collection_docs = search_collections(query)
+        query = form.cleaned_data.pop("query", "")
         context = self.get_context_data(
-            query=query,
-            directory_results=directory_results,
-            directory_docs=directory_docs,
-            collection_results=collection_results,
-            collection_docs=collection_docs,
+            search_made=True,
+            debug_show_facets=True,
+            directory_search=search_directory(query, filters=form.cleaned_data),
+            collection_search=search_collections(query),
         )
         return self.render_to_response(context)
-
-    def get_context_data(
-        self,
-        query=None,
-        directory_results=None,
-        directory_docs=None,
-        collection_results=None,
-        collection_docs=None,
-        **kwargs,
-    ):
-        context = super().get_context_data(**kwargs)
-        if query is not None:
-            context["search_made"] = True
-            context["collection_results"] = collection_results
-            context["collection_docs"] = collection_docs
-            context["directory_results"] = directory_results
-            context["directory_docs"] = directory_docs
-        return context
 
 
 class DatasetView(TemplateView):
