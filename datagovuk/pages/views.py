@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 
 from datagovuk.core.views import RenderedMarkdownView
-from datagovuk.pages.sitemaps import get_sitemap_sections
+from datagovuk.pages.sitemap import get_sitemap_sections
 
 HELP_PAGES = [
     {

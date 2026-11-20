@@ -1,4 +1,4 @@
-from datagovuk.pages.sitemaps import get_collection_groups, get_sitemap_sections, get_update_items
+from datagovuk.pages.sitemap import get_collection_groups, get_sitemap_sections, get_update_items
 
 
 def test_get_collection_groups_lists_every_topic_of_each_collection(monkeypatch):
