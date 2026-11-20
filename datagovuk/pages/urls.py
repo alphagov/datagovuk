@@ -67,4 +67,9 @@ urlpatterns = [
         views.HelpView.as_view(),
         name="help",
     ),
+    path(
+        "sitemap",
+        views.SitemapView.as_view(),
+        name="sitemap",
+    ),
 ]
