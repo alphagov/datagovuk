@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 from django.http import Http404
 from django.views.generic import TemplateView
 
@@ -5,6 +7,129 @@ from datagovuk.core.views import GETFormView
 
 from .forms import SearchForm
 from .opensearch import get_directory_document_by_slug, search_collections, search_directory
+
+# TODO: temporary mock until the backend returns real facet data. Remove everything down to _build_facet_groups, and
+# build facet groups of the same shape from the OpenSearch aggregations instead.
+#
+# A facet group is {"key", "label", "facets"}, a facet is {"value", "label", "count"}. A facet sets the group's key to
+# its value in the query string, unless it has its own "param". These must be parameters the directory search accepts.
+
+
+def _facets(rows):
+    return [{"value": value, "label": label, "count": count} for value, label, count in rows]
+
+
+MOCK_FACET_GROUPS = [
+    {
+        "key": "publisher",
+        "label": "Publisher",
+        "facets": _facets(
+            [
+                ("ordnance-survey", "Ordnance Survey", 120),
+                ("environment-agency", "Environment Agency", 87),
+                ("office-for-national-statistics", "Office for National Statistics", 54),
+                ("department-for-transport", "Department for Transport", 31),
+            ],
+        ),
+    },
+    {
+        "key": "topic",
+        "label": "Topic",
+        "facets": _facets(
+            [("environment", "Environment", 140), ("transport", "Transport", 62), ("health", "Health", 12)],
+        ),
+    },
+    {
+        "key": "format",
+        "label": "Format",
+        "facets": _facets([("CSV", "CSV", 340), ("GeoJSON", "GeoJSON", 45), ("PDF", "PDF", 9)]),
+    },
+    {
+        "key": "other",
+        "label": "More filters",
+        "facets": [
+            {"param": "open_government_licence_only", "value": "on", "label": "Open Government Licence", "count": 410},
+            {"param": "include_datasets_with_no_links", "value": "on", "label": "Datasets with no links", "count": 23},
+        ],
+    },
+]
+
+# Real publisher names for the ?mock_facets=long state. Several are long, which is the point.
+MOCK_LONG_PUBLISHERS = [
+    ("ordnance-survey", "Ordnance Survey"),
+    ("environment-agency", "Environment Agency"),
+    ("office-for-national-statistics", "Office for National Statistics"),
+    ("department-for-transport", "Department for Transport"),
+    ("natural-england", "Natural England"),
+    ("met-office", "Met Office"),
+    ("hm-land-registry", "HM Land Registry"),
+    ("forestry-commission", "Forestry Commission"),
+    ("historic-england", "Historic England"),
+    ("natural-resources-wales", "Natural Resources Wales"),
+    ("scottish-environment-protection-agency", "Scottish Environment Protection Agency"),
+    ("department-for-environment-food-and-rural-affairs", "Department for Environment, Food & Rural Affairs"),
+    ("department-for-levelling-up-housing-and-communities", "Department for Levelling Up, Housing and Communities"),
+    ("ministry-of-housing-communities-and-local-government", "Ministry of Housing, Communities & Local Government"),
+    ("department-for-business-and-trade", "Department for Business and Trade"),
+    ("department-for-science-innovation-and-technology", "Department for Science, Innovation and Technology"),
+    ("department-for-energy-security-and-net-zero", "Department for Energy Security and Net Zero"),
+    ("department-for-culture-media-and-sport", "Department for Culture, Media and Sport"),
+    ("department-for-work-and-pensions", "Department for Work and Pensions"),
+    ("department-of-health-and-social-care", "Department of Health and Social Care"),
+    ("nhs-england", "NHS England"),
+    ("uk-health-security-agency", "UK Health Security Agency"),
+    ("care-quality-commission", "Care Quality Commission"),
+    ("driver-and-vehicle-licensing-agency", "Driver and Vehicle Licensing Agency"),
+    ("driver-and-vehicle-standards-agency", "Driver and Vehicle Standards Agency"),
+    ("maritime-and-coastguard-agency", "Maritime and Coastguard Agency"),
+    ("food-standards-agency", "Food Standards Agency"),
+    ("health-and-safety-executive", "Health and Safety Executive"),
+    ("hm-revenue-and-customs", "HM Revenue & Customs"),
+    ("the-national-archives", "The National Archives"),
+]
+
+
+def _mock_facet_groups(variant):
+    """
+    Return mock facet group data. Use ?mock_facets=empty or ?mock_facets=long to see other states.
+    """
+    if variant == "empty":
+        return []
+    if variant == "long":
+        long_publishers = _facets([(slug, label, 400 - 12 * n) for n, (slug, label) in enumerate(MOCK_LONG_PUBLISHERS)])
+        return [
+            {**group, "facets": long_publishers} if group["key"] == "publisher" else group
+            for group in MOCK_FACET_GROUPS
+        ]
+    return MOCK_FACET_GROUPS
+
+
+def _build_facet_groups(params):
+    """
+    Add a selected state and a link to each facet. Selecting a facet links to the current search with its parameter
+    set, a selected facet links to the current search with it removed. Changing a filter resets the page.
+    """
+    base = {key: value for key, value in params.items() if key != "page"}
+    facet_groups = []
+    for group in _mock_facet_groups(params.get("mock_facets")):
+        facets = []
+        for facet in group["facets"]:
+            param = facet.get("param", group["key"])
+            is_selected = params.get(param) == facet["value"]
+            link_params = {k: v for k, v in base.items() if k != param}
+            if not is_selected:
+                link_params[param] = facet["value"]
+            facets.append(
+                {
+                    "label": facet["label"],
+                    "count": facet["count"],
+                    "selected": is_selected,
+                    "url": f"?{urlencode(link_params)}" if link_params else "?",
+                },
+            )
+        facets.sort(key=lambda facet: not facet["selected"])  # stable, so selected facets move to the top
+        facet_groups.append({**group, "facets": facets})
+    return facet_groups
 
 
 class SearchView(GETFormView):
@@ -40,6 +165,14 @@ class SearchView(GETFormView):
         if query is not None:
             context["search_made"] = True
             context["search_query"] = query
+            facet_groups = _build_facet_groups(self.request.GET.dict())
+            context["facet_groups"] = facet_groups
+            context["selected_filters"] = [
+                {"group": group["label"], "label": facet["label"], "url": facet["url"]}
+                for group in facet_groups
+                for facet in group["facets"]
+                if facet["selected"]
+            ]
             context["collection_results"] = collection_results
             context["collection_docs"] = collection_docs
             context["directory_results"] = directory_results
