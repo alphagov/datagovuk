@@ -1,43 +1,26 @@
-import pytest
-
 from datagovuk.pages.sitemaps import get_collection_groups, get_sitemap_sections, get_update_items
 
 
-@pytest.fixture
-def collections_root(tmp_path, settings, monkeypatch):
-    collection_dir = tmp_path / "transport"
-    collection_dir.mkdir()
-    (collection_dir / "published.md").write_text("---\ntitle: Published\nstatus: for-publication\n---\nContent\n")
-    (collection_dir / "draft.md").write_text("---\ntitle: Draft\nstatus: draft\n---\nContent\n")
-    (collection_dir / "no-status.md").write_text("---\ntitle: No status\n---\nContent\n")
-
-    settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT = f"{tmp_path}/"
+def test_get_collection_groups_lists_every_topic_of_each_collection(monkeypatch):
     monkeypatch.setattr(
         "datagovuk.pages.sitemaps.get_collections",
         lambda: [
             {
                 "title": "Transport",
                 "slug": "transport",
-                "topics": [
-                    {"title": "Published", "slug": "published"},
-                    {"title": "Draft", "slug": "draft"},
-                    {"title": "No status", "slug": "no-status"},
-                    {"title": "Missing", "slug": "missing"},
-                ],
-            },
-            {
-                "title": "Only drafts",
-                "slug": "only-drafts",
-                "topics": [{"title": "Missing", "slug": "missing"}],
+                "topics": [{"title": "Roads", "slug": "roads"}, {"title": "Rail", "slug": "rail"}],
             },
         ],
     )
 
-
-@pytest.mark.usefixtures("collections_root")
-def test_get_collection_groups_only_includes_published_pages():
     assert get_collection_groups() == [
-        {"title": "Transport", "items": [{"title": "Published", "url": "/collections/transport/published"}]},
+        {
+            "title": "Transport",
+            "items": [
+                {"title": "Roads", "url": "/collections/transport/roads"},
+                {"title": "Rail", "url": "/collections/transport/rail"},
+            ],
+        },
     ]
 
 

@@ -7,8 +7,6 @@ from django.urls import reverse
 from datagovuk.collections.constants import get_collections
 from datagovuk.data_manual.constants import DATA_MANUAL_PAGES
 
-PUBLISHED_STATUS = "for-publication"
-
 # Pages with a fixed URL.
 STATIC_PAGES = [
     ("pages:home", "Home"),
@@ -27,31 +25,24 @@ STATIC_PAGES = [
 ]
 
 
-def is_published_collection_page(collection_slug, page_slug):
-    markdown_path = Path(f"{settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT}{collection_slug}/{page_slug}.md")
-    if not markdown_path.exists():
-        return False
-    return frontmatter.load(markdown_path).get("status") == PUBLISHED_STATUS
-
-
 def get_collection_groups():
-    """One group per collection, listing its published pages."""
-    groups = []
-    for collection in get_collections():
-        items = [
-            {
-                "title": topic["title"],
-                "url": reverse(
-                    "collections:collection_page",
-                    kwargs={"collection_name": collection["slug"], "collection_page_name": topic["slug"]},
-                ),
-            }
-            for topic in collection["topics"]
-            if is_published_collection_page(collection["slug"], topic["slug"])
-        ]
-        if items:
-            groups.append({"title": collection["title"], "items": items})
-    return groups
+    """One group per collection, listing its pages."""
+    return [
+        {
+            "title": collection["title"],
+            "items": [
+                {
+                    "title": topic["title"],
+                    "url": reverse(
+                        "collections:collection_page",
+                        kwargs={"collection_name": collection["slug"], "collection_page_name": topic["slug"]},
+                    ),
+                }
+                for topic in collection["topics"]
+            ],
+        }
+        for collection in get_collections()
+    ]
 
 
 def get_update_items():
