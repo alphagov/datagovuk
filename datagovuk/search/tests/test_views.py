@@ -23,6 +23,7 @@ class TestSearchView:
         assert response.template_name == ["search/search.jinja"]
         assert not response.context_data["form"].is_bound
         assert "search_made" not in response.context_data
+        assert "search_query" not in response.context_data
         assert "directory_docs" not in response.context_data
         assert "collection_docs" not in response.context_data
 
@@ -41,6 +42,7 @@ class TestSearchView:
         assert response.status_code == HTTPStatus.OK
         context = response.context_data
         assert context["search_made"] is True
+        assert context["search_query"] == "rail"
         assert context["form"].cleaned_data["query"] == "rail"
         assert [doc.slug for doc in context["directory_docs"]] == ["rail-data"]
         assert [doc.slug for doc in context["collection_docs"]] == ["rail-collection"]
