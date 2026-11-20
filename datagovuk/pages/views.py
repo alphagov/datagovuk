@@ -4,7 +4,8 @@ from django.views.generic import TemplateView
 
 from datagovuk.core.views import RenderedMarkdownView
 from datagovuk.data_manual.constants import DATA_MANUAL_PAGES
-from datagovuk.pages.sitemap import STATIC_PAGES, get_update_items
+from datagovuk.pages.sitemap import STATIC_PAGES
+from datagovuk.updates.posts import get_update_posts
 
 HELP_PAGES = [
     {
@@ -65,6 +66,6 @@ class SitemapView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["static_pages"] = STATIC_PAGES
         context["data_manual_pages"] = DATA_MANUAL_PAGES
-        context["update_items"] = get_update_items()
+        context["update_posts"] = get_update_posts()
 
         return context

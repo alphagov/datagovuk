@@ -1,9 +1,4 @@
-import datetime
-from pathlib import Path
-
-import frontmatter
-from django.conf import settings
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 
 # Pages with a fixed URL. Collections, data manual pages and updates are listed separately.
 STATIC_PAGES = [
@@ -23,14 +18,3 @@ STATIC_PAGES = [
         ("directory:search", "Directory"),
     ]
 ]
-
-
-def get_update_items():
-    """Links to the updates that can be viewed, i.e. those with a title and a valid date."""
-    items = []
-    for markdown_path in sorted(Path(settings.DATAGOVUK_CONTENT_UPDATES_ROOT).glob("*/*.md")):
-        post = frontmatter.load(markdown_path)
-        if post.get("title") and isinstance(post.get("date"), datetime.date):
-            url = reverse("updates:post", kwargs={"year": markdown_path.parent.name, "slug": markdown_path.stem})
-            items.append({"title": post["title"], "url": url})
-    return items

@@ -130,7 +130,7 @@ def test_sitemap(client):
     response_content = response.content.decode()
     assert response.status_code == HTTPStatus.OK
     assert {"title": "About", "url": "/about"} in response.context_data["static_pages"]
-    assert response.context_data["update_items"]
+    assert response.context_data["update_posts"]
     assert response.context_data["data_manual_pages"] == DATA_MANUAL_PAGES
     assert "Sitemap - National Data Library" in response_content
     for collection in get_collections():
