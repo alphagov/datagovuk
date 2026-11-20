@@ -2,6 +2,9 @@ from http import HTTPStatus
 
 from django.urls import reverse
 
+from datagovuk.collections.constants import get_collections
+from datagovuk.data_manual.constants import DATA_MANUAL_PAGES
+
 
 def test_components(client):
     url = reverse("pages:components")
@@ -119,3 +122,19 @@ def test_roadmap(client):
     assert response.status_code == HTTPStatus.OK
     assert "The National Data Library roadmap - National Data Library" in response_content
     assert "National Data Library roadmap" in response_content
+
+
+def test_sitemap(client):
+    response = client.get(reverse("pages:sitemap"))
+
+    response_content = response.content.decode()
+    assert response.status_code == HTTPStatus.OK
+    assert {"title": "About", "url": "/about"} in response.context_data["static_pages"]
+    assert response.context_data["update_posts"]
+    assert response.context_data["data_manual_pages"] == DATA_MANUAL_PAGES
+    assert "Sitemap - National Data Library" in response_content
+    for collection in get_collections():
+        for page in collection["topics"]:
+            assert f'href="/collections/{collection["slug"]}/{page["slug"]}"' in response_content
+    for page in DATA_MANUAL_PAGES:
+        assert f'href="{page["url"]}"' in response_content
