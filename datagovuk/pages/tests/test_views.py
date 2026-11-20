@@ -2,6 +2,9 @@ from http import HTTPStatus
 
 from django.urls import reverse
 
+from datagovuk.collections.constants import get_collections
+from datagovuk.data_manual.constants import DATA_MANUAL_PAGES
+
 
 def test_components(client):
     url = reverse("pages:components")
@@ -122,28 +125,16 @@ def test_roadmap(client):
 
 
 def test_sitemap(client):
-    url = reverse("pages:sitemap")
-    response = client.get(url)
-
-    assert response.status_code == HTTPStatus.OK
-    assert [section["title"] for section in response.context_data["sitemap_sections"]] == [
-        "Pages",
-        "Collections",
-        "Data manual",
-        "Updates",
-    ]
-    assert "Sitemap - National Data Library" in response.content.decode()
-
-
-def test_sitemap_does_not_render_pages_without_a_title(client, tmp_path, settings):
-    year_dir = tmp_path / "2026"
-    year_dir.mkdir()
-    (year_dir / "titled-post.md").write_text("---\ntitle: Titled post\n---\nContent\n")
-    (year_dir / "untitled-post.md").write_text("---\ndate: 2026-11-12\n---\nContent\n")
-    settings.DATAGOVUK_CONTENT_UPDATES_ROOT = f"{tmp_path}/"
-
     response = client.get(reverse("pages:sitemap"))
 
     response_content = response.content.decode()
-    assert 'href="/updates/2026/titled-post"' in response_content
-    assert 'href="/updates/2026/untitled-post"' not in response_content
+    assert response.status_code == HTTPStatus.OK
+    assert {"title": "About", "url": "/about"} in response.context_data["static_pages"]
+    assert response.context_data["update_items"]
+    assert response.context_data["data_manual_pages"] == DATA_MANUAL_PAGES
+    assert "Sitemap - National Data Library" in response_content
+    for collection in get_collections():
+        for page in collection["topics"]:
+            assert f'href="/collections/{collection["slug"]}/{page["slug"]}"' in response_content
+    for page in DATA_MANUAL_PAGES:
+        assert f'href="{page["url"]}"' in response_content

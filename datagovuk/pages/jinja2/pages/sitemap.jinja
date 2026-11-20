@@ -2,27 +2,38 @@
 
 {% set page_title = "Sitemap" %}
 
+{% macro sitemap_links(items) %}
+  <ul class="govuk-list datagovuk-list govuk-!-margin-bottom-8">
+    {% for item in items %}
+      <li class="govuk-!-margin-bottom-2">
+        <a class="govuk-link datagovuk-link" href="{{ item.url }}">{{ item.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
+
 {% block main %}
   <div class="govuk-width-container datagovuk-width-container govuk-!-margin-top-9">
     <h1 class="govuk-heading-l datagovuk-heading-l">Sitemap</h1>
-    {% for section in sitemap_sections %}
-      <h2 class="govuk-heading-m datagovuk-heading-m">
-        {% if section.url %}
-          <a class="govuk-link datagovuk-link" href="{{ section.url }}">{{ section.title }}</a>
-        {% else %}
-          {{ section.title }}
-        {% endif %}
-      </h2>
-      {% for group in section.groups %}
-        {% if group.title %}<h3 class="govuk-heading-s datagovuk-heading-s">{{ group.title }}</h3>{% endif %}
-        <ul class="govuk-list datagovuk-list govuk-!-margin-bottom-8">
-          {% for item in group["items"] if item.title %}
-            <li class="govuk-!-margin-bottom-2">
-              <a class="govuk-link datagovuk-link" href="{{ item.url }}">{{ item.title }}</a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% endfor %}
+    <h2 class="govuk-heading-m datagovuk-heading-m">Pages</h2>
+    {{ sitemap_links(static_pages) }}
+    <h2 class="govuk-heading-m datagovuk-heading-m">Collections</h2>
+    {% for collection in collections %}
+      <h3 class="govuk-heading-s datagovuk-heading-s">{{ collection.title }}</h3>
+      <ul class="govuk-list datagovuk-list govuk-!-margin-bottom-8">
+        {% for page in collection.topics %}
+          <li class="govuk-!-margin-bottom-2">
+            <a class="govuk-link datagovuk-link"
+               href="{{ url('collections:collection_page', kwargs={'collection_name': collection.slug, 'collection_page_name': page.slug}) }}">{{ page.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
     {% endfor %}
+    <h2 class="govuk-heading-m datagovuk-heading-m">
+      <a class="govuk-link datagovuk-link" href="{{ url('data_manual:home') }}">Data manual</a>
+    </h2>
+    {{ sitemap_links(data_manual_pages) }}
+    <h2 class="govuk-heading-m datagovuk-heading-m">Updates</h2>
+    {{ sitemap_links(update_items) }}
   </div>
 {% endblock main %}
