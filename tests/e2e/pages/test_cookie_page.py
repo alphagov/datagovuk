@@ -34,6 +34,7 @@ def test_cookie_page_accept(page, get_cookie, live_server_url) -> None:
     page.get_by_role("radio", name="Use cookies that remember my settings on the site", exact=True).check()
     page.get_by_role("button", name="Save changes").click()
     expect(page.get_by_text("Your cookie settings were")).to_be_visible()
+    expect(page.get_by_role("alert")).to_contain_text("Your cookie settings were saved")
     page.get_by_role("link", name="Go back to the page you were").click()
     assert (
         get_cookie("cookies_policy", page)["value"]
@@ -61,6 +62,7 @@ def test_cookie_page_refuse(page, get_cookie, live_server_url) -> None:
     page.get_by_role("radio", name="Do not use cookies that remember my settings on the site", exact=True).check()
     page.get_by_role("button", name="Save changes").click()
     expect(page.get_by_text("Your cookie settings were")).to_be_visible()
+    expect(page.get_by_role("alert")).to_contain_text("Your cookie settings were saved")
     page.get_by_role("link", name="Go back to the page you were").click()
     assert (
         get_cookie("cookies_policy", page)["value"]
@@ -84,6 +86,7 @@ def test_cookie_page_default_refuse(page, get_cookie, live_server_url) -> None:
 
     page.get_by_role("button", name="Save changes").click()
     expect(page.get_by_text("Your cookie settings were")).to_be_visible()
+    expect(page.get_by_role("alert")).to_contain_text("Your cookie settings were saved")
     page.get_by_role("link", name="Go back to the page you were").click()
     assert (
         get_cookie("cookies_policy", page)["value"]
