@@ -1,0 +1,47 @@
+{
+  "title": "Age-standardised mortality rate per 100,000 people in England and Wales",
+  "visualisation_type": "line",
+  "source": "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/deathsregistrationsummarytables/2025",
+  "download": "age-standardised-mortality-rate-1994-2025.csv",
+  "publisher": "Office for National Statistics",
+  "series": [
+    {
+      "color": "#C27A9A",
+      "name": "Mortality rate",
+      "data":{
+        "1994": 1374.9,
+        "1995": 1392,
+        "1996": 1372.5,
+        "1997": 1350.8,
+        "1998": 1327.2,
+        "1999": 1320.2,
+        "2000": 1266.4,
+        "2001": 1236.2,
+        "2002": 1231.3,
+        "2003": 1232.1,
+        "2004": 1163,
+        "2005": 1143.8,
+        "2006": 1104.3,
+        "2007": 1091.8,
+        "2008": 1091.9,
+        "2009": 1033.8,
+        "2010": 1017.1,
+        "2011": 978.6,
+        "2012": 988.4,
+        "2013": 988.1,
+        "2014": 956.3,
+        "2015": 998.7,
+        "2016": 974.1,
+        "2017": 974.3,
+        "2018": 976.5,
+        "2019": 937.3,
+        "2020": 1065.5,
+        "2021": 1014.2,
+        "2022": 977.7,
+        "2023": 969.3,
+        "2024": 928,
+        "2025": 912.9
+      }
+    }
+  ]
+}
