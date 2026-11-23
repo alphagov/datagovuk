@@ -20,7 +20,6 @@ formats:
 
 access-methods:
   - download
-  - map-layer
 
 topic: transport
 

@@ -12,10 +12,12 @@ page-last-reviewed: "2026-03-24"
 visualisation-data:
 
 formats:
+  - html
 
 access-methods:
+  - web-service
 
-topic: digital-services-performance
+topic: government
 
 organisations:
   - slug: government-digital-service

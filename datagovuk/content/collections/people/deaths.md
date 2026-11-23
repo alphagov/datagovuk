@@ -12,8 +12,11 @@ page-last-reviewed: "2026-03-24"
 visualisation-data:
 
 formats:
+  - csv
+  - xlsx
 
 access-methods:
+  - download
 
 topic: society
 

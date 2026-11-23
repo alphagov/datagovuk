@@ -12,8 +12,12 @@ page-last-reviewed: "2026-03-24"
 visualisation-data:
 
 formats:
+  - html
+  - ods
+  - csv
 
 access-methods:
+  - download
 
 topic: education
 

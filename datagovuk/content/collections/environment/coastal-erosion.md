@@ -14,6 +14,7 @@ visualisation-data:
 formats:
 
 access-methods:
+  - web-service
 
 topic: environment
 

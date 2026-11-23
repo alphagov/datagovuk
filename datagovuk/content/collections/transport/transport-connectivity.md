@@ -19,7 +19,6 @@ formats:
   - ods
 
 access-methods:
-  - map-layer
   - download
 
 topic: transport

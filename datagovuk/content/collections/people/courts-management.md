@@ -24,8 +24,11 @@ access-methods:
 topic: crime-and-justice
 
 organisations:
+  - slug: hm-courts-service
 
 nations:
+  - england
+  - wales
 
 keywords:
   - tribunals
