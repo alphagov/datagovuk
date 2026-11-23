@@ -14,6 +14,8 @@ page-last-reviewed: "2026-03-24"
 visualisation-data:
 
 formats:
+  - csv
+  - txt
 
 access-methods:
   - download

@@ -14,6 +14,9 @@ visualisation-data:
 formats:
 
 access-methods:
+  - download
+  - map-layer
+  - web-service
 
 topic: environment
 

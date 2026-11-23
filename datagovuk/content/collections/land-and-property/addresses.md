@@ -21,7 +21,7 @@ access-methods:
   - download
   - api
 
-topic: government-reference-data
+topic: mapping
 
 organisations:
   - slug: ordnance-survey

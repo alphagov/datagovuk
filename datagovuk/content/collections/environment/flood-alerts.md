@@ -16,7 +16,7 @@ visualisation-data: flood-alerts/flood-alerts-2011-2025.json
 formats:
 
 access-methods:
-  - map-layer
+  - web-service
 
 topic: environment
 

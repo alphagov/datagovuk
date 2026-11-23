@@ -19,7 +19,7 @@ formats:
 access-methods:
   - download
 
-topic: government-spending
+topic: government
 
 organisations:
   - slug: department-for-communities-and-local-government

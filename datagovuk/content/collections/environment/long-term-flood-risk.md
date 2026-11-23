@@ -22,10 +22,14 @@ visualisation-data:
 formats:
 
 access-methods:
+  - web-service
+  - download
 
 topic: environment
 
 organisations:
+  - slug: environment-agency
+  - slug: natural-resources-wales
 
 nations:
   - england

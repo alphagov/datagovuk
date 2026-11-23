@@ -12,6 +12,7 @@ page-last-reviewed: "2026-06-15"
 visualisation-data: "mot-test-results/mot-tests-and-failures.json"
 
 formats:
+  - csv
 
 access-methods:
   - download

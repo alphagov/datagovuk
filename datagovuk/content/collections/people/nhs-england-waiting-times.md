@@ -22,8 +22,12 @@ page-last-reviewed: "2026-11-19"
 visualisation-data: "health-waiting-times/a-and-e-waiting-times-upto-sept26.json"
 
 formats:
+  - pdf
+  - xlsx
+  - xls
 
 access-methods:
+  - download
 
 topic: health
 
@@ -31,6 +35,7 @@ organisations:
   - slug: nhs-england
 
 nations:
+  - england
 
 keywords:
   - referral to treatment

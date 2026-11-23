@@ -12,8 +12,10 @@ page-last-reviewed: "2026-03-24"
 visualisation-data: social-mobility/unemployment-by-socio-ecomomic-background.json
 
 formats:
+  - csv
 
 access-methods:
+  - download
 
 topic: society
 
