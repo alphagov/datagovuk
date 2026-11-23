@@ -48,7 +48,7 @@ dev = [
   "django-debug-toolbar==8.0.0",
   "django-extensions==4.1",
   "django-stubs[compatible-mypy]==6.1.2",
-  "djlint==1.49.9",
+  "djlint==1.49.10",
   "filelock==4.2.9",
   "ipdb==0.13.13",
   "mypy==2.4.1",
