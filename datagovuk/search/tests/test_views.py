@@ -56,12 +56,30 @@ class TestSearchView:
         search_url,
         opensearch_documents,
     ):
-        opensearch_documents([DatasetFactory()])
+        publisher = OrganisationFactory(slug="ordnance-survey", name="Ordnance Survey")
+        opensearch_documents([DatasetFactory(title="Rail data", organisations=[publisher])])
 
         response = client.get(search_url, {"query": "rail", "publisher": "ordnance-survey", "page": "2"})
 
         assert response.context_data["selected_filters"] == [
             {"group": "Publisher", "label": "Ordnance Survey", "url": "?query=rail"},
+        ]
+
+    def test_get_groups_open_government_licence_and_no_links_in_more_filters(
+        self,
+        client,
+        search_url,
+        opensearch_documents,
+    ):
+        opensearch_documents([DatasetFactory(licence={"slug": "uk-ogl", "title": "Open Government Licence"})])
+
+        response = client.get(search_url, {"query": ""})
+
+        group = next(g for g in response.context_data["facet_groups"] if g["key"] == "other")
+        assert group["label"] == "More filters"
+        assert [(f["label"], f["url"]) for f in group["facets"]] == [
+            ("Open Government Licence", "?query=&open_government_licence_only=on"),
+            ("Datasets with no links", "?query=&include_datasets_with_no_links=on"),
         ]
 
     def test_get_without_selected_facets_has_no_selected_filters(self, client, search_url, opensearch_documents):
