@@ -21,7 +21,9 @@
       {%- if facet.selected %}<span class="govuk-visually-hidden">(selected, remove filter)</span>
     {% endif -%}
   </a>
-  {% if not facet.selected %}<span class="datagovuk-search-facets__count">{{ facet.count|intcomma }}</span>{% endif %}
+  {% if not facet.selected and facet.count is not none %}
+    <span class="datagovuk-search-facets__count">{{ facet.count|intcomma }}</span>
+  {% endif %}
 </li>
 {%- endmacro %}
 
@@ -104,23 +106,6 @@
 
     <div class="govuk-grid-column-two-thirds datagovuk-grid-column">
       {% if search_made %}
-        {% if debug_show_facets %}
-          {{ govukButton({
-            "text": "Show facets",
-            "type": "button",
-            "classes": "datagovuk-button datagovuk-button--secondary datagovuk-visibility-toggle govuk-!-margin-top-6",
-            "attributes": {
-              "aria-controls": "datagovuk-facets",
-              "data-hide-text": "Hide facets"
-            }
-          }) }}
-          <div id="datagovuk-facets">
-            <h2 class="govuk-heading-m datagovuk-heading-m">Facets (debug)</h2>
-            <pre>
-              {{ directory_search.facets|tojson(indent=2) }}
-            </pre>
-          </div>
-        {% endif %}
         {% if collection_search.total > 0 %}
           <h2 class="govuk-heading-m datagovuk-heading-m">Curated data</h2>
           <p class="govuk-body datagovuk-body">Selected by the National Data Library team</p>
