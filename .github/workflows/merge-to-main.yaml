@@ -27,18 +27,6 @@ jobs:
       buildType: build_push
       gitRef: ${{ github.sha }}
 
-  # Push image to ECR (and by side effect automatically deploy to integration env)
-  push-to-ecr:
-    needs:
-      - build-image
-    uses: ./.github/workflows/push-to-ecr.yaml
-    with:
-      image_sha: ${{ github.sha }}
-    secrets: inherit
-    permissions:
-      id-token: write
-      contents: read
-
   # Automatically deploy to EKS integration env
   create-eks-integration-pr:
     uses: ./.github/workflows/create-integration-pr.yaml
@@ -52,7 +40,6 @@ jobs:
     needs:
       - build-image
       - create-eks-integration-pr
-      - push-to-ecr
     steps:
       - name: Notify Slack if failure on main
         if: ${{ failure() }}
