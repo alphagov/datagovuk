@@ -9,6 +9,8 @@ from opensearchpy.helpers.faceted_search import Facet, FacetedResponse, FacetedS
 from opensearchpy.helpers.query import Terms
 from pydantic import BaseModel, Field, model_validator
 
+from .constants import FormatChoices
+
 
 class Organisation(BaseModel):
     uuid: str
@@ -213,6 +215,8 @@ class ReverseNestedTermsFacet(TermsFacet):
     def get_aggregation(self):
         agg = super().get_aggregation()
         agg.bucket("parent_docs", "reverse_nested")
+        # Buckets default to ordering by nested doc count, which isn't the count we show
+        agg.order = {"parent_docs": "desc"}
         return agg
 
     def get_metric(self, bucket):
@@ -272,7 +276,11 @@ def _get_directory_facets(response):
         "publisher": [
             {"value": value, "label": label, "count": count} for (value, label), count, _ in facets.publisher
         ],
-        "format": [{"value": value, "label": value, "count": count} for value, count, _ in facets.format],
+        "format": [
+            {"value": value, "label": value, "count": count}
+            for value, count, _ in facets.format
+            if value and value.upper() in FormatChoices.values
+        ],
         "open_government_licence_only": [
             {"value": value, "label": "Open Government Licence", "count": count}
             for value, count, _ in facets.open_government_licence_only
