@@ -1,4 +1,4 @@
-name: Merge to main (EKS and ECR)
+name: Merge to main - EKS
 
 on:
   push:
