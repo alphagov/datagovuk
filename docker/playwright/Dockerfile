@@ -1,8 +1,11 @@
-FROM ghcr.io/astral-sh/uv:python3.14-bookworm-slim
+FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim
 
 WORKDIR /app
 
 COPY pyproject.toml uv.lock ./
+
+RUN apt update
+RUN apt install libatomic1
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install --system $(grep -i '"playwright' pyproject.toml | tr -d '",')
