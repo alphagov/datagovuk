@@ -62,7 +62,7 @@ class TestSearchView:
         response = client.get(search_url, {"query": "rail", "publisher": "ordnance-survey", "page": "2"})
 
         assert response.context_data["selected_filters"] == [
-            {"group": "Publisher", "label": "Ordnance Survey", "url": "?query=rail"},
+            {"key": "publisher", "group": "Publisher", "label": "Ordnance Survey", "url": "?query=rail"},
         ]
 
     def test_get_groups_open_government_licence_and_no_links_in_more_filters(
@@ -81,6 +81,19 @@ class TestSearchView:
             ("Open Government Licence", "?query=&open_government_licence_only=on"),
             ("Datasets with no links", "?query=&include_datasets_with_no_links=on"),
         ]
+
+    def test_get_with_lowercase_facet_format_filters_directory_results(self, client, search_url, opensearch_documents):
+        opensearch_documents(
+            [
+                DatasetFactory(slug="csv-data", resources=[ResourceFactory(format="CSV")]),
+                DatasetFactory(slug="pdf-data", resources=[ResourceFactory(format="PDF")]),
+            ],
+        )
+
+        response = client.get(search_url, {"query": "", "format": "csv"})
+
+        assert response.status_code == HTTPStatus.OK
+        assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["csv-data"]
 
     def test_get_without_selected_facets_has_no_selected_filters(self, client, search_url, opensearch_documents):
         opensearch_documents([DatasetFactory()])

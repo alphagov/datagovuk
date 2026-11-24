@@ -243,6 +243,10 @@
 .datagovuk-search-facets__link {
   text-decoration: none;
 
+  &--uppercase {
+    text-transform: uppercase;
+  }
+
   // Not while focused: the GOV.UK focus style (yellow background, black bar underneath) replaces the underline
   &:hover:not(:focus) {
     text-decoration: underline;
@@ -314,6 +318,10 @@
 }
 
 // A cross drawn with two rotated bars rather than a text glyph, so it is centred exactly whatever the font metrics.
+.datagovuk-selected-filters__pill--uppercase {
+  text-transform: uppercase;
+}
+
 .datagovuk-selected-filters__remove {
   position: relative;
   flex-shrink: 0;

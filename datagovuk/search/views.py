@@ -64,7 +64,7 @@ class SearchView(GETFormView):
             search_query=query,
             facet_groups=facet_groups,
             selected_filters=[
-                {"group": group["label"], "label": facet["label"], "url": facet["url"]}
+                {"key": group["key"], "group": group["label"], "label": facet["label"], "url": facet["url"]}
                 for group in facet_groups
                 for facet in group["facets"]
                 if facet["selected"]

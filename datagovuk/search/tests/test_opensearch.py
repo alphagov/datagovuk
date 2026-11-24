@@ -546,6 +546,40 @@ def test_search_directory_returns_publisher_facet_with_labels_and_counts(opensea
     ]
 
 
+def test_search_directory_omits_blank_formats_from_format_facet(opensearch_documents):
+    opensearch_documents(
+        [DatasetFactory(resources=[ResourceFactory(format=""), ResourceFactory(format="CSV")])],
+    )
+
+    result = search_directory("")
+
+    assert [facet["value"] for facet in result.facets["format"]] == ["csv"]
+
+
+def test_search_directory_only_offers_known_formats_in_format_facet(opensearch_documents):
+    opensearch_documents(
+        [DatasetFactory(resources=[ResourceFactory(format="CSV"), ResourceFactory(format="not a real format")])],
+    )
+
+    result = search_directory("")
+
+    assert [facet["value"] for facet in result.facets["format"]] == ["csv"]
+
+
+def test_search_directory_orders_format_facet_by_dataset_count_not_resource_count(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(resources=[ResourceFactory(format="CSV") for _ in range(5)]),
+            DatasetFactory(resources=[ResourceFactory(format="PDF")]),
+            DatasetFactory(resources=[ResourceFactory(format="PDF")]),
+        ],
+    )
+
+    result = search_directory("")
+
+    assert [(facet["value"], facet["count"]) for facet in result.facets["format"]] == [("pdf", 2), ("csv", 1)]
+
+
 def test_search_directory_returns_format_facet_counting_datasets_not_resources(opensearch_documents):
     opensearch_documents(
         [
