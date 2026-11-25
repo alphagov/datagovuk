@@ -79,7 +79,7 @@ class TestSearchView:
         assert group["label"] == "More filters"
         assert [(f["label"], f["url"]) for f in group["facets"]] == [
             ("Open Government Licence", "?query=&open_government_licence_only=on"),
-            ("Datasets with no links", "?query=&include_datasets_with_no_links=on"),
+            ("Include datasets with no links", "?query=&include_datasets_with_no_links=on"),
         ]
 
     def test_get_with_lowercase_facet_format_filters_directory_results(self, client, search_url, opensearch_documents):
@@ -232,6 +232,22 @@ class TestSearchView:
 
         assert response.status_code == HTTPStatus.OK
         assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["ogl"]
+
+    def test_get_without_include_datasets_with_no_links_excludes_them(self, client, search_url, opensearch_documents):
+        opensearch_documents([DatasetFactory(slug="with-links"), DatasetFactory(slug="no-links", resources=[])])
+
+        response = client.get(search_url, {"query": ""})
+
+        assert response.status_code == HTTPStatus.OK
+        assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["with-links"]
+
+    def test_get_with_include_datasets_with_no_links_includes_them(self, client, search_url, opensearch_documents):
+        opensearch_documents([DatasetFactory(slug="with-links"), DatasetFactory(slug="no-links", resources=[])])
+
+        response = client.get(search_url, {"include_datasets_with_no_links": "on"})
+
+        assert response.status_code == HTTPStatus.OK
+        assert sorted(doc.slug for doc in response.context_data["directory_search"].docs) == ["no-links", "with-links"]
 
     def test_get_with_query_and_filters_combines_them(self, client, search_url, opensearch_documents):
         opensearch_documents(
