@@ -149,6 +149,13 @@
   }
 }
 
+// Same size as .datagovuk-body-s
+.datagovuk-button--small {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 18px;
+}
+
 .datagovuk-button--secondary {
   background-color: $datagovuk-light-grey;
   color: $datagovuk-black;
@@ -222,6 +229,10 @@
 
   .datagovuk-button {
     font-size: 22px;
+  }
+
+  .datagovuk-button--small {
+    font-size: 20px;
   }
 
   .datagovuk-list {
