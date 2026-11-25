@@ -29,7 +29,7 @@ services:
 
   opensearch:
     # We lock to a specific git commit hash of datagovuk-indexer; see https://github.com/alphagov/datagovuk-indexer#publishing-a-pre-populated-opensearch-image
-    image: ghcr.io/alphagov/datagovuk-indexer-opensearch:87354ef-2026-10-23
+    image: ghcr.io/alphagov/datagovuk-indexer-opensearch:07bb842-2026-10-23
     healthcheck:
       test: ["CMD-SHELL", "curl -s -f http://localhost:9200/ || exit 1"]
       interval: 10s
