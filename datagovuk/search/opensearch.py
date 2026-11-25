@@ -241,13 +241,34 @@ class BooleanFilterFacet(Facet):
         return [("on", data["buckets"]["on"]["doc_count"], bool(filter_values))]
 
 
+class BooleanIncludeFacet(BooleanFilterFacet):
+    """
+    Facet with a single "on" value, which excludes documents matching `query` unless selected.
+
+    The count is of documents matching `query`, i.e. those which selecting it would include.
+    """
+
+    def add_filter(self, filter_values):
+        if any(filter_values):
+            return None
+        return ~self._query
+
+    def get_values(self, data, filter_values):
+        return [("on", data["buckets"]["on"]["doc_count"], any(filter_values))]
+
+
 class DirectorySearch(FacetedSearch):
     facets = {
         "topic": MultiTermsFacet(fields=["topic_slug", "topic.keyword"], size=10000),
         "publisher": MultiTermsFacet(fields=["organisations.slug", "organisations.name.keyword"], size=10000),
         "format": NestedFacet("resources", ReverseNestedTermsFacet(field="resources.format", size=10000)),
         "open_government_licence_only": BooleanFilterFacet(Q("term", licence__slug="uk-ogl")),
+        "include_datasets_with_no_links": BooleanIncludeFacet(Q("term", resources_count=0)),
     }
+
+    def __init__(self, query=None, filters=None):
+        # Always add the include_datasets_with_no_links filter, so that they are excluded unless selected
+        super().__init__(query, filters={"include_datasets_with_no_links": False, **(filters or {})})
 
     def search(self):
         search = Search(using=get_opensearch_client(), index=settings.OPENSEARCH_DATASETS_INDEX)
@@ -284,6 +305,10 @@ def _get_directory_facets(response):
         "open_government_licence_only": [
             {"value": value, "label": "Open Government Licence", "count": count}
             for value, count, _ in facets.open_government_licence_only
+        ],
+        "include_datasets_with_no_links": [
+            {"value": value, "label": "Include datasets with no links", "count": count}
+            for value, count, _ in facets.include_datasets_with_no_links
         ],
     }
 

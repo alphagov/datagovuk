@@ -37,7 +37,8 @@ class DatasetFactory(factory.DictFactory):
     is_harvested = False
     created_at = "2024-01-02T03:04:05+00:00"
     updated_at = "2025-06-07T08:09:10+00:00"
-    resources = factory.LazyFunction(list)
+    resources = factory.LazyFunction(lambda: [ResourceFactory()])
+    resources_count = factory.LazyAttribute(lambda o: len(o.resources))
 
 
 class CollectionFactory(factory.DictFactory):

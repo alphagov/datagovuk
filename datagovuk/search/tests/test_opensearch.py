@@ -386,7 +386,13 @@ def test_search_directory_limits_documents_but_not_total(opensearch_documents):
     [
         None,
         {},
-        {"topic": "", "publisher": "", "format": "", "open_government_licence_only": False},
+        {
+            "topic": "",
+            "publisher": "",
+            "format": "",
+            "open_government_licence_only": False,
+            "include_datasets_with_no_links": False,
+        },
     ],
 )
 def test_search_directory_without_filter_values_matches_all(filters, opensearch_documents):
@@ -505,9 +511,26 @@ def test_search_directory_with_filters_total_excludes_filtered_documents(opensea
 def test_search_directory_ignores_filters_which_are_not_facets(opensearch_documents):
     opensearch_documents([DatasetFactory(slug="first"), DatasetFactory(slug="second")])
 
-    result = search_directory("", {"include_datasets_with_no_links": True})
+    result = search_directory("", {"not_a_facet": "value"})
 
     assert sorted(_slugs(result.docs)) == ["first", "second"]
+
+
+def test_search_directory_excludes_datasets_with_no_links_by_default(opensearch_documents):
+    opensearch_documents([DatasetFactory(slug="with-links"), DatasetFactory(slug="no-links", resources=[])])
+
+    result = search_directory("")
+
+    assert _slugs(result.docs) == ["with-links"]
+    assert result.total == 1
+
+
+def test_search_directory_with_include_datasets_with_no_links_returns_all(opensearch_documents):
+    opensearch_documents([DatasetFactory(slug="with-links"), DatasetFactory(slug="no-links", resources=[])])
+
+    result = search_directory("", {"include_datasets_with_no_links": True})
+
+    assert sorted(_slugs(result.docs)) == ["no-links", "with-links"]
 
 
 def test_search_directory_returns_topic_facet_with_labels_and_counts(opensearch_documents):
@@ -610,6 +633,33 @@ def test_search_directory_returns_open_government_licence_facet_count(opensearch
     assert result.facets["open_government_licence_only"] == [
         {"value": "on", "label": "Open Government Licence", "count": 1},
     ]
+
+
+@pytest.mark.parametrize("include_datasets_with_no_links", [False, True])
+def test_search_directory_returns_include_datasets_with_no_links_facet_count(
+    include_datasets_with_no_links,
+    opensearch_documents,
+):
+    opensearch_documents([DatasetFactory(), DatasetFactory(resources=[]), DatasetFactory(resources=[])])
+
+    result = search_directory("", {"include_datasets_with_no_links": include_datasets_with_no_links})
+
+    assert result.facets["include_datasets_with_no_links"] == [
+        {"value": "on", "label": "Include datasets with no links", "count": 2},
+    ]
+
+
+def test_search_directory_excludes_datasets_with_no_links_from_other_facet_counts(opensearch_documents):
+    opensearch_documents(
+        [
+            DatasetFactory(topic_slug="transport", topic="Transport"),
+            DatasetFactory(topic_slug="health", topic="Health", resources=[]),
+        ],
+    )
+
+    result = search_directory("")
+
+    assert result.facets["topic"] == [{"value": "transport", "label": "Transport", "count": 1}]
 
 
 def test_search_directory_facets_are_narrowed_by_query(opensearch_documents):
