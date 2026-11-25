@@ -251,7 +251,7 @@ class DirectorySearch(FacetedSearch):
 
     def search(self):
         search = Search(using=get_opensearch_client(), index=settings.OPENSEARCH_DATASETS_INDEX)
-        return search.response_class(FacetedResponse).extra(size=20)
+        return search.response_class(FacetedResponse).extra(size=20, track_total_hits=True)
 
     def query(self, search, query):
         if query and query.strip():
@@ -288,9 +288,9 @@ def _get_directory_facets(response):
     }
 
 
-def search_directory(query, filters=None):
+def search_directory(query, filters=None, start=0, rows=20):
     facet_filters = {name: value for name, value in (filters or {}).items() if name in DirectorySearch.facets and value}
-    response = DirectorySearch(query, filters=facet_filters).execute()
+    response = DirectorySearch(query, filters=facet_filters)[start : start + rows].execute()
     raw_response = response.to_dict()
     documents = [Dataset(**hit["_source"]) for hit in raw_response["hits"]["hits"]]
     return DirectorySearchResult(response=raw_response, docs=documents, facets=_get_directory_facets(response))

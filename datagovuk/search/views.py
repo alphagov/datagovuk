@@ -1,12 +1,15 @@
+import math
 from urllib.parse import urlencode
 
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.views.generic import TemplateView
 
-from datagovuk.core.views import GETFormView
+from datagovuk.core.views import GETFormView, PaginationMixin
 
 from .forms import SearchForm
-from .opensearch import get_directory_document_by_slug, search_collections, search_directory
+from .opensearch import SearchResult, get_directory_document_by_slug, search_collections, search_directory
+
+EMPTY_RESPONSE = {"hits": {"total": {"value": 0}, "hits": []}}
 
 # Each group is (key, heading, facet names). A facet's name is also the query string parameter it sets.
 FACET_GROUPS = [
@@ -54,14 +57,33 @@ def _build_facet_groups(facets, params):
     return facet_groups
 
 
-class SearchView(GETFormView):
+class SearchView(GETFormView, PaginationMixin):
     template_name = "search/search.jinja"
     form_class = SearchForm
+    rows_per_page = 20
+    # OpenSearch refuses to return results beyond from + size = index.max_result_window (10,000 by default).
+    # This must not exceed that index setting, which needs raising above the number of datasets.
+    max_result_window = 100_000
 
     def form_valid(self, form):
         query = form.cleaned_data.pop("query", "")
-        directory_search = search_directory(query, filters=form.cleaned_data)
+        page = self._get_page()
+        directory_search = search_directory(
+            query,
+            filters=form.cleaned_data,
+            start=(page - 1) * self.rows_per_page,
+            rows=self.rows_per_page,
+        )
+        total = min(directory_search.total, self.max_result_window)
+        last_page = max(1, math.ceil(total / self.rows_per_page))
+        if page > last_page:
+            params = self.request.GET.copy()
+            params["page"] = last_page
+            return HttpResponseRedirect(f"{self.request.path}?{params.urlencode()}")
+
         facet_groups = _build_facet_groups({**directory_search.facets, **STATIC_FACETS}, self.request.GET.dict())
+        # Curated collections are only shown on the first page of results
+        collection_search = search_collections(query) if page == 1 else SearchResult(response=EMPTY_RESPONSE, docs=[])
         context = self.get_context_data(
             search_made=True,
             search_query=query,
@@ -73,9 +95,21 @@ class SearchView(GETFormView):
                 if facet["selected"]
             ],
             directory_search=directory_search,
-            collection_search=search_collections(query),
+            collection_search=collection_search,
+            pagination=self.get_govuk_pagination(
+                page=page,
+                rows_per_page=self.rows_per_page,
+                total_results=total,
+            ),
         )
         return self.render_to_response(context)
+
+    def _get_page(self):
+        try:
+            page = int(self.request.GET.get("page", 1))
+        except ValueError:
+            page = 1
+        return max(1, min(page, self.max_result_window // self.rows_per_page))
 
 
 class DatasetView(TemplateView):
