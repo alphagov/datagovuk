@@ -10,15 +10,16 @@
 {% from "govuk_frontend_jinja/components/checkboxes/macro.html" import govukCheckboxes -%}
 {% from "govuk_frontend_jinja/components/pagination/macro.html" import govukPagination -%}
 
-{% macro facet_item(facet, uppercase=false) -%}
+{% macro facet_item(facet, group_key) -%}
+  {% set link_modifier = " datagovuk-search-facets__link--uppercase" if group_key == "format" else "" %}
   <li class="govuk-body datagovuk-body-s datagovuk-search-facets__item{{ ' datagovuk-search-facets__item--selected' if facet.selected else '' }}"
       data-facet-label="{{ facet.label }}">
     <a href="{{ facet.url }}"
-       class="govuk-link datagovuk-link datagovuk-search-facets__link{{ ' datagovuk-search-facets__link--uppercase' if uppercase else '' }}"
+       class="govuk-link datagovuk-link datagovuk-search-facets__link{{ link_modifier }}"
        {% if facet.selected %}aria-current="true"{% endif %}>
       {#- No whitespace inside the link, or it gets underlined as part of the link -#}
       {{- facet.label -}}
-      {%- if facet.selected %}<span class="govuk-visually-hidden">(selected, remove filter)</span>
+      {%- if facet.selected %}<span class="govuk-visually-hidden">(remove filter)</span>
     {% endif -%}
   </a>
   {% if not facet.selected and facet.count is not none %}
@@ -28,14 +29,12 @@
 {%- endmacro %}
 
 {% block search_main %}
-  {# Groups whose values are codes (csv, geojson) rather than words, shown in capitals #}
-  {% set uppercase_groups = ["format"] %}
   {% if selected_filters %}
     <ul class="datagovuk-selected-filters" aria-label="Selected filters">
       {% for filter in selected_filters %}
         <li>
           <a href="{{ filter.url }}"
-             class="datagovuk-body-s datagovuk-selected-filters__pill{{ ' datagovuk-selected-filters__pill--uppercase' if filter.key in uppercase_groups else '' }}">
+             class="datagovuk-body-s datagovuk-selected-filters__pill{{ ' datagovuk-selected-filters__pill--uppercase' if filter.key == "format" else '' }}">
             {{- filter.label -}}
             <span class="govuk-visually-hidden">(remove filter)</span>
             <span class="datagovuk-selected-filters__remove" aria-hidden="true"></span>
@@ -53,11 +52,10 @@
               aria-controls="datagovuk-search-filters-panel"
               aria-expanded="true">Filters</button>
       <div id="datagovuk-search-filters-panel" class="datagovuk-search-filters__panel" data-subnav-panel>
+        <h2 class="govuk-visually-hidden">Filters</h2>
         {% for facet_group in facet_groups %}
           <div class="datagovuk-search-facets-group" data-facet-group>
-            {% if facet_group.label %}
-              <h3 class="govuk-body datagovuk-body-s datagovuk-search-facets-group__heading">{{ facet_group.label }}</h3>
-            {% endif %}
+            <h3 class="govuk-body datagovuk-body-s datagovuk-search-facets-group__heading">{{ facet_group.label }}</h3>
             {% if facet_group.facets | length > 4 %}
               {# Hidden until facet-search.js reveals it, so there is no dead input without JavaScript #}
               {% set search_id = "facets-search-" ~ facet_group.key %}
@@ -80,13 +78,13 @@
                  role="group"
                  {% if facet_group.label %}aria-label="{{ facet_group.label }}"{% endif %}>
               <ul class="datagovuk-search-facets">
-                {% for facet in facet_group.facets[:4] %}{{ facet_item(facet, facet_group.key in uppercase_groups) }}{% endfor %}
+                {% for facet in facet_group.facets[:4] %}{{ facet_item(facet, facet_group.key) }}{% endfor %}
               </ul>
               {% if facet_group.facets | length > 4 %}
                 {# The toggle sets display: block on this div, so the list inside keeps its own display: flex #}
                 <div id="{{ rest_id }}">
                   <ul class="datagovuk-search-facets">
-                    {% for facet in facet_group.facets[4:] %}{{ facet_item(facet, facet_group.key in uppercase_groups) }}{% endfor %}
+                    {% for facet in facet_group.facets[4:] %}{{ facet_item(facet, facet_group.key) }}{% endfor %}
                   </ul>
                 </div>
               {% endif %}
