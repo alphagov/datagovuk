@@ -27,22 +27,25 @@ def _build_facet_groups(facets, params):
     Turn the directory search facets into groups of links. Selecting a facet links to the current search with its
     parameter set, a selected facet links to the current search with it removed. Changing a filter resets the page.
     """
-    base = {key: value for key, value in params.items() if key != "page"}
+    base = params.copy()
+    base.pop("page", None)
     facet_groups = []
     for key, label, names in FACET_GROUPS:
         group_facets = []
         for name in names:
             for facet in facets.get(name, []):
                 is_selected = params.get(name) == facet["value"]
-                link_params = {k: v for k, v in base.items() if k != name}
-                if not is_selected:
+                link_params = base.copy()
+                if is_selected:
+                    link_params.pop(name)
+                else:
                     link_params[name] = facet["value"]
                 group_facets.append(
                     {
                         "label": facet["label"],
                         "count": facet["count"],
                         "selected": is_selected,
-                        "url": f"?{urlencode(link_params)}" if link_params else "?",
+                        "url": "?" + urlencode(link_params),
                     },
                 )
         if group_facets:
@@ -64,7 +67,7 @@ class SearchView(GETFormView):
             search_query=query,
             facet_groups=facet_groups,
             selected_filters=[
-                {"key": group["key"], "group": group["label"], "label": facet["label"], "url": facet["url"]}
+                {"key": group["key"], "label": facet["label"], "url": facet["url"]}
                 for group in facet_groups
                 for facet in group["facets"]
                 if facet["selected"]
