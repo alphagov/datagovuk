@@ -14,35 +14,35 @@
   gap: 12px;
 }
 
-.datagovuk-search-bar .govuk-input {
+.datagovuk-search-bar__input-wrapper {
+  position: relative;
+  flex-grow: 1;
+
+  &::before {
+    @include datagovuk-search-icon($datagovuk-grey);
+    left: 14px;
+    top: 14px;
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.datagovuk-search-bar__input {
   padding-left: 50px;
   border-width: 2px;
 }
 
-.datagovuk-search-bar .datagovuk-search-input-wrapper {
-  position: relative;
-  flex-grow: 1;
-}
-
-.datagovuk-search-bar .datagovuk-search-input-wrapper::before {
-  @include datagovuk-search-icon($datagovuk-grey);
-  left: 14px;
-  top: 14px;
-  width: 26px;
-  height: 26px;
-}
-
-.datagovuk-search-bar .govuk-button {
+.datagovuk-search-bar__button {
   width: 52px;
   height: 52px;
-}
 
-.datagovuk-search-bar .govuk-button::before {
-  @include datagovuk-search-icon($datagovuk-black);
-  left: 13px;
-  top: 13px;
-  width: 26px;
-  height: 26px;
+  &::before {
+    @include datagovuk-search-icon($datagovuk-black);
+    left: 13px;
+    top: 13px;
+    width: 26px;
+    height: 26px;
+  }
 }
 
 .datagovuk-search__results-header {
@@ -108,7 +108,7 @@
     flex-grow: 1;
   }
 
-  .datagovuk-search-bar .govuk-input {
+  .datagovuk-search-bar__input {
     flex-grow: 1;
   }
 }

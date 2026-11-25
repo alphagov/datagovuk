@@ -41,8 +41,9 @@
         <div class="govuk-grid-column-full">
           <div class="datagovuk-search-bar">
             {# djlint:off #}
-            <div class="datagovuk-search-input-wrapper">
+            <div class="datagovuk-search-bar__input-wrapper">
             {{ govukInput({
+                "classes": "datagovuk-search-bar__input",
                 "label": {
                 "text": "Search directory",
                 "classes":"govuk-visually-hidden"
@@ -59,7 +60,7 @@
             </div>
             {{ govukButton({
                 "html": "<span class=\"govuk-visually-hidden\">Search</span>",
-                "classes": "datagovuk-button datagovuk-button--secondary"
+                "classes": "datagovuk-button datagovuk-button--secondary datagovuk-search-bar__button"
             })}}
             </div>
         </div>
