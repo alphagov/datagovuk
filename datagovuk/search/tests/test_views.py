@@ -62,7 +62,7 @@ class TestSearchView:
         response = client.get(search_url, {"query": "rail", "publisher": "ordnance-survey", "page": "2"})
 
         assert response.context_data["selected_filters"] == [
-            {"key": "publisher", "group": "Publisher", "label": "Ordnance Survey", "url": "?query=rail"},
+            {"key": "publisher", "label": "Ordnance Survey", "url": "?query=rail"},
         ]
 
     def test_get_groups_open_government_licence_and_no_links_in_more_filters(
