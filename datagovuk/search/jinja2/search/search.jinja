@@ -63,7 +63,7 @@
                 <label class="govuk-visually-hidden" for="{{ search_id }}">Search {{ facet_group.label }}</label>
                 <input type="search"
                        id="{{ search_id }}"
-                       class="govuk-input datagovuk-facet-search__input"
+                       class="govuk-input datagovuk-body-s datagovuk-facet-search__input"
                        placeholder="Search"
                        autocomplete="off"
                        spellcheck="false" />
@@ -93,7 +93,7 @@
               {{ govukButton({
                             "text": "Show more",
                             "type": "button",
-                            "classes": "datagovuk-button datagovuk-button--secondary datagovuk-body-s datagovuk-search-facets__toggle datagovuk-visibility-toggle",
+                            "classes": "datagovuk-button datagovuk-button--secondary datagovuk-button--small datagovuk-search-facets__toggle datagovuk-visibility-toggle",
                             "attributes": {
                             "aria-controls": rest_id,
                             "data-hide-text": "Show less"
