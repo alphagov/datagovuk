@@ -1,5 +1,6 @@
 ---
 title: Legislation
+
 websites:
   - url: https://www.legislation.gov.uk/
     link-text: Search legislation
@@ -7,10 +8,34 @@ api:
   - url: https://legislation.github.io/data-documentation/api/overview.html
     link-text: Legislation API documentation
 dataset:
-page-last-updated: "2026-07-28"
+
+page-last-reviewed: "2026-07-28"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - xml
+
+access-methods:
+  - api
+  - download
+
+topic: government
+
+organisations:
+  - slug: the-national-archives
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - acts of parliament
+  - secondary legislation
+  - law
+
 ---
 
 Find primary and secondary UK legislation dating from 1267 to the present day, updated as new laws are enacted.

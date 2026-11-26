@@ -1,9 +1,11 @@
 @import 'footer';
+@import 'grid';
 @import 'cookie-banner';
 @import 'table';
 @import 'forms';
 @import 'pagination';
 @import 'summary-list';
+@import 'skip-link';
 
 /* inter-regular - latin */
 @font-face {
@@ -13,6 +15,7 @@
   font-weight: 400;
   src: url(static('fonts/inter-v20-latin-regular.woff2')) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
+
 /* inter-600 - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
@@ -21,6 +24,7 @@
   font-weight: 600;
   src: url(static('fonts/inter-v20-latin-600.woff2')) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
+
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: 'Libre Baskerville';
@@ -42,6 +46,7 @@
 }
 
 .datagovuk-body,
+.datagovuk-body-s,
 .datagovuk-heading-s,
 .datagovuk-heading-m,
 .datagovuk-heading-l,
@@ -53,7 +58,12 @@
 }
 
 .datagovuk-link {
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.datagovuk-link:focus {
+  background: $datagovuk-yellow;
+  color: $datagovuk-black;
 }
 
 .datagovuk-heading-xl {
@@ -86,6 +96,11 @@
   line-height: 140%;
 }
 
+.datagovuk-body-s {
+  font-size: 18px;
+  line-height: 140%;
+}
+
 .datagovuk-link:link,
 .datagovuk-link:visited {
   color: $datagovuk-black;
@@ -111,15 +126,19 @@
   &:focus:not(:active):not(:hover) {
     box-shadow: none;
     outline: 2px solid $datagovuk-dark-green;
+    background: $datagovuk-yellow;
+
+    .datagovuk-button__icon {
+      display: none;
+    }
+
+    .datagovuk-button__icon--focus {
+      display: inline-block;
+    }
   }
 
-  .datagovuk-button__arrow--focus {
+  .datagovuk-button__icon--focus {
     display: none;
-  }
-
-  &:focus {
-    .datagovuk-button__arrow { display: none; }
-    .datagovuk-button__arrow--focus { display: inline-block; }
   }
 
   .datagovuk-button__content {
@@ -128,6 +147,13 @@
     justify-content: center;
     gap: 8px;
   }
+}
+
+// Same size as .datagovuk-body-s
+.datagovuk-button--small {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 18px;
 }
 
 .datagovuk-button--secondary {
@@ -177,7 +203,7 @@
 
 /* Desktop styling overrides */
 @media (min-width: $desktop-breakpoint) {
-  .datagovuk-heading-xl{
+  .datagovuk-heading-xl {
     font-size: 42px;
   }
 
@@ -197,8 +223,16 @@
     font-size: 22px;
   }
 
+  .datagovuk-body-s {
+    font-size: 20px;
+  }
+
   .datagovuk-button {
     font-size: 22px;
+  }
+
+  .datagovuk-button--small {
+    font-size: 20px;
   }
 
   .datagovuk-list {

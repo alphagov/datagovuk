@@ -1,5 +1,6 @@
 ---
 title: Non-woodland trees
+
 websites:
   - url: https://ncea.maps.arcgis.com/apps/instant/sidebar/index.html?appid=cf571f455b444e588aa94bbd22021cd3
     link-text: Trees outside woodland map
@@ -7,10 +8,32 @@ api:
 dataset:
   url: https://environment.data.gov.uk/dataset/9c41b3c6-2453-44f6-9900-e7821f1a1072
   link-text: "Trees outside woodland: datasets"
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - gdb
+  - zip
+
+access-methods:
+  - download
+  - map-layer
+
+topic: environment
+
+organisations:
+  - slug: department-for-environment-food-and-rural-affairs
+
+nations:
+  - england
+
+keywords:
+  - trees outside woodland
+  - canopy cover
+  - national forest inventory
+
 ---
 
 View a map of England’s trees outside woodlands, which make up 30% of the nation’s tree cover. The map:

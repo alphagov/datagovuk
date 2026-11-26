@@ -23,7 +23,7 @@
       {% endif %}
     </td>
     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
-      {{ resource.last_modified|date("j/n/Y") }}
+      {{ resource.last_updated|date("j/n/Y") }}
     </td>
   </tr>
 {% endmacro %}
@@ -207,7 +207,7 @@
       <div class="govuk-grid-column-two-thirds">
 
         {% with additional_information=doc.additional_information %}
-          {% include "directory/includes/additional_information.jinja" %}
+          {% include "search/includes/additional_information.jinja" %}
         {% endwith %}
       </div>
     </div>
@@ -216,7 +216,7 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
         {% with supporting_documents=doc.docs %}
-          {% include "directory/includes/supporting_documents.jinja" %}
+          {% include "search/includes/supporting_documents.jinja" %}
         {% endwith %}
       </div>
     </div>
@@ -276,7 +276,7 @@
           </p>
         </div>
       </section>
-      {% if not doc.harvested %}
+      {% if not doc.is_harvested %}
         <section class="edit">
           <h2 class="govuk-heading-m datagovuk-heading-m">Edit this dataset</h2>
           <p class="govuk-body datagovuk-body">
@@ -287,8 +287,8 @@
           {{govukButton({
             "html": '''
               Sign in <span class="datagovuk-right-arrow">
-                <img class="datagovuk-button__arrow" src="/assets/images/icons/arrow-black-right.svg" width="20" height="20" alt="">
-                <img class="datagovuk-button__arrow--focus" src="/assets/images/icons/arrow-white-right.svg" width="20" height="20" alt="">
+                <img class="datagovuk-button__arrow datagovuk-button__icon" src="/assets/images/icons/arrow-black-right.svg" width="20" height="20" alt="">
+                <img class="datagovuk-button__arrow datagovuk-button__icon--focus" src="/assets/images/icons/arrow-black-right.svg" width="20" height="20" alt="">
               </span>
             ''',
             "href": ckan_base_url ~ doc.name,

@@ -1,5 +1,6 @@
 ---
 title: Water quality
+
 websites:
   - url: https://environment.data.gov.uk/water-quality
     link-text: Water Quality Explorer
@@ -7,10 +8,31 @@ api:
   - url: https://environment.data.gov.uk/water-quality/api-docs
     link-text: Water Quality Explorer API
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - csv
+
+access-methods:
+  - download
+  - api
+
+topic: environment
+
+organisations:
+  - slug: environment-agency
+
+nations:
+  - england
+
+keywords:
+  - sampling points
+  - rivers
+  - water bodies
+
 ---
 
 Use the Environment Agency’s Water Quality Explorer to access water quality data collected from tens of thousands of sampling points across England. The dataset covers all major water body types including rivers, lakes, ponds, canals, groundwater, and coastal and estuarine waters. The data includes over 72 million observations derived from over 5 million samples collected since the year 2000.

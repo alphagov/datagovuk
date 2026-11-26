@@ -81,6 +81,7 @@ LOCAL_APPS = [
     "datagovuk.core",
     "datagovuk.pages",
     "datagovuk.data_manual",
+    "datagovuk.updates",
     "datagovuk.collections",
     "datagovuk.directory",
     "datagovuk.ckan_redirect",
@@ -121,6 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 MIDDLEWARE = [
     "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "datagovuk.core.middleware.RemoveTrailingSlashMiddleware",
     "datagovuk.core.middleware.BasicAuthMiddleware",
     "datagovuk.core.middleware.CacheControlMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -309,11 +311,19 @@ BASIC_AUTH_USERNAME = env("BASIC_AUTH_USERNAME", default=None)
 BASIC_AUTH_PASSWORD = env("BASIC_AUTH_PASSWORD", default=None)
 BASIC_AUTH_BYPASS = env("BASIC_AUTH_BYPASS", default=None)
 
+# TRAILING SLASHES
+# ------------------------------------------------------------------------------
+# URLs have no trailing slash. RemoveTrailingSlashMiddleware redirects /foo/ to /foo, so
+# Django's opposite behaviour (redirecting /foo to /foo/) must be off.
+# https://docs.djangoproject.com/en/dev/ref/settings/#append-slash
+APPEND_SLASH = False
+
 DATAGOVUK_CONTENT_ROOT = "datagovuk/content/"
 DATAGOVUK_CONTENT_DATA_ROOT = f"{DATAGOVUK_CONTENT_ROOT}data/"
 DATAGOVUK_CONTENT_COLLECTIONS_ROOT = f"{DATAGOVUK_CONTENT_ROOT}collections/"
 DATAGOVUK_CONTENT_DATA_MANUAL_ROOT = f"{DATAGOVUK_CONTENT_ROOT}data-manual/"
 DATAGOVUK_CONTENT_PAGES_ROOT = f"{DATAGOVUK_CONTENT_ROOT}content-pages/"
+DATAGOVUK_CONTENT_UPDATES_ROOT = f"{DATAGOVUK_CONTENT_ROOT}updates/"
 
 DATAGOVUK_GIT_SHA = env("GIT_SHA", default=None)
 

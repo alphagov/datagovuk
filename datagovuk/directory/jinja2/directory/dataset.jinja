@@ -17,7 +17,7 @@
     <td class="govuk-table__cell datagovuk-table__cell datagovuk-table__cell--compact govuk-body datagovuk-body">
       {% if resource.is_csv %}
         <a href="{{ url('directory:preview', kwargs={'dataset_uuid': doc.uuid, 'name': doc.name, 'datafile_uuid': resource.uuid}) }}"
-           class="govuk-link datagovuk-link">Preview</a>
+           class="govuk-link datagovuk-link">Preview<span class="govuk-visually-hidden">{{ " " ~ (resource.name or "Data") }}</span></a>
       {% else %}
         –
       {% endif %}
@@ -287,8 +287,8 @@
           {{govukButton({
             "html": '''
               Sign in <span class="datagovuk-right-arrow">
-                <img class="datagovuk-button__arrow" src="/assets/images/icons/arrow-black-right.svg" width="20" height="20" alt="">
-                <img class="datagovuk-button__arrow--focus" src="/assets/images/icons/arrow-white-right.svg" width="20" height="20" alt="">
+                <img class="datagovuk-button__arrow datagovuk-button__icon" src="/assets/images/icons/arrow-black-right.svg" width="20" height="20" alt="">
+                <img class="datagovuk-button__arrow datagovuk-button__icon--focus" src="/assets/images/icons/arrow-black-right.svg" width="20" height="20" alt="">
               </span>
             ''',
             "href": ckan_base_url ~ doc.name,

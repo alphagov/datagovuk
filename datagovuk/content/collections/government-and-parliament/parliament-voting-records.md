@@ -1,5 +1,6 @@
 ---
 title: Parliament voting records
+
 websites:
   - url: https://votes.parliament.uk/
     link-text: Browse voting records
@@ -11,10 +12,35 @@ api:
 dataset:
   url: https://explore.data.parliament.uk/
   link-text: Parliament data explorer
-page-last-updated: "2026-09-04"
+
+page-last-reviewed: "2026-09-04"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - xml
+  - json
+  - csv
+
+access-methods:
+  - download
+  - api
+
+topic: government
+
+organisations:
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - divisions
+  - house of commons
+  - house of lords
+
 ---
 
 Find out how Members of Parliament and Lords vote on motions and legislation. UK Parliament publishes voting results for the House of Commons (from 2016) and House of Lords (from 1999), showing how each member voted.

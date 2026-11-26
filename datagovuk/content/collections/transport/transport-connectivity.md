@@ -1,5 +1,6 @@
 ---
 title: Transport connectivity
+
 websites:
   - url: https://connectivity-tool-lite.dft.gov.uk/index
     link-text: Connectivity Tool Lite
@@ -9,10 +10,31 @@ websites:
     link-text: Transport connectivity metric
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - ods
+
+access-methods:
+  - download
+
+topic: transport
+
+organisations:
+  - slug: department-for-transport
+
+nations:
+  - england
+  - wales
+
+keywords:
+  - connectivity tool
+  - public transport
+  - connectivity score
+
 ---
 
 Use the Connectivity Tool Lite to see how any location in England and Wales is connected to everyday services by walking, driving, cycling and public transport. Search a map by entering a postcode, street name or coordinates, or by selecting a local authority. You can then see a connectivity score for that area and filter by the different types of transport stops in that area.

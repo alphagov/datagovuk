@@ -1,5 +1,6 @@
 ---
 title: Courts management
+
 websites:
   - url: https://www.gov.uk/government/collections/hmcts-management-information
     link-text: Courts management information
@@ -7,10 +8,34 @@ websites:
     link-text: Courts management information – modernised services
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - xlsx
+  - ods
+
+access-methods:
+  - download
+
+topic: crime-and-justice
+
+organisations:
+  - slug: hm-courts-service
+
+nations:
+  - england
+  - wales
+
+keywords:
+  - tribunals
+  - caseload
+  - timeliness
+  - hmcts
+
 ---
 
 Get management information from HM Courts and Tribunals Service (HMCTS) to understand workload volumes and timeliness at a national level. The data is for criminal, civil and family courts, and tribunals. Data tables are published monthly for every year since 2019 in CSV, XLSX or ODS format. The data includes:

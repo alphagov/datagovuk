@@ -1,14 +1,36 @@
 ---
 title: Road noise
+
 websites:
   - url: https://environment.data.gov.uk/dataset/562c9d56-7c2d-4d42-83bb-578d6e97a517
     link-text: Road noise
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+  - download
+  - map-layer
+  - web-service
+
+topic: environment
+
+organisations:
+  - slug: department-for-environment-food-and-rural-affairs
+
+nations:
+  - england
+
+keywords:
+  - strategic noise mapping
+  - noise levels
+  - annoyance
+
 ---
 
 Get data indicating the level of noise according to the strategic noise mapping of road sources across England. The data comes from analysis undertaken in 2022 and is provided by the Department for Environment, Food and Rural Affairs. The data includes noise indicators for:

@@ -1,14 +1,37 @@
 ---
 title: Coastal erosion
+
 websites:
   - url: https://environment.data.gov.uk/dataset/9fede91f-5acd-4fd2-9bd8-98153fa3c2ff
     link-text: Coastal erosion data
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+  - web-service
+
+topic: environment
+
+organisations:
+  - slug: department-for-environment-food-and-rural-affairs
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - erosion risk
+  - shoreline management
+  - coastline
+
 ---
 
 View the National Coastal Erosion Risk Map which shows projected areas in the UK at risk from erosion. The erosion risk zones are created by splitting the coastline into ‘frontages’ – lengths of coast with consistent characteristics based on location, cliff behaviour characteristics and defence characteristics.

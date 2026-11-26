@@ -1,5 +1,6 @@
 ---
 title: Immigration
+
 websites:
   - url: https://www.gov.uk/government/collections/immigration-statistics-quarterly-release
     link-text: Quarterly immigration statistics
@@ -7,10 +8,31 @@ api:
 dataset:
   url: https://www.gov.uk/government/statistical-data-sets/immigration-system-statistics-data-tables
   link-text: 'Immigration statistics: data tables'
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - xlsx
+
+access-methods:
+  - download
+
+topic: society
+
+organisations:
+  - slug: home-office
+
+nations:
+
+keywords:
+  - asylum
+  - citizenship
+  - settlement
+  - detention
+
 ---
 
 Get the latest immigration statistics published by the Home Office for every quarter since 2011-12. Each release includes:

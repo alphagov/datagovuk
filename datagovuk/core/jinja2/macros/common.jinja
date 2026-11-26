@@ -2,8 +2,12 @@
   <a role={{ role or 'button' }} class="govuk-button datagovuk-button" rel="nofollow" href="{{ url }}">
     {{ link_text }}
     <span class="datagovuk-right-arrow">
-      <img class="datagovuk-button__arrow" src="{{ static('images/icons/arrow-white-right.svg') }}" width="20" height="20" alt="" />
-      <img class="datagovuk-button__arrow--focus"
+      <img class="datagovuk-button__arrow datagovuk-button__icon"
+           src="{{ static('images/icons/arrow-white-right.svg') }}"
+           width="20"
+           height="20"
+           alt="" />
+      <img class="datagovuk-button__arrow datagovuk-button__icon--focus"
            src="{{ static('images/icons/arrow-black-right.svg') }}"
            width="20"
            height="20"

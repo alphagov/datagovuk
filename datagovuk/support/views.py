@@ -1,6 +1,7 @@
 import logging
 
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from sentry_sdk import capture_exception
@@ -21,6 +22,14 @@ class SupportFormView(FormView):
         initial["http_referer"] = self.request.headers.get("referer", "")
         return initial
 
+    def post(self, request, *args, **kwargs):
+        # The spam trap field is hidden from real users. Check it before validation and
+        # respond as if the message was sent, so bots get no signal that they were caught.
+        if request.POST.get("phonenumber"):
+            logger.info("Support form submission discarded: spam trap field was filled in")
+            return self._success_response()
+        return super().post(request, *args, **kwargs)
+
     def form_valid(self, form):
         cleaned_data = form.cleaned_data
         http_referer = cleaned_data.get("http_referer", "")
@@ -40,8 +49,7 @@ class SupportFormView(FormView):
 
         try:
             send_ticket_to_zendesk(message_body, requester_name, requester_email)
-            messages.success(self.request, "Your message was sent.")
-            return super().form_valid(form)
+            return self._success_response()
         except ZendeskError as e:
             capture_exception(e)
             messages.error(
@@ -49,3 +57,8 @@ class SupportFormView(FormView):
                 "Your message was not sent due to a service problem. Try again later.",
             )
         return self.form_invalid(form)
+
+    def _success_response(self):
+        # Shared by real submissions and the spam trap, so both get an identical response.
+        messages.success(self.request, "Your message was sent.")
+        return HttpResponseRedirect(self.get_success_url())

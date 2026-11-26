@@ -1,5 +1,6 @@
 ---
 title: Maritime and shipping
+
 websites:
   - url: https://maps.dft.gov.uk/maritime-statistics/index.html
     link-text: Maritime statistics dashboard
@@ -7,10 +8,31 @@ api:
 dataset:
   url: https://www.gov.uk/government/collections/maritime-and-shipping-statistics
   link-text: Maritime and shipping statistics
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - html
+  - pdf
+  - ods
+
+access-methods:
+  - download
+
+topic: transport
+
+organisations:
+  - slug: department-for-transport
+
+nations:
+
+keywords:
+  - maritime statistics
+  - port freight
+  - sea passengers
+
 ---
 
 Explore the Department for Transport’s maritime statistics dashboard, which includes:

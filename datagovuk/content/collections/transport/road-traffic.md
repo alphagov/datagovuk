@@ -1,5 +1,6 @@
 ---
 title: Road traffic
+
 websites:
   - url: https://roadtraffic.dft.gov.uk
     link-text: Road traffic statistics
@@ -9,10 +10,34 @@ api:
 dataset:
   url: https://roadtraffic.dft.gov.uk/downloads
   link-text: Road traffic datasets
-page-last-updated: "2026-07-09"
+
+page-last-reviewed: "2026-07-09"
+
 visualisation-data: road-traffic/road-traffic-motor-vehicles.json
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - shp
+
+access-methods:
+  - download
+  - api
+
+topic: transport
+
+organisations:
+  - slug: department-for-transport
+
+nations:
+  - england
+  - wales
+  - scotland
+
+keywords:
+  - vehicle miles
+  - traffic counts
+  - vehicle type
+
 ---
 
 Get road traffic statistics for England, Scotland and Wales. The data includes road traffic by vehicle type, road type and country, measured in billion vehicle miles (bvm). The data is provided by the Department for Transport and updated annually going back to 1993.

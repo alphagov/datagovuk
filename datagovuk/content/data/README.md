@@ -12,6 +12,18 @@ Blue: #026BDB
 
 ## Line and bar charts
 
+### A&E waiting times
+Source: (NHS England)[https://www.england.nhs.uk/statistics/statistical-work-areas/ae-waiting-times-and-activity/]
+Table: Monthly A&E Time Series September 2026
+Sheet: Performance
+
+Please note that from May 2019 to May 2023 the data is different, and the data owners said that this should be explained to potential users.
+
+Copy months and totals for <4 hours and >4 hours into a new sheet.
+Rename the columns to replace < and > symbols with 'less than' and 'greater than' respectively.
+Reformat the month to YYYY-MM-DD, e.g. 2016-10-15.
+Save the .csv.
+
 ### Agricultural commodities: milk prices
 Source: [https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk](https://www.gov.uk/government/statistics/uk-milk-prices-and-composition-of-milk)
 Table: United Kingdom milk prices and composition of milk - dataset
@@ -174,6 +186,16 @@ Export columns 'Financial year', 'Tests', and 'Fails' to .csv.
 Invert financial year to be most recent at the bottom.
 Divide tests and fails by 1 million, round to 2 decimal places, and rename columns (tests_millions, fails_millions).
 Remove the second year in finanial year to make the axis labels neater.
+
+### Population
+Source: [ONS](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland)
+File: UK population estimates 1838 to 2025 edition of this dataset .xlsx
+Sheet: Table 1
+
+Delete heading and save for the .csv.
+For the chart - in the Year column, remove the 'Mid-' prefix.
+Sort by year.
+Divide the population by a million and give to 2 decimal places.
 
 ### Rents
 Source: https://www.data.gov.uk/collections/land-and-property/rents-lettings-and-tenancies

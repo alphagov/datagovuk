@@ -1,5 +1,6 @@
 ---
 title: Land and property ownership
+
 websites:
   - url: https://www.gov.uk/search-property-information-land-registry
     link-text: HM Land Registry
@@ -13,10 +14,37 @@ api:
   - url: https://use-land-property-data.service.gov.uk/api-information
     link-text: HM Land Registry API
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - csv
+  - gml
+
+access-methods:
+  - download
+  - api
+  - map-layer
+
+topic: towns-and-cities
+
+organisations:
+  - slug: land-registry
+  - slug: registers-of-scotland
+
+nations:
+  - england
+  - wales
+  - scotland
+
+keywords:
+  - land ownership
+  - title register
+  - land registry
+  - boundaries
+
 ---
 
 Find information about a property in England or Wales via HM Land Registry, or in Scotland via Registers of Scotland. With HM Land Registry you’ll need to set up an account first. It’s then free to get a property summary and, from the datasets page, download most of the data in CSV or GML format. There’s a charge to get a title register or title plan.

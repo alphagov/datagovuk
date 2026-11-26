@@ -7,10 +7,19 @@
     text-align: center;
 }
 
+.datagovuk-footer__inline-list-item {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
 .datagovuk-footer__link:link,
 .datagovuk-footer__link:visited {
     font-family: Inter, sans-serif;
     color: $datagovuk-black;
+}
+
+.datagovuk-footer__link:focus {
+    background: $datagovuk-yellow;
 }
 
 .datagovuk-footer__copyright-logo:before {

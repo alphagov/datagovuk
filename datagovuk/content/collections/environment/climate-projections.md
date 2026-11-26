@@ -1,14 +1,38 @@
 ---
 title: Climate projections
+
 websites:
   - url: https://www.metoffice.gov.uk/research/approach/collaboration/ukcp
     link-text: Climate projections
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - xlsx
+
+access-methods:
+  - download
+
+topic: environment
+
+organisations:
+  - slug: met-office
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - climate change
+  - sea level
+  - probabilistic projections
+
 ---
 
 Get UK climate projections from the Met Office. This page provides climate model projections for the UK, showing how the climate is likely to change in the future until 2100.

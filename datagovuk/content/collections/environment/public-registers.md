@@ -1,14 +1,34 @@
 ---
 title: Environmental public registers
+
 websites:
   - url: https://environment.data.gov.uk/public-register/view/index
     link-text: Environmental public registers
 api:
 dataset:
-page-last-updated: "2026-03-24"
+
+page-last-reviewed: "2026-03-24"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+  - csv
+
+access-methods:
+  - download
+
+topic: environment
+
+organisations:
+  - slug: environment-agency
+
+nations:
+
+keywords:
+  - environmental permits
+  - waste carriers
+  - scrap metal dealers
+
 ---
 
 Use this service to find:

@@ -5,12 +5,12 @@ from playwright.sync_api import expect
 @pytest.mark.smoke
 def test_footer_pages(page, live_server_url):
     footer_links = {
-        "Roadmap": "/roadmap/",
-        "About": "/about/",
-        "Support": "/support/",
-        "Accessibility": "/accessibility/",
-        "Cookies": "/cookies/",
-        "Privacy and terms": "/privacy-and-terms/",
+        "Roadmap": "/roadmap",
+        "About": "/about",
+        "Support": "/support",
+        "Accessibility": "/accessibility",
+        "Cookies": "/cookies",
+        "Privacy and terms": "/privacy-and-terms",
     }
 
     page.goto(live_server_url)

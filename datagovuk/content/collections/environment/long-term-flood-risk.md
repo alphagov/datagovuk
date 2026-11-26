@@ -1,5 +1,6 @@
 ---
 title: Long term flood risk
+
 websites:
  - url: https://www.gov.uk/check-long-term-flood-risk
    link-text: Flood risk in England
@@ -13,10 +14,34 @@ websites:
    link-text: Flood risk in Northern Ireland
 api:
 dataset:
-page-last-updated: "2026-09-16"
+
+page-last-reviewed: "2026-09-16"
+
 visualisation-data:
-contact:
-status: for-publication
+
+formats:
+
+access-methods:
+  - web-service
+  - download
+
+topic: environment
+
+organisations:
+  - slug: environment-agency
+  - slug: natural-resources-wales
+
+nations:
+  - england
+  - wales
+  - scotland
+  - northern-ireland
+
+keywords:
+  - long-term flood risk
+  - surface water
+  - climate change
+
 ---
 
 Use this service to find out:

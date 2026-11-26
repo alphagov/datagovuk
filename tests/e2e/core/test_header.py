@@ -40,7 +40,7 @@ def test_header(page, live_server_url) -> None:
     # Ensure Help works
     page.get_by_role("banner").get_by_role("link", name="Help").click()
 
-    expect(page).to_have_url(live_server_url + "/help/")
+    expect(page).to_have_url(live_server_url + "/help")
     page.goto(live_server_url)
 
 
@@ -70,5 +70,5 @@ def test_header_mobile(page, live_server_url) -> None:
 
     page.get_by_role("banner").get_by_role("link", name="Help").click()
 
-    expect(page).to_have_url(live_server_url + "/help/")
+    expect(page).to_have_url(live_server_url + "/help")
     page.goto(live_server_url)

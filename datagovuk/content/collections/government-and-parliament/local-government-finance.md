@@ -1,5 +1,6 @@
 ---
 title: Local government finance
+
 websites:
   - url: https://www.gov.uk/government/statistical-data-sets/live-tables-on-local-government-finance
     link-text: Local government finance
@@ -7,10 +8,31 @@ api:
 dataset:
   url: https://www.gov.uk/government/collections/local-government-finance-statistics-england
   link-text: Local government finance statistics – England (compendium)
-page-last-updated: "2026-08-18"
+
+page-last-reviewed: "2026-08-18"
+
 visualisation-data: local-government-finance/local-gov-finance.json
-contact:
-status: for-publication
+
+formats:
+  - ods
+  - xls
+
+access-methods:
+  - download
+
+topic: government
+
+organisations:
+  - slug: department-for-communities-and-local-government
+
+nations:
+  - england
+
+keywords:
+  - capital expenditure
+  - council tax support
+  - borrowing
+
 ---
 
 Get the latest data tables from the Ministry of Housing, Communities and Local Government on:

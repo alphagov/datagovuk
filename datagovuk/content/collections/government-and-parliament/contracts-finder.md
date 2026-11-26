@@ -1,14 +1,35 @@
 ---
 title: Contracts finder
+
 websites:
   - url: https://www.contractsfinder.service.gov.uk/Search
     link-text: Contracts finder
 api:
 dataset:
-page-last-updated: "2026-07-23"
+
+page-last-reviewed: "2026-07-23"
+
 visualisation-data: contracts-finder/contracts-awarded-2024-2025.json
-contact:
-status: for-publication
+
+formats:
+  - xml
+  - csv
+
+access-methods:
+  - download
+
+topic: government
+
+organisations:
+
+nations:
+  - england
+
+keywords:
+  - procurement
+  - public sector
+  - tenders
+
 ---
 
 Search the GOV.UK Contracts Finder for contracts published by central government departments, local authorities and other government agencies. You can use it to find public sector procurement opportunities or contracts already awarded.
