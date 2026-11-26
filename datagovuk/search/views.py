@@ -16,11 +16,6 @@ FACET_GROUPS = [
     ("other", "More filters", ["open_government_licence_only", "include_datasets_with_no_links"]),
 ]
 
-# TODO: not a search aggregation, and the directory search doesn't act on it yet. It has no count until it does.
-STATIC_FACETS = {
-    "include_datasets_with_no_links": [{"value": "on", "label": "Datasets with no links", "count": None}],
-}
-
 
 def _build_facet_groups(facets, params):
     """
@@ -61,7 +56,7 @@ class SearchView(GETFormView):
     def form_valid(self, form):
         query = form.cleaned_data.pop("query", "")
         directory_search = search_directory(query, filters=form.cleaned_data)
-        facet_groups = _build_facet_groups({**directory_search.facets, **STATIC_FACETS}, self.request.GET.dict())
+        facet_groups = _build_facet_groups(directory_search.facets, self.request.GET.dict())
         context = self.get_context_data(
             search_made=True,
             search_query=query,
