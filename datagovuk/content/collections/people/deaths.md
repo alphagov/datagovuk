@@ -7,9 +7,9 @@ websites:
 api:
 dataset:
 
-page-last-reviewed: "2026-03-24"
+page-last-reviewed: "2026-11-29"
 
-visualisation-data:
+visualisation-data: "deaths/death-registrations-1992-2025-male-female-total.json"
 
 formats:
   - csv
