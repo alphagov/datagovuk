@@ -150,7 +150,10 @@ def get_opensearch_client():
     )
 
 
-def search_collections(query):
+def search_collections(query, filters=None):
+    if not filters:
+        filters = {}
+
     client = get_opensearch_client()
     if query and query.strip():
         search_clause = {
@@ -166,13 +169,25 @@ def search_collections(query):
     else:
         search_clause = {"match_all": {}}
 
+    query = {
+        "must": [search_clause],
+    }
+
+    filter_clauses = []
+    if filters.get("publisher"):
+        filter_clauses.append({"term": {"organisations.slug": filters["publisher"]}})
+    if filters.get("format"):
+        filter_clauses.append({"term": {"formats": filters["format"]}})
+    if filters.get("topic"):
+        filter_clauses.append({"term": {"topic_slug": filters["topic"]}})
+    if filter_clauses:
+        query["filter"] = filter_clauses
+
     response = client.search(
         index=settings.OPENSEARCH_COLLECTIONS_INDEX,
         body={
             "query": {
-                "bool": {
-                    "must": [search_clause],
-                },
+                "bool": query,
             },
             "size": 2,
         },

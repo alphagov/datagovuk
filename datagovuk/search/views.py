@@ -68,7 +68,7 @@ class SearchView(GETFormView):
                 if facet["selected"]
             ],
             directory_search=directory_search,
-            collection_search=search_collections(query),
+            collection_search=search_collections(query, filters=form.cleaned_data),
         )
         return self.render_to_response(context)
 

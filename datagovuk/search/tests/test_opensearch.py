@@ -271,6 +271,115 @@ def test_search_collections_limits_documents_but_not_total(opensearch_documents)
     assert result.total == COLLECTION_RESULTS + EXTRA_RESULTS
 
 
+@pytest.mark.parametrize(
+    "filters",
+    [
+        None,
+        {},
+        {
+            "topic": "",
+            "publisher": "",
+            "format": "",
+            "open_government_licence_only": False,
+            "include_datasets_with_no_links": False,
+        },
+    ],
+)
+def test_search_collections_without_filter_values_matches_all(filters, opensearch_documents):
+    opensearch_documents(
+        [
+            CollectionFactory(slug="first", topic_slug="transport"),
+            CollectionFactory(slug="second", topic_slug="health"),
+        ],
+    )
+
+    result = search_collections("", filters)
+
+    assert sorted(_slugs(result.docs)) == ["first", "second"]
+
+
+def test_search_collections_filters_by_topic(opensearch_documents):
+    opensearch_documents(
+        [
+            CollectionFactory(slug="transport", topic_slug="transport"),
+            CollectionFactory(slug="health", topic_slug="health"),
+            CollectionFactory(slug="no-topic", topic_slug=None),
+        ],
+    )
+
+    result = search_collections("", {"topic": "transport"})
+
+    assert _slugs(result.docs) == ["transport"]
+
+
+def test_search_collections_filters_by_publisher_on_any_organisation(opensearch_documents):
+    opensearch_documents(
+        [
+            CollectionFactory(slug="first-publisher", organisations=[OrganisationFactory(slug="wanted")]),
+            CollectionFactory(
+                slug="second-publisher",
+                organisations=[OrganisationFactory(slug="other"), OrganisationFactory(slug="wanted")],
+            ),
+            CollectionFactory(slug="other-publisher", organisations=[OrganisationFactory(slug="other")]),
+        ],
+    )
+
+    result = search_collections("", {"publisher": "wanted"})
+
+    assert sorted(_slugs(result.docs)) == ["first-publisher", "second-publisher"]
+
+
+def test_search_collections_filters_by_format_on_any_format(opensearch_documents):
+    opensearch_documents(
+        [
+            CollectionFactory(slug="csv", formats=["CSV"]),
+            CollectionFactory(slug="mixed", formats=["PDF", "CSV"]),
+            CollectionFactory(slug="pdf", formats=["PDF"]),
+            CollectionFactory(slug="no-formats", formats=[]),
+        ],
+    )
+
+    result = search_collections("", {"format": "CSV"})
+
+    assert sorted(_slugs(result.docs)) == ["csv", "mixed"]
+
+
+def test_search_collections_combines_filters(opensearch_documents):
+    opensearch_documents(
+        [
+            CollectionFactory(slug="both", topic_slug="transport", formats=["CSV"]),
+            CollectionFactory(slug="topic-only", topic_slug="transport", formats=["PDF"]),
+            CollectionFactory(slug="format-only", topic_slug="health", formats=["CSV"]),
+        ],
+    )
+
+    result = search_collections("", {"topic": "transport", "format": "CSV"})
+
+    assert _slugs(result.docs) == ["both"]
+
+
+def test_search_collections_combines_query_and_filters(opensearch_documents):
+    opensearch_documents(
+        [
+            CollectionFactory(slug="rail-transport", title="Rail timetables", topic_slug="transport"),
+            CollectionFactory(slug="rail-health", title="Rail accidents", topic_slug="health"),
+            CollectionFactory(slug="bus-transport", title="Bus routes", topic_slug="transport"),
+        ],
+    )
+
+    result = search_collections("rail", {"topic": "transport"})
+
+    assert _slugs(result.docs) == ["rail-transport"]
+
+
+def test_search_collections_ignores_dataset_only_filters(opensearch_documents):
+    opensearch_documents([CollectionFactory(slug="first"), CollectionFactory(slug="second")])
+
+    result = search_collections("", {"open_government_licence_only": True, "include_datasets_with_no_links": True})
+
+    assert sorted(_slugs(result.docs)) == ["first", "second"]
+
+
 def test_search_directory_matches_on_title_and_description(opensearch_documents):
     opensearch_documents(
         [
