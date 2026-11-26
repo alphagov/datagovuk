@@ -114,16 +114,14 @@ class CollectionView(RedirectView):
 
 class CollectionsAPIView(View):
     def get(self, request):
-        collections_path = Path(settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT)
         collections = []
-        topics = []
 
-        for collection in sorted(collections_path.iterdir()):
-            collection_name = collection.name
+        collections_by_slug = get_collections_by_slug()
+        for collection_slug, collection in collections_by_slug.items():
             topics = self.get_topics_from_collection(collection)
             collections.append(
                 {
-                    "name": collection_name,
+                    "name": collection_slug,
                     "topics": topics,
                 },
             )
@@ -132,7 +130,13 @@ class CollectionsAPIView(View):
 
     def get_topics_from_collection(self, collection):
         topics = []
-        for topic_markdown in sorted(collection.rglob("*.md")):
+        collection_topics = collection["topics"]
+        for collection_topic in collection_topics:
+            topic_markdown = (
+                Path(settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT)
+                / collection["slug"]
+                / f"{collection_topic['slug']}.md"
+            )
             with topic_markdown.open() as f:
                 topic = frontmatter.load(f)
             topics.append(

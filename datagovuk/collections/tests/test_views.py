@@ -5,6 +5,8 @@ import pytest
 from chartkick.django import LineChart
 from django.urls import reverse
 
+from datagovuk.collections.constants import get_collections
+
 
 class TestCollectionPageView:
     def test_view_first_collection_item_success(self, client):
@@ -221,31 +223,21 @@ class TestCollectionView:
 
 
 class TestCollectionsAPIView:
-    def test_api_route_returns_collections(self, client, settings):
-        settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT = "datagovuk/collections/tests/content/"
-
+    def test_api_responds_200_with_real_collection(self, client):
         response = client.get(reverse("collections:collections_json"))
 
         assert response.status_code == HTTPStatus.OK
-        assert response.json() == {
-            "collections": [
-                {
-                    "name": "sample-collection",
-                    "topics": [
-                        {
-                            "slug": "sample-page",
-                            "title": "Sample collection page",
-                            "description": "Some existing markdown.",
-                            "topic": "business-and-economy",
-                            "keywords": ["test-keyword"],
-                            "page-last-reviewed": "2026-03-24",
-                            "organisations": ["some-org"],
-                            "formats": ["csv", "pdf"],
-                        },
-                    ],
-                },
-            ],
-        }
+        expected_collections = get_collections()
+        response_json = response.json()
+        for expected_collection, response_collection in zip(
+            expected_collections,
+            response_json["collections"],
+            strict=True,
+        ):
+            assert response_collection["name"] == expected_collection["slug"]
+            expected_topics = [topic["slug"] for topic in expected_collection["topics"]]
+            response_topics = [topic["slug"] for topic in response_collection["topics"]]
+            assert expected_topics == response_topics
 
 
 class TestGovernmentCollectionRedirects:
