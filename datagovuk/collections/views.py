@@ -135,15 +135,16 @@ class CollectionsAPIView(View):
         for topic_markdown in sorted(collection.rglob("*.md")):
             with topic_markdown.open() as f:
                 topic = frontmatter.load(f)
-
-            # TODO: Add 'keywords' to collection markdowns frontmatter
             topics.append(
                 {
                     "slug": topic_markdown.stem,
-                    "title": topic.get("title"),
+                    "title": topic["title"],
                     "description": topic.content,
-                    "keywords": topic.get("keywords", []),
-                    "page-last-updated": topic.get("page-last-reviewed", ""),
+                    "topic": topic["topic"],
+                    "keywords": topic.get("keywords") or [],
+                    "page-last-reviewed": topic["page-last-reviewed"],
+                    "organisations": [org["slug"] for org in topic.get("organisations") or []],
+                    "formats": topic.get("formats") or [],
                 },
             )
         return topics
