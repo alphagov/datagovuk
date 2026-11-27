@@ -1,0 +1,64 @@
+{
+  "title": "Dwellings meeting the Decent Homes standard",
+  "visualisation_type": "line",
+  "source": "https://www.gov.uk/government/statistical-data-sets/dwelling-condition-and-safety",
+  "download": "decent-homes-percentages-2006-to-2024.csv",
+  "publisher": "Ministry of Housing, Communities and Local Government",
+  "min_value": 0,
+  "max_value": 100,
+  "visualisation_suffix": "%",
+  "series": [
+    {
+      "name": "Decent",
+      "title": "Decent homes",
+      "color": "#C27A9A",
+      "data": {
+        "2006": 65.12,
+        "2007": 65.34,
+        "2008": 66.90,
+        "2009": 69.91,
+        "2010": 73.48,
+        "2011": 76.43,
+        "2012": 78.22,
+        "2013": 79.42,
+        "2014": 80.16,
+        "2015": 80.59,
+        "2016": 80.09,
+        "2017": 81.18,
+        "2018": 82.16,
+        "2019": 83.01,
+        "2020": 84.97,
+        "2021": 85.66,
+        "2022": 85.40,
+        "2023": 85.11,
+        "2024": 84.66
+      }
+    },
+    {
+      "name": "Non-decent",
+      "title": "Non-decent homes",
+      "color": "#00890B",
+      "data": {
+        "2006": 34.88,
+        "2007": 34.66,
+        "2008": 33.10,
+        "2009": 30.09,
+        "2010": 26.52,
+        "2011": 23.57,
+        "2012": 21.78,
+        "2013": 20.58,
+        "2014": 19.84,
+        "2015": 19.41,
+        "2016": 19.91,
+        "2017": 18.82,
+        "2018": 17.84,
+        "2019": 16.99,
+        "2020": 15.03,
+        "2021": 14.34,
+        "2022": 14.60,
+        "2023": 14.89,
+        "2024": 15.34
+      }
+    }
+  ]
+}
