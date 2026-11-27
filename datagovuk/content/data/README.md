@@ -132,6 +132,13 @@ Removed the references to notes, transposed data with the years, and saved to [e
 Source: [https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics](https://www.gov.uk/government/statistical-data-sets/annual-domestic-energy-price-statistics)
 Average annual domestic energy bills
 
+### English Housing Survey (Decent Homes)
+Source: [MHCLG](https://www.gov.uk/government/statistical-data-sets/dwelling-condition-and-safety)
+File: DT3101: Decent Homes trend
+
+In a new sheet, copy the 'all tenures' percentages into columns for decent and non-decent, with one row for each year.
+Save as .csv.
+
 ### Flood alerts
 Source: [https://environment.data.gov.uk/dataset/88bed270-d465-11e4-8669-f0def148f590](https://environment.data.gov.uk/dataset/88bed270-d465-11e4-8669-f0def148f590)
 Load into Excel. Filter TYPE to Flood Alert. Make a new column for year and populate it with the Excel formula YEAR(date_column).
