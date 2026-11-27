@@ -153,6 +153,14 @@ Table 4.1.2 was extracted from the xlsx. The metadata pre-header rows were remov
 
 The file [fuel-and-oil-prices/fuel-and-oil-prices.json](fuel-and-oil-prices/fuel-and-oil-prices.json) uses the data from the csv file as its `series.data` objects.
 
+### Homelessness
+Source: [MHCLG](https://www.gov.uk/government/collections/homelessness-statistics#statutory-homelessness)
+Link: Statutory homelessness in England (most recent)
+File: Detailed local authority level tables (most recent)
+Table: TA2
+
+Full time series available in the Statutory homelessness in England: (most recent) file from the link.
+For updating, take the number from the 'Households in TA' column in TA1 or TA2.
 
 ### Inflation
 
