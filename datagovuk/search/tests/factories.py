@@ -53,5 +53,7 @@ class CollectionFactory(factory.DictFactory):
     description_raw = factory.LazyAttribute(lambda o: f"Raw description for {o.title}")
     description = factory.LazyAttribute(lambda o: f"Description for {o.title}")
     organisations = factory.LazyFunction(lambda: [OrganisationFactory()])
+    topic_slug = None
+    formats = factory.LazyFunction(list)
     created_at = "2024-01-02T03:04:05+00:00"
     updated_at = "2025-06-07T08:09:10+00:00"

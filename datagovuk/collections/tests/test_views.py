@@ -1,9 +1,14 @@
 from datetime import date
 from http import HTTPStatus
+from pathlib import Path
 
+import frontmatter
 import pytest
 from chartkick.django import LineChart
+from django.conf import settings
 from django.urls import reverse
+
+from datagovuk.collections.constants import get_collections
 
 
 class TestCollectionPageView:
@@ -221,28 +226,41 @@ class TestCollectionView:
 
 
 class TestCollectionsAPIView:
-    def test_api_route_returns_collections(self, client, settings):
-        settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT = "datagovuk/collections/tests/content/"
-
+    def test_api_responds_200_with_real_collection(self, client):
         response = client.get(reverse("collections:collections_json"))
 
         assert response.status_code == HTTPStatus.OK
-        assert response.json() == {
-            "collections": [
-                {
-                    "name": "sample-collection",
-                    "topics": [
-                        {
-                            "slug": "sample-page",
-                            "title": "Sample collection page",
-                            "description": "Some existing markdown.",
-                            "keywords": ["test-keyword"],
-                            "page-last-updated": "2026-03-24",
-                        },
-                    ],
-                },
-            ],
-        }
+        response_json = response.json()
+        assert set(response_json) == {"collections"}
+
+        for expected_collection, response_collection in zip(
+            get_collections(),
+            response_json["collections"],
+            strict=True,
+        ):
+            assert set(response_collection) == {"name", "topics"}
+            assert response_collection["name"] == expected_collection["slug"]
+
+            for expected_topic, response_topic in zip(
+                expected_collection["topics"],
+                response_collection["topics"],
+                strict=True,
+            ):
+                topic_markdown = frontmatter.load(
+                    Path(settings.DATAGOVUK_CONTENT_COLLECTIONS_ROOT)
+                    / expected_collection["slug"]
+                    / f"{expected_topic['slug']}.md",
+                )
+                assert response_topic == {
+                    "slug": expected_topic["slug"],
+                    "title": topic_markdown["title"],
+                    "description": topic_markdown.content,
+                    "topic": topic_markdown["topic"],
+                    "keywords": topic_markdown.get("keywords") or [],
+                    "page-last-reviewed": str(topic_markdown["page-last-reviewed"]),
+                    "organisations": [org["slug"] for org in topic_markdown.get("organisations") or []],
+                    "formats": topic_markdown.get("formats") or [],
+                }
 
 
 class TestGovernmentCollectionRedirects:

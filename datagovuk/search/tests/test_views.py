@@ -173,12 +173,13 @@ class TestSearchView:
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["directory_search"].docs[0].organisation.name == "First publisher"
 
-    def test_get_with_filters_only_filters_directory_not_collections(self, client, search_url, opensearch_documents):
+    def test_get_with_filters_filters_directory_and_collections(self, client, search_url, opensearch_documents):
         opensearch_documents(
             [
                 DatasetFactory(slug="transport", topic_slug="transport"),
                 DatasetFactory(slug="health", topic_slug="health"),
-                CollectionFactory(slug="any-collection", collection="transport"),
+                CollectionFactory(slug="transport-collection", topic_slug="transport"),
+                CollectionFactory(slug="health-collection", topic_slug="health"),
             ],
         )
 
@@ -187,7 +188,20 @@ class TestSearchView:
         assert response.status_code == HTTPStatus.OK
         assert response.context_data["search_made"] is True
         assert [doc.slug for doc in response.context_data["directory_search"].docs] == ["transport"]
-        assert [doc.slug for doc in response.context_data["collection_search"].docs] == ["any-collection"]
+        assert [doc.slug for doc in response.context_data["collection_search"].docs] == ["transport-collection"]
+
+    def test_get_with_lowercase_facet_format_filters_collection_results(self, client, search_url, opensearch_documents):
+        opensearch_documents(
+            [
+                CollectionFactory(slug="csv-collection", formats=["CSV"]),
+                CollectionFactory(slug="pdf-collection", formats=["PDF"]),
+            ],
+        )
+
+        response = client.get(search_url, {"query": "", "format": "csv"})
+
+        assert response.status_code == HTTPStatus.OK
+        assert [doc.slug for doc in response.context_data["collection_search"].docs] == ["csv-collection"]
 
     def test_get_with_publisher_filters_directory_results(self, client, search_url, opensearch_documents):
         opensearch_documents(
