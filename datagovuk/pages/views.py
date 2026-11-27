@@ -3,6 +3,9 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 
 from datagovuk.core.views import RenderedMarkdownView
+from datagovuk.data_manual.constants import DATA_MANUAL_PAGES
+from datagovuk.pages.sitemap import STATIC_PAGES
+from datagovuk.updates.posts import get_update_posts
 
 HELP_PAGES = [
     {
@@ -52,5 +55,17 @@ class HelpView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["help_items_1"] = HELP_PAGES[0:3]
         context["help_items_2"] = HELP_PAGES[3:6]
+
+        return context
+
+
+class SitemapView(TemplateView):
+    template_name = "pages/sitemap.jinja"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["static_pages"] = STATIC_PAGES
+        context["data_manual_pages"] = DATA_MANUAL_PAGES
+        context["update_posts"] = get_update_posts()
 
         return context
