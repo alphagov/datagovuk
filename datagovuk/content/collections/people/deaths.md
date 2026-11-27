@@ -7,7 +7,7 @@ websites:
 api:
 dataset:
 
-page-last-reviewed: "2026-11-29"
+page-last-reviewed: "2026-11-27"
 
 visualisation-data: "deaths/death-registrations-1992-2025-male-female-total.json"
 
