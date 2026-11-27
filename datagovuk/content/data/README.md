@@ -291,6 +291,14 @@ The file [uk-trade/total-uk-imports-exports-2010-2025.json](uk-trade/total-uk-im
 
 The file [social-mobility/unemployment-by-socio-ecomomic-background.json](social-mobility/unemployment-by-socio-ecomomic-background.json) uses the data from the csv file as its data object for a bar chart.
 
+### Water quality
+Source: [ENV17 - Bathing water quality: additional datasets](https://www.gov.uk/government/statistical-data-sets/env17-bathing-water-quality-additional-datasets)
+Files: Classifications/classification summaries for each year, 2017 onwards.
+
+Create a new table with columns for the water classifications (Excellent, Good, Sufficient, and Poor) and Total.
+Create a row for each year (2017 onwards, with 2020 missing).
+From each classification file copy in the summary statistics.
+
 ### Woodland area
 
 The source webpage for the data is [https://www.forestresearch.gov.uk/tools-and-resources/statistics/data-downloads/](https://www.forestresearch.gov.uk/tools-and-resources/statistics/data-downloads/)
