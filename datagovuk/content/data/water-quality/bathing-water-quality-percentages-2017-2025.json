@@ -1,0 +1,68 @@
+{
+    "title": "Water quality ratings of bathing sites in England",
+    "visualisation_type": "line",
+    "visualisation_suffix": "%",
+    "download": "bathing-water-quality-percentages-2017-2025.csv",
+      "series": [
+    {
+      "name": "Excellent",
+      "title": "Bathing water quality",
+      "color": "#C27A9A",
+      "data": {
+        "2017": 66,
+        "2018": 67,
+        "2019": 71,
+        "2021": 71,
+        "2022": 72,
+        "2023": 66.4,
+        "2024": 64.2,
+        "2025": 66.1
+      }
+    },
+    {
+      "name": "Good",
+      "title": "Bathing water quality",
+      "color": "#00890B",
+      "data": {
+        "2017": 26,
+        "2018": 25,
+        "2019": 22,
+        "2021": 24,
+        "2022": 21,
+        "2023": 23.4,
+        "2024": 21.1,
+        "2025": 21.2
+      }
+    },
+    {
+      "name": "Sufficient",
+      "title": "Bathing water quality",
+      "color": "#026BDB",
+      "data": {
+        "2017": 6,
+        "2018": 5,
+        "2019": 5,
+        "2021": 4,
+        "2022": 4,
+        "2023": 5.9,
+        "2024": 6.4,
+        "2025": 5.6
+      }
+    },
+    {
+      "name": "Poor",
+      "title": "Bathing water quality",
+      "color": "#333333",
+      "data": {
+        "2017": 2,
+        "2018": 2,
+        "2019": 2,
+        "2021": 1,
+        "2022": 3,
+        "2023": 4.3,
+        "2024": 8.2,
+        "2025": 7.1
+      }
+    }
+  ]
+}

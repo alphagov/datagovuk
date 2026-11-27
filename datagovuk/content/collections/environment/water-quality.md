@@ -9,9 +9,9 @@ api:
     link-text: Water Quality Explorer API
 dataset:
 
-page-last-reviewed: "2026-03-24"
+page-last-reviewed: "2026-11-27"
 
-visualisation-data:
+visualisation-data: "water-quality/bathing-water-quality-percentages-2017-2025.json"
 
 formats:
   - csv
