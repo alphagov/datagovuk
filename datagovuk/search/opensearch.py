@@ -5,7 +5,7 @@ from datetime import datetime
 import boto3
 from django.conf import settings
 from opensearchpy import AWSV4SignerAuth, OpenSearch, Q, RequestsHttpConnection, Search
-from opensearchpy.helpers.faceted_search import Facet, FacetedResponse, FacetedSearch, NestedFacet, TermsFacet
+from opensearchpy.helpers.faceted_search import Facet, FacetedResponse, FacetedSearch, TermsFacet
 from opensearchpy.helpers.query import Terms
 from pydantic import BaseModel, Field, model_validator
 
@@ -203,26 +203,6 @@ class MultiTermsFacet(Facet):
         return key[0] in filter_values
 
 
-class ReverseNestedTermsFacet(TermsFacet):
-    """
-    Terms facet for use inside a `NestedFacet` which counts parent documents rather than nested ones.
-
-    This is for e.g. resources where we have a nested opensearch document; for the format facet,
-    we don't want the count of the nested documents (resources) - instead we want the count of
-    matching parent documents (datasets).
-    """
-
-    def get_aggregation(self):
-        agg = super().get_aggregation()
-        agg.bucket("parent_docs", "reverse_nested")
-        # Buckets default to ordering by nested doc count, which isn't the count we show
-        agg.order = {"parent_docs": "desc"}
-        return agg
-
-    def get_metric(self, bucket):
-        return bucket["parent_docs"]["doc_count"]
-
-
 class BooleanFilterFacet(Facet):
     """
     Facet with a single "on" value, which counts and filters by documents matching `query`.
@@ -261,7 +241,7 @@ class DirectorySearch(FacetedSearch):
     facets = {
         "topic": MultiTermsFacet(fields=["topic_slug", "topic.keyword"], size=10000),
         "publisher": MultiTermsFacet(fields=["organisations.slug", "organisations.name.keyword"], size=10000),
-        "format": NestedFacet("resources", ReverseNestedTermsFacet(field="resources.format", size=10000)),
+        "format": TermsFacet(field="resources_formats"),
         "open_government_licence_only": BooleanFilterFacet(Q("term", licence__slug="uk-ogl")),
         "include_datasets_with_no_links": BooleanIncludeFacet(Q("term", resources_count=0)),
     }

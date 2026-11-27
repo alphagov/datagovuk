@@ -38,6 +38,7 @@ class DatasetFactory(factory.DictFactory):
     created_at = "2024-01-02T03:04:05+00:00"
     updated_at = "2025-06-07T08:09:10+00:00"
     resources = factory.LazyFunction(lambda: [ResourceFactory()])
+    resources_formats = factory.LazyAttribute(lambda o: list({resource["format"] for resource in o.resources}))
     resources_count = factory.LazyAttribute(lambda o: len(o.resources))
 
 
