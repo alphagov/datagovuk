@@ -11,7 +11,7 @@
     {
       "name": "Decent",
       "title": "Decent homes",
-      "color": "#C27A9A",
+      "color": "#00890B",
       "data": {
         "2006": 65.12,
         "2007": 65.34,
@@ -37,7 +37,7 @@
     {
       "name": "Non-decent",
       "title": "Non-decent homes",
-      "color": "#00890B",
+      "color": "#C27A9A",
       "data": {
         "2006": 34.88,
         "2007": 34.66,
