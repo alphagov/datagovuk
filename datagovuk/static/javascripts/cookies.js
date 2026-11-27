@@ -435,6 +435,9 @@ new GOVUK.Modules.CookieBanner(document.querySelector("div#global-cookie-message
     }
 
     confirmationMessage.style.display = "block"
+
+    // Move focus to the banner so keyboard and screen reader users continue from it
+    confirmationMessage.querySelector('.govuk-notification-banner').focus()
   }
 
   CookieSettings.prototype.getReferrerLink = function () {
